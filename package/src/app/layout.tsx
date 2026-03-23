@@ -1,9 +1,5 @@
 "use client";
-import { baselightTheme } from "@/utils/theme/DefaultColors";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { DashboardContextProvider } from './context/DashboardContext';
-
+import "./global.css";
 
 export default function RootLayout({
   children,
@@ -11,19 +7,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <link rel="icon" href="/favicon.png" />
-        <title>Flexy React + Js + Mui</title>
+        <title>TikMoney - Cursos Premium</title>
+        <meta name="description" content="Plataforma premium de cursos. Aprenda com os melhores criadores." />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#000000" />
       </head>
       <body>
-        <ThemeProvider theme={baselightTheme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <DashboardContextProvider>
-            <CssBaseline />
-            {children}
-          </DashboardContextProvider>
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );
