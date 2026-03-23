@@ -1,19 +1,15 @@
-'use client'
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-
 export default function Loading() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <div style={{
+      display: "flex", justifyContent: "center", alignItems: "center",
+      width: "100%", height: "100vh", background: "#000",
+    }}>
+      <div style={{
+        width: "36px", height: "36px", borderRadius: "50%",
+        border: "3px solid rgba(255,255,255,0.1)",
+        borderTopColor: "#fe2c55",
+        animation: "spin 0.8s linear infinite",
+      }} />
+    </div>
   );
-};
+}
