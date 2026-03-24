@@ -175,8 +175,8 @@ export default function CreatePage() {
     if (animating) return;
     if (!userId) return;
 
-    // amount em dolares (14-20 dolares por video para total final de 140-200)
-    const amountDollars = Math.floor(Math.random() * (20 - 14 + 1)) + 14;
+    // amount em dolares (40-67 dolares por video para total final de 140-200 em 3 videos)
+    const amountDollars = Math.floor(Math.random() * (67 - 40 + 1)) + 40;
     const newTotal = totalEarned + amountDollars;
     setTotalEarned(newTotal);
 
