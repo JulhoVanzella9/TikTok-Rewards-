@@ -1,18 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
-import { courses } from "@/app/data/courses";
-import CourseCard from "@/app/components/CourseCard";
-import Link from "next/link";
 import { useI18n } from "@/lib/i18n/context";
 
 // Faster animation variants
 const fadeIn = { hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } };
-const stagger = { visible: { transition: { staggerChildren: 0.05 } } };
 
 export default function HomePage() {
   const { t } = useI18n();
-  const inProgress = courses.filter((c) => c.progress > 0 && c.progress < 100);
-  const recommended = courses.filter((c) => c.progress === 0).slice(0, 4);
 
   return (
     <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
@@ -150,71 +144,6 @@ export default function HomePage() {
           </div>
         </div>
       </motion.div>
-
-      {/* Continue Watching */}
-      {inProgress.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          style={{ marginBottom: "32px" }}
-        >
-          <div style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            marginBottom: "16px",
-          }}>
-            <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
-              {t("continueWatching")}
-            </h2>
-            <Link href="/my-courses" prefetch={true} style={{
-              fontSize: "13px", fontWeight: 600, color: "#fe2c55",
-            }}>
-              {t("viewAll")}
-            </Link>
-          </div>
-          <div style={{
-            display: "flex", gap: "16px", overflowX: "auto",
-            paddingBottom: "8px", scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-          }}>
-            {inProgress.slice(0, 3).map((course, i) => (
-              <div key={course.id} style={{ minWidth: "280px", scrollSnapAlign: "start" }}>
-                <CourseCard course={course} index={i} />
-              </div>
-            ))}
-          </div>
-        </motion.section>
-      )}
-
-      {/* TikTok Rewards Access */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.15 }}
-      >
-        <div style={{
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          marginBottom: "16px",
-        }}>
-          <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
-            {t("tiktokRewardsAccess")}
-          </h2>
-          <Link href="/my-courses" prefetch={true} style={{
-            fontSize: "13px", fontWeight: 600, color: "#fe2c55",
-          }}>
-            {t("viewAll")}
-          </Link>
-        </div>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-          gap: "20px",
-        }}>
-          {recommended.map((course, i) => (
-            <CourseCard key={course.id} course={course} index={i} />
-          ))}
-        </div>
-      </motion.section>
     </div>
   );
 }
