@@ -89,6 +89,89 @@ export function useProgress() {
       return false;
     }
 
+    // Award XP for completing lesson (50 XP per lesson)
+    await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 50 });
+
+    // Check and update achievements
+    // First lesson achievement
+    if (completedCount === 1) {
+      await supabase.from("user_achievements").upsert({
+        user_id: user.id,
+        achievement_id: "first-lesson",
+        progress: 1,
+        unlocked: true,
+        unlocked_at: new Date().toISOString()
+      }, { onConflict: "user_id,achievement_id" });
+      await supabase.rpc("increment_achievements_count", { user_id_param: user.id });
+      await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 50 });
+    }
+
+    // 10 lessons achievement
+    const { data: totalLessonsCompleted } = await supabase
+      .from("user_progress")
+      .select("lesson_id")
+      .eq("user_id", user.id);
+    
+    if (totalLessonsCompleted && totalLessonsCompleted.length >= 10) {
+      const { data: existing } = await supabase
+        .from("user_achievements")
+        .select("unlocked")
+        .eq("user_id", user.id)
+        .eq("achievement_id", "10-lessons")
+        .single();
+      
+      if (!existing?.unlocked) {
+        await supabase.from("user_achievements").upsert({
+          user_id: user.id,
+          achievement_id: "10-lessons",
+          progress: 10,
+          unlocked: true,
+          unlocked_at: new Date().toISOString()
+        }, { onConflict: "user_id,achievement_id" });
+        await supabase.rpc("increment_achievements_count", { user_id_param: user.id });
+        await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 150 });
+      }
+    }
+
+    // Course completion achievements
+    if (progressPercent >= 100) {
+      // Award certificate
+      await supabase.rpc("increment_certificates", { user_id_param: user.id });
+      await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 200 });
+
+      // First course achievement
+      const { data: allCompletedCourses } = await supabase
+        .from("user_courses")
+        .select("course_id")
+        .eq("user_id", user.id)
+        .not("completed_at", "is", null);
+
+      if (allCompletedCourses?.length === 1) {
+        await supabase.from("user_achievements").upsert({
+          user_id: user.id,
+          achievement_id: "first-course",
+          progress: 1,
+          unlocked: true,
+          unlocked_at: new Date().toISOString()
+        }, { onConflict: "user_id,achievement_id" });
+        await supabase.rpc("increment_achievements_count", { user_id_param: user.id });
+        await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 100 });
+      }
+
+      // 3 courses achievement
+      if (allCompletedCourses?.length === 3) {
+        await supabase.from("user_achievements").upsert({
+          user_id: user.id,
+          achievement_id: "3-courses",
+          progress: 3,
+          unlocked: true,
+          unlocked_at: new Date().toISOString()
+        }, { onConflict: "user_id,achievement_id" });
+        await supabase.rpc("increment_achievements_count", { user_id_param: user.id });
+        await supabase.rpc("add_xp", { user_id_param: user.id, xp_amount: 300 });
+      }
+    }
+
     // Refresh progress
     await fetchProgress();
     return true;
