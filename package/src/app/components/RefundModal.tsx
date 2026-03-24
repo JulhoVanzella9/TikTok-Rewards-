@@ -12,13 +12,14 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const { t } = useI18n();
   const [step, setStep] = useState<"legal" | "form">("legal");
   const [email, setEmail] = useState("");
+  const [purchaseCode, setPurchaseCode] = useState("");
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !reason) return;
+    if (!email || !purchaseCode || !reason) return;
     
     setIsSubmitting(true);
     
@@ -26,7 +27,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, reason }),
+        body: JSON.stringify({ email, purchaseCode, reason }),
       });
     } catch (error) {
       console.error('Refund request error:', error);
@@ -43,6 +44,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const handleClose = () => {
     setStep("legal");
     setEmail("");
+    setPurchaseCode("");
     setReason("");
     setSubmitted(false);
     onClose();
@@ -267,6 +269,27 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       />
                     </div>
 
+                    <div style={{ marginBottom: "16px" }}>
+                      <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
+                        Purchase or Transfer Code
+                      </label>
+                      <input
+                        type="text"
+                        value={purchaseCode}
+                        onChange={(e) => setPurchaseCode(e.target.value)}
+                        required
+                        placeholder="Enter your purchase or transfer code..."
+                        style={{
+                          width: "100%", padding: "14px 16px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "2px solid rgba(255,255,255,0.12)",
+                          borderRadius: "12px",
+                          color: "#fff", fontSize: "14px",
+                          outline: "none", fontFamily: "inherit",
+                        }}
+                      />
+                    </div>
+
                     <div style={{ marginBottom: "20px" }}>
                       <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
                         {t("refundReason")}
@@ -311,7 +334,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         type="submit"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        disabled={isSubmitting || !email || !reason}
+                        disabled={isSubmitting || !email || !purchaseCode || !reason}
                         style={{
                           flex: 1, padding: "14px",
                           background: "#fe2c55",
@@ -319,7 +342,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                           color: "#fff", fontSize: "14px", fontWeight: 700,
                           cursor: isSubmitting ? "not-allowed" : "pointer",
                           fontFamily: "inherit",
-                          opacity: isSubmitting || !email || !reason ? 0.6 : 1,
+                          opacity: isSubmitting || !email || !purchaseCode || !reason ? 0.6 : 1,
                         }}
                       >
                         {isSubmitting ? t("submitting") : t("submit")}
