@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createClient } from "@/lib/supabase/client";
 
 const videoData = [
   {
@@ -40,41 +41,69 @@ export default function CreatePage() {
   const [timeLeft, setTimeLeft] = useState(7 * 60 + 30);
   const [limitReached, setLimitReached] = useState(false);
   const [allRated, setAllRated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const cashSoundRef = useRef<HTMLAudioElement | null>(null);
 
-  // Check localStorage for daily limit
+  // Check Supabase for daily limit per user
   useEffect(() => {
-    const lastRatingDate = localStorage.getItem("lastRatingDate");
-    const savedRatings = localStorage.getItem("videoRatings");
-    
-    if (lastRatingDate) {
-      const lastDate = new Date(lastRatingDate);
-      const now = new Date();
-      const hoursDiff = (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60);
+    const checkUserLimit = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
       
-      if (hoursDiff < 24 && savedRatings) {
-        const parsed = JSON.parse(savedRatings);
-        if (parsed.every((r: string | null) => r !== null)) {
-          setLimitReached(true);
-          setRatings(parsed);
-        }
-      } else if (hoursDiff >= 24) {
-        localStorage.removeItem("lastRatingDate");
-        localStorage.removeItem("videoRatings");
+      if (!user) {
+        setLoading(false);
+        return;
       }
-    }
+
+      setUserId(user.id);
+
+      // Get user's video rating data
+      const { data: ratingData } = await supabase
+        .from("video_ratings")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (ratingData) {
+        const lastDate = new Date(ratingData.last_rating_date);
+        const now = new Date();
+        const hoursDiff = (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60);
+
+        if (hoursDiff < 24 && ratingData.ratings_count >= 3) {
+          // Limit reached - less than 24h and already rated 3 videos
+          setLimitReached(true);
+          setTotalEarned(ratingData.total_earned || 0);
+        } else if (hoursDiff >= 24) {
+          // Reset after 24 hours - update the record
+          await supabase
+            .from("video_ratings")
+            .update({ 
+              ratings_count: 0, 
+              total_earned: 0,
+              last_rating_date: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            })
+            .eq("user_id", user.id);
+        }
+      }
+
+      setLoading(false);
+    };
+
+    checkUserLimit();
   }, []);
 
   // Timer countdown
   useEffect(() => {
-    if (limitReached) return;
+    if (limitReached || loading) return;
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [limitReached]);
+  }, [limitReached, loading]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -141,9 +170,10 @@ export default function CreatePage() {
     }
   }, [currentIndex, slideTo]);
 
-  const handleReaction = useCallback((reaction: string) => {
+  const handleReaction = useCallback(async (reaction: string) => {
     if (ratings[currentIndex] !== null) return;
     if (animating) return;
+    if (!userId) return;
 
     const amount = Math.floor(Math.random() * (57 - 32 + 1)) + 32;
     const newTotal = totalEarned + amount;
@@ -152,9 +182,6 @@ export default function CreatePage() {
     const newRatings = [...ratings];
     newRatings[currentIndex] = reaction;
     setRatings(newRatings);
-
-    // Save to localStorage
-    localStorage.setItem("videoRatings", JSON.stringify(newRatings));
 
     playCashSound();
 
@@ -166,10 +193,41 @@ export default function CreatePage() {
       videoRefs.current[currentIndex]!.muted = true;
     }
 
+    // Update Supabase
+    const supabase = createClient();
+    const ratingsCount = newRatings.filter(r => r !== null).length;
+
+    // Upsert video_ratings
+    await supabase
+      .from("video_ratings")
+      .upsert({
+        user_id: userId,
+        last_rating_date: new Date().toISOString(),
+        total_earned: newTotal,
+        ratings_count: ratingsCount,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id" });
+
+    // Add XP to user profile (amount * 100 = XP points, so $45 = 4500 XP)
+    const xpToAdd = amount * 100;
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("total_xp")
+      .eq("id", userId)
+      .single();
+
+    const currentXp = profile?.total_xp || 0;
+    await supabase
+      .from("profiles")
+      .update({ 
+        total_xp: currentXp + xpToAdd,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", userId);
+
     // Check if all videos rated
     const allDone = newRatings.every((r) => r !== null);
     if (allDone) {
-      localStorage.setItem("lastRatingDate", new Date().toISOString());
       setTimeout(() => {
         setAllRated(true);
         setTimeout(() => {
@@ -181,9 +239,11 @@ export default function CreatePage() {
         goNext();
       }, 900);
     }
-  }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned]);
+  }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned, userId]);
 
   useEffect(() => {
+    if (loading) return;
+    
     setTimeout(() => {
       updateVideoMutes(0);
     }, 500);
@@ -198,11 +258,47 @@ export default function CreatePage() {
         }
       }, 1000);
     }, 1500);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setVideoRef = (index: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[index] = el;
   };
+
+  // Loading screen
+  if (loading) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center",
+        justifyContent: "center", minHeight: "80vh", padding: "20px",
+      }}>
+        <div style={{
+          width: "40px", height: "40px",
+          border: "3px solid rgba(255,255,255,0.1)",
+          borderTopColor: "#fe2c55",
+          borderRadius: "50%",
+          animation: "spin 1s linear infinite",
+        }}/>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  // Not logged in
+  if (!userId) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center",
+        justifyContent: "center", minHeight: "80vh", padding: "20px", textAlign: "center",
+      }}>
+        <h2 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
+          Faca login para avaliar videos
+        </h2>
+        <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
+          Voce precisa estar logado para avaliar videos e ganhar dinheiro.
+        </p>
+      </div>
+    );
+  }
 
   // Limit reached screen
   if (limitReached) {
@@ -554,11 +650,7 @@ export default function CreatePage() {
         </motion.button>
       </div>
 
-      <style jsx global>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
