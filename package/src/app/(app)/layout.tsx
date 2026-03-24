@@ -21,12 +21,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
 
     const supabase = createClient();
-    if (!supabase) { setLoading(false); return; }
+    if (!supabase) {
+      // No Supabase configured - skip auth, allow access
+      authCache = { checked: true, authenticated: true };
+      setIsAuthenticated(true);
+      setLoading(false);
+      return;
+    }
     const { data: { session } } = await supabase.auth.getSession();
 
     authCache.checked = true;
     authCache.authenticated = !!session;
-    
+
     if (!session) {
       router.push("/login");
     } else {
