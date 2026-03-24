@@ -147,10 +147,9 @@ export default function AchievementsPage() {
         }}
       >
         <div style={{ marginBottom: "12px" }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.5">
-            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 8 12 8s5-4 7.5-4a2.5 2.5 0 0 1 0 5H18"/>
-            <path d="M18 9v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/>
-            <path d="M12 8v13"/>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="#ffd700" stroke="#ffd700" strokeWidth="1">
+            <circle cx="12" cy="8" r="6"/>
+            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" fill="none" strokeWidth="2"/>
           </svg>
         </div>
         <div style={{ display: "flex", justifyContent: "center", gap: "32px" }}>
