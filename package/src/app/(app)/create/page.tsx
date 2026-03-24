@@ -379,36 +379,43 @@ export default function CreatePage() {
       {/* Toast de feedback */}
       <AnimatePresence>
         {showToast && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.75 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.75 }}
+          <div
             style={{
-              position: "fixed", 
-              top: "50%", 
-              left: "50%", 
-              transform: "translate(-50%, -50%)",
-              zIndex: 200, 
-              display: "flex", 
-              alignItems: "center", 
+              position: "fixed",
+              inset: 0,
+              zIndex: 200,
+              display: "flex",
+              alignItems: "center",
               justifyContent: "center",
-              gap: "8px",
-              padding: "12px 24px",
-              background: "rgba(20,20,24,0.95)",
-              border: `1px solid ${toastData.type === "happy" ? "#22c55e" : toastData.type === "neutral" ? "#eab308" : "#fe2c55"}`,
-              borderRadius: "12px", 
-              backdropFilter: "blur(20px)",
-              fontSize: "14px", 
-              fontWeight: 600, 
-              whiteSpace: "nowrap",
-              boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+              pointerEvents: "none",
             }}
           >
-            <span style={{ fontSize: "18px" }}>{toastData.emoji}</span>
-            <span style={{ color: toastData.type === "happy" ? "#22c55e" : toastData.type === "neutral" ? "#eab308" : "#fe2c55" }}>
-              {toastData.text}
-            </span>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.75 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.75 }}
+              style={{
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                gap: "8px",
+                padding: "12px 24px",
+                background: "rgba(20,20,24,0.95)",
+                border: `1px solid ${toastData.type === "happy" ? "#22c55e" : toastData.type === "neutral" ? "#eab308" : "#fe2c55"}`,
+                borderRadius: "12px", 
+                backdropFilter: "blur(20px)",
+                fontSize: "14px", 
+                fontWeight: 600, 
+                whiteSpace: "nowrap",
+                boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+              }}
+            >
+              <span style={{ fontSize: "18px" }}>{toastData.emoji}</span>
+              <span style={{ color: toastData.type === "happy" ? "#22c55e" : toastData.type === "neutral" ? "#eab308" : "#fe2c55" }}>
+                {toastData.text}
+              </span>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
