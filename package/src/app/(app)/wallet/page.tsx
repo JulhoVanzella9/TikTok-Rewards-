@@ -169,30 +169,20 @@ export default function WalletPage() {
           {t("withdrawMoney")}
         </h2>
 
-        {/* Payment Methods */}
+        {/* Payment Method */}
         <div style={{
           display: "flex", alignItems: "center", gap: "12px",
-          marginBottom: "24px", flexWrap: "wrap",
+          marginBottom: "24px",
         }}>
           <div style={{
-            display: "flex", alignItems: "center", gap: "8px",
-            padding: "8px 14px", background: "rgba(255,255,255,0.04)",
-            borderRadius: "8px",
+            display: "flex", alignItems: "center", gap: "10px",
+            padding: "12px 18px", background: "rgba(0,48,135,0.15)",
+            borderRadius: "12px", border: "1px solid rgba(0,112,186,0.3)",
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#0070ba">
+              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.771.771 0 0 1 .76-.648h6.979c2.317 0 4.098.583 5.291 1.732.53.512.914 1.102 1.146 1.757.249.699.349 1.494.298 2.365a6.766 6.766 0 0 1-.097.82 6.1 6.1 0 0 1-.19.774 4.91 4.91 0 0 1-.305.726c-.123.25-.263.49-.42.722-.17.249-.36.485-.568.708-.227.243-.478.468-.75.674a5.38 5.38 0 0 1-.937.58c-.344.18-.717.335-1.117.465-.418.134-.866.24-1.342.316a10.18 10.18 0 0 1-1.577.114h-1.2a1.164 1.164 0 0 0-1.15.981l-.09.513-1.12 7.093-.067.421z"/>
             </svg>
-            <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>{t("bankTransfer")}</span>
-          </div>
-          <div style={{ padding: "8px 14px", background: "rgba(0,178,169,0.1)", borderRadius: "8px" }}>
-            <span style={{ fontSize: "13px", color: "#00b2a9", fontWeight: 800 }}>PIX</span>
-          </div>
-          <div style={{ padding: "8px 14px", background: "rgba(0,168,89,0.1)", borderRadius: "8px" }}>
-            <span style={{ fontSize: "13px", color: "#00a859", fontWeight: 800 }}>PagBank</span>
-          </div>
-          <div style={{ padding: "8px 14px", background: "rgba(0,48,135,0.15)", borderRadius: "8px" }}>
-            <span style={{ fontSize: "13px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
+            <span style={{ fontSize: "15px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
           </div>
         </div>
 

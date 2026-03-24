@@ -33,6 +33,7 @@ export default function SupportPage() {
   const { t } = useI18n();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const [refundEmail, setRefundEmail] = useState("");
   const [refundReason, setRefundReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -165,7 +166,7 @@ export default function SupportPage() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => window.open('mailto:julhoeduardo7@gmail.com?subject=Help%20Request%20-%20TikTok%20Rewards', '_blank')}
+          onClick={() => setShowHelpModal(true)}
           style={{
             padding: "20px 16px",
             background: "linear-gradient(145deg, rgba(37,244,238,0.1), rgba(37,244,238,0.05))",
@@ -288,6 +289,126 @@ export default function SupportPage() {
           </span>
         </div>
       </motion.div>
+
+      {/* Help Center Modal */}
+      <AnimatePresence>
+        {showHelpModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+              background: "rgba(0,0,0,0.8)", zIndex: 1000,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "20px",
+            }}
+            onClick={() => setShowHelpModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "#1a1a2e",
+                borderRadius: "24px", padding: "28px",
+                width: "100%", maxWidth: "400px",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                <div style={{
+                  width: "64px", height: "64px", borderRadius: "50%",
+                  background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  margin: "0 auto 16px",
+                  boxShadow: "0 8px 24px rgba(37,244,238,0.25)",
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+                  {t("helpCenter")}
+                </h3>
+                <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+                  Contact us through the channels below
+                </p>
+              </div>
+
+              {/* Email */}
+              <div style={{
+                display: "flex", alignItems: "center", gap: "14px",
+                padding: "16px", background: "rgba(255,255,255,0.04)",
+                borderRadius: "14px", marginBottom: "12px",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <div style={{
+                  width: "44px", height: "44px", borderRadius: "12px",
+                  background: "rgba(37,244,238,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
+                    Email
+                  </div>
+                  <div style={{ fontSize: "14px", color: "#fff", fontWeight: 700 }}>
+                    support@tiktokrewards.com
+                  </div>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div style={{
+                display: "flex", alignItems: "center", gap: "14px",
+                padding: "16px", background: "rgba(255,255,255,0.04)",
+                borderRadius: "14px", marginBottom: "24px",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <div style={{
+                  width: "44px", height: "44px", borderRadius: "12px",
+                  background: "rgba(254,44,85,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
+                    Phone
+                  </div>
+                  <div style={{ fontSize: "14px", color: "#fff", fontWeight: 700 }}>
+                    +1 (555) 123-4567
+                  </div>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowHelpModal(false)}
+                style={{
+                  width: "100%", padding: "14px",
+                  background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                  border: "none", borderRadius: "14px",
+                  color: "#000", fontSize: "14px", fontWeight: 700,
+                  cursor: "pointer", fontFamily: "inherit",
+                }}
+              >
+                Close
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Refund Modal */}
       <AnimatePresence>
