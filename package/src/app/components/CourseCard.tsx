@@ -14,13 +14,12 @@ export default function CourseCard({ course, index }: { course: Course; index: n
   ];
 
   return (
-    <Link href={`/course/${course.id}`} style={{ textDecoration: "none" }}>
+    <Link href={`/course/${course.id}`} prefetch={true} style={{ textDecoration: "none" }}>
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        whileHover={{ y: -6, scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.15) }}
+        whileHover={{ y: -6, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
         style={{
           borderRadius: "20px", overflow: "hidden",
           background: "var(--gradient-card)",
@@ -31,19 +30,19 @@ export default function CourseCard({ course, index }: { course: Course; index: n
       >
         {/* Thumbnail */}
         <div style={{
-          height: "200px", background: gradients[index % gradients.length],
+          height: "180px", background: gradients[index % gradients.length],
           position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           {/* Play button */}
           <motion.div
             whileHover={{ scale: 1.15 }}
             style={{
-              width: "56px", height: "56px", borderRadius: "50%",
-              background: "rgba(0,0,0,0.35)", backdropFilter: "blur(10px)",
+              width: "50px", height: "50px", borderRadius: "50%",
+              background: "rgba(0,0,0,0.4)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
               <path d="M8 5v14l11-7z"/>
             </svg>
           </motion.div>
@@ -51,7 +50,7 @@ export default function CourseCard({ course, index }: { course: Course; index: n
           {/* Duration badge */}
           <div style={{
             position: "absolute", bottom: "12px", right: "12px",
-            background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
+            background: "rgba(0,0,0,0.7)",
             padding: "4px 10px", borderRadius: "20px",
             fontSize: "12px", fontWeight: 600, color: "#fff",
           }}>
@@ -61,10 +60,9 @@ export default function CourseCard({ course, index }: { course: Course; index: n
           {/* Category */}
           <div style={{
             position: "absolute", top: "12px", left: "12px",
-            background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)",
+            background: "rgba(0,0,0,0.6)",
             padding: "4px 12px", borderRadius: "20px",
             fontSize: "11px", fontWeight: 600, color: "#fff",
-            letterSpacing: "0.3px",
           }}>
             {course.category}
           </div>
@@ -72,19 +70,19 @@ export default function CourseCard({ course, index }: { course: Course; index: n
           {course.progress === 100 && (
             <div style={{
               position: "absolute", top: "12px", right: "12px",
-              background: "rgba(37,244,238,0.9)", padding: "4px 10px",
+              background: "#25f4ee", padding: "4px 10px",
               borderRadius: "20px", fontSize: "11px", fontWeight: 700,
               color: "#000",
             }}>
-              ✓ Concluído
+              Completed
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div style={{ padding: "18px" }}>
+        <div style={{ padding: "16px" }}>
           <h3 style={{
-            fontSize: "16px", fontWeight: 700, color: "#fff",
+            fontSize: "15px", fontWeight: 700, color: "#fff",
             marginBottom: "8px", lineHeight: 1.3,
             overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
           }}>
@@ -93,34 +91,33 @@ export default function CourseCard({ course, index }: { course: Course; index: n
 
           <p style={{
             fontSize: "13px", color: "var(--text-secondary)",
-            lineHeight: 1.5, marginBottom: "14px",
+            lineHeight: 1.5, marginBottom: "12px",
             display: "-webkit-box", WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical" as any, overflow: "hidden",
+            WebkitBoxOrient: "vertical" as const, overflow: "hidden",
           }}>
             {course.description}
           </p>
 
           {/* Progress bar */}
           {course.progress > 0 && course.progress < 100 && (
-            <div style={{ marginBottom: "14px" }}>
+            <div style={{ marginBottom: "12px" }}>
               <div style={{
                 display: "flex", justifyContent: "space-between",
                 marginBottom: "6px",
               }}>
-                <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Progresso</span>
+                <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Progress</span>
                 <span style={{ fontSize: "11px", color: "#25f4ee", fontWeight: 700 }}>{course.progress}%</span>
               </div>
               <div style={{
                 height: "3px", borderRadius: "2px",
                 background: "rgba(255,255,255,0.06)",
               }}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${course.progress}%` }}
-                  transition={{ delay: 0.5 + index * 0.1, duration: 0.8, ease: "easeOut" }}
+                <div
                   style={{
                     height: "100%", borderRadius: "2px",
                     background: "linear-gradient(90deg, #fe2c55, #25f4ee)",
+                    width: `${course.progress}%`,
+                    transition: "width 0.4s ease-out",
                   }}
                 />
               </div>
@@ -133,19 +130,19 @@ export default function CourseCard({ course, index }: { course: Course; index: n
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <div style={{
-                width: "28px", height: "28px", borderRadius: "50%",
+                width: "26px", height: "26px", borderRadius: "50%",
                 background: "linear-gradient(135deg, #fe2c55, #25f4ee)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "12px", fontWeight: 700, color: "#fff",
+                fontSize: "11px", fontWeight: 700, color: "#fff",
               }}>
                 {course.instructor[0]}
               </div>
-              <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
+              <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
                 {course.instructor}
               </span>
             </div>
-            <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-              {course.totalLessons} aulas
+            <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              {course.totalLessons} lessons
             </span>
           </div>
         </div>

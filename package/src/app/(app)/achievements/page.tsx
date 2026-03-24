@@ -1,7 +1,9 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useI18n } from "@/lib/i18n/context";
 
 type Achievement = {
   id: string;
@@ -13,63 +15,110 @@ type Achievement = {
   unlocked: boolean;
   rarity: "common" | "rare" | "epic" | "legendary";
   xp: number;
-  category: string;
 };
 
-const achievements: Achievement[] = [
-  // Desbloqueadas
-  { id: "first-lesson", icon: "🎬", title: "Primeira Aula", description: "Assista sua primeira aula", progress: 1, maxProgress: 1, unlocked: true, rarity: "common", xp: 50, category: "Início" },
-  { id: "first-course", icon: "🎓", title: "Primeiro Curso", description: "Complete um curso inteiro", progress: 1, maxProgress: 1, unlocked: true, rarity: "common", xp: 100, category: "Cursos" },
-  { id: "streak-7", icon: "🔥", title: "7 Dias Streak", description: "Mantenha um streak de 7 dias", progress: 7, maxProgress: 7, unlocked: true, rarity: "rare", xp: 200, category: "Dedicação" },
-  // Em progresso
-  { id: "streak-30", icon: "🔥", title: "30 Dias Streak", description: "Mantenha um streak de 30 dias", progress: 7, maxProgress: 30, unlocked: false, rarity: "epic", xp: 500, category: "Dedicação" },
-  { id: "3-courses", icon: "📚", title: "Explorador", description: "Complete 3 cursos diferentes", progress: 1, maxProgress: 3, unlocked: false, rarity: "rare", xp: 300, category: "Cursos" },
-  { id: "10-lessons", icon: "📖", title: "Estudioso", description: "Assista 10 aulas completas", progress: 6, maxProgress: 10, unlocked: false, rarity: "common", xp: 150, category: "Aulas" },
-  { id: "all-modules", icon: "⭐", title: "Módulo Perfeito", description: "Complete todos os módulos de um curso", progress: 2, maxProgress: 4, unlocked: false, rarity: "rare", xp: 250, category: "Cursos" },
-  { id: "5h-watch", icon: "⏱️", title: "Maratonista", description: "Assista 5 horas de conteúdo", progress: 3, maxProgress: 5, unlocked: false, rarity: "common", xp: 150, category: "Tempo" },
-  { id: "20h-watch", icon: "🎯", title: "Dedicado", description: "Assista 20 horas de conteúdo", progress: 21, maxProgress: 20, unlocked: true, rarity: "epic", xp: 500, category: "Tempo" },
-  // Bloqueadas
-  { id: "all-courses", icon: "💎", title: "Expert Total", description: "Complete todos os 6 cursos", progress: 1, maxProgress: 6, unlocked: false, rarity: "legendary", xp: 1000, category: "Cursos" },
-  { id: "streak-100", icon: "💀", title: "Imparável", description: "100 dias de streak consecutivos", progress: 7, maxProgress: 100, unlocked: false, rarity: "legendary", xp: 2000, category: "Dedicação" },
-  { id: "speed-run", icon: "⚡", title: "Speed Run", description: "Complete um curso em menos de 24h", progress: 0, maxProgress: 1, unlocked: false, rarity: "epic", xp: 400, category: "Desafio" },
+const achievementDefinitions = [
+  { id: "first-lesson", icon: "play", title: "firstLesson", description: "firstLessonDesc", maxProgress: 1, rarity: "common" as const, xp: 50 },
+  { id: "first-course", icon: "graduation", title: "firstCourse", description: "firstCourseDesc", maxProgress: 1, rarity: "common" as const, xp: 100 },
+  { id: "streak-7", icon: "fire", title: "streak7", description: "streak7Desc", maxProgress: 7, rarity: "rare" as const, xp: 200 },
+  { id: "streak-30", icon: "fire", title: "streak30", description: "streak30Desc", maxProgress: 30, rarity: "epic" as const, xp: 500 },
+  { id: "3-courses", icon: "books", title: "explorer", description: "explorerDesc", maxProgress: 3, rarity: "rare" as const, xp: 300 },
+  { id: "10-lessons", icon: "book", title: "studious", description: "studiousDesc", maxProgress: 10, rarity: "common" as const, xp: 150 },
+  { id: "5h-watch", icon: "clock", title: "marathoner", description: "marathonerDesc", maxProgress: 5, rarity: "common" as const, xp: 150 },
+  { id: "20h-watch", icon: "target", title: "dedicated", description: "dedicatedDesc", maxProgress: 20, rarity: "epic" as const, xp: 500 },
+  { id: "all-courses", icon: "diamond", title: "totalExpert", description: "totalExpertDesc", maxProgress: 6, rarity: "legendary" as const, xp: 1000 },
 ];
 
-const rarityColors: Record<string, { bg: string; border: string; text: string; glow: string }> = {
-  common: { bg: "rgba(255,255,255,0.04)", border: "rgba(255,255,255,0.08)", text: "#aaa", glow: "transparent" },
-  rare: { bg: "rgba(37,244,238,0.06)", border: "rgba(37,244,238,0.15)", text: "#25f4ee", glow: "rgba(37,244,238,0.15)" },
-  epic: { bg: "rgba(168,85,247,0.06)", border: "rgba(168,85,247,0.15)", text: "#a855f7", glow: "rgba(168,85,247,0.15)" },
-  legendary: { bg: "rgba(255,215,0,0.06)", border: "rgba(255,215,0,0.2)", text: "#ffd700", glow: "rgba(255,215,0,0.2)" },
+const rarityColors: Record<string, { bg: string; border: string; text: string }> = {
+  common: { bg: "rgba(255,255,255,0.04)", border: "rgba(255,255,255,0.08)", text: "#aaa" },
+  rare: { bg: "rgba(37,244,238,0.06)", border: "rgba(37,244,238,0.15)", text: "#25f4ee" },
+  epic: { bg: "rgba(168,85,247,0.06)", border: "rgba(168,85,247,0.15)", text: "#a855f7" },
+  legendary: { bg: "rgba(255,215,0,0.06)", border: "rgba(255,215,0,0.2)", text: "#ffd700" },
 };
 
-const rarityLabels: Record<string, string> = {
-  common: "Comum",
-  rare: "Raro",
-  epic: "Épico",
-  legendary: "Lendário",
+const iconMap: Record<string, JSX.Element> = {
+  play: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+  graduation: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>,
+  fire: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
+  books: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>,
+  book: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+  clock: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  target: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+  diamond: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0z"/></svg>,
 };
 
-const categories = ["Todas", "Início", "Cursos", "Aulas", "Dedicação", "Tempo", "Desafio"];
+// Faster animation variants
+const fadeIn = { hidden: { opacity: 0, x: -10 }, visible: { opacity: 1, x: 0 } };
+const stagger = { visible: { transition: { staggerChildren: 0.03 } } };
 
 export default function AchievementsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+  const { t } = useI18n();
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const rarityLabels = useMemo(() => ({
+    common: t("rarityCommon") || "Common",
+    rare: t("rarityRare") || "Rare",
+    epic: t("rarityEpic") || "Epic",
+    legendary: t("rarityLegendary") || "Legendary",
+  }), [t]);
+
+  useEffect(() => {
+    const loadAchievements = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        setAchievements(achievementDefinitions.map(def => ({ ...def, progress: 0, unlocked: false })));
+        setLoading(false);
+        return;
+      }
+
+      const { data: userAchievements } = await supabase
+        .from("user_achievements")
+        .select("achievement_id, progress, unlocked")
+        .eq("user_id", user.id);
+
+      const achMap = new Map(userAchievements?.map(a => [a.achievement_id, a]) || []);
+      
+      setAchievements(achievementDefinitions.map(def => {
+        const userAch = achMap.get(def.id);
+        return { ...def, progress: userAch?.progress || 0, unlocked: userAch?.unlocked || false };
+      }));
+      setLoading(false);
+    };
+
+    loadAchievements();
+  }, []);
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
   const totalXP = achievements.filter((a) => a.unlocked).reduce((sum, a) => sum + a.xp, 0);
 
-  const filtered = selectedCategory === "Todas"
-    ? achievements
-    : achievements.filter((a) => a.category === selectedCategory);
+  if (loading) {
+    return (
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "24px" }}>
+          <div style={{ width: "36px", height: "36px", borderRadius: "12px", background: "rgba(255,255,255,0.06)" }} />
+          <div style={{ width: "150px", height: "24px", background: "rgba(255,255,255,0.05)", borderRadius: "8px" }} />
+        </div>
+        <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "20px", padding: "24px", marginBottom: "24px", height: "140px" }} />
+        {[1,2,3,4].map((i) => (
+          <div key={i} style={{ background: "rgba(255,255,255,0.02)", borderRadius: "16px", padding: "16px", marginBottom: "10px", height: "90px" }} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.25 }}
         style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "24px" }}
       >
-        <Link href="/profile" style={{
+        <Link href="/profile" prefetch={true} style={{
           width: "36px", height: "36px", borderRadius: "12px",
           background: "rgba(255,255,255,0.06)", display: "flex",
           alignItems: "center", justifyContent: "center",
@@ -79,282 +128,149 @@ export default function AchievementsPage() {
           </svg>
         </Link>
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Conquistas</h1>
+          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>{t("achievements")}</h1>
           <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-            {unlockedCount} de {achievements.length} desbloqueadas
+            {unlockedCount} / {achievements.length} {t("unlocked")}
           </p>
         </div>
       </motion.div>
 
-      {/* Trophy & XP Summary */}
+      {/* Summary */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.05 }}
         style={{
-          background: "linear-gradient(135deg, rgba(254,44,85,0.1), rgba(168,85,247,0.08), rgba(37,244,238,0.06))",
-          borderRadius: "24px", border: "1px solid rgba(254,44,85,0.12)",
-          padding: "28px 24px", marginBottom: "24px", textAlign: "center",
-          position: "relative", overflow: "hidden",
+          background: "linear-gradient(135deg, rgba(254,44,85,0.1), rgba(168,85,247,0.08))",
+          borderRadius: "20px", border: "1px solid rgba(254,44,85,0.12)",
+          padding: "24px", marginBottom: "24px", textAlign: "center",
         }}
       >
-        <div style={{
-          position: "absolute", top: "-40px", left: "-40px", width: "120px", height: "120px",
-          borderRadius: "50%", background: "rgba(254,44,85,0.08)", filter: "blur(30px)",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "-30px", right: "-30px", width: "100px", height: "100px",
-          borderRadius: "50%", background: "rgba(37,244,238,0.06)", filter: "blur(25px)",
-        }} />
-
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          style={{ fontSize: "56px", marginBottom: "12px", position: "relative" }}
-        >
-          🏆
-        </motion.div>
-
-        <div style={{ display: "flex", justifyContent: "center", gap: "32px", position: "relative" }}>
+        <div style={{ marginBottom: "12px" }}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.5">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 8 12 8s5-4 7.5-4a2.5 2.5 0 0 1 0 5H18"/>
+            <path d="M18 9v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/>
+            <path d="M12 8v13"/>
+          </svg>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: "32px" }}>
           <div>
-            <div style={{ fontSize: "28px", fontWeight: 900, color: "#fff" }}>{unlockedCount}</div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-              Conquistas
-            </div>
+            <div style={{ fontSize: "26px", fontWeight: 900, color: "#fff" }}>{unlockedCount}</div>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>{t("achievements")}</div>
           </div>
           <div style={{ width: "1px", background: "rgba(255,255,255,0.08)" }} />
           <div>
-            <div style={{
-              fontSize: "28px", fontWeight: 900,
-              background: "linear-gradient(135deg, #ffd700, #ffaa00)",
-              backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-            }}>
-              {totalXP}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-              XP Total
-            </div>
-          </div>
-        </div>
-
-        {/* Overall Progress Bar */}
-        <div style={{ marginTop: "20px", position: "relative" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-            <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600 }}>Progresso Geral</span>
-            <span style={{ fontSize: "11px", color: "#fe2c55", fontWeight: 700 }}>
-              {Math.round((unlockedCount / achievements.length) * 100)}%
-            </span>
-          </div>
-          <div style={{ height: "8px", borderRadius: "4px", background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${(unlockedCount / achievements.length) * 100}%` }}
-              transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
-              style={{
-                height: "100%", borderRadius: "4px",
-                background: "linear-gradient(90deg, #fe2c55, #a855f7, #25f4ee)",
-              }}
-            />
+            <div style={{ fontSize: "26px", fontWeight: 900, color: "#ffd700" }}>{totalXP}</div>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>{t("xp")} Total</div>
           </div>
         </div>
       </motion.div>
 
-      {/* Category Filter */}
+      {/* Achievements List */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        style={{
-          display: "flex", gap: "8px", overflowX: "auto", marginBottom: "20px",
-          paddingBottom: "4px", scrollbarWidth: "none",
-        }}
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
       >
-        {categories.map((cat) => (
-          <motion.button
-            key={cat}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setSelectedCategory(cat)}
-            style={{
-              padding: "8px 16px", fontSize: "12px", fontWeight: 600,
-              background: selectedCategory === cat ? "var(--gradient-button)" : "rgba(255,255,255,0.04)",
-              color: selectedCategory === cat ? "#fff" : "var(--text-muted)",
-              border: selectedCategory === cat ? "none" : "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "20px", cursor: "pointer", fontFamily: "inherit",
-              whiteSpace: "nowrap", flexShrink: 0,
-            }}
-          >
-            {cat}
-          </motion.button>
-        ))}
-      </motion.div>
+        {achievements.map((ach) => {
+          const rarity = rarityColors[ach.rarity];
+          const progressPct = Math.min((ach.progress / ach.maxProgress) * 100, 100);
 
-      {/* Achievements Grid */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <AnimatePresence mode="popLayout">
-          {filtered.map((ach, i) => {
-            const rarity = rarityColors[ach.rarity];
-            const progressPct = Math.min((ach.progress / ach.maxProgress) * 100, 100);
-
-            return (
-              <motion.div
-                key={ach.id}
-                layout
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.01, x: 4 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => setSelectedAchievement(selectedAchievement?.id === ach.id ? null : ach)}
-                style={{
-                  background: ach.unlocked ? rarity.bg : "rgba(255,255,255,0.015)",
-                  borderRadius: "18px",
-                  border: `1px solid ${ach.unlocked ? rarity.border : "rgba(255,255,255,0.04)"}`,
-                  padding: "18px", cursor: "pointer",
-                  position: "relative", overflow: "hidden",
-                  opacity: ach.unlocked ? 1 : (ach.progress > 0 ? 0.7 : 0.4),
-                  boxShadow: ach.unlocked ? `0 0 20px ${rarity.glow}` : "none",
-                }}
-              >
-                {/* Glow effect for unlocked */}
-                {ach.unlocked && (
-                  <div style={{
-                    position: "absolute", top: "-20px", right: "-20px",
-                    width: "80px", height: "80px", borderRadius: "50%",
-                    background: rarity.glow, filter: "blur(25px)", opacity: 0.5,
-                  }} />
-                )}
-
-                <div style={{ display: "flex", alignItems: "center", gap: "16px", position: "relative" }}>
-                  {/* Icon */}
-                  <motion.div
-                    animate={ach.unlocked ? { scale: [1, 1.1, 1] } : {}}
-                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
-                    style={{
-                      width: "52px", height: "52px", borderRadius: "16px",
-                      background: ach.unlocked ? `${rarity.border}` : "rgba(255,255,255,0.03)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "26px", flexShrink: 0,
-                      filter: ach.unlocked ? "none" : "grayscale(0.8)",
-                    }}
-                  >
-                    {ach.unlocked ? ach.icon : (ach.progress > 0 ? ach.icon : "🔒")}
-                  </motion.div>
-
-                  {/* Info */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                      <span style={{
-                        fontSize: "14px", fontWeight: 700,
-                        color: ach.unlocked ? "#fff" : "var(--text-secondary)",
-                      }}>
-                        {ach.title}
-                      </span>
-                      <span style={{
-                        fontSize: "9px", fontWeight: 700, padding: "2px 8px",
-                        borderRadius: "10px", textTransform: "uppercase", letterSpacing: "0.5px",
-                        background: `${rarity.border}`,
-                        color: rarity.text,
-                      }}>
-                        {rarityLabels[ach.rarity]}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "8px" }}>
-                      {ach.description}
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <div style={{
-                        flex: 1, height: "6px", borderRadius: "3px",
-                        background: "rgba(255,255,255,0.06)", overflow: "hidden",
-                      }}>
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${progressPct}%` }}
-                          transition={{ duration: 1, delay: 0.3 + i * 0.05, ease: "easeOut" }}
-                          style={{
-                            height: "100%", borderRadius: "3px",
-                            background: ach.unlocked
-                              ? `linear-gradient(90deg, ${rarity.text}, ${rarity.text}cc)`
-                              : "linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))",
-                          }}
-                        />
-                      </div>
-                      <span style={{
-                        fontSize: "11px", fontWeight: 700, flexShrink: 0,
-                        color: ach.unlocked ? rarity.text : "var(--text-muted)",
-                      }}>
-                        {ach.progress}/{ach.maxProgress}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* XP Badge */}
-                  <div style={{
-                    display: "flex", flexDirection: "column", alignItems: "center",
+          return (
+            <motion.div
+              key={ach.id}
+              variants={fadeIn}
+              transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.01 }}
+              style={{
+                background: ach.unlocked ? rarity.bg : "rgba(255,255,255,0.015)",
+                borderRadius: "16px",
+                border: `1px solid ${ach.unlocked ? rarity.border : "rgba(255,255,255,0.04)"}`,
+                padding: "16px",
+                opacity: ach.unlocked ? 1 : (ach.progress > 0 ? 0.7 : 0.4),
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div
+                  style={{
+                    width: "48px", height: "48px", borderRadius: "14px",
+                    background: ach.unlocked ? rarity.border : "rgba(255,255,255,0.03)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
-                  }}>
-                    <div style={{
-                      fontSize: "13px", fontWeight: 800,
-                      color: ach.unlocked ? "#ffd700" : "var(--text-muted)",
+                    color: ach.unlocked ? rarity.text : "rgba(255,255,255,0.3)",
+                  }}
+                >
+                  {ach.unlocked || ach.progress > 0 ? iconMap[ach.icon] : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                  )}
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                    <span style={{ fontSize: "14px", fontWeight: 700, color: ach.unlocked ? "#fff" : "var(--text-secondary)" }}>
+                      {t(ach.title as keyof typeof t) || ach.title}
+                    </span>
+                    <span style={{
+                      fontSize: "9px", fontWeight: 700, padding: "2px 8px",
+                      borderRadius: "10px", textTransform: "uppercase",
+                      background: rarity.border, color: rarity.text,
                     }}>
-                      +{ach.xp}
+                      {rarityLabels[ach.rarity]}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "8px" }}>
+                    {t(ach.description as keyof typeof t) || ach.description}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{ flex: 1, height: "5px", borderRadius: "3px", background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                      <div
+                        style={{
+                          height: "100%", borderRadius: "3px",
+                          background: ach.unlocked ? rarity.text : "rgba(255,255,255,0.2)",
+                          width: `${progressPct}%`,
+                          transition: "width 0.4s ease-out",
+                        }}
+                      />
                     </div>
-                    <div style={{ fontSize: "9px", color: "var(--text-muted)", fontWeight: 600 }}>XP</div>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: ach.unlocked ? rarity.text : "var(--text-muted)" }}>
+                      {ach.progress}/{ach.maxProgress}
+                    </span>
                   </div>
                 </div>
 
-                {/* Expanded details */}
-                {selectedAchievement?.id === ach.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    style={{
-                      marginTop: "14px", paddingTop: "14px",
-                      borderTop: "1px solid rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: "16px", fontSize: "12px" }}>
-                      <div>
-                        <span style={{ color: "var(--text-muted)" }}>Categoria: </span>
-                        <span style={{ color: "#fff", fontWeight: 600 }}>{ach.category}</span>
-                      </div>
-                      <div>
-                        <span style={{ color: "var(--text-muted)" }}>Status: </span>
-                        <span style={{ color: ach.unlocked ? "#25f4ee" : "#ff6b35", fontWeight: 600 }}>
-                          {ach.unlocked ? "Desbloqueada ✓" : `${Math.round(progressPct)}% completo`}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
+                  <div style={{ fontSize: "13px", fontWeight: 800, color: ach.unlocked ? "#ffd700" : "var(--text-muted)" }}>+{ach.xp}</div>
+                  <div style={{ fontSize: "9px", color: "var(--text-muted)", fontWeight: 600 }}>{t("xp")}</div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
 
       {/* Back Button */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, delay: 0.1 }}
         style={{ marginTop: "24px" }}
       >
-        <Link href="/profile">
+        <Link href="/profile" prefetch={true}>
           <motion.button
-            whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(254,44,85,0.35)" }}
-            whileTap={{ scale: 0.97 }}
-            className="glow-btn"
+            whileHover={{ scale: 1.02, boxShadow: "0 8px 25px rgba(254,44,85,0.4)" }}
+            whileTap={{ scale: 0.98 }}
             style={{
-              width: "100%", padding: "16px", fontSize: "15px", fontWeight: 700,
-              background: "var(--gradient-button)", color: "#fff",
-              border: "none", borderRadius: "14px", cursor: "pointer",
-              fontFamily: "inherit",
+              width: "100%", padding: "14px", fontSize: "15px", fontWeight: 700,
+              background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
+              color: "#fff", border: "none", borderRadius: "50px", cursor: "pointer",
+              fontFamily: "inherit", boxShadow: "0 4px 15px rgba(254,44,85,0.3), 0 2px 0 #c41e40",
             }}
           >
-            ← Voltar ao Perfil
+            {t("back")}
           </motion.button>
         </Link>
       </motion.div>

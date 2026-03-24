@@ -1,11 +1,54 @@
 "use client";
 import { motion } from "framer-motion";
-import { courses } from "@/app/data/courses";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+type Certificate = {
+  id: string;
+  course_id: string;
+  course_title: string;
+  instructor: string;
+  total_lessons: number;
+  duration: string;
+  completed_at: string;
+};
 
 export default function CertificatesPage() {
-  const completedCourses = courses.filter((c) => c.progress === 100);
-  const inProgressCourses = courses.filter((c) => c.progress > 0 && c.progress < 100);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCertificates = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      // Buscar certificados do usuario (futuramente do banco)
+      // Por enquanto, comeca zerado
+      setCertificates([]);
+      setLoading(false);
+    };
+
+    loadCertificates();
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", textAlign: "center", paddingTop: "100px" }}>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          style={{ width: "40px", height: "40px", margin: "0 auto", border: "3px solid rgba(255,255,255,0.1)", borderTopColor: "#fe2c55", borderRadius: "50%" }}
+        />
+        <p style={{ marginTop: "16px", color: "var(--text-muted)" }}>Carregando certificados...</p>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
@@ -27,20 +70,20 @@ export default function CertificatesPage() {
         <div>
           <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Meus Certificados</h1>
           <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-            {completedCourses.length} certificado{completedCourses.length !== 1 ? "s" : ""} conquistado{completedCourses.length !== 1 ? "s" : ""}
+            {certificates.length} certificado{certificates.length !== 1 ? "s" : ""} conquistado{certificates.length !== 1 ? "s" : ""}
           </p>
         </div>
       </motion.div>
 
       {/* Earned Certificates */}
-      {completedCourses.length > 0 && (
+      {certificates.length > 0 ? (
         <section style={{ marginBottom: "32px" }}>
           <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#25f4ee", marginBottom: "14px", textTransform: "uppercase", letterSpacing: "1px" }}>
             Conquistados
           </h3>
-          {completedCourses.map((course, i) => (
+          {certificates.map((cert, i) => (
             <motion.div
-              key={course.id}
+              key={cert.id}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -73,23 +116,23 @@ export default function CertificatesPage() {
                 </motion.div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                    {course.title}
+                    {cert.course_title}
                   </div>
                   <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "8px" }}>
-                    Instrutor: {course.instructor} · {course.totalLessons} aulas
+                    Instrutor: {cert.instructor} - {cert.total_lessons} aulas
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <span style={{
                       padding: "4px 10px", borderRadius: "20px", fontSize: "10px",
                       fontWeight: 700, background: "rgba(37,244,238,0.12)", color: "#25f4ee",
                     }}>
-                      ✓ Concluído
+                      Concluido
                     </span>
                     <span style={{
                       padding: "4px 10px", borderRadius: "20px", fontSize: "10px",
                       fontWeight: 600, background: "rgba(255,255,255,0.04)", color: "var(--text-muted)",
                     }}>
-                      {course.totalDuration}
+                      {cert.duration}
                     </span>
                   </div>
                 </div>
@@ -108,13 +151,13 @@ export default function CertificatesPage() {
                 }}
               >
                 <div style={{ fontSize: "10px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "6px" }}>
-                  Certificado de Conclusão
+                  Certificado de Conclusao
                 </div>
                 <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                  {course.title}
+                  {cert.course_title}
                 </div>
                 <div style={{ fontSize: "11px", color: "#25f4ee" }}>
-                  TikMoney Academy · 2025
+                  TikTok Rewards Academy - 2025
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -126,62 +169,14 @@ export default function CertificatesPage() {
                     cursor: "pointer", fontFamily: "inherit",
                   }}
                 >
-                  📥 Baixar PDF
+                  Baixar PDF
                 </motion.button>
               </motion.div>
             </motion.div>
           ))}
         </section>
-      )}
-
-      {/* In Progress */}
-      {inProgressCourses.length > 0 && (
-        <section style={{ marginBottom: "32px" }}>
-          <h3 style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-muted)", marginBottom: "14px", textTransform: "uppercase", letterSpacing: "1px" }}>
-            Em Andamento
-          </h3>
-          {inProgressCourses.map((course, i) => (
-            <motion.div
-              key={course.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.08 }}
-              style={{
-                background: "rgba(255,255,255,0.02)", borderRadius: "18px",
-                border: "1px solid rgba(255,255,255,0.04)",
-                padding: "18px", marginBottom: "10px",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                <div style={{
-                  width: "48px", height: "48px", borderRadius: "14px",
-                  background: "rgba(254,44,85,0.08)", display: "flex",
-                  alignItems: "center", justifyContent: "center", fontSize: "22px", flexShrink: 0,
-                }}>
-                  📚
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "14px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>
-                    {course.title}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{ flex: 1, height: "4px", borderRadius: "2px", background: "rgba(255,255,255,0.06)" }}>
-                      <div style={{
-                        width: `${course.progress}%`, height: "100%", borderRadius: "2px",
-                        background: "linear-gradient(90deg, #fe2c55, #ff6b35)",
-                      }} />
-                    </div>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#fe2c55" }}>{course.progress}%</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </section>
-      )}
-
-      {/* Empty State */}
-      {completedCourses.length === 0 && (
+      ) : (
+        /* Empty State */
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -196,16 +191,20 @@ export default function CertificatesPage() {
           </p>
           <Link href="/explore">
             <motion.button
-              whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(254,44,85,0.35)" }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.03, boxShadow: "0 8px 30px rgba(254,44,85,0.4)", translateY: -2 }}
+              whileTap={{ scale: 0.97, translateY: 1 }}
               className="glow-btn"
               style={{
                 padding: "14px 32px", fontSize: "15px", fontWeight: 700,
-                background: "var(--gradient-button)", color: "#fff",
-                border: "none", borderRadius: "14px", cursor: "pointer", fontFamily: "inherit",
+                background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
+                color: "#fff",
+                border: "none", borderRadius: "50px", cursor: "pointer", fontFamily: "inherit",
+                boxShadow: "0 4px 15px rgba(254,44,85,0.3), inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 0 #c41e40",
+                transform: "perspective(500px) rotateX(2deg)",
+                textShadow: "0 1px 2px rgba(0,0,0,0.3)",
               }}
             >
-              Explorar Cursos →
+              Explorar Cursos
             </motion.button>
           </Link>
         </motion.div>
