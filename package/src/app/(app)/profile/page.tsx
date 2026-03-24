@@ -155,6 +155,47 @@ export default function ProfilePage() {
         ))}
       </motion.div>
 
+      {/* Wallet Button */}
+      <Link href="/wallet" prefetch={true} style={{ textDecoration: "none" }}>
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.25, delay: 0.05 }}
+          whileHover={{ scale: 1.01, x: 4 }}
+          whileTap={{ scale: 0.98 }}
+          style={{
+            background: "linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,170,0,0.08))",
+            borderRadius: "16px",
+            border: "1px solid rgba(255,215,0,0.2)",
+            padding: "18px 16px", marginBottom: "12px",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{
+              width: "40px", height: "40px", borderRadius: "50%",
+              background: "linear-gradient(135deg, #ffd700, #ffaa00)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "18px", fontWeight: 900, color: "#fff",
+            }}>
+              P
+            </div>
+            <div>
+              <div style={{ fontSize: "15px", fontWeight: 800, color: "#fff" }}>
+                {t("wallet")}
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                {t("redeemRewards")}
+              </div>
+            </div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </motion.div>
+      </Link>
+
       {/* Achievements Button */}
       <Link href="/achievements" prefetch={true} style={{ textDecoration: "none" }}>
         <motion.div
@@ -173,10 +214,9 @@ export default function ProfilePage() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 8 12 8s5-4 7.5-4a2.5 2.5 0 0 1 0 5H18"/>
-              <path d="M18 9v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/>
-              <path d="M12 8v13"/>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffd700" stroke="#ffd700" strokeWidth="1">
+              <circle cx="12" cy="8" r="6"/>
+              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" fill="none" strokeWidth="2"/>
             </svg>
             <div>
               <div style={{ fontSize: "15px", fontWeight: 800, color: "#fff" }}>

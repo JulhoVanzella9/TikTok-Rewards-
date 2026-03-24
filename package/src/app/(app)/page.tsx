@@ -145,17 +145,25 @@ export default function HomePage() {
         </motion.section>
       )}
 
-      {/* Recommended */}
+      {/* Your Courses */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.15 }}
       >
-        <h2 style={{
-          fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "16px",
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          marginBottom: "16px",
         }}>
-          {t("recommended")}
-        </h2>
+          <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
+            {t("yourCourses")}
+          </h2>
+          <Link href="/my-courses" prefetch={true} style={{
+            fontSize: "13px", fontWeight: 600, color: "#fe2c55",
+          }}>
+            {t("viewAll")}
+          </Link>
+        </div>
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
