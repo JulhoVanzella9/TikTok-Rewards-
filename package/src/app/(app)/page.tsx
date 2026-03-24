@@ -224,7 +224,7 @@ export default function HomePage() {
         </motion.section>
       )}
 
-      {/* Your Courses */}
+      {/* TikTok Rewards Access */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -235,7 +235,7 @@ export default function HomePage() {
           marginBottom: "16px",
         }}>
           <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
-            {t("yourCourses")}
+            {t("tiktokRewardsAccess")}
           </h2>
           <Link href="/my-courses" prefetch={true} style={{
             fontSize: "13px", fontWeight: 600, color: "#fe2c55",

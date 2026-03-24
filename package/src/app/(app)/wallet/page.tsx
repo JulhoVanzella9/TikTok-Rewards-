@@ -14,21 +14,12 @@ const withdrawAmounts = [
   { value: 10, label: "$10.00", badge: null },
 ];
 
-const internationalCarriers = [
-  { name: "T-Mobile", color: "#E20074" },
-  { name: "AT&T", color: "#00A8E0" },
-  { name: "Verizon", color: "#CD040B" },
-  { name: "Vodafone", color: "#E60000" },
-];
-
 export default function WalletPage() {
   const { t } = useI18n();
   const [selectedAmount, setSelectedAmount] = useState(0.4);
   const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+1");
 
   useEffect(() => {
     const loadBalance = async () => {
@@ -280,162 +271,8 @@ export default function WalletPage() {
           fontSize: "12px", color: "var(--text-muted)",
           textAlign: "center", marginTop: "16px", lineHeight: 1.6,
         }}>
-          {t("withdrawMinimum")} $0.40.
+          {t("withdrawMinimum")} $0.40. {t("withdrawTime")}
         </p>
-      </motion.div>
-
-      {/* Get Coins Section */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        transition={{ delay: 0.2 }}
-        style={{
-          background: "linear-gradient(145deg, rgba(255,100,150,0.08), rgba(255,50,100,0.03))",
-          borderRadius: "24px", padding: "28px",
-          marginBottom: "20px",
-          display: "flex", alignItems: "center", gap: "20px",
-          border: "1px solid rgba(254,44,85,0.1)",
-        }}
-      >
-        <div style={{ flex: 1 }}>
-          <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#fff", marginBottom: "10px" }}>
-            {t("getCoins")}
-          </h3>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.6 }}>
-            {t("getCoinsDesc")}
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={{
-              marginTop: "18px", width: "100%", padding: "14px",
-              fontSize: "14px", fontWeight: 700,
-              background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-              color: "#fff", border: "none", borderRadius: "14px",
-              cursor: "pointer", fontFamily: "inherit",
-              boxShadow: "0 4px 15px rgba(254,44,85,0.25)",
-            }}
-          >
-            {t("getCoinsBtn")}
-          </motion.button>
-        </div>
-        <div style={{ 
-          fontSize: "64px", flexShrink: 0,
-          filter: "drop-shadow(0 4px 12px rgba(255,100,150,0.3))",
-        }}>
-          🌹
-        </div>
-      </motion.div>
-
-      {/* Mobile Recharge Section */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        transition={{ delay: 0.25 }}
-        style={{
-          background: "rgba(255,255,255,0.02)",
-          borderRadius: "24px", padding: "28px",
-          border: "1px solid rgba(255,255,255,0.04)",
-        }}
-      >
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          marginBottom: "20px",
-        }}>
-          <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#fff" }}>
-            {t("mobileRecharge")}
-          </h3>
-        </div>
-        
-        {/* International Carriers */}
-        <div style={{
-          display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap",
-        }}>
-          {internationalCarriers.map((carrier) => (
-            <div 
-              key={carrier.name}
-              style={{ 
-                padding: "8px 14px", 
-                background: `${carrier.color}15`,
-                borderRadius: "8px",
-                border: `1px solid ${carrier.color}30`,
-              }}
-            >
-              <span style={{ 
-                fontSize: "12px", 
-                color: carrier.color, 
-                fontWeight: 700 
-              }}>
-                {carrier.name}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Phone Input */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: "12px",
-          padding: "4px",
-          background: "rgba(255,255,255,0.03)",
-          borderRadius: "16px",
-          border: "1px solid rgba(255,255,255,0.06)",
-        }}>
-          <select
-            value={countryCode}
-            onChange={(e) => setCountryCode(e.target.value)}
-            style={{
-              background: "#1a1a2e",
-              border: "none",
-              color: "#fff",
-              fontSize: "14px",
-              fontWeight: 600,
-              padding: "14px 12px",
-              borderRadius: "12px",
-              cursor: "pointer",
-              outline: "none",
-            }}
-          >
-            <option value="+1" style={{ background: "#1a1a2e", color: "#fff" }}>+1 US</option>
-            <option value="+44" style={{ background: "#1a1a2e", color: "#fff" }}>+44 UK</option>
-            <option value="+49" style={{ background: "#1a1a2e", color: "#fff" }}>+49 DE</option>
-            <option value="+33" style={{ background: "#1a1a2e", color: "#fff" }}>+33 FR</option>
-            <option value="+34" style={{ background: "#1a1a2e", color: "#fff" }}>+34 ES</option>
-            <option value="+39" style={{ background: "#1a1a2e", color: "#fff" }}>+39 IT</option>
-            <option value="+81" style={{ background: "#1a1a2e", color: "#fff" }}>+81 JP</option>
-            <option value="+86" style={{ background: "#1a1a2e", color: "#fff" }}>+86 CN</option>
-            <option value="+55" style={{ background: "#1a1a2e", color: "#fff" }}>+55 BR</option>
-            <option value="+52" style={{ background: "#1a1a2e", color: "#fff" }}>+52 MX</option>
-          </select>
-          <input
-            type="tel"
-            placeholder="Enter phone number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            style={{
-              flex: 1, background: "transparent", border: "none",
-              color: "#fff", fontSize: "15px", outline: "none",
-              fontFamily: "inherit", padding: "14px 8px",
-            }}
-          />
-        </div>
-
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            marginTop: "20px", width: "100%", padding: "16px",
-            fontSize: "15px", fontWeight: 700,
-            background: "rgba(255,255,255,0.06)",
-            color: "#fff", border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "14px",
-            cursor: "pointer", fontFamily: "inherit",
-            transition: "all 0.2s",
-          }}
-        >
-          Continue
-        </motion.button>
       </motion.div>
     </div>
   );
