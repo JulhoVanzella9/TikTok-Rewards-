@@ -1,4 +1,5 @@
 "use client";
+// App layout with authentication check
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/app/components/BottomNav";
