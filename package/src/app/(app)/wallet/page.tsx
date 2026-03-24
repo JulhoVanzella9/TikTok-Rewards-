@@ -386,7 +386,7 @@ export default function WalletPage() {
             value={countryCode}
             onChange={(e) => setCountryCode(e.target.value)}
             style={{
-              background: "rgba(255,255,255,0.05)",
+              background: "#1a1a2e",
               border: "none",
               color: "#fff",
               fontSize: "14px",
@@ -397,16 +397,16 @@ export default function WalletPage() {
               outline: "none",
             }}
           >
-            <option value="+1">+1 US</option>
-            <option value="+44">+44 UK</option>
-            <option value="+49">+49 DE</option>
-            <option value="+33">+33 FR</option>
-            <option value="+34">+34 ES</option>
-            <option value="+39">+39 IT</option>
-            <option value="+81">+81 JP</option>
-            <option value="+86">+86 CN</option>
-            <option value="+55">+55 BR</option>
-            <option value="+52">+52 MX</option>
+            <option value="+1" style={{ background: "#1a1a2e", color: "#fff" }}>+1 US</option>
+            <option value="+44" style={{ background: "#1a1a2e", color: "#fff" }}>+44 UK</option>
+            <option value="+49" style={{ background: "#1a1a2e", color: "#fff" }}>+49 DE</option>
+            <option value="+33" style={{ background: "#1a1a2e", color: "#fff" }}>+33 FR</option>
+            <option value="+34" style={{ background: "#1a1a2e", color: "#fff" }}>+34 ES</option>
+            <option value="+39" style={{ background: "#1a1a2e", color: "#fff" }}>+39 IT</option>
+            <option value="+81" style={{ background: "#1a1a2e", color: "#fff" }}>+81 JP</option>
+            <option value="+86" style={{ background: "#1a1a2e", color: "#fff" }}>+86 CN</option>
+            <option value="+55" style={{ background: "#1a1a2e", color: "#fff" }}>+55 BR</option>
+            <option value="+52" style={{ background: "#1a1a2e", color: "#fff" }}>+52 MX</option>
           </select>
           <input
             type="tel"
