@@ -30,7 +30,6 @@ export default function LoginPage() {
     setSuccess("");
 
     const supabase = createClient();
-    if (!supabase) { setLoading(false); return; }
 
     if (isForgotPassword) {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
