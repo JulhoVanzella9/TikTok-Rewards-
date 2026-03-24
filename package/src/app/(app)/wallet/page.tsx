@@ -87,23 +87,6 @@ export default function WalletPage() {
         <h1 style={{ fontSize: "20px", fontWeight: 800, color: "#fff" }}>
           {t("redeemRewards")}
         </h1>
-        <div style={{ marginLeft: "auto" }}>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            style={{
-              background: "rgba(255,255,255,0.05)", border: "none",
-              color: "rgba(255,255,255,0.6)", cursor: "pointer", padding: "10px",
-              borderRadius: "12px",
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </motion.button>
-        </div>
       </motion.div>
 
       {/* Balance Card */}
