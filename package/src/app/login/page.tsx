@@ -47,23 +47,47 @@ export default function LoginPage() {
     const supabase = createClient();
 
     if (isSignUp) {
+      // First try to sign up
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: getRedirectUrl(),
           data: {
             display_name: email.split("@")[0],
             username: email.split("@")[0],
           },
         },
       });
+      
       if (error) {
-        setError(error.message);
+        // If user already exists, try to sign in instead
+        if (error.message.includes("already registered")) {
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (signInError) {
+            setError(signInError.message);
+          } else if (signInData?.session) {
+            window.location.href = "/";
+          }
+        } else {
+          setError(error.message);
+        }
       } else if (data.session) {
+        // Direct login after signup (no email confirmation needed)
         window.location.href = "/";
-      } else if (data.user) {
-        setSuccess(t("checkEmail"));
+      } else if (data.user && !data.session) {
+        // If no session but user exists, try to sign in
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (signInError) {
+          setError(signInError.message);
+        } else if (signInData?.session) {
+          window.location.href = "/";
+        }
       }
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
