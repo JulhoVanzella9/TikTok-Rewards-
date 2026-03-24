@@ -58,9 +58,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
           style={{
             position: "fixed", inset: 0,
             background: "rgba(0,0,0,0.95)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            padding: "20px", zIndex: 1000,
+            display: "flex", alignItems: "flex-start", justifyContent: "center",
+            padding: "16px", zIndex: 1000,
             flexDirection: "column",
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
           }}
           onClick={() => !isSubmitting && handleClose()}
         >
@@ -72,14 +74,16 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             style={{
               width: "100%", maxWidth: step === "legal" ? "600px" : "420px",
               display: "flex", flexDirection: "column", alignItems: "center",
+              margin: "auto",
+              padding: "20px 0",
             }}
           >
             {step === "legal" ? (
               /* Legal Notice Step */
               <>
                 {/* TikTok Rewards Logo with shopping bag */}
-                <div style={{ marginBottom: "24px", position: "relative" }}>
-                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                <div style={{ marginBottom: "16px", position: "relative" }}>
+                  <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
                     {/* TikTok note icon */}
                     <path d="M70 15c-3-4-5-9-5-14h-15v60c0 8-7 15-15 15s-15-7-15-15 7-15 15-15c1.5 0 3 .2 4.5.6v-14c-1.5-.2-3-.3-4.5-.3-16 0-29 13-29 29s13 29 29 29 29-13 29-29V36c6 4 13 7 21 6V28c-6 0-11-4-15-13z" 
                       fill="#fff" transform="translate(5, -5) scale(0.8)"/>
@@ -98,29 +102,30 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                 </div>
 
                 <h2 style={{ 
-                  fontSize: "22px", fontWeight: 800, color: "#fff", 
-                  marginBottom: "32px", textAlign: "center",
+                  fontSize: "18px", fontWeight: 800, color: "#fff", 
+                  marginBottom: "20px", textAlign: "center",
                 }}>
                   TikTok Rewards Community
                 </h2>
 
                 <div style={{
                   background: "#000",
-                  padding: "40px 32px",
+                  padding: "24px 16px",
                   width: "100%",
                   textAlign: "center",
+                  borderRadius: "12px",
                 }}>
                   <h3 style={{ 
-                    fontSize: "20px", fontWeight: 800, color: "#fff", 
-                    marginBottom: "24px", letterSpacing: "1px",
+                    fontSize: "16px", fontWeight: 800, color: "#fff", 
+                    marginBottom: "16px", letterSpacing: "0.5px",
                   }}>
                     LEGAL CONSEQUENCES NOTICE
                   </h3>
 
                   <p style={{ 
-                    fontSize: "14px", color: "rgba(255,255,255,0.7)", 
-                    lineHeight: 1.8, marginBottom: "32px",
-                    maxWidth: "520px", margin: "0 auto 32px",
+                    fontSize: "13px", color: "rgba(255,255,255,0.7)", 
+                    lineHeight: 1.7, marginBottom: "24px",
+                    textAlign: "left",
                   }}>
                     Please note that initiating a chargeback (a formal request to the credit provider to reverse an unrecognized transaction) without proper justification constitutes illegal conduct under the Fair Credit Billing Act (FCBA). These actions not only harm reputable and ethical businesses but also involve the refusal to acknowledge a legitimate transaction despite having received the product or service. Engaging in such practices may result in legal consequences. It is essential to maintain honesty in all online transactions to ensure a safe and trustworthy shopping environment for all parties involved.
                   </p>
@@ -130,11 +135,13 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setStep("form")}
                     style={{
-                      padding: "14px 48px",
+                      padding: "14px 32px",
                       background: "#fe2c55",
                       border: "none", borderRadius: "8px",
-                      color: "#fff", fontSize: "15px", fontWeight: 700,
+                      color: "#fff", fontSize: "14px", fontWeight: 700,
                       cursor: "pointer", fontFamily: "inherit",
+                      width: "100%",
+                      maxWidth: "280px",
                     }}
                   >
                     Continue Request
@@ -143,13 +150,13 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
 
                 {/* Footer Links */}
                 <div style={{ 
-                  display: "flex", gap: "24px", marginTop: "32px",
-                  justifyContent: "center",
+                  display: "flex", gap: "20px", marginTop: "24px",
+                  justifyContent: "center", flexWrap: "wrap",
                 }}>
-                  <span style={{ fontSize: "13px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
+                  <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
                     Terms of Use
                   </span>
-                  <span style={{ fontSize: "13px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
+                  <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
                     Privacy Policy
                   </span>
                 </div>
@@ -159,12 +166,12 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleClose}
                   style={{
-                    marginTop: "20px",
-                    padding: "12px 32px",
+                    marginTop: "16px",
+                    padding: "12px 28px",
                     background: "transparent",
                     border: "1px solid rgba(255,255,255,0.3)",
                     borderRadius: "8px",
-                    color: "#fff", fontSize: "14px", fontWeight: 600,
+                    color: "#fff", fontSize: "13px", fontWeight: 600,
                     cursor: "pointer", fontFamily: "inherit",
                   }}
                 >
@@ -175,9 +182,9 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
               /* Form Step */
               <div style={{
                 background: "linear-gradient(145deg, rgba(26,26,46,0.98) 0%, rgba(18,18,30,0.99) 100%)",
-                borderRadius: "24px",
+                borderRadius: "20px",
                 border: "1px solid rgba(255,255,255,0.08)",
-                padding: "28px",
+                padding: "20px",
                 width: "100%",
                 boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
               }}>
