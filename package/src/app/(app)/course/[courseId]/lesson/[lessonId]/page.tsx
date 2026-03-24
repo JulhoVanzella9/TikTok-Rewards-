@@ -1,15 +1,19 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getLessonById, getAllLessons, getNextLesson, getPrevLesson } from "@/app/data/courses";
 import { useState } from "react";
+import { useProgress } from "@/lib/hooks/useProgress";
 
 export default function LessonPage() {
   const params = useParams();
+  const router = useRouter();
   const courseId = params.courseId as string;
   const lessonId = params.lessonId as string;
   const [showList, setShowList] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const { markLessonComplete, isLessonCompleted } = useProgress();
 
   const result = getLessonById(courseId, lessonId);
   if (!result) {
@@ -144,41 +148,52 @@ export default function LessonPage() {
                         alignItems: "center", justifyContent: "center", gap: "6px",
                       }}
                     >
-                      ← Anterior
+                      Anterior
                     </motion.button>
                   </Link>
                 )}
                 {nextLesson ? (
-                  <Link href={`/course/${courseId}/lesson/${nextLesson.id}`} style={{ flex: 1, minWidth: "140px" }}>
-                    <motion.button
-                      whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(254,44,85,0.2)" }}
-                      whileTap={{ scale: 0.98 }}
-                      style={{
-                        width: "100%", padding: "14px", fontSize: "13px", fontWeight: 700,
-                        background: "var(--gradient-button)", color: "#fff",
-                        border: "none", borderRadius: "12px", cursor: "pointer",
-                        fontFamily: "inherit", display: "flex",
-                        alignItems: "center", justifyContent: "center", gap: "6px",
-                      }}
-                    >
-                      Próxima →
-                    </motion.button>
-                  </Link>
+                  <motion.button
+                    whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(254,44,85,0.2)" }}
+                    whileTap={{ scale: 0.98 }}
+                    disabled={saving}
+                    onClick={async () => {
+                      setSaving(true);
+                      await markLessonComplete(courseId, lessonId, allLessons.length);
+                      router.push(`/course/${courseId}/lesson/${nextLesson.id}`);
+                    }}
+                    style={{
+                      flex: 1, minWidth: "140px",
+                      padding: "14px", fontSize: "13px", fontWeight: 700,
+                      background: "var(--gradient-button)", color: "#fff",
+                      border: "none", borderRadius: "12px", cursor: saving ? "wait" : "pointer",
+                      fontFamily: "inherit", display: "flex",
+                      alignItems: "center", justifyContent: "center", gap: "6px",
+                      opacity: saving ? 0.7 : 1,
+                    }}
+                  >
+                    {saving ? "Salvando..." : "Concluir e Avançar"}
+                  </motion.button>
                 ) : (
-                  <Link href={`/course/${courseId}`} style={{ flex: 1, minWidth: "140px" }}>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      style={{
-                        width: "100%", padding: "14px", fontSize: "13px", fontWeight: 700,
-                        background: "linear-gradient(135deg, #25f4ee, #5ff7f2)", color: "#000",
-                        border: "none", borderRadius: "12px", cursor: "pointer",
-                        fontFamily: "inherit",
-                      }}
-                    >
-                      ✓ Concluir Curso
-                    </motion.button>
-                  </Link>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    disabled={saving}
+                    onClick={async () => {
+                      setSaving(true);
+                      await markLessonComplete(courseId, lessonId, allLessons.length);
+                      router.push(`/course/${courseId}`);
+                    }}
+                    style={{
+                      flex: 1, minWidth: "140px",
+                      padding: "14px", fontSize: "13px", fontWeight: 700,
+                      background: "linear-gradient(135deg, #25f4ee, #5ff7f2)", color: "#000",
+                      border: "none", borderRadius: "12px", cursor: saving ? "wait" : "pointer",
+                      fontFamily: "inherit", opacity: saving ? 0.7 : 1,
+                    }}
+                  >
+                    {saving ? "Salvando..." : "Concluir Curso"}
+                  </motion.button>
                 )}
               </div>
             </motion.div>
@@ -217,6 +232,7 @@ export default function LessonPage() {
                 {mod.lessons.map((les) => {
                   const isActive = les.id === lessonId;
                   const gIdx = allLessons.findIndex((l) => l.id === les.id);
+                  const isCompleted = isLessonCompleted(courseId, les.id);
                   return (
                     <Link
                       key={les.id}
@@ -232,11 +248,11 @@ export default function LessonPage() {
                       }}>
                         <div style={{
                           width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                          background: isActive ? "#fe2c55" : "rgba(255,255,255,0.04)",
+                          background: isActive ? "#fe2c55" : isCompleted ? "#25f4ee" : "rgba(255,255,255,0.04)",
                           display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "10px", fontWeight: 700, color: isActive ? "#fff" : "#666",
+                          fontSize: "10px", fontWeight: 700, color: isActive || isCompleted ? "#fff" : "#666",
                         }}>
-                          {isActive ? "▶" : gIdx + 1}
+                          {isActive ? "▶" : isCompleted ? "✓" : gIdx + 1}
                         </div>
                         <div style={{ minWidth: 0 }}>
                           <div style={{
