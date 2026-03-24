@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
+import Image from "next/image";
 
 interface RefundModalProps {
   isOpen: boolean;
@@ -81,39 +82,22 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             {step === "legal" ? (
               /* Legal Notice Step */
               <>
-                {/* TikTok Rewards Logo - same as TopBar, centered */}
+                {/* TikTok Rewards Logo - using the same image */}
                 <div style={{ 
                   display: "flex", 
                   alignItems: "center", 
                   justifyContent: "center",
-                  gap: "10px",
                   marginBottom: "24px",
                   width: "100%",
                 }}>
-                  <div style={{ 
-                    width: "48px", height: "48px", 
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    flexShrink: 0,
-                  }}>
-                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                      {/* Cyan layer - offset left */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
-                      {/* Red layer - offset right */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
-                      {/* White main layer */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
-                    </svg>
-                  </div>
-                  <span style={{
-                    fontSize: "24px",
-                    fontWeight: 800,
-                    color: "#fff",
-                    letterSpacing: "-0.5px",
-                    fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-                    lineHeight: "48px",
-                  }}>
-                    TikTok<span style={{ color: "#fe2c55", marginLeft: "6px" }}>Rewards</span>
-                  </span>
+                  <Image 
+                    src="/images/tiktok-rewards-logo.png" 
+                    alt="TikTok Rewards" 
+                    width={240} 
+                    height={48}
+                    style={{ objectFit: "contain" }}
+                    priority
+                  />
                 </div>
 
                 <h2 style={{ 
