@@ -54,11 +54,13 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else if (data.user) {
+        // Try to login immediately after signup
         const { error: loginError } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
-        if (loginError) {
+        // Ignore "Email not confirmed" error and redirect anyway
+        if (loginError && !loginError.message.toLowerCase().includes("email not confirmed")) {
           setError(loginError.message);
         } else {
           window.location.href = "/";
@@ -69,7 +71,8 @@ export default function LoginPage() {
         email,
         password,
       });
-      if (error) {
+      // Ignore "Email not confirmed" error and redirect anyway
+      if (error && !error.message.toLowerCase().includes("email not confirmed")) {
         setError(error.message);
       } else {
         window.location.href = "/";
