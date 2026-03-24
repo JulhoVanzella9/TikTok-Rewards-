@@ -98,6 +98,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
+                  alignItems: "center",
                 }}>
                   <Image 
                     src="/images/tiktok-rewards-logo.png" 
@@ -109,6 +110,8 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       width: "80%",
                       maxWidth: "400px",
                       height: "auto",
+                      display: "block",
+                      margin: "0 auto",
                     }}
                     priority
                   />
