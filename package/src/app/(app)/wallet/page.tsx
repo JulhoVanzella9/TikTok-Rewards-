@@ -8,8 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
 const withdrawAmounts = [
-  { value: 0.4, label: "$0.40", badge: "onlyOnce" },
-  { value: 30, label: "$30.00", badge: null },
+  { value: 30, label: "$30.00", badge: "onlyOnce" },
   { value: 50, label: "$50.00", badge: null },
   { value: 100, label: "$100.00", badge: null },
   { value: "all", label: "All Value", badge: null },
@@ -17,7 +16,7 @@ const withdrawAmounts = [
 
 export default function WalletPage() {
   const { t } = useI18n();
-  const [selectedAmount, setSelectedAmount] = useState<number | "all">(0.4);
+  const [selectedAmount, setSelectedAmount] = useState<number | "all">(30);
   const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
