@@ -5,8 +5,13 @@ import BottomNav from "@/app/components/BottomNav";
 import TopBar from "@/app/components/TopBar";
 import { createClient } from "@/lib/supabase/client";
 
-// Cache the auth check result
+// Cache the auth check result - reset on page load to ensure fresh check
 let authCache: { checked: boolean; authenticated: boolean } = { checked: false, authenticated: false };
+
+// Reset cache on module load to ensure fresh auth check
+if (typeof window !== "undefined") {
+  authCache = { checked: false, authenticated: false };
+}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(!authCache.checked);
@@ -16,15 +21,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const checkAuth = useCallback(async () => {
     if (authCache.checked) {
       setIsAuthenticated(authCache.authenticated);
+      if (!authCache.authenticated) {
+        router.push("/login");
+      }
       setLoading(false);
       return;
     }
 
     const supabase = createClient();
     if (!supabase) {
-      // No Supabase configured - skip auth, allow access
-      authCache = { checked: true, authenticated: true };
-      setIsAuthenticated(true);
+      // No Supabase configured - redirect to login
+      authCache = { checked: true, authenticated: false };
+      setIsAuthenticated(false);
+      router.push("/login");
       setLoading(false);
       return;
     }
