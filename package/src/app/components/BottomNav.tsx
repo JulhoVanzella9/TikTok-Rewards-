@@ -71,22 +71,12 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/achievements",
-      label: t("achievements"),
+      href: "/wallet",
+      label: t("wallet"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill={active ? "#ffd700" : "none"} stroke={active ? "#ffd700" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="8" r="6"/>
-          <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
-        </svg>
-      ),
-    },
-    {
-      href: "/profile",
-      label: t("profile"),
-      icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#ffd700" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+          <line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
       ),
     },
