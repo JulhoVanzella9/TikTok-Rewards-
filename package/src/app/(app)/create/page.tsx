@@ -175,8 +175,11 @@ export default function CreatePage() {
     if (animating) return;
     if (!userId) return;
 
-    const amount = Math.floor(Math.random() * (57 - 32 + 1)) + 32;
-    const newTotal = totalEarned + amount;
+    // amount em centavos (32-57 centavos por video)
+    const amountCents = Math.floor(Math.random() * (57 - 32 + 1)) + 32;
+    // Converter para dolares para exibicao
+    const amountDollars = amountCents / 100;
+    const newTotal = totalEarned + amountDollars;
     setTotalEarned(newTotal);
 
     const newRatings = [...ratings];
@@ -187,7 +190,7 @@ export default function CreatePage() {
 
     const emojis: Record<string, string> = { happy: "😊", neutral: "😐", sad: "😞" };
     const labels: Record<string, string> = { happy: "Loved it!", neutral: "Noted!", sad: "Got it!" };
-    displayToast(emojis[reaction], `${labels[reaction]} +$${amount.toFixed(2)}`, reaction);
+    displayToast(emojis[reaction], `${labels[reaction]} +$${amountDollars.toFixed(2)}`, reaction);
 
     if (videoRefs.current[currentIndex]) {
       videoRefs.current[currentIndex]!.muted = true;
@@ -208,8 +211,11 @@ export default function CreatePage() {
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
-    // Add XP to user profile (amount * 100 = XP points, so $45 = 4500 XP)
-    const xpToAdd = amount * 100;
+    // Add XP to user profile (amountCents = XP points, so 45 centavos = 45 XP)
+    // Wallet converte XP para dolares dividindo por 10000, entao 45 XP = $0.0045
+    // Para que 45 centavos = $0.45, precisamos que XP = centavos * 100
+    // 45 centavos * 100 = 4500 XP, e 4500 / 10000 = $0.45
+    const xpToAdd = amountCents * 100;
     const { data: profile } = await supabase
       .from("profiles")
       .select("total_xp")
