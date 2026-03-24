@@ -111,7 +111,7 @@ export default function BottomNav() {
             >
               {tab.isCenter ? (
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                  {tab.icon(isActive)}
+                  {tab.icon()}
                 </motion.div>
               ) : (
                 <>
