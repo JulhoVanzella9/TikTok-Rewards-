@@ -30,7 +30,6 @@ export default function LoginPage() {
     setSuccess("");
 
     const supabase = createClient();
-    if (!supabase) { setLoading(false); return; }
 
     if (isForgotPassword) {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -46,6 +45,7 @@ export default function LoginPage() {
         email,
         password,
         options: {
+          emailRedirectTo: getRedirectUrl(),
           data: {
             display_name: email.split("@")[0],
             username: email.split("@")[0],
@@ -54,25 +54,21 @@ export default function LoginPage() {
       });
       if (error) {
         setError(error.message);
+      } else if (data.session) {
+        // Session created immediately (email confirmation disabled)
+        window.location.href = "/";
       } else if (data.user) {
-        const { error: loginError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (loginError) {
-          setError(loginError.message);
-        } else {
-          window.location.href = "/";
-        }
+        // User created but needs email confirmation
+        setSuccess(t("checkEmail"));
       }
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) {
         setError(error.message);
-      } else {
+      } else if (data?.session) {
         window.location.href = "/";
       }
     }

@@ -42,7 +42,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 export function useI18n() {
   const context = useContext(I18nContext);
   if (!context) {
-    throw new Error("useI18n must be used within an I18nProvider");
+    // Return safe defaults if context is not available (SSR or outside provider)
+    return {
+      language: "en-US" as Language,
+      setLanguage: () => {},
+      t: (key: TranslationKey): string => translations["en-US"][key] || key,
+    };
   }
   return context;
 }

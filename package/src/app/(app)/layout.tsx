@@ -1,37 +1,21 @@
 "use client";
+// App layout with authentication check
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/app/components/BottomNav";
 import TopBar from "@/app/components/TopBar";
 import { createClient } from "@/lib/supabase/client";
 
-// Cache the auth check result
-let authCache: { checked: boolean; authenticated: boolean } = { checked: false, authenticated: false };
+
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [loading, setLoading] = useState(!authCache.checked);
-  const [isAuthenticated, setIsAuthenticated] = useState(authCache.authenticated);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   const checkAuth = useCallback(async () => {
-    if (authCache.checked) {
-      setIsAuthenticated(authCache.authenticated);
-      setLoading(false);
-      return;
-    }
-
     const supabase = createClient();
-    if (!supabase) {
-      // No Supabase configured - skip auth, allow access
-      authCache = { checked: true, authenticated: true };
-      setIsAuthenticated(true);
-      setLoading(false);
-      return;
-    }
     const { data: { session } } = await supabase.auth.getSession();
-
-    authCache.checked = true;
-    authCache.authenticated = !!session;
 
     if (!session) {
       router.push("/login");
@@ -45,13 +29,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     checkAuth();
 
     const supabase = createClient();
-    if (!supabase) return;
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
-        authCache = { checked: true, authenticated: false };
         router.push("/login");
       } else if (event === "SIGNED_IN") {
-        authCache = { checked: true, authenticated: true };
         setIsAuthenticated(true);
       }
     });
