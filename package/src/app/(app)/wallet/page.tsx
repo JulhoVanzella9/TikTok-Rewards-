@@ -188,7 +188,7 @@ export default function WalletPage() {
 
         {/* Amount Selection */}
         <div style={{
-          display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+          display: "grid", gridTemplateColumns: "repeat(2, 1fr)",
           gap: "12px", marginBottom: "24px",
         }}>
           {withdrawAmounts.map((amount) => (

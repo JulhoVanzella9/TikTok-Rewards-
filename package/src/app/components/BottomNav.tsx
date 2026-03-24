@@ -90,23 +90,22 @@ export default function BottomNav() {
         background: "rgba(0,0,0,0.98)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
         display: "flex", alignItems: "center", justifyContent: "space-around",
-        minHeight: "68px",
-        paddingTop: "8px",
+        height: "68px",
         paddingLeft: "4px",
         paddingRight: "4px",
-        paddingBottom: "max(8px, env(safe-area-inset-bottom, 8px))",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
       }}
     >
       {tabs.map((tab) => {
         const isActive = pathname === tab.href;
         return (
-          <Link key={tab.href} href={tab.href} prefetch={true} style={{ textDecoration: "none" }}>
+          <Link key={tab.href} href={tab.href} prefetch={true} style={{ textDecoration: "none", flex: 1 }}>
             <motion.div
               whileTap={{ scale: 0.9 }}
               style={{
                 display: "flex", flexDirection: "column", alignItems: "center",
-                justifyContent: "center", gap: "4px", padding: "8px 10px",
-                position: "relative", cursor: "pointer",
+                justifyContent: "center", gap: "4px", padding: "8px 0",
+                cursor: "pointer", height: "100%",
               }}
             >
               {tab.isCenter ? (
@@ -115,13 +114,17 @@ export default function BottomNav() {
                 </motion.div>
               ) : (
                 <>
-                  <div style={{ position: "relative" }}>
+                  <div style={{ 
+                    width: "24px", height: "24px", 
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
                     {tab.icon(isActive)}
                   </div>
                   <span style={{
-                    fontSize: "9px", fontWeight: isActive ? 700 : 500,
+                    fontSize: "10px", fontWeight: isActive ? 700 : 500,
                     color: isActive ? "#fff" : "rgba(255,255,255,0.5)",
                     transition: "color 0.2s",
+                    lineHeight: 1,
                   }}>
                     {tab.label}
                   </span>
