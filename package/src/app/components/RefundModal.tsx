@@ -81,31 +81,37 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             {step === "legal" ? (
               /* Legal Notice Step */
               <>
-                {/* TikTok Rewards Logo with shopping bag */}
-                <div style={{ marginBottom: "16px", position: "relative" }}>
-                  <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
-                    {/* TikTok note icon */}
-                    <path d="M70 15c-3-4-5-9-5-14h-15v60c0 8-7 15-15 15s-15-7-15-15 7-15 15-15c1.5 0 3 .2 4.5.6v-14c-1.5-.2-3-.3-4.5-.3-16 0-29 13-29 29s13 29 29 29 29-13 29-29V36c6 4 13 7 21 6V28c-6 0-11-4-15-13z" 
-                      fill="#fff" transform="translate(5, -5) scale(0.8)"/>
-                    {/* Cyan offset */}
-                    <path d="M70 15c-3-4-5-9-5-14h-15v60c0 8-7 15-15 15s-15-7-15-15 7-15 15-15c1.5 0 3 .2 4.5.6v-14c-1.5-.2-3-.3-4.5-.3-16 0-29 13-29 29s13 29 29 29 29-13 29-29V36c6 4 13 7 21 6V28c-6 0-11-4-15-13z" 
-                      fill="#25f4ee" transform="translate(2, -7) scale(0.8)" opacity="0.6"/>
-                    {/* Red offset */}
-                    <path d="M70 15c-3-4-5-9-5-14h-15v60c0 8-7 15-15 15s-15-7-15-15 7-15 15-15c1.5 0 3 .2 4.5.6v-14c-1.5-.2-3-.3-4.5-.3-16 0-29 13-29 29s13 29 29 29 29-13 29-29V36c6 4 13 7 21 6V28c-6 0-11-4-15-13z" 
-                      fill="#fe2c55" transform="translate(8, -3) scale(0.8)" opacity="0.6"/>
-                    {/* Shopping bag icon */}
-                    <g transform="translate(35, 50)">
-                      <rect x="2" y="8" width="26" height="22" rx="3" fill="#25f4ee"/>
-                      <path d="M8 12V8a7 7 0 1114 0v4" stroke="#000" strokeWidth="2.5" fill="none"/>
-                    </g>
+                {/* TikTok Rewards Logo - same as TopBar */}
+                <div style={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: "10px",
+                  marginBottom: "24px",
+                }}>
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    {/* Cyan layer - offset left */}
+                    <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
+                    {/* Red layer - offset right */}
+                    <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
+                    {/* White main layer */}
+                    <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
                   </svg>
+                  <span style={{
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    color: "#fff",
+                    letterSpacing: "-0.5px",
+                    fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+                  }}>
+                    TikTok<span style={{ color: "#fe2c55", marginLeft: "6px" }}>Rewards</span>
+                  </span>
                 </div>
 
                 <h2 style={{ 
-                  fontSize: "18px", fontWeight: 800, color: "#fff", 
+                  fontSize: "16px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
                   marginBottom: "20px", textAlign: "center",
                 }}>
-                  TikTok Rewards Community
+                  Community
                 </h2>
 
                 <div style={{
