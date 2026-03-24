@@ -33,7 +33,7 @@ export default function BottomNav() {
       href: "/create",
       label: "",
       isCenter: true,
-      icon: (_active: boolean) => (
+      icon: () => (
         <div style={{
           width: "44px", height: "32px", position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -60,23 +60,23 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/my-courses",
-      label: t("courses"),
+      href: "/progress",
+      label: t("progress"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          <path d="M10 9l4 3-4 3V9z"/>
+          <path d="M12 20V10"/>
+          <path d="M18 20V4"/>
+          <path d="M6 20v-4"/>
         </svg>
       ),
     },
     {
-      href: "/profile",
-      label: t("profile"),
+      href: "/wallet",
+      label: t("wallet"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#ffd700" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+          <line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
       ),
     },
@@ -92,8 +92,8 @@ export default function BottomNav() {
         display: "flex", alignItems: "center", justifyContent: "space-around",
         minHeight: "68px",
         paddingTop: "8px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
+        paddingLeft: "4px",
+        paddingRight: "4px",
         paddingBottom: "max(8px, env(safe-area-inset-bottom, 8px))",
       }}
     >
@@ -105,7 +105,7 @@ export default function BottomNav() {
               whileTap={{ scale: 0.9 }}
               style={{
                 display: "flex", flexDirection: "column", alignItems: "center",
-                justifyContent: "center", gap: "4px", padding: "8px 16px",
+                justifyContent: "center", gap: "4px", padding: "8px 10px",
                 position: "relative", cursor: "pointer",
               }}
             >
@@ -117,19 +117,9 @@ export default function BottomNav() {
                 <>
                   <div style={{ position: "relative" }}>
                     {tab.icon(isActive)}
-                    {isActive && (
-                      <motion.div
-                        layoutId="nav-indicator"
-                        style={{
-                          position: "absolute", bottom: "-8px", left: "50%",
-                          transform: "translateX(-50%)", width: "4px", height: "4px",
-                          borderRadius: "50%", background: "#fe2c55",
-                        }}
-                      />
-                    )}
                   </div>
                   <span style={{
-                    fontSize: "10px", fontWeight: isActive ? 700 : 500,
+                    fontSize: "9px", fontWeight: isActive ? 700 : 500,
                     color: isActive ? "#fff" : "rgba(255,255,255,0.5)",
                     transition: "color 0.2s",
                   }}>

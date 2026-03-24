@@ -74,42 +74,6 @@ export default function HomePage() {
         </div>
       </motion.div>
 
-      {/* Stats Row */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={stagger}
-        style={{
-          display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "12px", marginBottom: "32px",
-        }}
-      >
-        {[
-          { value: "0", label: t("courses"), color: "#fe2c55" },
-          { value: "0", label: t("lessons"), color: "#25f4ee" },
-          { value: "0", label: t("streak"), color: "#ff6b35" },
-        ].map((stat) => (
-          <motion.div
-            key={stat.label}
-            variants={fadeIn}
-            transition={{ duration: 0.25 }}
-            whileHover={{ scale: 1.03 }}
-            style={{
-              background: `linear-gradient(135deg, ${stat.color}10, ${stat.color}05)`,
-              border: `1px solid ${stat.color}15`,
-              borderRadius: "16px", padding: "16px", textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "24px", fontWeight: 800, color: stat.color }}>
-              {stat.value}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600, marginTop: "2px" }}>
-              {stat.label}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
       {/* Continue Watching */}
       {inProgress.length > 0 && (
         <motion.section
@@ -145,17 +109,25 @@ export default function HomePage() {
         </motion.section>
       )}
 
-      {/* Recommended */}
+      {/* Your Courses */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.15 }}
       >
-        <h2 style={{
-          fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "16px",
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          marginBottom: "16px",
         }}>
-          {t("recommended")}
-        </h2>
+          <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
+            {t("yourCourses")}
+          </h2>
+          <Link href="/my-courses" prefetch={true} style={{
+            fontSize: "13px", fontWeight: 600, color: "#fe2c55",
+          }}>
+            {t("viewAll")}
+          </Link>
+        </div>
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",

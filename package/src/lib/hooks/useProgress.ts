@@ -197,6 +197,7 @@ export function useProgress() {
   return {
     lessonProgress,
     courseProgress,
+    completedLessons: lessonProgress,
     loading,
     markLessonComplete,
     isLessonCompleted,
