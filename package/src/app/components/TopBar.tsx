@@ -31,26 +31,6 @@ export default function TopBar() {
       </Link>
 
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        {/* Achievements Button - Improved Design */}
-        <Link href="/achievements">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              background: "linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,170,0,0.05))",
-              border: "1px solid rgba(255,215,0,0.2)",
-              borderRadius: "50%", width: "36px", height: "36px",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffd700" stroke="#ffd700" strokeWidth="1">
-              <circle cx="12" cy="8" r="6"/>
-              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" fill="none" strokeWidth="2"/>
-            </svg>
-          </motion.button>
-        </Link>
-
         {/* Profile Button */}
         <Link href="/profile">
           <motion.button
