@@ -20,12 +20,14 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/explore",
-      label: t("explore"),
+      href: "/course/tiktok-growth",
+      label: t("class"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <line x1="12" y1="6" x2="12" y2="10"/>
+          <line x1="12" y1="14" x2="12" y2="14.01"/>
         </svg>
       ),
     },

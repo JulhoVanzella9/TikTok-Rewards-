@@ -62,9 +62,9 @@ export function getPrevLesson(course: Course, currentLessonId: string): Lesson |
 export const courses: Course[] = [
   {
     id: "tiktok-growth",
-    title: "TikTok Growth Mastery",
+    title: "TikTok Rewards",
     description:
-      "Learn the most advanced strategies to grow on TikTok. From zero to your first 100k followers with proven techniques.",
+      "Learn how to maximize your earnings with TikTok Rewards. Complete guide to monetize your content effectively.",
     thumbnail: "/images/courses/tiktok-growth.jpg",
     instructor: "Michael Brooks",
     instructorAvatar: "/images/users/1.jpg",
