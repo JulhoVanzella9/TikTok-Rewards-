@@ -49,15 +49,13 @@ export default function ProfilePage() {
 
   const stats = [
     { value: String(profile?.total_xp || 0), label: t("xp"), color: "#fe2c55" },
-    { value: String(profile?.certificates_count || 0), label: t("certificates"), color: "#25f4ee" },
-    { value: String(profile?.streak_days || 0), label: t("streak"), color: "#ff6b35" },
     { value: profile?.total_watch_hours || "0h", label: t("watched"), color: "#a855f7" },
   ];
 
   const menuItems = [
-    { label: t("myCertificates"), href: "/certificates", desc: t("yourCertificates") },
+    { label: t("myCertificate"), href: "/certificate", desc: t("downloadCertificate") },
     { label: t("settings"), href: "/settings", desc: t("customizeExperience") },
-    { label: t("helpSupport"), href: "/help", desc: t("needHelp") },
+    { label: t("helpSupport"), href: "/support", desc: t("needHelp") },
   ];
 
   const displayName = profile?.display_name || userEmail?.split("@")[0] || "User";
@@ -273,14 +271,14 @@ export default function ProfilePage() {
         ))}
       </motion.div>
 
-      {/* Explore CTA Button */}
+      {/* Go to Class CTA Button */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, delay: 0.15 }}
         style={{ padding: "0 0 20px" }}
       >
-        <Link href="/explore" prefetch={true}>
+        <Link href="/course/tiktok-growth" prefetch={true}>
           <motion.button
             whileHover={{ scale: 1.02, boxShadow: "0 8px 25px rgba(254,44,85,0.4)" }}
             whileTap={{ scale: 0.98 }}
@@ -293,7 +291,7 @@ export default function ProfilePage() {
               boxShadow: "0 4px 15px rgba(254,44,85,0.3), 0 2px 0 #c41e40",
             }}
           >
-            {t("exploreCourses")}
+            {t("goToClass")}
           </motion.button>
         </Link>
       </motion.div>
