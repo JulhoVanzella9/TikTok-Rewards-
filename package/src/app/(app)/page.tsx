@@ -1,112 +1,96 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { courses } from "@/app/data/courses";
+import CourseCard from "@/app/components/CourseCard";
 import { useI18n } from "@/lib/i18n/context";
-import VideoRating from "@/app/components/VideoRating";
-
-// Faster animation variants
-const fadeIn = { hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } };
 
 export default function HomePage() {
   const { t } = useI18n();
-  const [balance, setBalance] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(7 * 60 + 30); // 7:30 minutos
-  const [hasCompletedToday, setHasCompletedToday] = useState(false);
 
-  // Timer countdown
-  useEffect(() => {
-    if (timeLeft <= 0 || hasCompletedToday) return;
-    const timer = setInterval(() => {
-      setTimeLeft(prev => prev > 0 ? prev - 1 : 0);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [timeLeft, hasCompletedToday]);
-
-  const handleAllRated = (totalEarned: number) => {
-    setBalance(prev => prev + totalEarned);
-    setHasCompletedToday(true);
-  };
+  // Get featured/first course
+  const featuredCourse = useMemo(() => courses[0], []);
 
   return (
     <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
-      {/* Saldo atual */}
+      {/* Welcome Section */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-        style={{
-          background: "linear-gradient(135deg, rgba(37,244,238,0.1) 0%, rgba(37,244,238,0.02) 100%)",
-          borderRadius: "16px",
-          border: "1px solid rgba(37,244,238,0.2)",
-          padding: "16px 20px",
-          marginBottom: "24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+        style={{ marginBottom: "24px" }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{
-            width: "44px", height: "44px", borderRadius: "50%",
-            background: "rgba(37,244,238,0.15)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-          </div>
-          <div>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", marginBottom: "2px" }}>
-              Saldo Disponivel
-            </p>
-            <p style={{ fontSize: "24px", fontWeight: 800, color: "#25f4ee" }}>
-              ${balance.toFixed(2)}
-            </p>
-          </div>
-        </div>
+        <h1 style={{ 
+          fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "8px" 
+        }}>
+          {t("welcome")} TikTok Rewards
+        </h1>
+        <p style={{ 
+          fontSize: "14px", color: "var(--text-muted)" 
+        }}>
+          {t("discoverCourses")}
+        </p>
       </motion.div>
 
-      {/* Video Rating Section */}
+      {/* Featured Course */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, delay: 0.1 }}
+      >
+        <h2 style={{ 
+          fontSize: "16px", fontWeight: 700, color: "rgba(255,255,255,0.7)", 
+          marginBottom: "16px" 
+        }}>
+          {t("featuredCourse")}
+        </h2>
+        
+        {featuredCourse && (
+          <CourseCard course={featuredCourse} index={0} />
+        )}
+      </motion.div>
+
+      {/* Quick Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, delay: 0.2 }}
         style={{
-          borderRadius: "24px", overflow: "hidden", marginBottom: "32px",
-          background: "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          padding: "24px 20px", position: "relative",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "12px",
+          marginTop: "24px",
         }}
       >
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-          <div style={{
-            width: "40px", height: "40px", borderRadius: "50%",
-            background: "rgba(254,44,85,0.15)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fe2c55">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-          </div>
-          <div>
-            <h2 style={{ fontSize: "20px", fontWeight: 800, color: "#fe2c55" }}>
-              {t("videoTutorial")}
-            </h2>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>
-              Avalie videos e ganhe recompensas
-            </p>
-          </div>
+        <div style={{
+          background: "rgba(37,244,238,0.08)",
+          border: "1px solid rgba(37,244,238,0.2)",
+          borderRadius: "16px",
+          padding: "16px",
+          textAlign: "center",
+        }}>
+          <p style={{ fontSize: "24px", fontWeight: 800, color: "#25f4ee" }}>
+            {courses.length}
+          </p>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>
+            {t("coursesAvailable")}
+          </p>
         </div>
-
-        {/* Video Rating Component */}
-        <VideoRating 
-          onAllRated={handleAllRated}
-          timeLeft={timeLeft}
-        />
+        
+        <div style={{
+          background: "rgba(254,44,85,0.08)",
+          border: "1px solid rgba(254,44,85,0.2)",
+          borderRadius: "16px",
+          padding: "16px",
+          textAlign: "center",
+        }}>
+          <p style={{ fontSize: "24px", fontWeight: 800, color: "#fe2c55" }}>
+            $39
+          </p>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>
+            {t("earnUpTo")}
+          </p>
+        </div>
       </motion.div>
     </div>
   );
