@@ -2,17 +2,23 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useI18n } from "@/lib/i18n/context";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoginPage() {
   const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [step, setStep] = useState<"email" | "password">("email");
   const [isSignUp, setIsSignUp] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [showRefundModal, setShowRefundModal] = useState(false);
+  const [refundEmail, setRefundEmail] = useState("");
+  const [refundReason, setRefundReason] = useState("");
+  const [refundSubmitting, setRefundSubmitting] = useState(false);
+  const [refundSuccess, setRefundSuccess] = useState(false);
 
   const getRedirectUrl = () => {
     if (typeof window !== "undefined") {
@@ -23,24 +29,23 @@ export default function LoginPage() {
       : "/auth/callback";
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    if (step === "email" && email) {
+      setStep("password");
+    } else if (step === "password") {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
     setLoading(true);
     setError("");
     setSuccess("");
 
     const supabase = createClient();
 
-    if (isForgotPassword) {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${getRedirectUrl()}?type=recovery`,
-      });
-      if (error) {
-        setError(error.message);
-      } else {
-        setSuccess(t("checkEmail"));
-      }
-    } else if (isSignUp) {
+    if (isSignUp) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -55,10 +60,8 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else if (data.session) {
-        // Session created immediately (email confirmation disabled)
         window.location.href = "/";
       } else if (data.user) {
-        // User created but needs email confirmation
         setSuccess(t("checkEmail"));
       }
     } else {
@@ -76,10 +79,28 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleSocialLogin = (provider: string) => {
+    // These buttons don't actually work - just for show
+    setError(`${provider} login is not available at this time.`);
+  };
+
+  const handleRefundSubmit = async () => {
+    if (!refundEmail || !refundReason) return;
+    setRefundSubmitting(true);
+    
+    // Simulate sending - you can add real email logic later
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    console.log("Refund request:", { email: refundEmail, reason: refundReason });
+    
+    setRefundSubmitting(false);
+    setRefundSuccess(true);
+  };
+
   const resetForm = () => {
     setError("");
     setSuccess("");
-    setEmail("");
+    setStep("email");
     setPassword("");
   };
 
@@ -116,244 +137,442 @@ export default function LoginPage() {
         />
       </div>
 
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
         style={{
-          width: "100%", maxWidth: "420px",
-          background: "linear-gradient(145deg, rgba(26,26,46,0.95) 0%, rgba(18,18,30,0.98) 100%)",
+          width: "100%", maxWidth: "400px",
+          background: "linear-gradient(145deg, rgba(26,26,46,0.98) 0%, rgba(18,18,30,0.99) 100%)",
           borderRadius: "24px",
-          border: "1px solid rgba(255,255,255,0.06)",
-          padding: "40px 32px",
+          border: "1px solid rgba(255,255,255,0.08)",
+          padding: "32px 28px",
           position: "relative",
           boxShadow: "0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <div
-            style={{
-              width: "70px", height: "70px",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              margin: "0 auto 16px",
-            }}
-          >
-            {isForgotPassword ? (
-              <div style={{
-                width: "60px", height: "60px", borderRadius: "16px",
-                background: "linear-gradient(135deg, #fe2c55, #25f4ee)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 0 30px rgba(254,44,85,0.3)",
-              }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </div>
-            ) : (
-              /* Official TikTok Logo - Black with cyan/red glitch effect */
-              <svg width="70" height="70" viewBox="0 0 48 48" fill="none">
-                {/* Cyan layer - offset left */}
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
-                {/* Red layer - offset right */}
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
-                {/* White main layer */}
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "28px", position: "relative" }}>
+          {step === "password" && (
+            <button
+              onClick={() => { setStep("email"); setError(""); }}
+              style={{
+                position: "absolute", left: 0,
+                background: "none", border: "none", cursor: "pointer",
+                color: "rgba(255,255,255,0.6)", padding: "4px",
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
               </svg>
-            )}
+            </button>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h1 style={{ fontSize: "20px", fontWeight: 700, color: "#fff" }}>
+              Log in to TikTok Rewards
+            </h1>
           </div>
-          <h1 style={{ fontSize: "26px", fontWeight: 800, color: "#fff", letterSpacing: "-0.5px", marginBottom: "4px" }}>
-            {isForgotPassword ? t("recoverPassword") : isSignUp ? t("createAccount") : "TikTok Rewards"}
-          </h1>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.4)" }}>
-            {isForgotPassword
-              ? "Enter your email to receive the link"
-              : isSignUp
-                ? "Create your account to get started"
-                : "Welcome back!"}
-          </p>
         </div>
 
         {/* Error/Success messages */}
-        {error && (
-          <div
-            style={{
-              padding: "12px 16px", borderRadius: "12px",
-              background: "rgba(254,44,85,0.1)",
-              border: "1px solid rgba(254,44,85,0.2)",
-              color: "#fe2c55", fontSize: "13px", fontWeight: 600,
-              marginBottom: "16px", textAlign: "center",
-            }}
-          >
-            {error}
-          </div>
-        )}
-        {success && (
-          <div
-            style={{
-              padding: "12px 16px", borderRadius: "12px",
-              background: "rgba(37,244,238,0.1)",
-              border: "1px solid rgba(37,244,238,0.2)",
-              color: "#25f4ee", fontSize: "13px", fontWeight: 600,
-              marginBottom: "16px", textAlign: "center",
-            }}
-          >
-            {success}
-          </div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              style={{
+                padding: "12px 16px", borderRadius: "12px",
+                background: "rgba(254,44,85,0.1)",
+                border: "1px solid rgba(254,44,85,0.2)",
+                color: "#fe2c55", fontSize: "13px", fontWeight: 500,
+                marginBottom: "16px", textAlign: "center",
+              }}
+            >
+              {error}
+            </motion.div>
+          )}
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              style={{
+                padding: "12px 16px", borderRadius: "12px",
+                background: "rgba(37,244,238,0.1)",
+                border: "1px solid rgba(37,244,238,0.2)",
+                color: "#25f4ee", fontSize: "13px", fontWeight: 500,
+                marginBottom: "16px", textAlign: "center",
+              }}
+            >
+              {success}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <form onSubmit={handleSubmit}>
-          {/* Email input */}
+        <form onSubmit={handleContinue}>
+          {/* Email input - always visible */}
           <div style={{ marginBottom: "16px" }}>
             <div
               style={{
-                position: "relative", borderRadius: "12px",
-                border: focusedField === "email" ? "2px solid var(--tiktok-red)" : "2px solid rgba(255,255,255,0.1)",
-                transition: "border-color 0.3s, box-shadow 0.3s",
-                boxShadow: focusedField === "email" ? "0 0 0 4px rgba(254,44,85,0.1)" : "none",
+                borderRadius: "12px",
+                border: focusedField === "email" ? "2px solid #fe2c55" : "2px solid rgba(255,255,255,0.12)",
+                transition: "all 0.2s",
                 overflow: "hidden",
+                background: "rgba(0,0,0,0.4)",
               }}
             >
               <input
                 type="email"
-                placeholder={t("emailPlaceholder")}
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setFocusedField("email")}
                 onBlur={() => setFocusedField(null)}
                 required
+                disabled={step === "password"}
                 style={{
-                  width: "100%", padding: "16px 18px", fontSize: "16px",
-                  background: "rgba(255,255,255,0.04)",
+                  width: "100%", padding: "16px 18px", fontSize: "15px",
+                  background: "transparent",
                   border: "none", color: "#fff", outline: "none", fontFamily: "inherit",
+                  opacity: step === "password" ? 0.6 : 1,
                 }}
               />
             </div>
           </div>
 
-          {/* Password input */}
-          {!isForgotPassword && (
-            <div style={{ marginBottom: "16px" }}>
-              <div
-                style={{
-                  position: "relative", borderRadius: "12px",
-                  border: focusedField === "password" ? "2px solid var(--tiktok-red)" : "2px solid rgba(255,255,255,0.1)",
-                  transition: "border-color 0.3s, box-shadow 0.3s",
-                  boxShadow: focusedField === "password" ? "0 0 0 4px rgba(254,44,85,0.1)" : "none",
-                  overflow: "hidden",
-                }}
+          {/* Password input - only in password step */}
+          <AnimatePresence>
+            {step === "password" && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                style={{ marginBottom: "16px" }}
               >
-                <input
-                  type="password"
-                  placeholder={t("passwordPlaceholder")}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setFocusedField("password")}
-                  onBlur={() => setFocusedField(null)}
-                  required
-                  minLength={6}
+                <div
                   style={{
-                    width: "100%", padding: "16px 18px", fontSize: "16px",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "none", color: "#fff", outline: "none", fontFamily: "inherit",
+                    borderRadius: "12px",
+                    border: focusedField === "password" ? "2px solid #fe2c55" : "2px solid rgba(255,255,255,0.12)",
+                    transition: "all 0.2s",
+                    overflow: "hidden",
+                    background: "rgba(0,0,0,0.4)",
                   }}
-                />
-              </div>
-            </div>
-          )}
+                >
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setFocusedField("password")}
+                    onBlur={() => setFocusedField(null)}
+                    required
+                    minLength={6}
+                    autoFocus
+                    style={{
+                      width: "100%", padding: "16px 18px", fontSize: "15px",
+                      background: "transparent",
+                      border: "none", color: "#fff", outline: "none", fontFamily: "inherit",
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Forgot password link */}
-          {!isSignUp && !isForgotPassword && (
-            <div style={{ textAlign: "right", marginBottom: "16px" }}>
-              <button
-                type="button"
-                onClick={() => { setIsForgotPassword(true); resetForm(); }}
-                style={{
-                  background: "none", border: "none", color: "#fe2c55",
-                  fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-                }}
-              >
-                {t("forgotPassword")}
-              </button>
-            </div>
-          )}
-
-          {/* Submit button */}
-          <div style={{ marginBottom: "24px" }}>
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: "100%", padding: "16px", fontSize: "16px", fontWeight: 700,
-                background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-                color: "#fff", border: "none", borderRadius: "16px",
-                cursor: loading ? "not-allowed" : "pointer",
-                fontFamily: "inherit", letterSpacing: "0.3px",
-                opacity: loading ? 0.7 : 1,
-                boxShadow: "0 4px 15px rgba(254,44,85,0.3), inset 0 1px 0 rgba(255,255,255,0.15), 0 2px 0 #c41e40",
-                transition: "transform 0.15s, box-shadow 0.15s",
-              }}
-              onMouseOver={(e) => { if (!loading) e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseOut={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
-            >
-              {loading
-                ? t("loading")
-                : isForgotPassword
-                  ? t("sendRecoveryEmail")
-                  : isSignUp
-                    ? t("createAccount")
-                    : t("login")}
-            </button>
-          </div>
+          {/* Continue button */}
+          <motion.button
+            type="submit"
+            disabled={loading || (step === "email" && !email) || (step === "password" && !password)}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            style={{
+              width: "100%", padding: "16px", fontSize: "16px", fontWeight: 700,
+              background: "#fe2c55",
+              color: "#fff", border: "none", borderRadius: "12px",
+              cursor: loading ? "not-allowed" : "pointer",
+              fontFamily: "inherit",
+              opacity: loading || (step === "email" && !email) || (step === "password" && !password) ? 0.6 : 1,
+              marginBottom: "20px",
+            }}
+          >
+            {loading ? "Loading..." : "Continue"}
+          </motion.button>
         </form>
 
-        {/* Toggle sign up / login / forgot password */}
-        <div style={{ textAlign: "center" }}>
-          {isForgotPassword ? (
+        {/* OR divider */}
+        {step === "email" && (
+          <>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+              <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.1)" }} />
+              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", fontWeight: 500 }}>OR</span>
+              <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.1)" }} />
+            </div>
+
+            {/* Social login buttons */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+              {/* Facebook */}
+              <button
+                type="button"
+                onClick={() => handleSocialLogin("Facebook")}
+                style={{
+                  width: "100%", padding: "14px 18px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "12px",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
+                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Continue with Facebook
+              </button>
+
+              {/* Google */}
+              <button
+                type="button"
+                onClick={() => handleSocialLogin("Google")}
+                style={{
+                  width: "100%", padding: "14px 18px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "12px",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
+                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+              </button>
+
+              {/* Apple */}
+              <button
+                type="button"
+                onClick={() => handleSocialLogin("Apple")}
+                style={{
+                  width: "100%", padding: "14px 18px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "12px",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
+                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+                Continue with Apple
+              </button>
+            </div>
+
+            {/* Request Refund button */}
             <button
-              onClick={() => { setIsForgotPassword(false); resetForm(); }}
+              type="button"
+              onClick={() => setShowRefundModal(true)}
               style={{
-                background: "none", border: "none",
-                color: "rgba(255,255,255,0.5)", fontSize: "14px",
-                cursor: "pointer", fontFamily: "inherit",
+                width: "100%", padding: "14px 18px",
+                background: "rgba(45, 45, 80, 0.8)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "12px",
+                cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
+                fontFamily: "inherit",
+                marginBottom: "20px",
               }}
             >
-              <span style={{ color: "#fe2c55", fontWeight: 700 }}>{t("backToLogin")}</span>
+              Request Refund
             </button>
-          ) : (
-            <button
-              onClick={() => { setIsSignUp(!isSignUp); resetForm(); }}
-              style={{
-                background: "none", border: "none",
-                color: "rgba(255,255,255,0.5)", fontSize: "14px",
-                cursor: "pointer", fontFamily: "inherit",
-              }}
-            >
-              {isSignUp ? (
-                <>{t("hasAccount")} <span style={{ color: "#fe2c55", fontWeight: 700 }}>{t("login")}</span></>
-              ) : (
-                <>{t("noAccount")} <span style={{ color: "#fe2c55", fontWeight: 700 }}>{t("signUp")}</span></>
-              )}
-            </button>
-          )}
+          </>
+        )}
+
+        {/* Toggle sign up */}
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          <button
+            onClick={() => { setIsSignUp(!isSignUp); resetForm(); }}
+            style={{
+              background: "none", border: "none",
+              color: "rgba(255,255,255,0.5)", fontSize: "14px",
+              cursor: "pointer", fontFamily: "inherit",
+            }}
+          >
+            {isSignUp ? (
+              <>Already have an account? <span style={{ color: "#fe2c55", fontWeight: 600 }}>Log in</span></>
+            ) : (
+              <>{"Don't have an account?"} <span style={{ color: "#fe2c55", fontWeight: 600 }}>Sign up</span></>
+            )}
+          </button>
         </div>
 
         {/* Terms */}
         <p
           style={{
-            textAlign: "center", fontSize: "12px", color: "rgba(255,255,255,0.35)",
-            marginTop: "20px", lineHeight: 1.6,
+            textAlign: "center", fontSize: "11px", color: "rgba(255,255,255,0.35)",
+            lineHeight: 1.6,
           }}
         >
           {"By continuing, you agree to our "}
-          <a href="/terms" style={{ color: "var(--tiktok-red)", fontWeight: 600, cursor: "pointer" }}>
-            {t("termsOfUse")}
-          </a>
+          <span style={{ color: "#fe2c55", fontWeight: 600 }}>Terms of Service</span>
           {" and acknowledge that you have read our "}
-          <a href="/privacy" style={{ fontWeight: 600, color: "#fff", cursor: "pointer" }}>
-            {t("privacyPolicy")}
-          </a>
-          .
+          <span style={{ fontWeight: 600, color: "#fff" }}>Privacy Policy</span>.
         </p>
-      </div>
+      </motion.div>
+
+      {/* Refund Modal */}
+      <AnimatePresence>
+        {showRefundModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed", inset: 0,
+              background: "rgba(0,0,0,0.8)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "20px", zIndex: 100,
+            }}
+            onClick={() => { if (!refundSubmitting) { setShowRefundModal(false); setRefundSuccess(false); setRefundEmail(""); setRefundReason(""); }}}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "100%", maxWidth: "400px",
+                background: "linear-gradient(145deg, rgba(26,26,46,0.98) 0%, rgba(18,18,30,0.99) 100%)",
+                borderRadius: "20px",
+                border: "1px solid rgba(255,255,255,0.08)",
+                padding: "28px",
+              }}
+            >
+              {refundSuccess ? (
+                <div style={{ textAlign: "center" }}>
+                  <div style={{
+                    width: "60px", height: "60px", borderRadius: "50%",
+                    background: "rgba(37,244,238,0.15)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    margin: "0 auto 16px",
+                  }}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2.5">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#fff", marginBottom: "8px" }}>
+                    Request Submitted!
+                  </h3>
+                  <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", marginBottom: "20px" }}>
+                    We will review your request and contact you soon.
+                  </p>
+                  <button
+                    onClick={() => { setShowRefundModal(false); setRefundSuccess(false); setRefundEmail(""); setRefundReason(""); }}
+                    style={{
+                      padding: "12px 24px", background: "#fe2c55",
+                      border: "none", borderRadius: "10px",
+                      color: "#fff", fontSize: "14px", fontWeight: 600,
+                      cursor: "pointer", fontFamily: "inherit",
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#fff", marginBottom: "20px", textAlign: "center" }}>
+                    Request Refund
+                  </h3>
+                  
+                  <div style={{ marginBottom: "16px" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)", marginBottom: "8px" }}>
+                      Your Email
+                    </label>
+                    <input
+                      type="email"
+                      value={refundEmail}
+                      onChange={(e) => setRefundEmail(e.target.value)}
+                      placeholder="email@example.com"
+                      style={{
+                        width: "100%", padding: "14px 16px", fontSize: "14px",
+                        background: "rgba(0,0,0,0.4)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: "10px", color: "#fff", outline: "none",
+                        fontFamily: "inherit",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "20px" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)", marginBottom: "8px" }}>
+                      Reason for Refund
+                    </label>
+                    <textarea
+                      value={refundReason}
+                      onChange={(e) => setRefundReason(e.target.value)}
+                      placeholder="Please describe your reason..."
+                      rows={4}
+                      style={{
+                        width: "100%", padding: "14px 16px", fontSize: "14px",
+                        background: "rgba(0,0,0,0.4)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: "10px", color: "#fff", outline: "none",
+                        fontFamily: "inherit", resize: "none",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: "12px" }}>
+                    <button
+                      onClick={() => { setShowRefundModal(false); setRefundEmail(""); setRefundReason(""); }}
+                      style={{
+                        flex: 1, padding: "14px",
+                        background: "rgba(255,255,255,0.08)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "10px", color: "#fff",
+                        fontSize: "14px", fontWeight: 600,
+                        cursor: "pointer", fontFamily: "inherit",
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleRefundSubmit}
+                      disabled={!refundEmail || !refundReason || refundSubmitting}
+                      style={{
+                        flex: 1, padding: "14px",
+                        background: "#fe2c55",
+                        border: "none", borderRadius: "10px",
+                        color: "#fff", fontSize: "14px", fontWeight: 600,
+                        cursor: refundSubmitting ? "not-allowed" : "pointer",
+                        fontFamily: "inherit",
+                        opacity: (!refundEmail || !refundReason || refundSubmitting) ? 0.6 : 1,
+                      }}
+                    >
+                      {refundSubmitting ? "Submitting..." : "Submit"}
+                    </button>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
