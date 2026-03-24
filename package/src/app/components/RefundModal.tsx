@@ -2,7 +2,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
-import Image from "next/image";
 
 interface RefundModalProps {
   isOpen: boolean;
@@ -57,104 +56,92 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           style={{
-            position: "fixed", 
-            inset: 0,
-            background: "#000",
-            display: "flex", 
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.95)",
+            display: "flex", alignItems: "flex-start", justifyContent: "center",
+            padding: "16px", zIndex: 1000,
             flexDirection: "column",
-            zIndex: 1000,
             overflowY: "auto",
             WebkitOverflowScrolling: "touch",
           }}
           onClick={() => !isSubmitting && handleClose()}
         >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: "100%",
-              minHeight: "100%",
-              display: "flex", 
-              flexDirection: "column", 
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "40px 24px",
+              width: "100%", maxWidth: step === "legal" ? "600px" : "420px",
+              display: "flex", flexDirection: "column", alignItems: "center",
+              margin: "auto",
+              padding: "20px 0",
             }}
           >
             {step === "legal" ? (
               /* Legal Notice Step */
-              <div style={{
-                width: "100%",
-                maxWidth: "700px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}>
-                {/* TikTok Rewards Logo */}
+              <>
+                {/* TikTok Rewards Logo - same as TopBar, centered */}
                 <div style={{ 
-                  marginBottom: "16px",
-                  width: "100%",
-                  display: "flex",
+                  display: "flex", 
+                  alignItems: "center", 
                   justifyContent: "center",
-                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "24px",
+                  width: "100%",
                 }}>
-                  <Image 
-                    src="/images/tiktok-rewards-logo.png" 
-                    alt="TikTok Rewards" 
-                    width={400} 
-                    height={80}
-                    style={{ 
-                      objectFit: "contain", 
-                      width: "80%",
-                      maxWidth: "400px",
-                      height: "auto",
-                      display: "block",
-                      margin: "0 auto",
-                    }}
-                    priority
-                  />
+                  <div style={{ 
+                    width: "48px", height: "48px", 
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                  }}>
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                      {/* Cyan layer - offset left */}
+                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
+                      {/* Red layer - offset right */}
+                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
+                      {/* White main layer */}
+                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
+                    </svg>
+                  </div>
+                  <span style={{
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    color: "#fff",
+                    letterSpacing: "-0.5px",
+                    fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+                    lineHeight: "48px",
+                  }}>
+                    TikTok<span style={{ color: "#fe2c55", marginLeft: "6px" }}>Rewards</span>
+                  </span>
                 </div>
 
-                <p style={{ 
-                  fontSize: "18px", 
-                  fontWeight: 600, 
-                  color: "#fff", 
-                  marginBottom: "40px", 
-                  textAlign: "center",
+                <h2 style={{ 
+                  fontSize: "16px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
+                  marginBottom: "20px", textAlign: "center",
+                  width: "100%",
                 }}>
                   Community
-                </p>
+                </h2>
 
-                {/* Legal Notice Box */}
                 <div style={{
                   background: "#000",
-                  padding: "48px 32px",
+                  padding: "24px 16px",
                   width: "100%",
                   textAlign: "center",
-                  borderTop: "1px solid rgba(255,255,255,0.1)",
-                  borderBottom: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "12px",
                 }}>
                   <h3 style={{ 
-                    fontSize: "24px", 
-                    fontWeight: 800, 
-                    color: "#fff", 
-                    marginBottom: "32px", 
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
+                    fontSize: "16px", fontWeight: 800, color: "#fff", 
+                    marginBottom: "16px", letterSpacing: "0.5px",
                   }}>
                     LEGAL CONSEQUENCES NOTICE
                   </h3>
 
                   <p style={{ 
-                    fontSize: "15px", 
-                    color: "rgba(255,255,255,0.75)", 
-                    lineHeight: 1.8, 
-                    marginBottom: "40px",
-                    maxWidth: "600px",
-                    margin: "0 auto 40px",
-                    textAlign: "center",
+                    fontSize: "13px", color: "rgba(255,255,255,0.7)", 
+                    lineHeight: 1.7, marginBottom: "24px",
+                    textAlign: "left",
                   }}>
                     Please note that initiating a chargeback (a formal request to the credit provider to reverse an unrecognized transaction) without proper justification constitutes illegal conduct under the Fair Credit Billing Act (FCBA). These actions not only harm reputable and ethical businesses but also involve the refusal to acknowledge a legitimate transaction despite having received the product or service. Engaging in such practices may result in legal consequences. It is essential to maintain honesty in all online transactions to ensure a safe and trustworthy shopping environment for all parties involved.
                   </p>
@@ -164,15 +151,13 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setStep("form")}
                     style={{
-                      padding: "16px 48px",
+                      padding: "14px 32px",
                       background: "#fe2c55",
-                      border: "none", 
-                      borderRadius: "8px",
-                      color: "#fff", 
-                      fontSize: "16px", 
-                      fontWeight: 700,
-                      cursor: "pointer", 
-                      fontFamily: "inherit",
+                      border: "none", borderRadius: "8px",
+                      color: "#fff", fontSize: "14px", fontWeight: 700,
+                      cursor: "pointer", fontFamily: "inherit",
+                      width: "100%",
+                      maxWidth: "280px",
                     }}
                   >
                     Continue Request
@@ -181,25 +166,13 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
 
                 {/* Footer Links */}
                 <div style={{ 
-                  display: "flex", 
-                  gap: "32px", 
-                  marginTop: "48px",
-                  justifyContent: "center", 
+                  display: "flex", gap: "20px", marginTop: "24px",
+                  justifyContent: "center", flexWrap: "wrap",
                 }}>
-                  <span style={{ 
-                    fontSize: "14px", 
-                    color: "#fff", 
-                    fontWeight: 700, 
-                    cursor: "pointer" 
-                  }}>
+                  <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
                     Terms of Use
                   </span>
-                  <span style={{ 
-                    fontSize: "14px", 
-                    color: "#fff", 
-                    fontWeight: 700, 
-                    cursor: "pointer" 
-                  }}>
+                  <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>
                     Privacy Policy
                   </span>
                 </div>
@@ -209,55 +182,51 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleClose}
                   style={{
-                    marginTop: "24px",
-                    padding: "14px 40px",
-                    background: "#fff",
-                    border: "none",
+                    marginTop: "16px",
+                    padding: "12px 28px",
+                    background: "transparent",
+                    border: "1px solid rgba(255,255,255,0.3)",
                     borderRadius: "8px",
-                    color: "#000", 
-                    fontSize: "14px", 
-                    fontWeight: 700,
-                    cursor: "pointer", 
-                    fontFamily: "inherit",
+                    color: "#fff", fontSize: "13px", fontWeight: 600,
+                    cursor: "pointer", fontFamily: "inherit",
                   }}
                 >
                   Back to Start
                 </motion.button>
-              </div>
+              </>
             ) : (
               /* Form Step */
               <div style={{
                 background: "linear-gradient(145deg, rgba(26,26,46,0.98) 0%, rgba(18,18,30,0.99) 100%)",
-                borderRadius: "24px",
+                borderRadius: "20px",
                 border: "1px solid rgba(255,255,255,0.08)",
-                padding: "32px",
+                padding: "20px",
                 width: "100%",
-                maxWidth: "440px",
                 boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
               }}>
                 {submitted ? (
-                  <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <div style={{ textAlign: "center", padding: "20px 0" }}>
                     <div style={{
-                      width: "72px", height: "72px", borderRadius: "50%",
+                      width: "64px", height: "64px", borderRadius: "50%",
                       background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      margin: "0 auto 20px",
+                      margin: "0 auto 16px",
                     }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
                         <polyline points="20 6 9 17 4 12"/>
                       </svg>
                     </div>
-                    <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+                    <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
                       {t("requestSubmitted")}
                     </h3>
-                    <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
+                    <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                       {t("weWillContact")}
                     </p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit}>
                     {/* Back button */}
-                    <div style={{ display: "flex", alignItems: "center", marginBottom: "24px" }}>
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                       <button
                         type="button"
                         onClick={() => setStep("legal")}
@@ -267,17 +236,17 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                           marginRight: "12px",
                         }}
                       >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
                       </button>
-                      <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#fff" }}>
+                      <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
                         {t("requestRefund")}
                       </h3>
                     </div>
                     
-                    <div style={{ marginBottom: "20px" }}>
-                      <label style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.6)", marginBottom: "10px", display: "block" }}>
+                    <div style={{ marginBottom: "16px" }}>
+                      <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
                         {t("yourEmail")}
                       </label>
                       <input
@@ -287,18 +256,18 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         required
                         placeholder="email@example.com"
                         style={{
-                          width: "100%", padding: "16px 18px",
-                          background: "rgba(0,0,0,0.5)",
-                          border: "2px solid rgba(255,255,255,0.1)",
+                          width: "100%", padding: "14px 16px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "2px solid rgba(255,255,255,0.12)",
                           borderRadius: "12px",
-                          color: "#fff", fontSize: "15px",
+                          color: "#fff", fontSize: "14px",
                           outline: "none", fontFamily: "inherit",
                         }}
                       />
                     </div>
 
-                    <div style={{ marginBottom: "28px" }}>
-                      <label style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.6)", marginBottom: "10px", display: "block" }}>
+                    <div style={{ marginBottom: "20px" }}>
+                      <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
                         {t("refundReason")}
                       </label>
                       <textarea
@@ -308,18 +277,18 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         placeholder={t("describeReason")}
                         rows={4}
                         style={{
-                          width: "100%", padding: "16px 18px",
-                          background: "rgba(0,0,0,0.5)",
-                          border: "2px solid rgba(255,255,255,0.1)",
+                          width: "100%", padding: "14px 16px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "2px solid rgba(255,255,255,0.12)",
                           borderRadius: "12px",
-                          color: "#fff", fontSize: "15px",
+                          color: "#fff", fontSize: "14px",
                           outline: "none", fontFamily: "inherit",
-                          resize: "vertical", minHeight: "120px",
+                          resize: "vertical", minHeight: "100px",
                         }}
                       />
                     </div>
 
-                    <div style={{ display: "flex", gap: "14px" }}>
+                    <div style={{ display: "flex", gap: "12px" }}>
                       <motion.button
                         type="button"
                         whileHover={{ scale: 1.02 }}
@@ -327,11 +296,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         onClick={handleClose}
                         disabled={isSubmitting}
                         style={{
-                          flex: 1, padding: "16px",
-                          background: "rgba(255,255,255,0.08)",
-                          border: "1px solid rgba(255,255,255,0.15)",
+                          flex: 1, padding: "14px",
+                          background: "rgba(255,255,255,0.06)",
+                          border: "1px solid rgba(255,255,255,0.1)",
                           borderRadius: "12px",
-                          color: "#fff", fontSize: "15px", fontWeight: 700,
+                          color: "#fff", fontSize: "14px", fontWeight: 700,
                           cursor: "pointer", fontFamily: "inherit",
                         }}
                       >
@@ -343,10 +312,10 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         whileTap={{ scale: 0.98 }}
                         disabled={isSubmitting || !email || !reason}
                         style={{
-                          flex: 1, padding: "16px",
+                          flex: 1, padding: "14px",
                           background: "#fe2c55",
                           border: "none", borderRadius: "12px",
-                          color: "#fff", fontSize: "15px", fontWeight: 700,
+                          color: "#fff", fontSize: "14px", fontWeight: 700,
                           cursor: isSubmitting ? "not-allowed" : "pointer",
                           fontFamily: "inherit",
                           opacity: isSubmitting || !email || !reason ? 0.6 : 1,
