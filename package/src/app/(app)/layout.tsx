@@ -8,8 +8,8 @@ import { createClient } from "@/lib/supabase/client";
 
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [loading, setLoading] = useState(!authCache.checked);
-  const [isAuthenticated, setIsAuthenticated] = useState(authCache.authenticated);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   const checkAuth = useCallback(async () => {
