@@ -89,6 +89,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   gap: "10px",
                   marginBottom: "24px",
                   width: "100%",
+                  transform: "translateX(-12px)",
                 }}>
                   <div style={{ 
                     width: "48px", height: "48px", 
