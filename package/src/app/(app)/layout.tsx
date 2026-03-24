@@ -1,12 +1,14 @@
 "use client";
-// App layout with authentication check
+
+/**
+ * App Layout with Authentication
+ * Protects all routes under (app) group
+ */
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/app/components/BottomNav";
 import TopBar from "@/app/components/TopBar";
 import { createClient } from "@/lib/supabase/client";
-
-
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);

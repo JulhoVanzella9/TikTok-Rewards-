@@ -1,18 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { courses } from "@/app/data/courses";
 import CourseCard from "@/app/components/CourseCard";
 import Link from "next/link";
+import { useProgress } from "@/lib/hooks/useProgress";
 
 const tabs = ["Todos", "Em Andamento", "Concluídos"];
 
 export default function MyCoursesPage() {
   const [tab, setTab] = useState(0);
+  const { courseProgress, loading } = useProgress();
 
-  const enrolled = courses.filter((c) => c.progress > 0);
-  const inProgress = courses.filter((c) => c.progress > 0 && c.progress < 100);
-  const completed = courses.filter((c) => c.progress === 100);
+  // Merge course data with user progress
+  const coursesWithProgress = useMemo(() => {
+    return courses.map(course => {
+      const userProgress = courseProgress.find(p => p.course_id === course.id);
+      return {
+        ...course,
+        progress: userProgress?.progress || 0,
+        started: !!userProgress,
+        completedAt: userProgress?.completed_at
+      };
+    });
+  }, [courseProgress]);
+
+  const enrolled = coursesWithProgress.filter((c) => c.started);
+  const inProgress = coursesWithProgress.filter((c) => c.started && c.progress < 100);
+  const completed = coursesWithProgress.filter((c) => c.progress === 100);
   const displayed = tab === 0 ? enrolled : tab === 1 ? inProgress : completed;
 
   return (
@@ -52,7 +67,11 @@ export default function MyCoursesPage() {
       </div>
 
       {/* Content */}
-      {displayed.length > 0 ? (
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "60px 20px" }}>
+          <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>Carregando...</div>
+        </div>
+      ) : displayed.length > 0 ? (
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
