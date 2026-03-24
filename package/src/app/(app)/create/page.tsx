@@ -83,10 +83,27 @@ export default function CreatePage() {
             .update({ 
               ratings_count: 0, 
               total_earned: 0,
+              current_video_index: 0,
               last_rating_date: new Date().toISOString(),
               updated_at: new Date().toISOString()
             })
             .eq("user_id", user.id);
+        } else if (hoursDiff < 24 && ratingData.ratings_count < 3) {
+          // User has progress but not finished - restore their position
+          const savedIndex = ratingData.current_video_index || 0;
+          setCurrentIndex(savedIndex);
+          setTotalEarned(ratingData.total_earned || 0);
+          // Mark previous videos as rated (we don't know the actual ratings, but they're done)
+          const newRatings = [...ratings];
+          for (let i = 0; i < savedIndex; i++) {
+            newRatings[i] = "done"; // Mark as completed
+          }
+          setRatings(newRatings);
+          // Preload videos from saved index
+          const videosToLoad = [savedIndex];
+          if (savedIndex + 1 < videoData.length) videosToLoad.push(savedIndex + 1);
+          if (savedIndex + 2 < videoData.length) videosToLoad.push(savedIndex + 2);
+          setLoadedVideos(videosToLoad);
         }
       }
 
@@ -197,6 +214,8 @@ export default function CreatePage() {
     // Update Supabase
     const supabase = createClient();
     const ratingsCount = newRatings.filter(r => r !== null).length;
+    // Salva o proximo indice (currentIndex + 1) para quando o usuario voltar
+    const nextIndex = Math.min(currentIndex + 1, videoData.length - 1);
 
     // Upsert video_ratings
     await supabase
@@ -206,6 +225,7 @@ export default function CreatePage() {
         last_rating_date: new Date().toISOString(),
         total_earned: newTotal,
         ratings_count: ratingsCount,
+        current_video_index: nextIndex,
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
