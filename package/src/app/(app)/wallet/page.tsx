@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
-const withdrawAmounts = [
+const withdrawAmounts: { value: number | "all"; label: string; badge: string | null }[] = [
   { value: 30, label: "$30.00", badge: "onlyOnce" },
   { value: 50, label: "$50.00", badge: null },
   { value: 100, label: "$100.00", badge: null },
