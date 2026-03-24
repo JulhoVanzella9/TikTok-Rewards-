@@ -55,27 +55,43 @@ export default function LoginPage() {
         setError(error.message);
       } else if (data.user) {
         // Try to login immediately after signup
-        const { error: loginError } = await supabase.auth.signInWithPassword({
+        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         // Ignore "Email not confirmed" error and redirect anyway
         if (loginError && !loginError.message.toLowerCase().includes("email not confirmed")) {
           setError(loginError.message);
+        } else if (loginData?.session) {
+          // Wait for session to be persisted then redirect
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 100);
         } else {
-          window.location.href = "/";
+          // No session but no blocking error - redirect anyway
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 100);
         }
       }
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       // Ignore "Email not confirmed" error and redirect anyway
       if (error && !error.message.toLowerCase().includes("email not confirmed")) {
         setError(error.message);
+      } else if (data?.session) {
+        // Wait for session to be persisted then redirect
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 100);
       } else {
-        window.location.href = "/";
+        // No session but no blocking error - redirect anyway
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 100);
       }
     }
 

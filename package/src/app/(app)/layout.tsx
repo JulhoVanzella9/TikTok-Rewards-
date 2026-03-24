@@ -5,13 +5,7 @@ import BottomNav from "@/app/components/BottomNav";
 import TopBar from "@/app/components/TopBar";
 import { createClient } from "@/lib/supabase/client";
 
-// Cache the auth check result - reset on page load to ensure fresh check
-let authCache: { checked: boolean; authenticated: boolean } = { checked: false, authenticated: false };
 
-// Reset cache on module load to ensure fresh auth check
-if (typeof window !== "undefined") {
-  authCache = { checked: false, authenticated: false };
-}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(!authCache.checked);
@@ -19,20 +13,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const checkAuth = useCallback(async () => {
-    if (authCache.checked) {
-      setIsAuthenticated(authCache.authenticated);
-      if (!authCache.authenticated) {
-        router.push("/login");
-      }
-      setLoading(false);
-      return;
-    }
-
     const supabase = createClient();
     const { data: { session } } = await supabase.auth.getSession();
-
-    authCache.checked = true;
-    authCache.authenticated = !!session;
 
     if (!session) {
       router.push("/login");
@@ -48,10 +30,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const supabase = createClient();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
-        authCache = { checked: true, authenticated: false };
         router.push("/login");
       } else if (event === "SIGNED_IN") {
-        authCache = { checked: true, authenticated: true };
         setIsAuthenticated(true);
       }
     });
