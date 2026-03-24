@@ -21,6 +21,7 @@ export default function SettingsPage() {
   useEffect(() => {
     const loadUser = async () => {
       const supabase = createClient();
+      if (!supabase) return;
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user.email || "user@email.com");
@@ -42,6 +43,7 @@ export default function SettingsPage() {
     setLanguage(code);
     setShowLangPicker(false);
     const supabase = createClient();
+    if (!supabase) return;
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       await supabase.from("profiles").update({ language: code }).eq("id", user.id);
@@ -51,6 +53,7 @@ export default function SettingsPage() {
   const handleLogout = async () => {
     setLoggingOut(true);
     const supabase = createClient();
+    if (!supabase) { setLoggingOut(false); return; }
     await supabase.auth.signOut();
     window.location.href = "/login";
   };

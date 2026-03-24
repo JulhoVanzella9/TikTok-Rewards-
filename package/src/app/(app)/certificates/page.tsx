@@ -21,6 +21,7 @@ export default function CertificatesPage() {
   useEffect(() => {
     const loadCertificates = async () => {
       const supabase = createClient();
+      if (!supabase) { setLoading(false); return; }
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {

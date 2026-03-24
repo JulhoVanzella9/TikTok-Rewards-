@@ -21,8 +21,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
 
     const supabase = createClient();
+    if (!supabase) { setLoading(false); return; }
     const { data: { session } } = await supabase.auth.getSession();
-    
+
     authCache.checked = true;
     authCache.authenticated = !!session;
     
@@ -38,6 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     checkAuth();
 
     const supabase = createClient();
+    if (!supabase) return;
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
         authCache = { checked: true, authenticated: false };

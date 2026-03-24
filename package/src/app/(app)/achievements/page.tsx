@@ -66,6 +66,11 @@ export default function AchievementsPage() {
   useEffect(() => {
     const loadAchievements = async () => {
       const supabase = createClient();
+      if (!supabase) {
+        setAchievements(achievementDefinitions.map(def => ({ ...def, progress: 0, unlocked: false })));
+        setLoading(false);
+        return;
+      }
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {

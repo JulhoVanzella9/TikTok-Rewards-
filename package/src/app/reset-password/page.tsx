@@ -16,6 +16,7 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     // Check if user has a valid session for password reset
     const supabase = createClient();
+    if (!supabase) { router.push("/login"); return; }
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         router.push("/login");
@@ -42,6 +43,7 @@ export default function ResetPasswordPage() {
     }
 
     const supabase = createClient();
+    if (!supabase) { setLoading(false); return; }
     const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
