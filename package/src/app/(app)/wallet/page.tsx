@@ -8,18 +8,21 @@ import { createClient } from "@/lib/supabase/client";
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
 const withdrawAmounts = [
-  { value: 0.4, label: "$0.40", badge: "onlyOnce" },
-  { value: 1.5, label: "$1.50", badge: null },
-  { value: 5, label: "$5.00", badge: null },
-  { value: 10, label: "$10.00", badge: null },
+  { value: 30, label: "$30.00", badge: "onlyOnce" },
+  { value: 50, label: "$50.00", badge: null },
+  { value: 100, label: "$100.00", badge: null },
+  { value: "all", label: "All Value", badge: null },
 ];
 
 export default function WalletPage() {
   const { t } = useI18n();
-  const [selectedAmount, setSelectedAmount] = useState(0.4);
+  const [selectedAmount, setSelectedAmount] = useState<number | "all">(30);
   const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // Calcula o valor real do saque (se "all", usa o saldo total)
+  const actualWithdrawAmount = selectedAmount === "all" ? balance : selectedAmount;
 
   useEffect(() => {
     const loadBalance = async () => {
@@ -230,7 +233,7 @@ export default function WalletPage() {
                 fontSize: "17px", fontWeight: 800,
                 color: selectedAmount === amount.value ? "#fe2c55" : "#fff",
               }}>
-                {amount.label}
+                {amount.value === "all" ? `All ($${balance.toFixed(2)})` : amount.label}
               </span>
             </motion.button>
           ))}
@@ -238,23 +241,23 @@ export default function WalletPage() {
 
         {/* Withdraw Button */}
         <motion.button
-          whileHover={{ scale: balance >= selectedAmount ? 1.02 : 1 }}
-          whileTap={{ scale: balance >= selectedAmount ? 0.98 : 1 }}
-          disabled={balance < selectedAmount}
+          whileHover={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1.02 : 1 }}
+          whileTap={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 0.98 : 1 }}
+          disabled={balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
           style={{
             width: "100%", padding: "18px", fontSize: "16px", fontWeight: 700,
-            background: balance >= selectedAmount
+            background: balance >= actualWithdrawAmount && actualWithdrawAmount > 0
               ? "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)"
               : "rgba(255,255,255,0.08)",
-            color: balance >= selectedAmount ? "#fff" : "rgba(255,255,255,0.3)",
+            color: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "#fff" : "rgba(255,255,255,0.3)",
             border: "none", borderRadius: "16px", 
-            cursor: balance >= selectedAmount ? "pointer" : "not-allowed",
+            cursor: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
             fontFamily: "inherit",
-            boxShadow: balance >= selectedAmount ? "0 4px 20px rgba(254,44,85,0.3)" : "none",
+            boxShadow: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "0 4px 20px rgba(254,44,85,0.3)" : "none",
             transition: "all 0.2s",
           }}
         >
-          {t("withdrawMoney")}
+          {t("withdrawMoney")} {selectedAmount === "all" && balance > 0 ? `($${balance.toFixed(2)})` : ""}
         </motion.button>
 
         <p style={{
