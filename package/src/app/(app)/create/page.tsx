@@ -314,10 +314,10 @@ export default function CreatePage() {
         justifyContent: "center", minHeight: "80vh", padding: "20px", textAlign: "center",
       }}>
         <h2 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
-          Faca login para avaliar videos
+          Log in to rate videos
         </h2>
         <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
-          Voce precisa estar logado para avaliar videos e ganhar dinheiro.
+          You need to be logged in to rate videos and earn money.
         </p>
       </div>
     );
@@ -353,7 +353,7 @@ export default function CreatePage() {
           transition={{ delay: 0.2 }}
           style={{ fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}
         >
-          Limite Diario Atingido!
+          Daily Limit Reached!
         </motion.h2>
         
         <motion.p
@@ -362,7 +362,7 @@ export default function CreatePage() {
           transition={{ delay: 0.3 }}
           style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", marginBottom: "16px", maxWidth: "320px", lineHeight: 1.6 }}
         >
-          Voce ja avaliou todos os 3 videos de hoje. Volte em 24 horas para avaliar mais videos e continuar ganhando!
+          You have already rated all 3 videos for today. Come back in 24 hours to rate more videos and keep earning!
         </motion.p>
 
         <motion.div
@@ -377,7 +377,7 @@ export default function CreatePage() {
             marginBottom: "24px",
           }}
         >
-          <p style={{ fontSize: "13px", color: "#25f4ee", marginBottom: "4px" }}>Saldo adicionado a carteira</p>
+          <p style={{ fontSize: "13px", color: "#25f4ee", marginBottom: "4px" }}>Balance added to wallet</p>
           <p style={{ fontSize: "32px", fontWeight: 800, color: "#fff" }}>
             +${totalEarned > 0 ? totalEarned.toFixed(2) : "0.00"}
           </p>
@@ -389,7 +389,7 @@ export default function CreatePage() {
           transition={{ delay: 0.5 }}
           style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}
         >
-          Seu saldo esta disponivel na aba Carteira
+          Your balance is available in the Wallet tab
         </motion.p>
       </div>
     );
@@ -471,10 +471,10 @@ export default function CreatePage() {
               </svg>
             </motion.div>
             <h2 style={{ fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
-              Parabens!
+              Congratulations!
             </h2>
             <p style={{ fontSize: "16px", color: "#25f4ee" }}>
-              +${totalEarned.toFixed(2)} adicionados!
+              +${totalEarned.toFixed(2)} added!
             </p>
           </motion.div>
         )}
@@ -491,15 +491,15 @@ export default function CreatePage() {
       </div>
 
       {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", height: "450px" }}>
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", height: "380px" }}>
         <div
           style={{
             transition: "transform 500ms ease-out",
-            transform: `translateY(-${currentIndex * 450}px)`,
+            transform: `translateY(-${currentIndex * 380}px)`,
           }}
         >
           {videoData.map((video, index) => (
-            <div key={index} style={{ position: "relative", width: "100%", height: "450px" }}>
+            <div key={index} style={{ position: "relative", width: "100%", height: "380px" }}>
               <div style={{
                 position: "relative", height: "100%", borderRadius: "16px", overflow: "hidden",
                 background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)",

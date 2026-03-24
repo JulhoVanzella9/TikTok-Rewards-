@@ -14,10 +14,10 @@ export default function CourseDetailPage() {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤷</div>
-        <h2 style={{ color: "#fff", marginBottom: "12px" }}>Curso não encontrado</h2>
+        <h2 style={{ color: "#fff", marginBottom: "12px" }}>Course not found</h2>
         <Link href="/explore" style={{
           color: "#fe2c55", fontWeight: 600, fontSize: "14px",
-        }}>← Voltar ao catálogo</Link>
+        }}>← Back to catalog</Link>
       </div>
     );
   }
@@ -121,33 +121,15 @@ export default function CourseDetailPage() {
               <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>
                 {course.instructor}
               </div>
-              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Instrutor</div>
+              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Instructor</div>
             </div>
-          </div>
-
-          {/* Stats */}
-          <div style={{
-            display: "flex", gap: "20px", marginBottom: "24px",
-            padding: "16px", borderRadius: "14px",
-            background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)",
-          }}>
-            {[
-              { label: "Aulas", value: course.totalLessons },
-              { label: "Duração", value: course.totalDuration },
-              { label: "Módulos", value: course.modules.length },
-            ].map((s) => (
-              <div key={s.label} style={{ textAlign: "center", flex: 1 }}>
-                <div style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>{s.value}</div>
-                <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{s.label}</div>
-              </div>
-            ))}
           </div>
 
           {/* Progress */}
           {course.progress > 0 && (
             <div style={{ marginBottom: "24px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Progresso</span>
+                <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Progress</span>
                 <span style={{ fontSize: "13px", color: "#25f4ee", fontWeight: 700 }}>{course.progress}%</span>
               </div>
               <div style={{
@@ -179,14 +161,14 @@ export default function CourseDetailPage() {
                 fontFamily: "inherit", marginBottom: "32px",
               }}
             >
-              {course.progress > 0 ? "▶ Continuar Assistindo" : "▶ Começar Curso"}
+              {course.progress > 0 ? "▶ Continue Watching" : "▶ Start Course"}
             </motion.button>
           </Link>
         </motion.div>
 
         {/* Modules */}
         <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "16px" }}>
-          Conteúdo do Curso
+          Course Content
         </h2>
 
         {course.modules.map((mod, modIdx) => (
@@ -211,7 +193,7 @@ export default function CourseDetailPage() {
             >
               <div>
                 <div style={{ fontSize: "11px", fontWeight: 700, color: "#fe2c55", marginBottom: "4px" }}>
-                  MÓDULO {modIdx + 1}
+                  MODULE {modIdx + 1}
                 </div>
                 <div style={{ fontSize: "15px", fontWeight: 700, color: "#fff" }}>
                   {mod.title}
@@ -219,7 +201,7 @@ export default function CourseDetailPage() {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                  {mod.lessons.length} aulas
+                  {mod.lessons.length} lessons
                 </span>
                 <motion.svg
                   animate={{ rotate: openModule === modIdx ? 180 : 0 }}
