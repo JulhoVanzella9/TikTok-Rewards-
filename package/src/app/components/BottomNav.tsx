@@ -3,7 +3,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
-import Image from "next/image";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -31,21 +30,32 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/",
+      href: "/create",
       label: "",
       isCenter: true,
       icon: () => (
         <div style={{
-          width: "48px", height: "48px",
+          width: "44px", height: "32px", position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center",
         }}>
-          <Image
-            src="https://sf16-scmcdn-sg.ibytedtos.com/goofy/tiktok/web/node/_next/static/images/logo-7328701c910ebbccb5670085d243fc12.svg"
-            alt="TikTok"
-            width={40}
-            height={40}
-            unoptimized
-          />
+          <div style={{
+            position: "absolute", left: 0, width: "32px", height: "32px",
+            borderRadius: "8px", background: "#25f4ee",
+          }} />
+          <div style={{
+            position: "absolute", right: 0, width: "32px", height: "32px",
+            borderRadius: "8px", background: "#fe2c55",
+          }} />
+          <div style={{
+            position: "relative", width: "32px", height: "32px",
+            borderRadius: "8px", background: "#fff", zIndex: 1,
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
         </div>
       ),
     },
