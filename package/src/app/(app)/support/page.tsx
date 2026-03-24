@@ -44,11 +44,18 @@ export default function SupportPage() {
     
     setIsSubmitting(true);
     
-    // Simulate API call - will be replaced with actual email sending
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // TODO: Send email to support address
-    console.log("Refund request:", { email: refundEmail, reason: refundReason });
+    try {
+      // Send refund request via API
+      const response = await fetch('/api/refund', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: refundEmail, reason: refundReason }),
+      });
+      
+      if (!response.ok) throw new Error('Failed to submit');
+    } catch (error) {
+      console.error('Refund request error:', error);
+    }
     
     setIsSubmitting(false);
     setSubmitted(true);
@@ -158,18 +165,19 @@ export default function SupportPage() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          onClick={() => window.open('mailto:julhoeduardo7@gmail.com?subject=Help%20Request%20-%20TikTok%20Rewards', '_blank')}
           style={{
             padding: "20px 16px",
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "linear-gradient(145deg, rgba(37,244,238,0.1), rgba(37,244,238,0.05))",
+            border: "1px solid rgba(37,244,238,0.15)",
             borderRadius: "16px", cursor: "pointer",
             display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
           }}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/>
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
+            <path d="M12 16v-4"/>
+            <path d="M12 8h.01"/>
           </svg>
           <span style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>
             {t("helpCenter")}

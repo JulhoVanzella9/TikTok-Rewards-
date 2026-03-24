@@ -106,82 +106,44 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Phone Mockup */}
+            {/* Video Player */}
             <div style={{
               padding: "20px",
               display: "flex", justifyContent: "center", alignItems: "center",
               position: "relative",
             }}>
               <div style={{
-                width: "160px", height: "280px",
+                width: "100%",
+                maxWidth: "220px",
+                aspectRatio: "9/16",
                 background: "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)",
-                borderRadius: "24px",
-                border: "3px solid #333",
+                borderRadius: "16px",
+                border: "2px solid rgba(255,255,255,0.1)",
                 overflow: "hidden",
                 position: "relative",
+                display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                {/* Phone Screen Content */}
+                {/* Play Button Overlay */}
                 <div style={{
-                  padding: "8px",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
+                  width: "56px", height: "56px", borderRadius: "50%",
+                  background: "#fe2c55",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
                 }}>
-                  {/* App Header */}
-                  <div style={{
-                    display: "flex", justifyContent: "space-between", alignItems: "center",
-                    padding: "4px 8px", marginBottom: "4px",
-                  }}>
-                    <span style={{ fontSize: "10px", fontWeight: 700, color: "#fff" }}>TikTok Rewards</span>
-                    <span style={{
-                      fontSize: "8px", fontWeight: 700, color: "#fff",
-                      background: "#fe2c55", padding: "2px 6px", borderRadius: "10px",
-                    }}>$10.00</span>
-                  </div>
-                  
-                  {/* Tabs */}
-                  <div style={{
-                    display: "flex", gap: "4px", padding: "0 4px", marginBottom: "8px",
-                    fontSize: "7px", color: "rgba(255,255,255,0.5)",
-                  }}>
-                    <span>LIVE</span>
-                    <span>Explore</span>
-                    <span>Following</span>
-                    <span style={{ color: "#fff", fontWeight: 700 }}>For You</span>
-                  </div>
-
-                  {/* Video Area */}
-                  <div style={{
-                    flex: 1,
-                    background: "linear-gradient(180deg, #2a2a3e 0%, #1a1a2e 100%)",
-                    borderRadius: "8px",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    position: "relative",
-                  }}>
-                    {/* Play Button */}
-                    <div style={{
-                      width: "36px", height: "36px", borderRadius: "50%",
-                      background: "#fe2c55",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Bottom Nav */}
-                  <div style={{
-                    display: "flex", justifyContent: "space-around",
-                    padding: "8px 4px 4px",
-                    fontSize: "6px", color: "rgba(255,255,255,0.5)",
-                  }}>
-                    <span>Home</span>
-                    <span>Explore</span>
-                    <span style={{ color: "#fff" }}>+</span>
-                    <span>Progress</span>
-                    <span>Wallet</span>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                </div>
+                
+                {/* Video duration badge */}
+                <div style={{
+                  position: "absolute", bottom: "12px", right: "12px",
+                  background: "rgba(0,0,0,0.7)", padding: "4px 8px",
+                  borderRadius: "4px", fontSize: "11px", fontWeight: 600,
+                  color: "#fff",
+                }}>
+                  2:45
                 </div>
               </div>
             </div>
