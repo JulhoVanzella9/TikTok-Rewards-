@@ -14,11 +14,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const checkAuth = useCallback(async () => {
     const supabase = createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    console.log("[v0] checkAuth - session:", session, "error:", error);
 
     if (!session) {
+      console.log("[v0] No session, redirecting to login");
       router.push("/login");
     } else {
+      console.log("[v0] Session found, user authenticated");
       setIsAuthenticated(true);
     }
     setLoading(false);
