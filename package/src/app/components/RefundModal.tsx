@@ -87,15 +87,15 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   display: "flex", 
                   alignItems: "center", 
                   justifyContent: "center",
-                  marginBottom: "24px",
+                  marginBottom: "32px",
                   width: "100%",
                 }}>
                   <Image 
                     src="/images/tiktok-rewards-logo.png" 
                     alt="TikTok Rewards" 
-                    width={240} 
-                    height={48}
-                    style={{ objectFit: "contain" }}
+                    width={320} 
+                    height={64}
+                    style={{ objectFit: "contain", width: "auto", height: "auto", maxWidth: "100%" }}
                     priority
                   />
                 </div>

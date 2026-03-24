@@ -22,9 +22,9 @@ export default function TopBar() {
           <Image 
             src="/images/tiktok-rewards-logo.png" 
             alt="TikTok Rewards" 
-            width={160} 
-            height={32}
-            style={{ objectFit: "contain" }}
+            width={180} 
+            height={36}
+            style={{ objectFit: "contain", width: "auto", height: "36px" }}
             priority
           />
         </motion.div>
