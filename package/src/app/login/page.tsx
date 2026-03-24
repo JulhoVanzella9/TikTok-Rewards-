@@ -45,6 +45,7 @@ export default function LoginPage() {
         email,
         password,
         options: {
+          emailRedirectTo: getRedirectUrl(),
           data: {
             display_name: email.split("@")[0],
             username: email.split("@")[0],
@@ -53,45 +54,22 @@ export default function LoginPage() {
       });
       if (error) {
         setError(error.message);
+      } else if (data.session) {
+        // Session created immediately (email confirmation disabled)
+        window.location.href = "/";
       } else if (data.user) {
-        // Try to login immediately after signup
-        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        // Ignore "Email not confirmed" error and redirect anyway
-        if (loginError && !loginError.message.toLowerCase().includes("email not confirmed")) {
-          setError(loginError.message);
-        } else if (loginData?.session) {
-          // Wait for session to be persisted then redirect
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 100);
-        } else {
-          // No session but no blocking error - redirect anyway
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 100);
-        }
+        // User created but needs email confirmation
+        setSuccess(t("checkEmail"));
       }
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      // Ignore "Email not confirmed" error and redirect anyway
-      if (error && !error.message.toLowerCase().includes("email not confirmed")) {
+      if (error) {
         setError(error.message);
       } else if (data?.session) {
-        // Wait for session to be persisted then redirect
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 100);
-      } else {
-        // No session but no blocking error - redirect anyway
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 100);
+        window.location.href = "/";
       }
     }
 
