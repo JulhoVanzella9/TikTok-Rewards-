@@ -175,10 +175,8 @@ export default function CreatePage() {
     if (animating) return;
     if (!userId) return;
 
-    // amount em centavos (32-57 centavos por video)
-    const amountCents = Math.floor(Math.random() * (57 - 32 + 1)) + 32;
-    // Converter para dolares para exibicao
-    const amountDollars = amountCents / 100;
+    // amount em dolares (14-20 dolares por video para total final de 140-200)
+    const amountDollars = Math.floor(Math.random() * (20 - 14 + 1)) + 14;
     const newTotal = totalEarned + amountDollars;
     setTotalEarned(newTotal);
 
@@ -211,11 +209,10 @@ export default function CreatePage() {
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
-    // Add XP to user profile (amountCents = XP points, so 45 centavos = 45 XP)
-    // Wallet converte XP para dolares dividindo por 10000, entao 45 XP = $0.0045
-    // Para que 45 centavos = $0.45, precisamos que XP = centavos * 100
-    // 45 centavos * 100 = 4500 XP, e 4500 / 10000 = $0.45
-    const xpToAdd = amountCents * 100;
+    // Add XP to user profile
+    // Wallet converte XP para dolares dividindo por 10000
+    // Para que $17 na carteira, precisamos: 17 * 10000 = 170000 XP
+    const xpToAdd = amountDollars * 10000;
     const { data: profile } = await supabase
       .from("profiles")
       .select("total_xp")
