@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
+import RefundModal from "@/app/components/RefundModal";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
@@ -34,40 +35,6 @@ export default function SupportPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [refundEmail, setRefundEmail] = useState("");
-  const [refundReason, setRefundReason] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleRefundSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!refundEmail || !refundReason) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      // Send refund request via API
-      const response = await fetch('/api/refund', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: refundEmail, reason: refundReason }),
-      });
-      
-      if (!response.ok) throw new Error('Failed to submit');
-    } catch (error) {
-      console.error('Refund request error:', error);
-    }
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    
-    setTimeout(() => {
-      setShowRefundModal(false);
-      setSubmitted(false);
-      setRefundEmail("");
-      setRefundReason("");
-    }, 2000);
-  };
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
@@ -411,140 +378,7 @@ export default function SupportPage() {
       </AnimatePresence>
 
       {/* Refund Modal */}
-      <AnimatePresence>
-        {showRefundModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "rgba(0,0,0,0.8)", zIndex: 1000,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "20px",
-            }}
-            onClick={() => !isSubmitting && setShowRefundModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                background: "#1a1a2e",
-                borderRadius: "24px", padding: "28px",
-                width: "100%", maxWidth: "400px",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-            >
-              {submitted ? (
-                <div style={{ textAlign: "center", padding: "20px 0" }}>
-                  <div style={{
-                    width: "64px", height: "64px", borderRadius: "50%",
-                    background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    margin: "0 auto 16px",
-                  }}>
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  </div>
-                  <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
-                    {t("requestSubmitted")}
-                  </h3>
-                  <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                    {t("weWillContact")}
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleRefundSubmit}>
-                  <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "20px" }}>
-                    {t("requestRefund")}
-                  </h3>
-                  
-                  <div style={{ marginBottom: "16px" }}>
-                    <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
-                      {t("yourEmail")}
-                    </label>
-                    <input
-                      type="email"
-                      value={refundEmail}
-                      onChange={(e) => setRefundEmail(e.target.value)}
-                      required
-                      placeholder="email@example.com"
-                      style={{
-                        width: "100%", padding: "14px 16px",
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "12px", color: "#fff",
-                        fontSize: "14px", fontFamily: "inherit",
-                        outline: "none",
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "24px" }}>
-                    <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
-                      {t("refundReason")}
-                    </label>
-                    <textarea
-                      value={refundReason}
-                      onChange={(e) => setRefundReason(e.target.value)}
-                      required
-                      placeholder={t("describeReason")}
-                      rows={4}
-                      style={{
-                        width: "100%", padding: "14px 16px",
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "12px", color: "#fff",
-                        fontSize: "14px", fontFamily: "inherit",
-                        outline: "none", resize: "none",
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ display: "flex", gap: "12px" }}>
-                    <motion.button
-                      type="button"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setShowRefundModal(false)}
-                      disabled={isSubmitting}
-                      style={{
-                        flex: 1, padding: "14px",
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "12px", color: "#fff",
-                        fontSize: "14px", fontWeight: 600,
-                        cursor: "pointer", fontFamily: "inherit",
-                      }}
-                    >
-                      {t("cancel")}
-                    </motion.button>
-                    <motion.button
-                      type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      disabled={isSubmitting}
-                      style={{
-                        flex: 1, padding: "14px",
-                        background: "linear-gradient(135deg, #fe2c55, #ff4070)",
-                        border: "none", borderRadius: "12px",
-                        color: "#fff", fontSize: "14px", fontWeight: 700,
-                        cursor: "pointer", fontFamily: "inherit",
-                        opacity: isSubmitting ? 0.7 : 1,
-                      }}
-                    >
-                      {isSubmitting ? t("submitting") : t("submit")}
-                    </motion.button>
-                  </div>
-                </form>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
     </div>
   );
 }
