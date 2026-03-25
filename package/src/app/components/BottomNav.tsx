@@ -22,7 +22,7 @@ export default function BottomNav() {
       label: t("home"),
       activeColor: "#fe2c55",
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill={active ? "#fe2c55" : "none"} stroke={active ? "#fe2c55" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
@@ -142,22 +142,6 @@ export default function BottomNav() {
                 tab.icon()
               ) : (
                 <>
-                  {/* Active indicator */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTab"
-                      style={{
-                        position: "absolute",
-                        top: "4px",
-                        width: "4px",
-                        height: "4px",
-                        borderRadius: "50%",
-                        background: tab.activeColor,
-                        boxShadow: `0 0 8px ${tab.activeColor}`,
-                      }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
                   <motion.div 
                     animate={{ 
                       y: isActive ? -2 : 0,

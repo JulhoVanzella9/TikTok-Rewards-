@@ -206,7 +206,8 @@ export default function HomePage() {
               </p>
               
               {/* CTA Button */}
-              <motion.button
+              <motion.a
+                href="/course/tiktok-growth"
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -224,13 +225,14 @@ export default function HomePage() {
                   alignItems: "center",
                   gap: "8px",
                   width: "fit-content",
+                  textDecoration: "none",
                 }}
               >
                 <span>Learn More</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
-              </motion.button>
+              </motion.a>
             </div>
 
             {/* Video Player */}
