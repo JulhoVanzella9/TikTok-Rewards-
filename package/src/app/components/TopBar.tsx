@@ -84,15 +84,15 @@ export default function TopBar() {
   // Animation variants
   const menuVariants = {
     hidden: { x: "100%", opacity: 0 },
-    visible: { 
-      x: 0, 
+    visible: {
+      x: 0,
       opacity: 1,
-      transition: { type: "spring", damping: 25, stiffness: 300 }
+      transition: { type: "spring" as const, damping: 25, stiffness: 300 }
     },
-    exit: { 
-      x: "100%", 
+    exit: {
+      x: "100%",
       opacity: 0,
-      transition: { type: "spring", damping: 30, stiffness: 400 }
+      transition: { type: "spring" as const, damping: 30, stiffness: 400 }
     }
   };
 
@@ -101,7 +101,7 @@ export default function TopBar() {
     visible: (i: number) => ({
       x: 0,
       opacity: 1,
-      transition: { delay: i * 0.05, type: "spring", damping: 20, stiffness: 300 }
+      transition: { delay: i * 0.05, type: "spring" as const, damping: 20, stiffness: 300 }
     })
   };
 
