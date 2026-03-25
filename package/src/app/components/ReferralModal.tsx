@@ -152,7 +152,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
               Invite Friends & Earn
             </h2>
             <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.5 }}>
-              Share your referral link and earn <span style={{ color: "#25f4ee", fontWeight: 700 }}>$5.00</span> for each friend who joins!
+              Share your referral link and earn <span style={{ color: "#25f4ee", fontWeight: 700 }}>$20.00</span> for each friend who joins!
             </p>
           </div>
 
@@ -293,7 +293,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
               {[
                 { num: "1", text: "Share your unique link with friends" },
                 { num: "2", text: "They sign up and rate their first video" },
-                { num: "3", text: "You both earn $5.00 bonus!" },
+                { num: "3", text: "You both earn $20.00 bonus!" },
               ].map((step) => (
                 <div key={step.num} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                   <div style={{

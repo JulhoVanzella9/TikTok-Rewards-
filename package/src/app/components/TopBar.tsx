@@ -421,7 +421,7 @@ export default function TopBar() {
                           fontWeight: 700,
                           color: "#fff",
                         }}>
-                          +$5
+                          +$20
                         </span>
                       </motion.button>
                     ) : (item as { isInstall?: boolean }).isInstall ? (

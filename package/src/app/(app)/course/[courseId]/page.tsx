@@ -5,12 +5,19 @@ import Link from "next/link";
 import { getCourseById } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
-// Module card gradients
-const moduleGradients = [
-  "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-  "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-  "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-  "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+// Module images and gradients - TikTok style
+const moduleStyles = [
+  { gradient: "linear-gradient(135deg, #00f2ea 0%, #00c4b8 100%)", accent: "#00f2ea" },
+  { gradient: "linear-gradient(135deg, #69c9d0 0%, #4db8bf 100%)", accent: "#69c9d0" },
+  { gradient: "linear-gradient(135deg, #ee1d52 0%, #c91740 100%)", accent: "#ee1d52" },
+  { gradient: "linear-gradient(135deg, #ff6b8a 0%, #fe2c55 100%)", accent: "#ff6b8a" },
+];
+
+const moduleTitles = [
+  "TikTok Fundamentals",
+  "Creating Viral Content", 
+  "Advanced Monetization",
+  "Scaling Your Results",
 ];
 
 export default function CourseDetailPage() {
@@ -35,225 +42,166 @@ export default function CourseDetailPage() {
     <div style={{ 
       minHeight: "100vh", 
       paddingBottom: "100px",
-      background: isDarkMode ? "#000" : "#f5f5f5",
+      background: isDarkMode ? "#000" : "#fafafa",
     }}>
-      {/* Header Tabs */}
-      <div style={{
-        display: "flex",
-        gap: "8px",
-        padding: "20px 16px 0",
-        marginBottom: "24px",
-        overflowX: "auto",
+      {/* Header */}
+      <div style={{ 
+        padding: "20px 16px 16px",
+        borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
       }}>
-        <div style={{
-          padding: "10px 18px",
-          background: "rgba(254,44,85,0.15)",
-          border: "1px solid rgba(254,44,85,0.3)",
-          borderRadius: "25px",
-          color: "#fe2c55",
-          fontSize: "13px",
-          fontWeight: 600,
-          whiteSpace: "nowrap",
-        }}>
-          TikTok Rewards Program
-        </div>
-        <div style={{
-          padding: "10px 18px",
-          background: isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
-          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-          borderRadius: "25px",
-          color: "var(--text-secondary)",
-          fontSize: "13px",
-          fontWeight: 500,
-          whiteSpace: "nowrap",
-        }}>
-          Programa de Recompensas
-        </div>
-      </div>
-
-      {/* Title Section */}
-      <div style={{ padding: "0 16px", marginBottom: "28px" }}>
         <h1 style={{
-          fontSize: "26px",
+          fontSize: "22px",
           fontWeight: 800,
           color: "var(--text-primary)",
-          marginBottom: "12px",
-          lineHeight: 1.2,
+          marginBottom: "4px",
         }}>
-          TikTok Rewards Program
+          TikTok Rewards
         </h1>
-        <div style={{
-          width: "100px",
-          height: "4px",
-          background: "linear-gradient(90deg, #fe2c55 0%, #ff6b8a 100%)",
-          borderRadius: "2px",
-        }} />
+        <p style={{
+          fontSize: "13px",
+          color: "var(--text-muted)",
+        }}>
+          {course.modules.length} modules | {course.totalLessons} lessons
+        </p>
       </div>
 
       {/* Module Grid */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
-        gap: "14px",
-        padding: "0 16px",
+        gap: "12px",
+        padding: "16px",
       }}>
         {course.modules.map((module, index) => (
           <motion.div
             key={module.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, type: "spring", stiffness: 300, damping: 25 }}
+            transition={{ delay: index * 0.08, type: "spring", stiffness: 300, damping: 25 }}
           >
             <Link 
               href={`/course/${course.id}/lesson/${module.lessons[0]?.id}`}
               style={{ textDecoration: "none" }}
             >
               <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
                   background: isDarkMode 
-                    ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d15 100%)"
+                    ? "#161622"
                     : "#fff",
-                  borderRadius: "18px",
+                  borderRadius: "16px",
                   overflow: "hidden",
-                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
-                  boxShadow: isDarkMode 
-                    ? "0 8px 32px rgba(0,0,0,0.4)"
-                    : "0 4px 20px rgba(0,0,0,0.08)",
+                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                 }}
               >
-                {/* Module Header */}
+                {/* Module Image Area */}
                 <div style={{
-                  padding: "10px 14px",
-                  background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-                }}>
-                  <span style={{
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    color: "var(--text-muted)",
-                    letterSpacing: "1.5px",
-                  }}>
-                    MODULE 0{index + 1}
-                  </span>
-                </div>
-
-                {/* Module Image */}
-                <div style={{
-                  height: "130px",
-                  background: moduleGradients[index % moduleGradients.length],
+                  height: "140px",
+                  background: moduleStyles[index % moduleStyles.length].gradient,
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
                   position: "relative",
                   overflow: "hidden",
                 }}>
+                  {/* Decorative pattern */}
+                  <div style={{
+                    position: "absolute",
+                    inset: 0,
+                    opacity: 0.1,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }} />
+
                   {/* TikTok Logo */}
                   <div style={{
-                    width: "48px",
-                    height: "48px",
+                    width: "50px",
+                    height: "50px",
                     borderRadius: "14px",
-                    background: "rgba(0,0,0,0.25)",
+                    background: "rgba(0,0,0,0.2)",
                     backdropFilter: "blur(10px)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+                    marginBottom: "8px",
                   }}>
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                       <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" fill="#fff"/>
                     </svg>
                   </div>
                   
-                  {/* TikTok Rewards text */}
-                  <div style={{
-                    position: "absolute",
-                    bottom: "12px",
-                    left: "12px",
-                    right: "12px",
-                  }}>
+                  {/* TikTok REWARDS text */}
+                  <div style={{ textAlign: "center" }}>
                     <div style={{
-                      fontSize: "14px",
+                      fontSize: "15px",
                       fontWeight: 800,
                       color: "#fff",
-                      textShadow: "0 2px 8px rgba(0,0,0,0.3)",
-                      lineHeight: 1.1,
+                      textShadow: "0 2px 8px rgba(0,0,0,0.2)",
                     }}>
                       TikTok
                     </div>
                     <div style={{
-                      fontSize: "16px",
+                      fontSize: "18px",
                       fontWeight: 900,
                       color: "#ffd700",
                       textShadow: "0 2px 8px rgba(0,0,0,0.3)",
-                      letterSpacing: "-0.5px",
+                      letterSpacing: "1px",
                     }}>
                       REWARDS
                     </div>
                   </div>
 
-                  {/* Decorative coins */}
+                  {/* Coin decoration */}
                   <div style={{
                     position: "absolute",
-                    bottom: "8px",
-                    right: "8px",
-                    width: "28px",
-                    height: "28px",
+                    bottom: "10px",
+                    right: "10px",
+                    width: "24px",
+                    height: "24px",
                     borderRadius: "50%",
                     background: "linear-gradient(135deg, #ffd700 0%, #ffaa00 100%)",
-                    boxShadow: "0 4px 12px rgba(255,215,0,0.5)",
-                    border: "2px solid rgba(255,255,255,0.3)",
-                  }} />
-                  <div style={{
-                    position: "absolute",
-                    bottom: "22px",
-                    right: "22px",
-                    width: "18px",
-                    height: "18px",
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, #ffd700 0%, #ffaa00 100%)",
-                    boxShadow: "0 3px 8px rgba(255,215,0,0.4)",
-                    opacity: 0.85,
+                    boxShadow: "0 3px 10px rgba(255,215,0,0.5)",
+                    border: "2px solid rgba(255,255,255,0.4)",
                   }} />
                 </div>
 
                 {/* Module Info */}
                 <div style={{ padding: "14px" }}>
-                  <h3 style={{
-                    fontSize: "13px",
+                  <div style={{
+                    fontSize: "11px",
                     fontWeight: 600,
-                    color: "var(--text-secondary)",
-                    marginBottom: "2px",
+                    color: "var(--text-muted)",
+                    marginBottom: "4px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
                   }}>
                     Module 0{index + 1} |
-                  </h3>
-                  <p style={{
+                  </div>
+                  <h3 style={{
                     fontSize: "14px",
                     fontWeight: 700,
                     color: "var(--text-primary)",
                     lineHeight: 1.3,
+                    minHeight: "36px",
                   }}>
-                    {module.title}
-                  </p>
+                    {moduleTitles[index] || module.title}
+                  </h3>
                   
-                  {/* Progress bar */}
+                  {/* Progress bar - always at 0 for new users */}
                   <div style={{
                     marginTop: "12px",
                     height: "3px",
-                    background: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
+                    background: isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
                     borderRadius: "2px",
                     overflow: "hidden",
                   }}>
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${index === 0 ? 30 : 0}%` }}
-                      transition={{ delay: 0.5 + index * 0.1, duration: 0.8 }}
-                      style={{
-                        height: "100%",
-                        background: "linear-gradient(90deg, #fe2c55 0%, #25f4ee 100%)",
-                        borderRadius: "2px",
-                      }} 
-                    />
+                    <div style={{
+                      height: "100%",
+                      width: "0%",
+                      background: moduleStyles[index % moduleStyles.length].accent,
+                      borderRadius: "2px",
+                    }} />
                   </div>
                 </div>
               </motion.div>
@@ -262,42 +210,43 @@ export default function CourseDetailPage() {
         ))}
       </div>
 
-      {/* Stats Section */}
+      {/* Quick Stats */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.4 }}
         style={{
-          margin: "28px 16px",
-          padding: "20px",
+          margin: "8px 16px 20px",
+          padding: "16px 20px",
           background: isDarkMode 
-            ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.08) 100%)"
-            : "linear-gradient(135deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.06) 100%)",
-          borderRadius: "18px",
-          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+            ? "linear-gradient(135deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.06) 100%)"
+            : "linear-gradient(135deg, rgba(254,44,85,0.04) 0%, rgba(37,244,238,0.04) 100%)",
+          borderRadius: "14px",
+          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)"}`,
+          display: "flex",
+          justifyContent: "space-around",
+          textAlign: "center",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-around", textAlign: "center" }}>
-          <div>
-            <div style={{ fontSize: "22px", fontWeight: 800, color: "#fe2c55" }}>
-              {course.modules.length}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Modules</div>
+        <div>
+          <div style={{ fontSize: "20px", fontWeight: 800, color: "#fe2c55" }}>
+            {course.modules.length}
           </div>
-          <div style={{ width: "1px", background: "var(--border-color)" }} />
-          <div>
-            <div style={{ fontSize: "22px", fontWeight: 800, color: "#25f4ee" }}>
-              {course.totalLessons}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Lessons</div>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Modules</div>
+        </div>
+        <div style={{ width: "1px", background: "var(--border-color)" }} />
+        <div>
+          <div style={{ fontSize: "20px", fontWeight: 800, color: "#25f4ee" }}>
+            {course.totalLessons}
           </div>
-          <div style={{ width: "1px", background: "var(--border-color)" }} />
-          <div>
-            <div style={{ fontSize: "22px", fontWeight: 800, color: "var(--text-primary)" }}>
-              {course.totalDuration}
-            </div>
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Duration</div>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Lessons</div>
+        </div>
+        <div style={{ width: "1px", background: "var(--border-color)" }} />
+        <div>
+          <div style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)" }}>
+            {course.totalDuration}
           </div>
+          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Duration</div>
         </div>
       </motion.div>
 
@@ -312,7 +261,7 @@ export default function CourseDetailPage() {
               padding: "16px",
               background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
               border: "none",
-              borderRadius: "14px",
+              borderRadius: "12px",
               color: "#fff",
               fontSize: "16px",
               fontWeight: 700,
@@ -321,13 +270,13 @@ export default function CourseDetailPage() {
               alignItems: "center",
               justifyContent: "center",
               gap: "10px",
-              boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
+              boxShadow: "0 4px 20px rgba(254,44,85,0.35)",
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
               <path d="M8 5v14l11-7z"/>
             </svg>
-            Start Course
+            Start Learning
           </motion.button>
         </Link>
       </div>

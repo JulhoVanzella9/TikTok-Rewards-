@@ -39,7 +39,19 @@ export default function InstallPrompt() {
       }
     }
 
-    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+    // Listen for custom trigger event
+    const handleTrigger = () => {
+      setShowPrompt(true);
+      if (isIOSDevice) {
+        setShowIOSInstructions(true);
+      }
+    };
+    window.addEventListener("triggerInstallPrompt", handleTrigger);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+      window.removeEventListener("triggerInstallPrompt", handleTrigger);
+    };
   }, []);
 
   const handleInstall = async () => {

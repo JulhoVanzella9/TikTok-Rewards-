@@ -428,7 +428,7 @@ export default function CreatePage() {
                 Invite Friends & Earn More!
               </h3>
               <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                Get $5.00 for each friend who joins
+                Get $20.00 for each friend who joins
               </p>
             </div>
           </div>
