@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
+import { useTheme } from "@/lib/theme/context";
 
 const videoData = [
   {
@@ -31,6 +32,8 @@ const videoData = [
 ];
 
 export default function CreatePage() {
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState<(string | null)[]>([null, null, null]);
   const [animating, setAnimating] = useState(false);
@@ -310,10 +313,10 @@ export default function CreatePage() {
         display: "flex", flexDirection: "column", alignItems: "center",
         justifyContent: "center", minHeight: "80vh", padding: "20px", textAlign: "center",
       }}>
-        <h2 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
+        <h2 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "12px" }}>
           Log in to rate videos
         </h2>
-        <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
+        <p style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
           You need to be logged in to rate videos and earn money.
         </p>
       </div>
@@ -348,7 +351,7 @@ export default function CreatePage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          style={{ fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}
+          style={{ fontSize: "24px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "12px" }}
         >
           Daily Limit Reached!
         </motion.h2>
@@ -357,7 +360,7 @@ export default function CreatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", marginBottom: "16px", maxWidth: "320px", lineHeight: 1.6 }}
+          style={{ fontSize: "15px", color: "var(--text-secondary)", marginBottom: "16px", maxWidth: "320px", lineHeight: 1.6 }}
         >
           You have already rated all 3 videos for today. Come back in 24 hours to rate more videos and keep earning!
         </motion.p>
@@ -375,7 +378,7 @@ export default function CreatePage() {
           }}
         >
           <p style={{ fontSize: "13px", color: "#25f4ee", marginBottom: "4px" }}>Balance added to wallet</p>
-          <p style={{ fontSize: "32px", fontWeight: 800, color: "#fff" }}>
+          <p style={{ fontSize: "32px", fontWeight: 800, color: "var(--text-primary)" }}>
             +${totalEarned > 0 ? totalEarned.toFixed(2) : "0.00"}
           </p>
         </motion.div>
@@ -384,7 +387,7 @@ export default function CreatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}
+          style={{ fontSize: "13px", color: "var(--text-muted)" }}
         >
           Your balance is available in the Wallet tab
         </motion.p>
@@ -467,7 +470,7 @@ export default function CreatePage() {
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
             </motion.div>
-            <h2 style={{ fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+            <h2 style={{ fontSize: "24px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "8px" }}>
               Congratulations!
             </h2>
             <p style={{ fontSize: "16px", color: "#25f4ee" }}>
@@ -485,7 +488,7 @@ export default function CreatePage() {
           display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", 
           marginBottom: "16px", padding: "12px 20px",
           background: "linear-gradient(135deg, rgba(37,244,238,0.1) 0%, rgba(254,44,85,0.1) 100%)",
-          borderRadius: "16px", border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "16px", border: `1px solid var(--border-color)`,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -493,14 +496,14 @@ export default function CreatePage() {
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
             <line x1="1" y1="10" x2="23" y2="10"/>
           </svg>
-          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 500 }}>Balance</span>
+          <span style={{ color: "var(--text-secondary)", fontSize: "14px", fontWeight: 500 }}>Balance</span>
         </div>
         <motion.span 
           key={displayedBalance}
           initial={{ scale: 1.2, color: "#25f4ee" }}
-          animate={{ scale: 1, color: "#fff" }}
+          animate={{ scale: 1, color: "var(--text-primary)" }}
           style={{ 
-            fontSize: "22px", fontWeight: 800, color: "#fff",
+            fontSize: "22px", fontWeight: 800, color: "var(--text-primary)",
             textShadow: totalEarned > 0 ? "0 0 20px rgba(37,244,238,0.5)" : "none",
           }}
         >
@@ -620,7 +623,7 @@ export default function CreatePage() {
 
       {/* Pergunta */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
-        <h2 style={{ color: "#fff", fontWeight: 700, fontSize: "18px" }}>
+        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "18px" }}>
           How do you feel about this video cover?
         </h2>
         <p style={{ color: "#25f4ee", fontSize: "14px", marginTop: "4px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
