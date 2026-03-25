@@ -163,14 +163,14 @@ export default function TopBar() {
               </svg>
             </div>
             <span style={{
-              fontSize: "17px",
-              fontWeight: 800,
+              fontSize: "18px",
+              fontWeight: 700,
               color: isDarkMode ? "#fff" : "#000",
               letterSpacing: "-0.3px",
               fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
               lineHeight: "26px",
             }}>
-              TikTok<span style={{ color: "#fe2c55", marginLeft: "4px" }}>Rewards</span>
+              TikTok <span style={{ color: "#25f4ee" }}>Rewards</span>
             </span>
           </motion.div>
         </Link>
