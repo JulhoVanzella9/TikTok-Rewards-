@@ -12,7 +12,7 @@ export default function LoginPage() {
   const referralCode = searchParams.get("ref");
   const { t } = useI18n();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("myacess2026");
   const [step, setStep] = useState<"email" | "password">("email");
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -290,6 +290,9 @@ export default function LoginPage() {
                 exit={{ opacity: 0, height: 0 }}
                 style={{ marginBottom: "16px" }}
               >
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", marginBottom: "8px", textAlign: "center" }}>
+                  Default password (do not change):
+                </p>
                 <div
                   style={{
                     borderRadius: "12px",
@@ -300,7 +303,7 @@ export default function LoginPage() {
                   }}
                 >
                   <input
-                    type="password"
+                    type="text"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -308,11 +311,12 @@ export default function LoginPage() {
                     onBlur={() => setFocusedField(null)}
                     required
                     minLength={6}
-                    autoFocus
+                    readOnly
                     style={{
                       width: "100%", padding: "16px 18px", fontSize: "15px",
                       background: "transparent",
-                      border: "none", color: "#fff", outline: "none", fontFamily: "inherit",
+                      border: "none", color: "#25f4ee", outline: "none", fontFamily: "inherit",
+                      fontWeight: 600,
                     }}
                   />
                 </div>

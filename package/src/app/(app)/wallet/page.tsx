@@ -247,19 +247,19 @@ export default function WalletPage() {
 
         {/* Withdraw Button */}
         <motion.button
-          whileHover={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1.02 : 1 }}
-          whileTap={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 0.98 : 1 }}
-          disabled={balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
+          whileHover={{ scale: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1.02 : 1 }}
+          whileTap={{ scale: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 0.98 : 1 }}
+          disabled={balance < 5000 || balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
           style={{
             width: "100%", padding: "14px", fontSize: "15px", fontWeight: 700,
-            background: balance >= actualWithdrawAmount && actualWithdrawAmount > 0
+            background: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0
               ? "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)"
               : "rgba(255,255,255,0.08)",
-            color: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "#fff" : "rgba(255,255,255,0.3)",
+            color: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "#fff" : "rgba(255,255,255,0.3)",
             border: "none", borderRadius: "16px", 
-            cursor: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
+            cursor: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
             fontFamily: "inherit",
-            boxShadow: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "0 4px 20px rgba(254,44,85,0.3)" : "none",
+            boxShadow: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "0 4px 20px rgba(254,44,85,0.3)" : "none",
             transition: "all 0.2s",
           }}
         >
@@ -270,7 +270,7 @@ export default function WalletPage() {
           fontSize: "12px", color: "var(--text-muted)",
           textAlign: "center", marginTop: "16px", lineHeight: 1.6,
         }}>
-          {t("withdrawMinimum")} $0.40. {t("withdrawTime")}
+          Minimum balance to withdraw: $5,000.00. {t("withdrawTime")}
         </p>
       </motion.div>
     </div>

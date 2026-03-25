@@ -1,7 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
+import { createClient } from "@/lib/supabase/client";
 
 // Faster animation variants
 const fadeIn = { hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } };
@@ -10,6 +12,24 @@ export default function HomePage() {
   const { t } = useI18n();
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    const loadBalance = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("total_xp")
+        .eq("id", user.id)
+        .single();
+      if (profile) {
+        setBalance((profile.total_xp || 0) / 10000);
+      }
+    };
+    loadBalance();
+  }, []);
 
   return (
     <div style={{ 
@@ -20,6 +40,32 @@ export default function HomePage() {
       transition: "color 0.3s ease",
       paddingBottom: "20px",
     }}>
+      {/* Balance Display */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{ 
+          display: "flex", alignItems: "center", justifyContent: "flex-end", 
+          marginBottom: "12px",
+        }}
+      >
+        <div style={{ 
+          display: "flex", alignItems: "center", gap: "6px",
+          padding: "6px 12px",
+          background: "rgba(0,0,0,0.6)",
+          borderRadius: "16px",
+          border: "1px solid rgba(255,255,255,0.1)",
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", fontWeight: 500 }}>Balance</span>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>
+            ${balance.toFixed(2)}
+          </span>
+        </div>
+      </motion.div>
       {/* Video Tutorial Section */}
       <motion.div
         initial="hidden"

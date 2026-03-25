@@ -68,6 +68,9 @@ export default function InstallPrompt() {
         setShowPrompt(false);
       }
       setDeferredPrompt(null);
+    } else {
+      // No native prompt available, show manual instructions
+      setShowIOSInstructions(true);
     }
   };
 
@@ -102,7 +105,7 @@ export default function InstallPrompt() {
           <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>
-                Add to Home Screen
+                {isIOS ? "Install on iPhone/iPad" : "Install on Android"}
               </h3>
               <button
                 onClick={handleDismiss}
@@ -114,39 +117,83 @@ export default function InstallPrompt() {
               </button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{
-                  width: "32px", height: "32px", borderRadius: "8px",
-                  background: "rgba(37,244,238,0.1)", display: "flex",
-                  alignItems: "center", justifyContent: "center",
-                }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                    <polyline points="16 6 12 2 8 6"/>
-                    <line x1="12" y1="2" x2="12" y2="15"/>
-                  </svg>
-                </div>
-                <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)" }}>
-                  Tap the <strong>Share</strong> button in Safari
-                </span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{
-                  width: "32px", height: "32px", borderRadius: "8px",
-                  background: "rgba(254,44,85,0.1)", display: "flex",
-                  alignItems: "center", justifyContent: "center",
-                }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <line x1="12" y1="8" x2="12" y2="16"/>
-                    <line x1="8" y1="12" x2="16" y2="12"/>
-                  </svg>
-                </div>
-                <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)" }}>
-                  Select <strong>Add to Home Screen</strong>
-                </span>
-              </div>
+              {isIOS ? (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#25f4ee", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>1</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Tap the <strong style={{ color: "#25f4ee" }}>Share</strong> button at the bottom of Safari
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#fe2c55", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
+                    }}>2</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Scroll and tap <strong style={{ color: "#fe2c55" }}>Add to Home Screen</strong>
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#fff", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>3</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Tap <strong style={{ color: "#fff" }}>Add</strong> in the top right corner
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#25f4ee", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>1</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Tap the <strong style={{ color: "#25f4ee" }}>three dots menu</strong> (top right)
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#fe2c55", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
+                    }}>2</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Select <strong style={{ color: "#fe2c55" }}>Add to Home Screen</strong> or <strong style={{ color: "#fe2c55" }}>Install App</strong>
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#fff", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>3</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Tap <strong style={{ color: "#fff" }}>Install</strong> to confirm
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
+            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", marginTop: "12px", textAlign: "center" }}>
+              The app icon will appear on your home screen
+            </p>
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
