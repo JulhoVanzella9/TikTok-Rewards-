@@ -77,6 +77,23 @@ export default function LoginPage() {
         }
       } else if (data.session) {
         // Direct login after signup (no email confirmation needed)
+        // Process referral if exists
+        const savedReferralCode = localStorage.getItem("referralCode") || referralCode;
+        if (savedReferralCode && data.user) {
+          try {
+            await fetch("/api/referral/process", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                referralCode: savedReferralCode,
+                userId: data.user.id 
+              }),
+            });
+            localStorage.removeItem("referralCode");
+          } catch (err) {
+            console.log("Referral process error:", err);
+          }
+        }
         window.location.href = "/";
       } else if (data.user && !data.session) {
         // If no session but user exists, try to sign in

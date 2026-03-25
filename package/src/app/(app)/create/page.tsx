@@ -248,6 +248,20 @@ export default function CreatePage() {
       })
       .eq("id", userId);
 
+    // Check if this is the first video rated (index 0) - trigger referral bonus
+    if (currentIndex === 0 && ratingsCount === 1) {
+      // Check for pending referral and complete it
+      try {
+        await fetch("/api/referral/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
+      } catch (err) {
+        console.log("Referral completion check:", err);
+      }
+    }
+
     // Check if all videos rated
     const allDone = newRatings.every((r) => r !== null);
     if (allDone) {

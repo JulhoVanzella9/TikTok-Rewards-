@@ -5,9 +5,10 @@ const REFERRAL_BONUS = 20; // $20 bonus for both referrer and referred user
 
 export async function POST(request: Request) {
   try {
-    const { referralCode, newUserId } = await request.json();
+    const { referralCode, userId, newUserId } = await request.json();
+    const actualUserId = userId || newUserId;
     
-    if (!referralCode || !newUserId) {
+    if (!referralCode || !actualUserId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     }
 
     // Make sure user isn't referring themselves
-    if (referrer.id === newUserId) {
+    if (referrer.id === actualUserId) {
       return NextResponse.json({ error: "Cannot use your own referral code" }, { status: 400 });
     }
 
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     const { data: existingReferral } = await supabase
       .from("referrals")
       .select("id")
-      .eq("referred_user_id", newUserId)
+      .eq("referred_user_id", actualUserId)
       .single();
 
     if (existingReferral) {
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
       .from("referrals")
       .insert({
         referrer_id: referrer.id,
-        referred_user_id: newUserId,
+        referred_user_id: actualUserId,
         bonus_amount: REFERRAL_BONUS,
         status: "pending",
       });
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
     await supabase
       .from("profiles")
       .update({ referred_by: referrer.id })
-      .eq("id", newUserId);
+      .eq("id", actualUserId);
 
     return NextResponse.json({ 
       success: true, 
