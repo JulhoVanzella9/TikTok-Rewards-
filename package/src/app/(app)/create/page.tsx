@@ -568,39 +568,42 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Balance Display */}
+      {/* Balance Display - Top Right */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         style={{ 
-          display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", 
-          marginBottom: "16px", padding: "12px 20px",
-          background: "linear-gradient(135deg, rgba(37,244,238,0.1) 0%, rgba(254,44,85,0.1) 100%)",
-          borderRadius: "16px", border: `1px solid var(--border-color)`,
+          display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", 
+          marginBottom: "12px", padding: "8px 0",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+        <div style={{ 
+          display: "flex", alignItems: "center", gap: "8px",
+          padding: "8px 14px",
+          background: "rgba(0,0,0,0.6)",
+          borderRadius: "20px",
+          border: "1px solid rgba(255,255,255,0.1)",
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
             <line x1="1" y1="10" x2="23" y2="10"/>
           </svg>
-          <span style={{ color: "var(--text-secondary)", fontSize: "14px", fontWeight: 500 }}>Balance</span>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", fontWeight: 500 }}>Balance</span>
+          <motion.span 
+            key={displayedBalance}
+            initial={{ scale: 1.2, color: "#25f4ee" }}
+            animate={{ scale: 1, color: "#fff" }}
+            style={{ 
+              fontSize: "15px", fontWeight: 700, color: "#fff",
+            }}
+          >
+            ${displayedBalance.toFixed(2)}
+          </motion.span>
         </div>
-        <motion.span 
-          key={displayedBalance}
-          initial={{ scale: 1.2, color: "#25f4ee" }}
-          animate={{ scale: 1, color: "var(--text-primary)" }}
-          style={{ 
-            fontSize: "22px", fontWeight: 800, color: "var(--text-primary)",
-            textShadow: totalEarned > 0 ? "0 0 20px rgba(37,244,238,0.5)" : "none",
-          }}
-        >
-          ${displayedBalance.toFixed(2)}
-        </motion.span>
       </motion.div>
 
       {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/12" }}>
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/14", maxHeight: "55vh" }}>
         <div
           style={{
             transition: "transform 500ms ease-out",
@@ -710,20 +713,14 @@ export default function CreatePage() {
       </div>
 
       {/* Pergunta */}
-      <div style={{ textAlign: "center", marginTop: "24px" }}>
-        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "18px" }}>
-          How do you feel about this video cover?
+      <div style={{ textAlign: "center", marginTop: "12px" }}>
+        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "15px" }}>
+          How do you feel about this video?
         </h2>
-        <p style={{ color: "#25f4ee", fontSize: "14px", marginTop: "4px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-          Select an option below
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-          </svg>
-        </p>
       </div>
 
       {/* 3 Botoes de reacao */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "16px" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "12px" }}>
         {/* Happy */}
         <motion.button
           whileHover={{ scale: ratings[currentIndex] === null ? 1.05 : 1 }}
@@ -739,13 +736,13 @@ export default function CreatePage() {
           }}
         >
           <div style={{
-            width: "64px", height: "64px", borderRadius: "50%",
+            width: "56px", height: "56px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #25f4ee",
             background: ratings[currentIndex] === "happy" ? "rgba(37,244,238,0.2)" : "transparent",
             transition: "all 300ms",
           }}>
-            <span style={{ fontSize: "30px" }}>😊</span>
+            <span style={{ fontSize: "26px" }}>😊</span>
           </div>
         </motion.button>
 
@@ -764,13 +761,13 @@ export default function CreatePage() {
           }}
         >
           <div style={{
-            width: "64px", height: "64px", borderRadius: "50%",
+            width: "56px", height: "56px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #eab308",
             background: ratings[currentIndex] === "neutral" ? "rgba(234,179,8,0.2)" : "transparent",
             transition: "all 300ms",
           }}>
-            <span style={{ fontSize: "30px" }}>😐</span>
+            <span style={{ fontSize: "26px" }}>😐</span>
           </div>
         </motion.button>
 
@@ -789,13 +786,13 @@ export default function CreatePage() {
           }}
         >
           <div style={{
-            width: "64px", height: "64px", borderRadius: "50%",
+            width: "56px", height: "56px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #fe2c55",
             background: ratings[currentIndex] === "sad" ? "rgba(254,44,85,0.2)" : "transparent",
             transition: "all 300ms",
           }}>
-            <span style={{ fontSize: "30px" }}>😞</span>
+            <span style={{ fontSize: "26px" }}>😞</span>
           </div>
         </motion.button>
       </div>
