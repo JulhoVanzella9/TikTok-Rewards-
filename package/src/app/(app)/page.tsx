@@ -168,6 +168,38 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Install App Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            const event = new CustomEvent("triggerInstallPrompt");
+            window.dispatchEvent(event);
+          }}
+          style={{
+            width: "100%",
+            marginTop: "20px",
+            padding: "14px 20px",
+            background: "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
+            border: "1px solid rgba(37,244,238,0.25)",
+            borderRadius: "14px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "12px",
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span style={{ fontSize: "15px", fontWeight: 600, color: "#25f4ee" }}>
+            {t("installApp") || "Install App on Home Screen"}
+          </span>
+        </motion.button>
       </motion.div>
     </div>
   );

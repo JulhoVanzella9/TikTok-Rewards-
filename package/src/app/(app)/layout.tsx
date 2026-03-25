@@ -8,12 +8,15 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import BottomNav from "@/app/components/BottomNav";
 import TopBar from "@/app/components/TopBar";
+import ReferralModal from "@/app/components/ReferralModal";
+import InstallPrompt from "@/app/components/InstallPrompt";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [referralModalOpen, setReferralModalOpen] = useState(false);
   const router = useRouter();
 
   // Listen for theme changes
@@ -37,8 +40,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       checkTheme();
     };
 
+    // Listen for referral modal event
+    const handleOpenReferral = () => {
+      setReferralModalOpen(true);
+    };
+
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("themeChange", handleThemeChange);
+    window.addEventListener("openReferralModal", handleOpenReferral);
 
     // Check theme periodically for same-tab changes
     const interval = setInterval(checkTheme, 100);
@@ -46,6 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("themeChange", handleThemeChange);
+      window.removeEventListener("openReferralModal", handleOpenReferral);
       clearInterval(interval);
     };
   }, []);
@@ -120,6 +130,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <BottomNav />
+      
+      {/* Global Modals */}
+      <ReferralModal 
+        isOpen={referralModalOpen} 
+        onClose={() => setReferralModalOpen(false)} 
+      />
+      <InstallPrompt />
     </div>
   );
 }

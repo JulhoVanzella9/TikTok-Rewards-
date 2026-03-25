@@ -248,6 +248,20 @@ export default function CreatePage() {
       })
       .eq("id", userId);
 
+    // Check if this is the first video rated (index 0) - trigger referral bonus
+    if (currentIndex === 0 && ratingsCount === 1) {
+      // Check for pending referral and complete it
+      try {
+        await fetch("/api/referral/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
+      } catch (err) {
+        console.log("Referral completion check:", err);
+      }
+    }
+
     // Check if all videos rated
     const allDone = newRatings.every((r) => r !== null);
     if (allDone) {
@@ -387,10 +401,84 @@ export default function CreatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          style={{ fontSize: "13px", color: "var(--text-muted)" }}
+          style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "24px" }}
         >
           Your balance is available in the Wallet tab
         </motion.p>
+
+        {/* Referral CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          style={{
+            width: "100%",
+            maxWidth: "320px",
+            padding: "20px",
+            background: "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(254,44,85,0.05) 100%)",
+            borderRadius: "16px",
+            border: "1px solid rgba(254,44,85,0.2)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+            <div style={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #fe2c55 0%, #ff6b8a 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)" }}>
+                Invite Friends & Earn More!
+              </h3>
+              <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                Get $20.00 for each friend who joins
+              </p>
+            </div>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              const event = new CustomEvent("openReferralModal");
+              window.dispatchEvent(event);
+            }}
+            style={{
+              width: "100%",
+              padding: "12px",
+              background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
+              border: "none",
+              borderRadius: "10px",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 600,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            Share & Earn
+          </motion.button>
+        </motion.div>
       </div>
     );
   }

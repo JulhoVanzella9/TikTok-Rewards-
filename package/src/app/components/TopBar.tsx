@@ -79,6 +79,21 @@ export default function TopBar() {
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
       </svg>
     )},
+    { label: t("inviteFriends") || "Invite Friends", href: "#referral", isReferral: true, icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    )},
+    { label: t("installApp") || "Install App", href: "#install", isInstall: true, icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    )},
   ];
 
   // Animation variants
@@ -374,6 +389,76 @@ export default function TopBar() {
                           )}
                         </AnimatePresence>
                       </div>
+                    ) : (item as { isReferral?: boolean }).isReferral ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          const event = new CustomEvent("openReferralModal");
+                          window.dispatchEvent(event);
+                        }}
+                        style={{
+                          width: "100%",
+                          display: "flex", alignItems: "center", gap: "14px",
+                          padding: "16px 18px", borderRadius: "14px",
+                          background: "linear-gradient(135deg, rgba(254,44,85,0.15) 0%, rgba(254,44,85,0.08) 100%)",
+                          border: "1px solid rgba(254,44,85,0.25)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <span style={{ color: "#fe2c55" }}>{item.icon}</span>
+                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
+                          {item.label}
+                        </span>
+                        <span style={{
+                          marginLeft: "auto",
+                          padding: "4px 8px",
+                          background: "#fe2c55",
+                          borderRadius: "6px",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          color: "#fff",
+                        }}>
+                          +$20
+                        </span>
+                      </motion.button>
+                    ) : (item as { isInstall?: boolean }).isInstall ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          const event = new CustomEvent("triggerInstallPrompt");
+                          window.dispatchEvent(event);
+                        }}
+                        style={{
+                          width: "100%",
+                          display: "flex", alignItems: "center", gap: "14px",
+                          padding: "16px 18px", borderRadius: "14px",
+                          background: "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
+                          border: "1px solid rgba(37,244,238,0.25)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <span style={{ color: "#25f4ee" }}>{item.icon}</span>
+                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
+                          {item.label}
+                        </span>
+                        <span style={{
+                          marginLeft: "auto",
+                          padding: "4px 8px",
+                          background: "rgba(37,244,238,0.2)",
+                          borderRadius: "6px",
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          color: "#25f4ee",
+                        }}>
+                          PWA
+                        </span>
+                      </motion.button>
                     ) : (
                       <Link href={item.href} onClick={() => setMenuOpen(false)}>
                         <motion.div
