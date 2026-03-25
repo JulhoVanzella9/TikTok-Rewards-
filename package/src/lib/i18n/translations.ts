@@ -38,6 +38,8 @@ export const translations = {
     mobileRecharge: "Mobile Recharge",
     withdrawTime: "Money is received within 7 business days.",
     tiktokRewardsAccess: "TikTok Rewards Access",
+    installApp: "Install App",
+    inviteFriends: "Invite Friends",
     
     // Support
     support: "Support",
@@ -199,6 +201,8 @@ export const translations = {
     mobileRecharge: "Recarga Movel",
     withdrawTime: "O dinheiro e recebido em ate 7 dias uteis.",
     tiktokRewardsAccess: "Acesso TikTok Rewards",
+    installApp: "Instalar App",
+    inviteFriends: "Convidar Amigos",
     
     // Support
     support: "Suporte",
@@ -360,6 +364,8 @@ export const translations = {
     mobileRecharge: "Recarga Movil",
     withdrawTime: "El dinero se recibe en hasta 7 dias habiles.",
     tiktokRewardsAccess: "Acceso TikTok Rewards",
+    installApp: "Instalar App",
+    inviteFriends: "Invitar Amigos",
     
     // Support
     support: "Soporte",
