@@ -4,17 +4,20 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { getCourseById, getAllLessons } from "@/app/data/courses";
 import { useState } from "react";
+import { useTheme } from "@/lib/theme/context";
 
 export default function CourseDetailPage() {
   const params = useParams();
   const course = getCourseById(params.courseId as string);
   const [openModule, setOpenModule] = useState(0);
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   if (!course) {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤷</div>
-        <h2 style={{ color: "#fff", marginBottom: "12px" }}>Course not found</h2>
+        <h2 style={{ color: "var(--text-primary)", marginBottom: "12px" }}>Course not found</h2>
         <Link href="/explore" style={{
           color: "#fe2c55", fontWeight: 600, fontSize: "14px",
         }}>← Back to catalog</Link>
@@ -85,14 +88,16 @@ export default function CourseDetailPage() {
             {course.tags.map((tag) => (
               <span key={tag} style={{
                 padding: "4px 10px", borderRadius: "20px", fontSize: "11px",
-                fontWeight: 600, background: "rgba(255,255,255,0.04)",
-                color: "var(--text-muted)", border: "1px solid rgba(255,255,255,0.06)",
+                fontWeight: 600, 
+                background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+                color: "var(--text-muted)", 
+                border: `1px solid var(--border-color)`,
               }}>{tag}</span>
             ))}
           </div>
 
           <h1 style={{
-            fontSize: "24px", fontWeight: 900, color: "#fff",
+            fontSize: "24px", fontWeight: 900, color: "var(--text-primary)",
             lineHeight: 1.2, marginBottom: "12px",
           }}>
             {course.title}
@@ -118,7 +123,7 @@ export default function CourseDetailPage() {
               {course.instructor[0]}
             </div>
             <div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>
                 {course.instructor}
               </div>
               <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>Instructor</div>
@@ -133,7 +138,8 @@ export default function CourseDetailPage() {
                 <span style={{ fontSize: "13px", color: "#25f4ee", fontWeight: 700 }}>{course.progress}%</span>
               </div>
               <div style={{
-                height: "6px", borderRadius: "3px", background: "rgba(255,255,255,0.06)",
+                height: "6px", borderRadius: "3px", 
+                background: isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
               }}>
                 <motion.div
                   initial={{ width: 0 }}
@@ -167,7 +173,7 @@ export default function CourseDetailPage() {
         </motion.div>
 
         {/* Modules */}
-        <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "16px" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "16px" }}>
           Course Content
         </h2>
 
@@ -179,8 +185,10 @@ export default function CourseDetailPage() {
             transition={{ delay: 0.2 + modIdx * 0.08 }}
             style={{
               marginBottom: "12px", borderRadius: "16px", overflow: "hidden",
-              background: "var(--gradient-card)",
-              border: "1px solid rgba(255,255,255,0.06)",
+              background: isDarkMode 
+                ? "linear-gradient(145deg, rgba(26,26,46,0.8) 0%, rgba(15,15,26,0.9) 100%)"
+                : "linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)",
+              border: `1px solid var(--border-color)`,
             }}
           >
             {/* Module header */}
@@ -195,7 +203,7 @@ export default function CourseDetailPage() {
                 <div style={{ fontSize: "11px", fontWeight: 700, color: "#fe2c55", marginBottom: "4px" }}>
                   MODULE {modIdx + 1}
                 </div>
-                <div style={{ fontSize: "15px", fontWeight: 700, color: "#fff" }}>
+                <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)" }}>
                   {mod.title}
                 </div>
               </div>
@@ -206,7 +214,7 @@ export default function CourseDetailPage() {
                 <motion.svg
                   animate={{ rotate: openModule === modIdx ? 180 : 0 }}
                   width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="rgba(255,255,255,0.4)" strokeWidth="2"
+                  stroke={isDarkMode ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)"} strokeWidth="2"
                 >
                   <polyline points="6 9 12 15 18 9"/>
                 </motion.svg>
@@ -219,7 +227,7 @@ export default function CourseDetailPage() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+                style={{ borderTop: `1px solid var(--border-color)` }}
               >
                 {mod.lessons.map((lesson, lesIdx) => {
                   const globalIdx = allLessons.findIndex((l) => l.id === lesson.id);
@@ -230,11 +238,13 @@ export default function CourseDetailPage() {
                       style={{ textDecoration: "none" }}
                     >
                       <motion.div
-                        whileHover={{ backgroundColor: "rgba(254,44,85,0.05)" }}
+                        whileHover={{ backgroundColor: isDarkMode ? "rgba(254,44,85,0.05)" : "rgba(254,44,85,0.08)" }}
                         style={{
                           display: "flex", alignItems: "center", gap: "14px",
                           padding: "14px 18px",
-                          borderBottom: lesIdx < mod.lessons.length - 1 ? "1px solid rgba(255,255,255,0.03)" : "none",
+                          borderBottom: lesIdx < mod.lessons.length - 1 
+                            ? `1px solid var(--border-color)` 
+                            : "none",
                           transition: "background-color 0.2s",
                         }}
                       >
@@ -248,7 +258,7 @@ export default function CourseDetailPage() {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{
-                            fontSize: "14px", fontWeight: 500, color: "#fff",
+                            fontSize: "14px", fontWeight: 500, color: "var(--text-primary)",
                             overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                           }}>
                             {lesson.title}
@@ -257,7 +267,7 @@ export default function CourseDetailPage() {
                             {lesson.duration}
                           </div>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.2)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill={isDarkMode ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}>
                           <path d="M8 5v14l11-7z"/>
                         </svg>
                       </motion.div>

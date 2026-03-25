@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
+import { useTheme } from "@/lib/theme/context";
 import { createClient } from "@/lib/supabase/client";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
@@ -16,6 +17,8 @@ const withdrawAmounts: { value: number | "all"; label: string; badge: string | n
 
 export default function WalletPage() {
   const { t } = useI18n();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
   const [selectedAmount, setSelectedAmount] = useState<number | "all">(30);
   const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
@@ -68,8 +71,9 @@ export default function WalletPage() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={{
-              background: "rgba(255,255,255,0.05)", border: "none",
-              color: "#fff", cursor: "pointer", padding: "10px",
+              background: isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", 
+              border: "none",
+              color: "var(--text-primary)", cursor: "pointer", padding: "10px",
               borderRadius: "12px",
             }}
           >
@@ -78,7 +82,7 @@ export default function WalletPage() {
             </svg>
           </motion.button>
         </Link>
-        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "#fff" }}>
+        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)" }}>
           {t("redeemRewards")}
         </h1>
       </motion.div>
@@ -90,10 +94,12 @@ export default function WalletPage() {
         variants={fadeIn}
         transition={{ duration: 0.3 }}
         style={{
-          background: "linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%)",
+          background: isDarkMode 
+            ? "linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%)"
+            : "linear-gradient(145deg, #ffffff 0%, #f0f0f5 100%)",
           borderRadius: "24px", padding: "28px",
           marginBottom: "4px", position: "relative", overflow: "hidden",
-          border: "1px solid rgba(255,255,255,0.05)",
+          border: `1px solid var(--border-color)`,
         }}
       >
         {/* Background decoration */}
@@ -107,7 +113,7 @@ export default function WalletPage() {
           {t("yourBalance")}
         </div>
         <div style={{
-          fontSize: "42px", fontWeight: 900, color: "#fff",
+          fontSize: "42px", fontWeight: 900, color: "var(--text-primary)",
           display: "flex", alignItems: "center", gap: "16px",
           position: "relative",
         }}>
@@ -135,15 +141,15 @@ export default function WalletPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
-        whileHover={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+        whileHover={{ backgroundColor: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)" }}
         style={{
-          background: "rgba(255,255,255,0.02)",
+          background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
           borderRadius: "0 0 24px 24px",
           padding: "16px 28px",
           marginBottom: "24px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           cursor: "pointer",
-          borderTop: "1px dashed rgba(255,255,255,0.08)",
+          borderTop: `1px dashed var(--border-color)`,
           transition: "background 0.2s",
         }}
       >
@@ -162,13 +168,13 @@ export default function WalletPage() {
         variants={fadeIn}
         transition={{ delay: 0.15 }}
         style={{
-          background: "rgba(255,255,255,0.02)",
+          background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
           borderRadius: "24px", padding: "28px",
           marginBottom: "20px",
-          border: "1px solid rgba(255,255,255,0.04)",
+          border: `1px solid var(--border-color)`,
         }}
       >
-        <h2 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "20px" }}>
+        <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "20px" }}>
           {t("withdrawMoney")}
         </h2>
 
@@ -204,10 +210,10 @@ export default function WalletPage() {
                 padding: "18px 8px",
                 background: selectedAmount === amount.value
                   ? "linear-gradient(145deg, rgba(254,44,85,0.15), rgba(254,44,85,0.05))"
-                  : "rgba(255,255,255,0.03)",
+                  : isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
                 border: selectedAmount === amount.value
                   ? "2px solid #fe2c55"
-                  : "2px solid rgba(255,255,255,0.06)",
+                  : `2px solid var(--border-color)`,
                 borderRadius: "16px", cursor: "pointer",
                 display: "flex", flexDirection: "column",
                 alignItems: "center", gap: "4px",
@@ -231,7 +237,7 @@ export default function WalletPage() {
               )}
               <span style={{
                 fontSize: "17px", fontWeight: 800,
-                color: selectedAmount === amount.value ? "#fe2c55" : "#fff",
+                color: selectedAmount === amount.value ? "#fe2c55" : "var(--text-primary)",
               }}>
                 {amount.value === "all" ? `All ($${balance.toFixed(2)})` : amount.label}
               </span>

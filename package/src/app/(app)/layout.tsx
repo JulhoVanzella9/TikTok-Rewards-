@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * App Layout with Authentication
+ * App Layout with Authentication and Theme Support
  * Protects all routes under (app) group
  */
 import { useEffect, useState, useCallback } from "react";
@@ -13,7 +13,42 @@ import { createClient } from "@/lib/supabase/client";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const router = useRouter();
+
+  // Listen for theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      const savedTheme = localStorage.getItem("theme");
+      setIsDarkMode(savedTheme !== "light");
+    };
+
+    checkTheme();
+
+    // Listen for storage changes (theme toggle)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "theme") {
+        setIsDarkMode(e.newValue !== "light");
+      }
+    };
+
+    // Custom event for same-tab theme changes
+    const handleThemeChange = () => {
+      checkTheme();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("themeChange", handleThemeChange);
+
+    // Check theme periodically for same-tab changes
+    const interval = setInterval(checkTheme, 100);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("themeChange", handleThemeChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   const checkAuth = useCallback(async () => {
     const supabase = createClient();
@@ -46,10 +81,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
       <div style={{
         minHeight: "100vh",
-        background: "#000",
+        background: isDarkMode ? "#000" : "#f5f5f5",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        transition: "background 0.3s ease",
       }}>
         <div style={{
           width: "28px",
@@ -69,7 +105,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#000", position: "relative" }}>
+    <div style={{ 
+      minHeight: "100vh", 
+      background: isDarkMode ? "#000" : "#f5f5f5", 
+      color: isDarkMode ? "#fff" : "#121212",
+      position: "relative",
+      transition: "background 0.3s ease, color 0.3s ease",
+    }}>
       <TopBar />
       <main style={{ 
         paddingBottom: "calc(80px + env(safe-area-inset-bottom, 0px))", 

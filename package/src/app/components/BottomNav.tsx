@@ -3,17 +3,33 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
+import { useState, useEffect } from "react";
 
 export default function BottomNav() {
   const pathname = usePathname();
   const { t } = useI18n();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const savedTheme = localStorage.getItem("theme");
+      setIsDarkMode(savedTheme !== "light");
+    };
+
+    checkTheme();
+    const interval = setInterval(checkTheme, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  const inactiveColor = isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
+  const textColor = isDarkMode ? "#fff" : "#000";
 
   const tabs = [
     {
       href: "/",
       label: t("home"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
@@ -23,11 +39,9 @@ export default function BottomNav() {
       href: "/course/tiktok-growth",
       label: t("class"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-          <line x1="12" y1="6" x2="12" y2="10"/>
-          <line x1="12" y1="14" x2="12" y2="14.01"/>
         </svg>
       ),
     },
@@ -65,7 +79,7 @@ export default function BottomNav() {
       href: "/support",
       label: t("support"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
         </svg>
       ),
@@ -74,7 +88,7 @@ export default function BottomNav() {
       href: "/wallet",
       label: t("wallet"),
       icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#ffd700" : "rgba(255,255,255,0.5)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#ffd700" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
           <line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
@@ -87,13 +101,16 @@ export default function BottomNav() {
       className="bottom-nav"
       style={{
         position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-        background: "rgba(0,0,0,0.98)",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
+        background: isDarkMode ? "rgba(0,0,0,0.98)" : "rgba(255,255,255,0.98)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderTop: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
         display: "flex", alignItems: "center", justifyContent: "space-around",
         height: "68px",
         paddingLeft: "4px",
         paddingRight: "4px",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        transition: "background 0.3s ease, border-color 0.3s ease",
       }}
     >
       {tabs.map((tab) => {
@@ -122,7 +139,7 @@ export default function BottomNav() {
                   </div>
                   <span style={{
                     fontSize: "10px", fontWeight: isActive ? 700 : 500,
-                    color: isActive ? "#fff" : "rgba(255,255,255,0.5)",
+                    color: isActive ? textColor : inactiveColor,
                     transition: "color 0.2s",
                     lineHeight: 1,
                   }}>
