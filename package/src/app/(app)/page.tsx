@@ -1,15 +1,41 @@
 "use client";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
+import { useState, useEffect } from "react";
 
 // Faster animation variants
 const fadeIn = { hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } };
 
 export default function HomePage() {
   const { t } = useI18n();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const savedTheme = localStorage.getItem("theme");
+      setIsDarkMode(savedTheme !== "light");
+    };
+
+    checkTheme();
+    
+    const handleThemeChange = () => checkTheme();
+    window.addEventListener("themeChange", handleThemeChange);
+    const interval = setInterval(checkTheme, 100);
+
+    return () => {
+      window.removeEventListener("themeChange", handleThemeChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div style={{ 
+      padding: "20px", 
+      maxWidth: "1200px", 
+      margin: "0 auto",
+      color: isDarkMode ? "#fff" : "#121212",
+      transition: "color 0.3s ease",
+    }}>
       {/* Video Tutorial Section */}
       <motion.div
         initial="hidden"
@@ -18,9 +44,12 @@ export default function HomePage() {
         transition={{ duration: 0.35 }}
         style={{
           borderRadius: "24px", overflow: "hidden", marginBottom: "32px",
-          background: "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)",
-          border: "1px solid rgba(255,255,255,0.06)",
+          background: isDarkMode 
+            ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
+            : "linear-gradient(135deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.04) 100%)",
+          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
           padding: "28px", position: "relative",
+          transition: "background 0.3s ease, border-color 0.3s ease",
         }}
       >
         {/* Header */}
@@ -42,24 +71,28 @@ export default function HomePage() {
         </div>
         
         <p style={{
-          fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6,
+          fontSize: "14px", 
+          color: isDarkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)", 
+          lineHeight: 1.6,
           marginBottom: "20px",
+          transition: "color 0.3s ease",
         }}>
           {t("videoTutorialDesc")}
         </p>
 
         {/* Video Container */}
         <div style={{
-          background: "#000",
+          background: isDarkMode ? "#000" : "#1a1a2e",
           borderRadius: "16px",
           overflow: "hidden",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)"}`,
+          transition: "background 0.3s ease, border-color 0.3s ease",
         }}>
           {/* Video Header */}
           <div style={{
             padding: "16px 20px",
             display: "flex", alignItems: "center", gap: "12px",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.1)"}`,
           }}>
             <div style={{
               width: "36px", height: "36px", borderRadius: "50%",
@@ -75,7 +108,7 @@ export default function HomePage() {
               <div style={{ fontSize: "15px", fontWeight: 700, color: "#fff" }}>
                 TikTok Rewards - How to Use
               </div>
-              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>
                 Support Service
               </div>
             </div>
@@ -118,17 +151,21 @@ export default function HomePage() {
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 {/* Play Button Overlay */}
-                <div style={{
-                  width: "56px", height: "56px", borderRadius: "50%",
-                  background: "#fe2c55",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
-                }}>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    width: "56px", height: "56px", borderRadius: "50%",
+                    background: "#fe2c55",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
+                  }}
+                >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
                     <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
-                </div>
+                </motion.div>
                 
                 {/* Video duration badge */}
                 <div style={{

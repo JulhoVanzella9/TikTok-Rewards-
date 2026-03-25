@@ -40,6 +40,8 @@ export default function TopBar() {
     setIsDarkMode(!isDarkMode);
     localStorage.setItem("theme", newTheme);
     applyTheme(newTheme);
+    // Dispatch custom event for other components to listen
+    window.dispatchEvent(new CustomEvent("themeChange", { detail: { theme: newTheme } }));
   };
 
   const handleLanguageSelect = (langCode: string) => {
