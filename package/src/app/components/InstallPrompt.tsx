@@ -1,0 +1,190 @@
+"use client";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
+export default function InstallPrompt() {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+
+  useEffect(() => {
+    // Check if already installed
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+    if (isStandalone) return;
+
+    // Check if iOS
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    setIsIOS(isIOSDevice);
+
+    // Listen for install prompt
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      setShowPrompt(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+
+    // Show iOS prompt after a delay
+    if (isIOSDevice) {
+      const hasShownIOSPrompt = localStorage.getItem("iosPromptShown");
+      if (!hasShownIOSPrompt) {
+        setTimeout(() => setShowPrompt(true), 3000);
+      }
+    }
+
+    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+  }, []);
+
+  const handleInstall = async () => {
+    if (isIOS) {
+      setShowIOSInstructions(true);
+      localStorage.setItem("iosPromptShown", "true");
+      return;
+    }
+
+    if (deferredPrompt) {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        setShowPrompt(false);
+      }
+      setDeferredPrompt(null);
+    }
+  };
+
+  const handleDismiss = () => {
+    setShowPrompt(false);
+    localStorage.setItem("iosPromptShown", "true");
+  };
+
+  if (!showPrompt) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        style={{
+          position: "fixed",
+          bottom: "90px",
+          left: "16px",
+          right: "16px",
+          background: "linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%)",
+          borderRadius: "20px",
+          padding: "20px",
+          zIndex: 900,
+          border: "1px solid rgba(255,255,255,0.1)",
+          boxShadow: "0 -4px 32px rgba(0,0,0,0.5)",
+        }}
+      >
+        {showIOSInstructions ? (
+          <div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+              <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>
+                Add to Home Screen
+              </h3>
+              <button
+                onClick={handleDismiss}
+                style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", cursor: "pointer" }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{
+                  width: "32px", height: "32px", borderRadius: "8px",
+                  background: "rgba(37,244,238,0.1)", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                  </svg>
+                </div>
+                <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)" }}>
+                  Tap the <strong>Share</strong> button in Safari
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{
+                  width: "32px", height: "32px", borderRadius: "8px",
+                  background: "rgba(254,44,85,0.1)", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                  </svg>
+                </div>
+                <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)" }}>
+                  Select <strong>Add to Home Screen</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{
+              width: "48px", height: "48px", borderRadius: "14px",
+              background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#fff"/>
+                <path d="M9 12l2 2 4-4" stroke="#fe2c55" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
+                Install TikTok Rewards
+              </h3>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>
+                Add to home screen for the best experience
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                onClick={handleDismiss}
+                style={{
+                  padding: "10px 14px", borderRadius: "10px",
+                  background: "rgba(255,255,255,0.05)", border: "none",
+                  color: "rgba(255,255,255,0.6)", fontSize: "13px", fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Later
+              </button>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleInstall}
+                style={{
+                  padding: "10px 16px", borderRadius: "10px",
+                  background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
+                  border: "none", color: "#fff", fontSize: "13px", fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Install
+              </motion.button>
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
