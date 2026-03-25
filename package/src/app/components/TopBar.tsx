@@ -170,7 +170,7 @@ export default function TopBar() {
               fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
               lineHeight: "26px",
             }}>
-              TikTok <span style={{ color: "#25f4ee" }}>Rewards</span>
+              TikTok <span style={{ color: "#fe2c55" }}>Rewards</span>
             </span>
           </motion.div>
         </Link>

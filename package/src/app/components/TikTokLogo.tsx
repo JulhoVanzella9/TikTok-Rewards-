@@ -35,7 +35,7 @@ export default function TikTokLogo({ size = "md", showText = true, isDarkMode = 
           letterSpacing: "-0.3px",
           fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
         }}>
-          TikTok <span style={{ color: "#25f4ee" }}>Rewards</span>
+          TikTok <span style={{ color: "#fe2c55" }}>Rewards</span>
         </span>
       )}
     </div>
