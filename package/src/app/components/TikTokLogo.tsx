@@ -28,15 +28,26 @@ export default function TikTokLogo({ size = "md", showText = true, isDarkMode = 
       
       {/* Text */}
       {showText && (
-        <span style={{
-          fontSize: `${s.text}px`,
-          fontWeight: 700,
-          color: isDarkMode ? "#fff" : "#000",
-          letterSpacing: "-0.3px",
-          fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-        }}>
-          TikTok <span style={{ color: "#fe2c55" }}>Rewards</span>
-        </span>
+        <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+          <span style={{
+            fontSize: `${s.text}px`,
+            fontWeight: 700,
+            color: isDarkMode ? "#fff" : "#000",
+            letterSpacing: "-0.3px",
+            fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+          }}>
+            TikTok
+          </span>
+          <span style={{
+            fontSize: `${s.text * 0.75}px`,
+            fontWeight: 600,
+            color: "#fe2c55",
+            letterSpacing: "-0.2px",
+            fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+          }}>
+            Rewards
+          </span>
+        </div>
       )}
     </div>
   );

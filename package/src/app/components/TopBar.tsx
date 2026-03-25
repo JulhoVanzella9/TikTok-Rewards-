@@ -155,23 +155,33 @@ export default function TopBar() {
             }}
           >
             {/* TikTok Logo */}
-            <div style={{ width: "26px", height: "26px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="26" height="26" viewBox="0 0 48 48" fill="none">
+            <div style={{ width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
                 <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
                 <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
                 <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill={isDarkMode ? "#fff" : "#000"}/>
               </svg>
             </div>
-            <span style={{
-              fontSize: "18px",
-              fontWeight: 700,
-              color: isDarkMode ? "#fff" : "#000",
-              letterSpacing: "-0.3px",
-              fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              lineHeight: "26px",
-            }}>
-              TikTok <span style={{ color: "#fe2c55" }}>Rewards</span>
-            </span>
+            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
+              <span style={{
+                fontSize: "16px",
+                fontWeight: 700,
+                color: isDarkMode ? "#fff" : "#000",
+                letterSpacing: "-0.3px",
+                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+              }}>
+                TikTok
+              </span>
+              <span style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#fe2c55",
+                letterSpacing: "-0.2px",
+                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+              }}>
+                Rewards
+              </span>
+            </div>
           </motion.div>
         </Link>
 
