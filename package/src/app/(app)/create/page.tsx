@@ -601,7 +601,7 @@ export default function CreatePage() {
       </motion.div>
 
       {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/16", maxHeight: "50vh" }}>
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", width: "100%", maxWidth: "280px", margin: "0 auto", aspectRatio: "9/16" }}>
         <div
           style={{
             transition: "transform 500ms ease-out",

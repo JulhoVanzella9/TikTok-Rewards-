@@ -56,14 +56,14 @@ export default function WalletPage() {
   });
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
+    <div style={{ padding: "12px 16px", maxWidth: "600px", margin: "0 auto", paddingBottom: "20px" }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         style={{
-          display: "flex", alignItems: "center", gap: "16px",
-          marginBottom: "24px",
+          display: "flex", alignItems: "center", gap: "12px",
+          marginBottom: "16px",
         }}
       >
         <Link href="/">
@@ -97,7 +97,7 @@ export default function WalletPage() {
           background: isDarkMode 
             ? "linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%)"
             : "linear-gradient(145deg, #ffffff 0%, #f0f0f5 100%)",
-          borderRadius: "24px", padding: "28px",
+          borderRadius: "20px", padding: "20px",
           marginBottom: "4px", position: "relative", overflow: "hidden",
           border: `1px solid var(--border-color)`,
         }}
@@ -113,18 +113,18 @@ export default function WalletPage() {
           {t("yourBalance")}
         </div>
         <div style={{
-          fontSize: "42px", fontWeight: 900, color: "var(--text-primary)",
-          display: "flex", alignItems: "center", gap: "16px",
+          fontSize: "36px", fontWeight: 900, color: "var(--text-primary)",
+          display: "flex", alignItems: "center", gap: "12px",
           position: "relative",
         }}>
           {loading ? "..." : formattedBalance}
           <motion.div 
             whileHover={{ rotate: 15 }}
             style={{
-              width: "56px", height: "56px", borderRadius: "50%",
+              width: "48px", height: "48px", borderRadius: "50%",
               background: "linear-gradient(145deg, #ffd700, #f0a500)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "28px", fontWeight: 900, color: "#fff",
+              fontSize: "24px", fontWeight: 900, color: "#fff",
               boxShadow: "0 8px 24px rgba(255,215,0,0.25)",
             }}
           >
@@ -144,9 +144,9 @@ export default function WalletPage() {
         whileHover={{ backgroundColor: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)" }}
         style={{
           background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-          borderRadius: "0 0 24px 24px",
-          padding: "16px 28px",
-          marginBottom: "24px",
+          borderRadius: "0 0 20px 20px",
+          padding: "12px 20px",
+          marginBottom: "16px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           cursor: "pointer",
           borderTop: `1px dashed var(--border-color)`,
@@ -169,19 +169,19 @@ export default function WalletPage() {
         transition={{ delay: 0.15 }}
         style={{
           background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-          borderRadius: "24px", padding: "28px",
-          marginBottom: "20px",
+          borderRadius: "20px", padding: "16px",
+          marginBottom: "16px",
           border: `1px solid var(--border-color)`,
         }}
       >
-        <h2 style={{ fontSize: "18px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "20px" }}>
+        <h2 style={{ fontSize: "16px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "14px" }}>
           {t("withdrawMoney")}
         </h2>
 
         {/* Payment Method */}
         <div style={{
-          display: "flex", alignItems: "center", gap: "12px",
-          marginBottom: "24px",
+          display: "flex", alignItems: "center", gap: "10px",
+          marginBottom: "16px",
         }}>
           <div style={{
             display: "flex", alignItems: "center", gap: "10px",
@@ -198,7 +198,7 @@ export default function WalletPage() {
         {/* Amount Selection */}
         <div style={{
           display: "grid", gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "12px", marginBottom: "24px",
+          gap: "10px", marginBottom: "16px",
         }}>
           {withdrawAmounts.map((amount) => (
             <motion.button
@@ -207,7 +207,7 @@ export default function WalletPage() {
               whileTap={{ scale: 0.97 }}
               onClick={() => setSelectedAmount(amount.value)}
               style={{
-                padding: "18px 8px",
+                padding: "14px 8px",
                 background: selectedAmount === amount.value
                   ? "linear-gradient(145deg, rgba(254,44,85,0.15), rgba(254,44,85,0.05))"
                   : isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
@@ -251,7 +251,7 @@ export default function WalletPage() {
           whileTap={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 0.98 : 1 }}
           disabled={balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
           style={{
-            width: "100%", padding: "18px", fontSize: "16px", fontWeight: 700,
+            width: "100%", padding: "14px", fontSize: "15px", fontWeight: 700,
             background: balance >= actualWithdrawAmount && actualWithdrawAmount > 0
               ? "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)"
               : "rgba(255,255,255,0.08)",
