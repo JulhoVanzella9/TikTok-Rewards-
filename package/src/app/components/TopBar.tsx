@@ -6,10 +6,38 @@ import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 
+const FlagUS = () => (
+  <svg width="24" height="18" viewBox="0 0 24 18" style={{ borderRadius: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+    <rect width="24" height="18" fill="#B22234"/>
+    <rect width="24" height="1.38" y="1.38" fill="#fff"/>
+    <rect width="24" height="1.38" y="4.15" fill="#fff"/>
+    <rect width="24" height="1.38" y="6.92" fill="#fff"/>
+    <rect width="24" height="1.38" y="9.69" fill="#fff"/>
+    <rect width="24" height="1.38" y="12.46" fill="#fff"/>
+    <rect width="24" height="1.38" y="15.23" fill="#fff"/>
+    <rect width="10" height="9.69" fill="#3C3B6E"/>
+  </svg>
+);
+
+const FlagBR = () => (
+  <svg width="24" height="18" viewBox="0 0 24 18" style={{ borderRadius: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+    <rect width="24" height="18" fill="#009c3b"/>
+    <polygon points="12,2 22,9 12,16 2,9" fill="#ffdf00"/>
+    <circle cx="12" cy="9" r="4" fill="#002776"/>
+  </svg>
+);
+
+const FlagES = () => (
+  <svg width="24" height="18" viewBox="0 0 24 18" style={{ borderRadius: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+    <rect width="24" height="18" fill="#c60b1e"/>
+    <rect width="24" height="9" y="4.5" fill="#ffc400"/>
+  </svg>
+);
+
 const languages = [
-  { code: "en-US", label: "English", flag: "🇺🇸" },
-  { code: "pt-BR", label: "Português", flag: "🇧🇷" },
-  { code: "es-ES", label: "Español", flag: "🇪🇸" },
+  { code: "en-US", label: "English", Flag: FlagUS },
+  { code: "pt-BR", label: "Português", Flag: FlagBR },
+  { code: "es-ES", label: "Español", Flag: FlagES },
 ];
 
 export default function TopBar() {
@@ -40,7 +68,7 @@ export default function TopBar() {
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
       </svg>
     )},
-    { label: t("class"), href: "/course/tiktok-rewards", icon: (
+    { label: t("class"), href: "/course/tiktok-growth", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
@@ -265,7 +293,7 @@ export default function TopBar() {
                             </span>
                           </div>
                           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span style={{ fontSize: "18px" }}>{currentLang.flag}</span>
+                            <currentLang.Flag />
                             <motion.svg 
                               animate={{ rotate: languagePopupOpen ? 180 : 0 }}
                               width="16" height="16" viewBox="0 0 24 24" fill="none" 
@@ -323,7 +351,7 @@ export default function TopBar() {
                                     transition: "all 0.2s",
                                   }}
                                 >
-                                  <span style={{ fontSize: "22px" }}>{lang.flag}</span>
+                                  <lang.Flag />
                                   <span style={{ 
                                     fontSize: "15px", fontWeight: language === lang.code ? 700 : 500,
                                     color: language === lang.code ? "#fe2c55" : (isDarkMode ? "#fff" : "#000"),
