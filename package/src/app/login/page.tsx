@@ -1,11 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useI18n } from "@/lib/i18n/context";
 import { motion, AnimatePresence } from "framer-motion";
 import RefundModal from "@/app/components/RefundModal";
+import ReferralWelcomePopup from "@/app/components/ReferralWelcomePopup";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get("ref");
   const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -456,6 +460,9 @@ export default function LoginPage() {
 
       {/* Refund Modal */}
       <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
+      
+      {/* Referral Welcome Popup */}
+      <ReferralWelcomePopup referralCode={referralCode} />
     </div>
   );
 }

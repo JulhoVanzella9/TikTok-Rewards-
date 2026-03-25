@@ -5,11 +5,11 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const refCode = url.searchParams.get("ref");
   
-  // If there's a referral code and user is on home page, redirect to welcome
+  // If there's a referral code on home page, redirect to login with ref code
   if (refCode && url.pathname === "/") {
-    const welcomeUrl = new URL("/welcome", request.url);
-    welcomeUrl.searchParams.set("ref", refCode);
-    return NextResponse.redirect(welcomeUrl);
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("ref", refCode);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
