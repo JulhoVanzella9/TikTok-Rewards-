@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -49,6 +49,31 @@ export default function TopBar() {
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === "dark";
 
+  // Block body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+    };
+  }, [menuOpen]);
+
   const handleLanguageSelect = (langCode: string) => {
     setLanguage(langCode as "en-US" | "pt-BR" | "es-ES");
     setLanguagePopupOpen(false);
@@ -92,6 +117,13 @@ export default function TopBar() {
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    )},
+    { label: t("logout") || "Logout", href: "#logout", isLogout: true, icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
       </svg>
     )},
   ];
@@ -467,6 +499,31 @@ export default function TopBar() {
                           color: "#25f4ee",
                         }}>
                           PWA
+                        </span>
+                      </motion.button>
+                    ) : (item as { isLogout?: boolean }).isLogout ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={async () => {
+                          setMenuOpen(false);
+                          const supabase = (await import("@/lib/supabase/client")).createClient();
+                          await supabase.auth.signOut();
+                          window.location.href = "/login";
+                        }}
+                        style={{
+                          width: "100%",
+                          display: "flex", alignItems: "center", gap: "14px",
+                          padding: "16px 18px", borderRadius: "14px",
+                          background: "linear-gradient(135deg, rgba(239,68,68,0.15) 0%, rgba(239,68,68,0.08) 100%)",
+                          border: "1px solid rgba(239,68,68,0.25)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <span style={{ color: "#ef4444" }}>{item.icon}</span>
+                        <span style={{ fontSize: "15px", fontWeight: 600, color: "#ef4444" }}>
+                          {item.label}
                         </span>
                       </motion.button>
                     ) : (

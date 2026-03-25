@@ -13,11 +13,12 @@ export default function HomePage() {
 
   return (
     <div style={{ 
-      padding: "20px", 
+      padding: "12px 16px", 
       maxWidth: "1200px", 
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
+      paddingBottom: "20px",
     }}>
       {/* Video Tutorial Section */}
       <motion.div
@@ -26,17 +27,17 @@ export default function HomePage() {
         variants={fadeIn}
         transition={{ duration: 0.35 }}
         style={{
-          borderRadius: "24px", overflow: "hidden", marginBottom: "32px",
+          borderRadius: "20px", overflow: "hidden", marginBottom: "16px",
           background: isDarkMode 
             ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
             : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
           border: `1px solid var(--border-color)`,
-          padding: "28px", position: "relative",
+          padding: "20px", position: "relative",
           transition: "all 0.3s ease",
         }}
       >
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
           <div style={{
             width: "40px", height: "40px", borderRadius: "50%",
             background: "rgba(254,44,85,0.15)",
@@ -54,10 +55,10 @@ export default function HomePage() {
         </div>
         
         <p style={{
-          fontSize: "14px", 
+          fontSize: "13px", 
           color: "var(--text-secondary)", 
-          lineHeight: 1.6,
-          marginBottom: "20px",
+          lineHeight: 1.5,
+          marginBottom: "14px",
           transition: "color 0.3s ease",
         }}>
           {t("videoTutorialDesc")}
