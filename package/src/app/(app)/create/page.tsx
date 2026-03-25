@@ -568,42 +568,38 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Balance Display - Top Right */}
-      <motion.div 
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        style={{ 
-          display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", 
-          marginBottom: "12px", padding: "8px 0",
-        }}
-      >
-        <div style={{ 
-          display: "flex", alignItems: "center", gap: "8px",
-          padding: "8px 14px",
-          background: "rgba(0,0,0,0.6)",
-          borderRadius: "20px",
-          border: "1px solid rgba(255,255,255,0.1)",
-        }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+      {/* Slider vertical de videos com Balance integrado */}
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/16", maxHeight: "52vh" }}>
+        {/* Balance Display - Absolute positioned */}
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ 
+            position: "absolute",
+            top: "8px",
+            right: "8px",
+            zIndex: 10,
+            display: "flex", alignItems: "center", gap: "6px",
+            padding: "6px 12px",
+            background: "rgba(0,0,0,0.7)",
+            borderRadius: "16px",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
             <line x1="1" y1="10" x2="23" y2="10"/>
           </svg>
-          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", fontWeight: 500 }}>Balance</span>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", fontWeight: 500 }}>Balance</span>
           <motion.span 
             key={displayedBalance}
             initial={{ scale: 1.2, color: "#25f4ee" }}
             animate={{ scale: 1, color: "#fff" }}
-            style={{ 
-              fontSize: "15px", fontWeight: 700, color: "#fff",
-            }}
+            style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}
           >
             ${displayedBalance.toFixed(2)}
           </motion.span>
-        </div>
-      </motion.div>
-
-      {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/14", maxHeight: "55vh" }}>
+        </motion.div>
         <div
           style={{
             transition: "transform 500ms ease-out",

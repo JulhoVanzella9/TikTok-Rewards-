@@ -40,6 +40,7 @@ export const translations = {
     tiktokRewardsAccess: "TikTok Rewards Access",
     installApp: "Install App",
     inviteFriends: "Invite Friends",
+    logout: "Logout",
     
     // Support
     support: "Support",
@@ -203,6 +204,7 @@ export const translations = {
     tiktokRewardsAccess: "Acesso TikTok Rewards",
     installApp: "Instalar App",
     inviteFriends: "Convidar Amigos",
+    logout: "Sair",
     
     // Support
     support: "Suporte",
@@ -366,6 +368,7 @@ export const translations = {
     tiktokRewardsAccess: "Acceso TikTok Rewards",
     installApp: "Instalar App",
     inviteFriends: "Invitar Amigos",
+    logout: "Cerrar Sesion",
     
     // Support
     support: "Soporte",

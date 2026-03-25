@@ -94,6 +94,13 @@ export default function TopBar() {
         <line x1="12" y1="15" x2="12" y2="3"/>
       </svg>
     )},
+    { label: t("logout") || "Logout", href: "#logout", isLogout: true, icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+    )},
   ];
 
   // Animation variants
@@ -467,6 +474,31 @@ export default function TopBar() {
                           color: "#25f4ee",
                         }}>
                           PWA
+                        </span>
+                      </motion.button>
+                    ) : (item as { isLogout?: boolean }).isLogout ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={async () => {
+                          setMenuOpen(false);
+                          const supabase = (await import("@/lib/supabase/client")).createClient();
+                          await supabase.auth.signOut();
+                          window.location.href = "/login";
+                        }}
+                        style={{
+                          width: "100%",
+                          display: "flex", alignItems: "center", gap: "14px",
+                          padding: "16px 18px", borderRadius: "14px",
+                          background: "linear-gradient(135deg, rgba(239,68,68,0.15) 0%, rgba(239,68,68,0.08) 100%)",
+                          border: "1px solid rgba(239,68,68,0.25)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <span style={{ color: "#ef4444" }}>{item.icon}</span>
+                        <span style={{ fontSize: "15px", fontWeight: 600, color: "#ef4444" }}>
+                          {item.label}
                         </span>
                       </motion.button>
                     ) : (
