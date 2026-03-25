@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
+import { useTheme } from "@/lib/theme/context";
 
 const languages = [
   { code: "en-US", label: "English", flag: "🇺🇸" },
@@ -14,35 +15,11 @@ const languages = [
 export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
-
-  useEffect(() => {
-    // Load theme preference from localStorage
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = savedTheme || (prefersDark ? "dark" : "dark"); // Default to dark
-    
-    setIsDarkMode(theme === "dark");
-    applyTheme(theme);
-  }, []);
-
-  const applyTheme = (theme: string) => {
-    document.documentElement.setAttribute("data-theme", theme);
-    document.body.style.backgroundColor = theme === "light" ? "#f5f5f5" : "#000000";
-    document.body.style.color = theme === "light" ? "#121212" : "#ffffff";
-  };
-
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? "light" : "dark";
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-    // Dispatch custom event for other components to listen
-    window.dispatchEvent(new CustomEvent("themeChange", { detail: { theme: newTheme } }));
-  };
+  const { theme, toggleTheme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   const handleLanguageSelect = (langCode: string) => {
     setLanguage(langCode as "en-US" | "pt-BR" | "es-ES");

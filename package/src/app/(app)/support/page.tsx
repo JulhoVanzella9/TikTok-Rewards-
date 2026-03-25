@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
+import { useTheme } from "@/lib/theme/context";
 import RefundModal from "@/app/components/RefundModal";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
@@ -32,6 +33,8 @@ const faqItems = [
 
 export default function SupportPage() {
   const { t } = useI18n();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -52,8 +55,9 @@ export default function SupportPage() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={{
-              background: "rgba(255,255,255,0.05)", border: "none",
-              color: "#fff", cursor: "pointer", padding: "10px",
+              background: isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", 
+              border: "none",
+              color: "var(--text-primary)", cursor: "pointer", padding: "10px",
               borderRadius: "12px",
             }}
           >
@@ -62,7 +66,7 @@ export default function SupportPage() {
             </svg>
           </motion.button>
         </Link>
-        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "#fff" }}>
+        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)" }}>
           {t("support")}
         </h1>
       </motion.div>
@@ -73,10 +77,12 @@ export default function SupportPage() {
         animate="visible"
         variants={fadeIn}
         style={{
-          background: "linear-gradient(145deg, rgba(37,244,238,0.1) 0%, rgba(254,44,85,0.05) 100%)",
+          background: isDarkMode 
+            ? "linear-gradient(145deg, rgba(37,244,238,0.1) 0%, rgba(254,44,85,0.05) 100%)"
+            : "linear-gradient(145deg, rgba(37,244,238,0.15) 0%, rgba(254,44,85,0.08) 100%)",
           borderRadius: "24px", padding: "28px",
           marginBottom: "24px", textAlign: "center",
-          border: "1px solid rgba(37,244,238,0.1)",
+          border: `1px solid var(--border-color)`,
         }}
       >
         <div style={{
@@ -90,7 +96,7 @@ export default function SupportPage() {
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
           </svg>
         </div>
-        <h2 style={{ fontSize: "22px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+        <h2 style={{ fontSize: "22px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "8px" }}>
           {t("howCanWeHelp")}
         </h2>
         <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>
@@ -125,7 +131,7 @@ export default function SupportPage() {
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
-          <span style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-primary)" }}>
             {t("requestRefund")}
           </span>
         </motion.button>
@@ -147,7 +153,7 @@ export default function SupportPage() {
             <path d="M12 16v-4"/>
             <path d="M12 8h.01"/>
           </svg>
-          <span style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-primary)" }}>
             {t("helpCenter")}
           </span>
         </motion.button>
@@ -160,13 +166,13 @@ export default function SupportPage() {
         variants={fadeIn}
         transition={{ delay: 0.15 }}
         style={{
-          background: "rgba(255,255,255,0.02)",
+          background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
           borderRadius: "24px", padding: "24px",
           marginBottom: "24px",
-          border: "1px solid rgba(255,255,255,0.04)",
+          border: `1px solid var(--border-color)`,
         }}
       >
-        <h3 style={{ fontSize: "17px", fontWeight: 800, color: "#fff", marginBottom: "20px" }}>
+        <h3 style={{ fontSize: "17px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "20px" }}>
           {t("frequentlyAsked")}
         </h3>
         
@@ -176,9 +182,11 @@ export default function SupportPage() {
               key={index}
               initial={false}
               style={{
-                background: expandedFaq === index ? "rgba(255,255,255,0.04)" : "transparent",
+                background: expandedFaq === index 
+                  ? (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)") 
+                  : "transparent",
                 borderRadius: "12px",
-                border: "1px solid rgba(255,255,255,0.06)",
+                border: `1px solid var(--border-color)`,
                 overflow: "hidden",
               }}
             >
@@ -191,7 +199,7 @@ export default function SupportPage() {
                   cursor: "pointer",
                 }}
               >
-                <span style={{ fontSize: "14px", fontWeight: 600, color: "#fff", textAlign: "left" }}>
+                <span style={{ fontSize: "14px", fontWeight: 600, color: "var(--text-primary)", textAlign: "left" }}>
                   {item.question}
                 </span>
                 <motion.svg
@@ -231,13 +239,13 @@ export default function SupportPage() {
         variants={fadeIn}
         transition={{ delay: 0.2 }}
         style={{
-          background: "rgba(255,255,255,0.02)",
+          background: isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
           borderRadius: "24px", padding: "24px",
-          border: "1px solid rgba(255,255,255,0.04)",
+          border: `1px solid var(--border-color)`,
           textAlign: "center",
         }}
       >
-        <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "12px" }}>
+        <h3 style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)", marginBottom: "12px" }}>
           {t("stillNeedHelp")}
         </h3>
         <p style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "16px", lineHeight: 1.6 }}>
@@ -245,7 +253,9 @@ export default function SupportPage() {
         </p>
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-          padding: "12px 20px", background: "rgba(255,255,255,0.04)", borderRadius: "12px",
+          padding: "12px 20px", 
+          background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", 
+          borderRadius: "12px",
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -278,10 +288,10 @@ export default function SupportPage() {
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: "#1a1a2e",
+                background: isDarkMode ? "#1a1a2e" : "#ffffff",
                 borderRadius: "24px", padding: "28px",
                 width: "100%", maxWidth: "400px",
-                border: "1px solid rgba(255,255,255,0.08)",
+                border: `1px solid var(--border-color)`,
               }}
             >
               <div style={{ textAlign: "center", marginBottom: "24px" }}>
@@ -296,7 +306,7 @@ export default function SupportPage() {
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                   </svg>
                 </div>
-                <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+                <h3 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "8px" }}>
                   {t("helpCenter")}
                 </h3>
                 <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
@@ -307,9 +317,10 @@ export default function SupportPage() {
               {/* Email */}
               <div style={{
                 display: "flex", alignItems: "center", gap: "14px",
-                padding: "16px", background: "rgba(255,255,255,0.04)",
+                padding: "16px", 
+                background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
                 borderRadius: "14px", marginBottom: "12px",
-                border: "1px solid rgba(255,255,255,0.06)",
+                border: `1px solid var(--border-color)`,
               }}>
                 <div style={{
                   width: "44px", height: "44px", borderRadius: "12px",
@@ -325,7 +336,7 @@ export default function SupportPage() {
                   <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
                     Email
                   </div>
-                  <div style={{ fontSize: "14px", color: "#fff", fontWeight: 700 }}>
+                  <div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
                     support@tiktokrewards.com
                   </div>
                 </div>
@@ -334,9 +345,10 @@ export default function SupportPage() {
               {/* Phone */}
               <div style={{
                 display: "flex", alignItems: "center", gap: "14px",
-                padding: "16px", background: "rgba(255,255,255,0.04)",
+                padding: "16px", 
+                background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
                 borderRadius: "14px", marginBottom: "24px",
-                border: "1px solid rgba(255,255,255,0.06)",
+                border: `1px solid var(--border-color)`,
               }}>
                 <div style={{
                   width: "44px", height: "44px", borderRadius: "12px",
@@ -351,7 +363,7 @@ export default function SupportPage() {
                   <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
                     Phone
                   </div>
-                  <div style={{ fontSize: "14px", color: "#fff", fontWeight: 700 }}>
+                  <div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
                     +1 (555) 123-4567
                   </div>
                 </div>
