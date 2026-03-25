@@ -38,7 +38,7 @@ export default function CreatePage() {
   const [toastData, setToastData] = useState({ emoji: "", text: "", type: "" });
   const [totalEarned, setTotalEarned] = useState(0);
   const [loadedVideos, setLoadedVideos] = useState<number[]>([0]);
-  const [timeLeft, setTimeLeft] = useState(7 * 60 + 30);
+  const [displayedBalance, setDisplayedBalance] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
   const [allRated, setAllRated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -113,20 +113,17 @@ export default function CreatePage() {
     checkUserLimit();
   }, []);
 
-  // Timer countdown
+  // Animate balance display
   useEffect(() => {
-    if (limitReached || loading) return;
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [limitReached, loading]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
+    if (displayedBalance < totalEarned) {
+      const diff = totalEarned - displayedBalance;
+      const increment = Math.max(1, Math.floor(diff / 20));
+      const timer = setTimeout(() => {
+        setDisplayedBalance(prev => Math.min(prev + increment, totalEarned));
+      }, 30);
+      return () => clearTimeout(timer);
+    }
+  }, [displayedBalance, totalEarned]);
 
   const playCashSound = () => {
     if (cashSoundRef.current) {
@@ -480,28 +477,50 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Timer de expiracao */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "16px" }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "14px" }}>Expires in</span>
-        <span style={{ color: "#25f4ee", fontWeight: 700, fontSize: "14px" }}>{formatTime(timeLeft)}</span>
-      </div>
+      {/* Balance Display */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{ 
+          display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", 
+          marginBottom: "16px", padding: "12px 20px",
+          background: "linear-gradient(135deg, rgba(37,244,238,0.1) 0%, rgba(254,44,85,0.1) 100%)",
+          borderRadius: "16px", border: "1px solid rgba(255,255,255,0.1)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 500 }}>Balance</span>
+        </div>
+        <motion.span 
+          key={displayedBalance}
+          initial={{ scale: 1.2, color: "#25f4ee" }}
+          animate={{ scale: 1, color: "#fff" }}
+          style={{ 
+            fontSize: "22px", fontWeight: 800, color: "#fff",
+            textShadow: totalEarned > 0 ? "0 0 20px rgba(37,244,238,0.5)" : "none",
+          }}
+        >
+          ${displayedBalance.toFixed(2)}
+        </motion.span>
+      </motion.div>
 
       {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", height: "380px" }}>
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", aspectRatio: "9/12" }}>
         <div
           style={{
             transition: "transform 500ms ease-out",
-            transform: `translateY(-${currentIndex * 380}px)`,
+            transform: `translateY(-${currentIndex * 100}%)`,
+            height: "100%",
           }}
         >
           {videoData.map((video, index) => (
-            <div key={index} style={{ position: "relative", width: "100%", height: "380px" }}>
+            <div key={index} style={{ position: "relative", width: "100%", height: "100%" }}>
               <div style={{
-                position: "relative", height: "100%", borderRadius: "16px", overflow: "hidden",
+                position: "relative", width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden",
                 background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)",
               }}>
                 {loadedVideos.includes(index) ? (
