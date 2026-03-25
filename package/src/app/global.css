@@ -16,11 +16,34 @@
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.6);
   --text-muted: rgba(255, 255, 255, 0.35);
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #1a1a1a;
+  --border-color: rgba(255, 255, 255, 0.08);
   --gradient-primary: linear-gradient(135deg, #fe2c55 0%, #ff6b81 50%, #25f4ee 100%);
   --gradient-button: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%);
   --gradient-card: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
   --shadow-glow: 0 0 20px rgba(254, 44, 85, 0.15);
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --tiktok-dark: #f5f5f5;
+  --tiktok-darker: #ffffff;
+  --tiktok-card: #ffffff;
+  --tiktok-card-hover: #f0f0f0;
+  --glass: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --text-primary: #121212;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 html {
@@ -30,16 +53,34 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  background-color: #000000;
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme body override */
+[data-theme="light"] body {
+  background-color: #f5f5f5 !important;
+  color: #121212 !important;
+}
+
+/* Dark theme body */
+[data-theme="dark"] body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
 }
 
 ::selection {
   background-color: rgba(254, 44, 85, 0.4);
-  color: #ffffff;
+  color: var(--text-primary);
+}
+
+[data-theme="light"] ::selection {
+  background-color: rgba(254, 44, 85, 0.3);
+  color: #000000;
 }
 
 /* Scrollbar */
@@ -47,6 +88,13 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+[data-theme="light"] ::-webkit-scrollbar-thumb { 
+  background: rgba(0,0,0,0.15); 
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { 
+  background: rgba(0,0,0,0.25); 
+}
 
 /* Smooth transitions */
 a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; color: inherit; }
@@ -96,6 +144,11 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   border-radius: 8px;
 }
 
+[data-theme="light"] .skeleton {
+  background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%);
+  background-size: 200% 100%;
+}
+
 /* Snap scroll for TikTok feed */
 .snap-container {
   scroll-snap-type: y mandatory;
@@ -108,10 +161,16 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   height: 100vh;
 }
 
-/* Glass morphism - simplified for performance */
+/* Glass morphism */
 .glass {
   background: rgba(18, 18, 18, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Pulse animation */
@@ -124,6 +183,30 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glow pulse */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(254, 44, 85, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(254, 44, 85, 0.6); }
 }
 
 /* Mobile safe areas */
@@ -153,39 +236,24 @@ nav, button {
   user-select: none;
 }
 
-/* Light Theme */
-[data-theme="light"] {
-  --tiktok-dark: #f5f5f5;
-  --tiktok-darker: #ffffff;
-  --tiktok-card: #ffffff;
-  --tiktok-card-hover: #f0f0f0;
-  --glass: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --text-primary: #121212;
-  --text-secondary: rgba(0, 0, 0, 0.6);
-  --text-muted: rgba(0, 0, 0, 0.4);
-  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.1);
+/* Theme transition for all elements */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease;
 }
 
-[data-theme="light"] body {
-  background-color: #f5f5f5;
-  color: var(--text-primary);
+/* Light theme specific overrides for common patterns */
+[data-theme="light"] [style*="background: rgba(255,255,255,"] {
+  background: rgba(0,0,0,0.04) !important;
 }
 
-[data-theme="light"] ::selection {
-  background-color: rgba(254, 44, 85, 0.3);
-  color: #000000;
+[data-theme="light"] [style*="color: rgba(255,255,255,"] {
+  color: rgba(0,0,0,0.6) !important;
 }
 
-[data-theme="light"] ::-webkit-scrollbar-thumb { 
-  background: rgba(0,0,0,0.15); 
-}
-[data-theme="light"] ::-webkit-scrollbar-thumb:hover { 
-  background: rgba(0,0,0,0.25); 
+[data-theme="light"] [style*="color: #fff"] {
+  color: #121212 !important;
 }
 
-[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+[data-theme="light"] [style*="border: 1px solid rgba(255,255,255,"] {
+  border-color: rgba(0,0,0,0.08) !important;
 }
