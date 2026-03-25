@@ -12,15 +12,13 @@ export default function LoginPage() {
   const referralCode = searchParams.get("ref");
   const { t } = useI18n();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("myacess2026");
+  const [password] = useState("myacess2026");
   const [step, setStep] = useState<"email" | "password">("email");
-  const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [socialProvider, setSocialProvider] = useState<string | null>(null);
 
   const getRedirectUrl = () => {
     if (typeof window !== "undefined") {
@@ -47,8 +45,20 @@ export default function LoginPage() {
 
     const supabase = createClient();
 
-    if (isSignUp) {
-      // First try to sign up
+    // First try to sign in
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (signInData?.session) {
+      // Login successful
+      window.location.href = "/";
+      return;
+    }
+
+    // If login fails, try to sign up (new user)
+    if (signInError) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -61,23 +71,9 @@ export default function LoginPage() {
       });
       
       if (error) {
-        // If user already exists, try to sign in instead
-        if (error.message.includes("already registered")) {
-          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (signInError) {
-            setError(signInError.message);
-          } else if (signInData?.session) {
-            window.location.href = "/";
-          }
-        } else {
-          setError(error.message);
-        }
+        setError(error.message);
       } else if (data.session) {
-        // Direct login after signup (no email confirmation needed)
-        // Process referral if exists
+        // Direct login after signup
         const savedReferralCode = localStorage.getItem("referralCode") || referralCode;
         if (savedReferralCode && data.user) {
           try {
@@ -96,45 +92,20 @@ export default function LoginPage() {
         }
         window.location.href = "/";
       } else if (data.user && !data.session) {
-        // If no session but user exists, try to sign in
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        // Try to sign in after sign up
+        const { data: retryData, error: retryError } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
-        if (signInError) {
-          setError(signInError.message);
-        } else if (signInData?.session) {
+        if (retryError) {
+          setError(retryError.message);
+        } else if (retryData?.session) {
           window.location.href = "/";
         }
-      }
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        setError(error.message);
-      } else if (data?.session) {
-        window.location.href = "/";
       }
     }
 
     setLoading(false);
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    // Show email/password form with social provider branding
-    setSocialProvider(provider);
-    setIsSignUp(true);
-    setStep("email");
-    setError("");
-  };
-
-  const resetForm = () => {
-    setError("");
-    setSuccess("");
-    setStep("email");
-    setPassword("");
   };
 
   return (
@@ -186,16 +157,9 @@ export default function LoginPage() {
       >
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "28px", position: "relative" }}>
-          {(step === "password" || socialProvider) && (
+          {step === "password" && (
             <button
-              onClick={() => { 
-                setStep("email"); 
-                setError(""); 
-                if (socialProvider) {
-                  setSocialProvider(null);
-                  setIsSignUp(false);
-                }
-              }}
+              onClick={() => { setStep("email"); setError(""); }}
               style={{
                 position: "absolute", left: 0,
                 background: "none", border: "none", cursor: "pointer",
@@ -209,7 +173,7 @@ export default function LoginPage() {
           )}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <h1 style={{ fontSize: "20px", fontWeight: 700, color: "#fff" }}>
-              {socialProvider ? `Continue with ${socialProvider}` : "Log in to TikTok Rewards"}
+              Welcome to TikTok Rewards
             </h1>
           </div>
         </div>
@@ -344,126 +308,24 @@ export default function LoginPage() {
           </motion.button>
         </form>
 
-        {/* OR divider */}
-        {step === "email" && !socialProvider && (
-          <>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
-              <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.1)" }} />
-              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", fontWeight: 500 }}>OR</span>
-              <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.1)" }} />
-            </div>
-
-            {/* Social login buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
-              {/* Facebook */}
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("Facebook")}
-                style={{
-                  width: "100%", padding: "14px 18px",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: "12px",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
-                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
-                  fontFamily: "inherit",
-                  transition: "all 0.2s",
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                Continue with Facebook
-              </button>
-
-              {/* Google */}
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("Google")}
-                style={{
-                  width: "100%", padding: "14px 18px",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: "12px",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
-                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
-                  fontFamily: "inherit",
-                  transition: "all 0.2s",
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Continue with Google
-              </button>
-
-              {/* Apple */}
-              <button
-                type="button"
-                onClick={() => handleSocialLogin("Apple")}
-                style={{
-                  width: "100%", padding: "14px 18px",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: "12px",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "12px",
-                  cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
-                  fontFamily: "inherit",
-                  transition: "all 0.2s",
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
-                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                </svg>
-                Continue with Apple
-              </button>
-            </div>
-
-            {/* Request Refund button */}
-            <button
-              type="button"
-              onClick={() => setShowRefundModal(true)}
-              style={{
-                width: "100%", padding: "14px 18px",
-                background: "rgba(45, 45, 80, 0.8)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "12px",
-                cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
-                fontFamily: "inherit",
-                marginBottom: "20px",
-              }}
-            >
-              Request Refund
-            </button>
-          </>
-        )}
-
-        {/* Toggle sign up */}
-        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+        {/* Request Refund button */}
+        {step === "email" && (
           <button
-            onClick={() => { setIsSignUp(!isSignUp); resetForm(); }}
+            type="button"
+            onClick={() => setShowRefundModal(true)}
             style={{
-              background: "none", border: "none",
-              color: "rgba(255,255,255,0.5)", fontSize: "14px",
-              cursor: "pointer", fontFamily: "inherit",
+              width: "100%", padding: "14px 18px",
+              background: "rgba(45, 45, 80, 0.8)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "12px",
+              cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
+              fontFamily: "inherit",
+              marginBottom: "20px",
             }}
           >
-            {isSignUp ? (
-              <>Already have an account? <span style={{ color: "#fe2c55", fontWeight: 600 }}>Log in</span></>
-            ) : (
-              <>{"Don't have an account?"} <span style={{ color: "#fe2c55", fontWeight: 600 }}>Sign up</span></>
-            )}
+            Request Refund
           </button>
-        </div>
+        )}
 
         {/* Terms */}
         <p
