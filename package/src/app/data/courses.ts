@@ -512,40 +512,264 @@ export const courses: Course[] = [
         id: "mod-5",
         title: "Module 05 | Millionaire System",
         subtitle: "6 lessons",
-        comingSoon: true,
-        subModules: [{ id: "sm-5-1", title: "Coming Soon", lessons: [{ id: "m5-les-1", title: "Content Coming Soon", duration: "0:00", videoUrl: "", description: "Coming soon.", contentType: "text", textContent: "<p>This module content is coming soon. Stay tuned!</p>" }] }],
+        comingSoon: false,
+        subModules: [
+          {
+            id: "sm-5-1",
+            title: "Private Group",
+            lessons: [
+              {
+                id: "m5-1-les-1",
+                title: "Private Group",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Access our VIP group.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to our VIP group.</p>
+<p style="margin-bottom: 16px;">This group can only be accessed by people who have obtained their access pass, this channel will provide valuable information for the process of both financial and personal growth of each participant, remember that perseverance is the best tool for success.</p>
+<p style="margin-bottom: 16px; font-weight: 600;">See you on the other side:</p>
+<p style="margin-bottom: 24px;"><a href="https://telegram.me/+DCjkRmAnYgAxZGRh" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">JOIN TELEGRAM GROUP</a></p>`,
+              },
+              { id: "m5-1-les-2", title: "The Secret Of Multimillionaires To Manage Their Money", duration: "12:00", videoUrl: "https://www.youtube.com/embed/GTkk7YbGQ8w", description: "Learn money management.", contentType: "video" },
+              {
+                id: "m5-1-les-3",
+                title: "Money Management Template",
+                duration: "5:00",
+                videoUrl: "",
+                description: "Download the template.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Money Management Template</p>
+<p style="margin-bottom: 16px;">Download the file by clicking below:</p>
+<p style="margin-bottom: 24px;"><a href="https://cdn.areademembros.com/file/download/a2Z5ay55Sk9RNkFKWEd5SUM4QUk3bkdLMjJmZzFuWkdrak9ieVlDYXVoM3d2L2ViZ3Zxci85Mjg1X252cGFuZ2Zhdi8%3D?test=1&ts=1774490814&uptkn=451d2511c4d9f80d0ebdac820d2ce3d5&name=MoneyManagementTemplate+%281%29" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">DOWNLOAD TEMPLATE</a></p>`,
+              },
+              {
+                id: "m5-1-les-4",
+                title: "The Art of Getting Rich: How to Multiply Your Money Effortlessly",
+                duration: "10:00",
+                videoUrl: "",
+                description: "Download the guide.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">The Art of Getting Rich: How to Multiply Your Money Effortlessly</p>
+<p style="margin-bottom: 16px;">Download the file by clicking below:</p>
+<p style="margin-bottom: 24px;"><a href="https://cdn.areademembros.com/file/download/c3FjLmhoanM2NTAyVzdhcTl1eko3aDRGd243eVFHcTEwR1RQa0pyd1BNeTEvZWJndnFyLzkyODVfbnZwYW5nZmF2Lw%3D%3D?test=1&ts=1774490848&uptkn=451d2511c4d9f80d0ebdac820d2ce3d5&name=TheArtofGettingRich-HowtoMultiplyYourMoneyEffortlessly+%281%29" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">DOWNLOAD GUIDE</a></p>`,
+              },
+            ],
+          },
+        ],
       },
       // MODULE 06 | Increase Your Profits X3
       {
         id: "mod-6",
         title: "Module 06 | Increase Your Profits X3",
-        subtitle: "9 lessons",
-        comingSoon: true,
-        subModules: [{ id: "sm-6-1", title: "Coming Soon", lessons: [{ id: "m6-les-1", title: "Content Coming Soon", duration: "0:00", videoUrl: "", description: "Coming soon.", contentType: "text", textContent: "<p>This module content is coming soon. Stay tuned!</p>" }] }],
+        subtitle: "7 lessons",
+        comingSoon: false,
+        subModules: [
+          {
+            id: "sm-6-1",
+            title: "Millionaire Mindset To Earn Money",
+            lessons: [
+              { id: "m6-1-les-1", title: "Don't Waste Your Time", duration: "10:00", videoUrl: "https://www.youtube.com/embed/Nkly4teYytU", description: "Time management.", contentType: "video" },
+              { id: "m6-1-les-2", title: "THE MINDSET OF HIGH ACHIEVERS", duration: "15:00", videoUrl: "https://www.youtube.com/embed/rYwLtw3q9iw", description: "High achiever mindset.", contentType: "video" },
+              { id: "m6-1-les-3", title: "24 Hours To Become Rich", duration: "12:00", videoUrl: "https://www.youtube.com/embed/kCgV-i7Brhg", description: "Get rich fast.", contentType: "video" },
+            ],
+          },
+          {
+            id: "sm-6-2",
+            title: "Increase Your Profits",
+            lessons: [
+              { id: "m6-2-les-1", title: "$100 Every Day With Rev.com", duration: "14:00", videoUrl: "https://www.youtube.com/embed/m0knrEuyeVM", description: "Earn with Rev.com.", contentType: "video" },
+              { id: "m6-2-les-2", title: "Earning Money With ClickWorker", duration: "11:00", videoUrl: "https://www.youtube.com/embed/1_NRwFi_2u4", description: "Earn with ClickWorker.", contentType: "video" },
+              { id: "m6-2-les-3", title: "The New AI Side Hustle That's Making $1,579/day", duration: "16:00", videoUrl: "https://www.youtube.com/embed/rYwLtw3q9iw", description: "AI side hustle.", contentType: "video" },
+            ],
+          },
+          {
+            id: "sm-6-3",
+            title: "Increase Your Results X3",
+            lessons: [
+              {
+                id: "m6-3-les-1",
+                title: "Increase your results X3",
+                duration: "3:00",
+                videoUrl: "",
+                description: "Multiply your earnings.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Increase Your Results X3</p>
+<p style="margin-bottom: 16px;">Request the activation of your account and receive earnings multiplied X3!</p>
+<p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfm7D49TswoA-8bVWaiKlldrGPfIgyOW8g7xbmLGMQLY23K1A/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">ACTIVATE X3 EARNINGS</a></p>`,
+              },
+            ],
+          },
+        ],
       },
       // MODULE 07 | Lifetime Access
       {
         id: "mod-7",
         title: "Module 07 | Lifetime Access",
         subtitle: "3 lessons",
-        comingSoon: true,
-        subModules: [{ id: "sm-7-1", title: "Coming Soon", lessons: [{ id: "m7-les-1", title: "Content Coming Soon", duration: "0:00", videoUrl: "", description: "Coming soon.", contentType: "text", textContent: "<p>This module content is coming soon. Stay tuned!</p>" }] }],
+        comingSoon: false,
+        subModules: [
+          {
+            id: "sm-7-1",
+            title: "Lifetime Access",
+            lessons: [
+              {
+                id: "m7-1-les-1",
+                title: "Lifetime Access",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Your lifetime access.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 20px; color: #25f4ee;">Congratulations!</p>
+<p style="margin-bottom: 16px;">You now have your <strong style="color: #ffd700;">lifetime access</strong> to ProfitUp activated with the email you purchased.</p>
+<p style="margin-bottom: 16px;">Enjoy a lifetime of services from our ProfitUp platform and make a lot of money.</p>
+<div style="margin: 24px 0; text-align: center;"><img src="/images/lifetime-access.png" alt="Lifetime Access" style="max-width: 100%; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);"/></div>`,
+              },
+            ],
+          },
+          {
+            id: "sm-7-2",
+            title: "Support",
+            lessons: [
+              {
+                id: "m7-2-les-1",
+                title: "Support",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Contact support.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to the support area</p>
+<p style="margin-bottom: 16px;">For us it is extremely important that each of you feel satisfied with the content presented, so if you have any concerns about any topic, please do not hesitate to communicate your request in this email.</p>
+<p style="margin-bottom: 16px;">We will take 2-3 days to respond due to the high number of students, so we ask for a little patience.</p>
+<p style="margin-bottom: 24px;"><a href="mailto:ytrewards.ing@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: ytrewards.ing@gmail.com</a></p>`,
+              },
+              {
+                id: "m7-2-les-2",
+                title: "Request Your Refund",
+                duration: "2:00",
+                videoUrl: "",
+                description: "How to request refund.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
+<p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
+<p style="margin-bottom: 16px;">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>
+<p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfPghwgDAdFY6WgIRA1mrx8pYOrYAIsE9LlmnfszYhaT4VuvA/viewform" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">REQUEST REFUND</a></p>`,
+              },
+            ],
+          },
+        ],
       },
       // MODULE 08 | VIP Community
       {
         id: "mod-8",
         title: "Module 08 | VIP Community",
         subtitle: "3 lessons",
-        comingSoon: true,
-        subModules: [{ id: "sm-8-1", title: "Coming Soon", lessons: [{ id: "m8-les-1", title: "Content Coming Soon", duration: "0:00", videoUrl: "", description: "Coming soon.", contentType: "text", textContent: "<p>This module content is coming soon. Stay tuned!</p>" }] }],
+        comingSoon: false,
+        subModules: [
+          {
+            id: "sm-8-1",
+            title: "VIP Community",
+            lessons: [
+              {
+                id: "m8-1-les-1",
+                title: "Private Group",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Join the VIP group.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to our VIP group.</p>
+<p style="margin-bottom: 16px;">This group can only be accessed by people who have obtained their access pass, this channel will provide valuable information for the process of both financial and personal growth of each participant, remember that perseverance is the best tool for success.</p>
+<p style="margin-bottom: 16px; font-weight: 600;">See you on the other side:</p>
+<p style="margin-bottom: 24px;"><a href="https://telegram.me/+DCjkRmAnYgAxZGRh" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">CLICK HERE - JOIN TELEGRAM</a></p>`,
+              },
+              {
+                id: "m8-1-les-2",
+                title: "Support",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Contact support.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to the support area</p>
+<p style="margin-bottom: 16px;">For us it is extremely important that each of you feel satisfied with the content presented, so if you have any concerns about any topic, please do not hesitate to communicate your request in this email.</p>
+<p style="margin-bottom: 16px;">We will take 2-3 days to respond due to the high number of students, so we ask for a little patience.</p>
+<p style="margin-bottom: 24px;"><a href="mailto:ytrewards.ing@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: ytrewards.ing@gmail.com</a></p>`,
+              },
+              {
+                id: "m8-1-les-3",
+                title: "Request Your Refund",
+                duration: "2:00",
+                videoUrl: "",
+                description: "How to request refund.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
+<p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
+<p style="margin-bottom: 16px;">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>
+<p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfPghwgDAdFY6WgIRA1mrx8pYOrYAIsE9LlmnfszYhaT4VuvA/viewform" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">REQUEST REFUND</a></p>`,
+              },
+            ],
+          },
+        ],
       },
       // MODULE 09 | ProfiUp Bonus Program
       {
         id: "mod-9",
         title: "ProfiUp 09 | Bonus Program",
-        subtitle: "11 lessons",
-        comingSoon: true,
-        subModules: [{ id: "sm-9-1", title: "Coming Soon", lessons: [{ id: "m9-les-1", title: "Content Coming Soon", duration: "0:00", videoUrl: "", description: "Coming soon.", contentType: "text", textContent: "<p>This module content is coming soon. Stay tuned!</p>" }] }],
+        subtitle: "10 lessons",
+        comingSoon: false,
+        subModules: [
+          {
+            id: "sm-9-1",
+            title: "Getting Started",
+            lessons: [
+              { id: "m9-1-les-1", title: "How to open your account within the Broker", duration: "8:00", videoUrl: "https://www.youtube.com/embed/ij0hfDimOwc", description: "Open broker account.", contentType: "video" },
+              {
+                id: "m9-1-les-2",
+                title: "Support Center",
+                duration: "2:00",
+                videoUrl: "",
+                description: "Support information.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Dear Profitok Users,</p>
+<p style="margin-bottom: 16px;">Welcome to the Profitok Support Center! We're dedicated to ensuring your experience with Profitok is seamless. Whether you have questions, encounter technical issues, or seek guidance on maximizing features, our team is here to assist you.</p>
+<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:ytrewards.ing@gmail.com" style="color: #fe2c55; font-weight: 600;">ytrewards.ing@gmail.com</a></p>
+<p style="margin-bottom: 16px;">Our support team operates <strong>Monday to Friday, from 9:00 AM to 6:00 PM</strong>, and we aim to respond promptly to all inquiries during these hours.</p>
+<p style="margin-bottom: 16px;"><strong style="color: #ffd700;">Feedback:</strong> Your input is invaluable to us as we strive to enhance Profitok continuously. Whether it's suggestions for new features or improvements to existing ones, we'd love to hear from you.</p>
+<p style="margin-top: 24px; color: rgba(255,255,255,0.7);">Thank you for choosing Profitok.<br/>Best Regards,<br/><strong style="color: #fff;">Profitok Support Team</strong></p>`,
+              },
+            ],
+          },
+          {
+            id: "sm-9-2",
+            title: "Earn $20 right now...",
+            lessons: [
+              {
+                id: "m9-2-les-1",
+                title: "Fill out this form and earn $35",
+                duration: "3:00",
+                videoUrl: "",
+                description: "Earn $35 by filling the form.",
+                contentType: "text",
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to module 1.1</p>
+<p style="margin-bottom: 16px;">We invite you to fill out this short form. We recommend you fill out this form when you finish consuming the program, so you can give us your opinion of its content.</p>
+<p style="margin-bottom: 16px; color: #ffd700; font-weight: 600;">After filling out the form we will personally send you $20 dollars to your PayPal account...</p>
+<p style="margin-bottom: 16px;">But be patient, as the money will arrive in the next 4-6 days.</p>
+<p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkx5C-MJOG1ONNzw8PrxKjmrH5Z5UzL5qG0VFt8N-Zkkky7A/viewform" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">FILL UP THE FORM HERE</a></p>`,
+              },
+            ],
+          },
+          {
+            id: "sm-9-3",
+            title: "Broker Setup",
+            lessons: [
+              { id: "m9-3-les-1", title: "How to Open Your Account with the Broker", duration: "10:00", videoUrl: "https://www.youtube.com/embed/e2rwFyC124k", description: "Open broker account.", contentType: "video" },
+              { id: "m9-3-les-2", title: "How to deposit within the Broker", duration: "8:00", videoUrl: "https://www.youtube.com/embed/kDvcX8ktL8I", description: "Make deposits.", contentType: "video" },
+              { id: "m9-3-les-3", title: "How to Set Up Your Account with the Broker", duration: "9:00", videoUrl: "https://www.youtube.com/embed/H7Bc1gmMGMU", description: "Account setup.", contentType: "video" },
+              { id: "m9-3-les-4", title: "How to activate the Ganatic", duration: "7:00", videoUrl: "https://www.youtube.com/embed/Y_tpSuwdHR0", description: "Activate Ganatic.", contentType: "video" },
+              { id: "m9-3-les-5", title: "How to make your deposit in Ganatic", duration: "6:00", videoUrl: "https://www.youtube.com/embed/5nPS4jbEVzo", description: "Deposit in Ganatic.", contentType: "video" },
+              { id: "m9-3-les-6", title: "How to track your earnings in Ganatic", duration: "5:00", videoUrl: "https://www.youtube.com/embed/ATaM8P4TG2o", description: "Track earnings.", contentType: "video" },
+              { id: "m9-3-les-7", title: "How to withdraw your money from Ganatic", duration: "8:00", videoUrl: "https://www.youtube.com/embed/WXZ39W0VNaE", description: "Withdraw money.", contentType: "video" },
+            ],
+          },
+        ],
       },
     ],
   },
