@@ -278,7 +278,7 @@ export default function ProfilePage() {
         transition={{ duration: 0.25, delay: 0.15 }}
         style={{ padding: "0 0 20px" }}
       >
-        <Link href="/course/tiktok-growth" prefetch={true}>
+        <Link href="/course/tiktok-rewards-program" prefetch={true}>
           <motion.button
             whileHover={{ scale: 1.02, boxShadow: "0 8px 25px rgba(254,44,85,0.4)" }}
             whileTap={{ scale: 0.98 }}

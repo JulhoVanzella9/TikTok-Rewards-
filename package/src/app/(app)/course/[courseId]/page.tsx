@@ -5,33 +5,34 @@ import Link from "next/link";
 import { getCourseById } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
-// Module data with real TikTok-style content
-const moduleData = [
-  { 
-    title: "TikTok Fundamentals",
-    subtitle: "Getting Started",
-    gradient: "linear-gradient(135deg, #00f2ea 0%, #00c4b8 100%)",
-    icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z",
-  },
-  { 
-    title: "Creating Viral Content",
-    subtitle: "Content Strategy",
-    gradient: "linear-gradient(135deg, #ff6b8a 0%, #fe2c55 100%)",
-    icon: "M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z",
-  },
-  { 
-    title: "Advanced Monetization",
-    subtitle: "Making Money",
-    gradient: "linear-gradient(135deg, #ffd700 0%, #ff9500 100%)",
-    icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z",
-  },
-  { 
-    title: "Scaling Your Results",
-    subtitle: "Growth Hacks",
-    gradient: "linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)",
-    icon: "M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z",
-  },
-];
+// Module images for different courses
+const courseModuleImages: Record<string, string[]> = {
+  "tiktok-rewards-program": [
+    "/images/modules/module-01.png",
+    "/images/modules/module-02.png",
+    "/images/modules/module-03.png",
+    "/images/modules/module-04.png",
+    "/images/modules/module-05.png",
+    "/images/modules/module-06.png",
+    "/images/modules/module-07.png",
+    "/images/modules/module-08.png",
+    "/images/modules/module-09.png",
+  ],
+  "tiktok-community": [
+    "/images/modules/tc-module-01.jpg",
+    "/images/modules/tc-module-02.jpg",
+    "/images/modules/tc-module-03.jpg",
+    "/images/modules/tc-module-04.jpg",
+  ],
+  "money-robot": [
+    "/images/modules/mr-module-01.jpg",
+    "/images/modules/mr-module-02.jpg",
+    "/images/modules/mr-module-03.jpg",
+    "/images/modules/mr-module-04.jpg",
+    "/images/modules/mr-module-05.jpg",
+    "/images/modules/mr-module-06.jpg",
+  ],
+};
 
 export default function CourseDetailPage() {
   const params = useParams();
@@ -50,6 +51,13 @@ export default function CourseDetailPage() {
     );
   }
 
+  // Count total lessons
+  const getTotalLessons = (moduleIndex: number) => {
+    const courseModule = course.modules[moduleIndex];
+    if (!courseModule || courseModule.comingSoon) return 0;
+    return courseModule.subModules.reduce((acc, sm) => acc + sm.lessons.length, 0);
+  };
+
   return (
     <div style={{ 
       minHeight: "100vh", 
@@ -64,233 +72,140 @@ export default function CourseDetailPage() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "4px" }}>
           <div style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "10px",
-            background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            width: "36px", height: "36px", borderRadius: "10px",
+            background: "#000",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            border: "1px solid rgba(255,255,255,0.1)",
           }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
-              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+              <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
+              <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
+              <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
             </svg>
           </div>
           <div>
-            <h1 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)" }}>
-              TikTok Rewards
+            <h1 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-primary)" }}>
+              {course.title}
             </h1>
             <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-              {course.modules.length} modules | {course.totalLessons} lessons
+              {course.modules.length} modules - {course.totalLessons} lessons
             </p>
           </div>
         </div>
       </div>
 
-      {/* Module Grid */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        gap: "12px",
-        padding: "16px",
-      }}>
-        {course.modules.map((module, index) => {
-          const data = moduleData[index] || moduleData[0];
-          return (
-            <motion.div
-              key={module.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08, type: "spring", stiffness: 300, damping: 25 }}
-            >
-              <Link 
-                href={`/course/${course.id}/lesson/${module.lessons[0]?.id}`}
-                style={{ textDecoration: "none" }}
+      {/* Modules Grid */}
+      <div style={{ padding: "16px" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "12px",
+        }}>
+          {course.modules.map((module, index) => {
+            const courseImages = courseModuleImages[course.id] || courseModuleImages["tiktok-rewards-program"];
+            const moduleImage = courseImages[index] || courseImages[0] || "/images/modules/module-01.png";
+            const totalLessons = getTotalLessons(index);
+            
+            return (
+              <motion.div
+                key={module.id}
+                initial={{ opacity: 0, y: 15, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: index * 0.04,
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
               >
-                <motion.div
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{
-                    background: isDarkMode ? "#161622" : "#fff",
-                    borderRadius: "16px",
-                    overflow: "hidden",
-                    border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                    boxShadow: isDarkMode ? "none" : "0 2px 8px rgba(0,0,0,0.04)",
-                  }}
+                <Link
+                  href={module.comingSoon ? "#" : `/course/${params.courseId}/module/${module.id}`}
+                  style={{ textDecoration: "none" }}
+                  onClick={(e) => module.comingSoon && e.preventDefault()}
                 >
-                  {/* Module Card Image */}
-                  <div style={{
-                    height: "130px",
-                    background: data.gradient,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}>
-                    {/* Background decoration */}
-                    <div style={{
-                      position: "absolute",
-                      inset: 0,
-                      opacity: 0.15,
-                      background: `radial-gradient(circle at 30% 70%, rgba(255,255,255,0.3) 0%, transparent 50%),
-                                   radial-gradient(circle at 70% 30%, rgba(255,255,255,0.2) 0%, transparent 50%)`,
-                    }} />
-                    
-                    {/* Module number badge */}
-                    <div style={{
-                      position: "absolute",
-                      top: "10px",
-                      left: "10px",
-                      padding: "4px 10px",
-                      background: "rgba(0,0,0,0.25)",
-                      backdropFilter: "blur(8px)",
-                      borderRadius: "8px",
-                      fontSize: "11px",
-                      fontWeight: 700,
-                      color: "#fff",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
-                    }}>
-                      Module 0{index + 1}
-                    </div>
-
-                    {/* Center icon */}
-                    <div style={{
-                      width: "56px",
-                      height: "56px",
+                  <motion.div 
+                    whileHover={module.comingSoon ? {} : { y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.5)" }}
+                    whileTap={module.comingSoon ? {} : { scale: 0.97 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    style={{
+                      background: isDarkMode ? "#0f0f0f" : "#fff",
                       borderRadius: "16px",
-                      background: "rgba(255,255,255,0.2)",
-                      backdropFilter: "blur(10px)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+                      overflow: "hidden",
+                      border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                      opacity: module.comingSoon ? 0.5 : 1,
+                      cursor: module.comingSoon ? "not-allowed" : "pointer",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                     }}>
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff">
-                        <path d={data.icon}/>
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Module Info */}
-                  <div style={{ padding: "14px" }}>
+                    {/* Module Image */}
                     <div style={{
-                      fontSize: "11px",
-                      fontWeight: 600,
-                      color: "var(--text-muted)",
-                      marginBottom: "4px",
-                    }}>
-                      {data.subtitle}
-                    </div>
-                    <h3 style={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      color: "var(--text-primary)",
-                      lineHeight: 1.3,
-                      minHeight: "36px",
-                    }}>
-                      {data.title}
-                    </h3>
-                    
-                    {/* Progress bar - always 0% for new users */}
-                    <div style={{
-                      marginTop: "12px",
-                      height: "4px",
-                      background: isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
-                      borderRadius: "2px",
+                      position: "relative",
+                      aspectRatio: "1/1",
                       overflow: "hidden",
                     }}>
-                      <div style={{
-                        height: "100%",
-                        width: "0%",
-                        borderRadius: "2px",
-                        background: data.gradient,
-                      }} />
+                      <motion.img 
+                        src={moduleImage} 
+                        alt={module.title}
+                        whileHover={module.comingSoon ? {} : { scale: 1.05 }}
+                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          transformOrigin: "center",
+                        }}
+                      />
+                      {module.comingSoon && (
+                        <div style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: "rgba(0,0,0,0.5)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                          <span style={{
+                            background: "rgba(254,44,85,0.9)",
+                            padding: "8px 16px",
+                            borderRadius: "8px",
+                            fontSize: "12px",
+                            fontWeight: 700,
+                            color: "#fff",
+                            textTransform: "uppercase",
+                          }}>
+                            Coming Soon
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <div style={{
-                      marginTop: "6px",
-                      fontSize: "11px",
-                      color: "var(--text-muted)",
-                    }}>
-                      {module.lessons.length} lessons
+                    
+                    {/* Module Info */}
+                    <div style={{ padding: "14px", background: isDarkMode ? "#0a0a0a" : "#fff" }}>
+                      <h3 style={{
+                        fontSize: "13px",
+                        fontWeight: 700,
+                        color: "var(--text-primary)",
+                        lineHeight: 1.3,
+                        minHeight: "34px",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical" as const,
+                        overflow: "hidden",
+                        marginBottom: "6px",
+                      }}>
+                        {module.title.replace("Module 0", "Module ").replace("ProfiUp 09", "Module 09")}
+                      </h3>
+                      <p style={{
+                        fontSize: "11px",
+                        color: "var(--text-muted)",
+                      }}>
+                        {module.comingSoon ? "Coming Soon" : `${module.subModules.length} sections - ${totalLessons} lessons`}
+                      </p>
                     </div>
-                  </div>
-                </motion.div>
-              </Link>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Quick Stats */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        style={{
-          margin: "8px 16px 20px",
-          padding: "16px 20px",
-          background: isDarkMode ? "#161622" : "#fff",
-          borderRadius: "14px",
-          border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-          display: "flex",
-          justifyContent: "space-around",
-          textAlign: "center",
-        }}
-      >
-        <div>
-          <div style={{ fontSize: "20px", fontWeight: 800, color: "#fe2c55" }}>
-            {course.modules.length}
-          </div>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Modules</div>
+                  </motion.div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
-        <div style={{ width: "1px", background: isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)" }} />
-        <div>
-          <div style={{ fontSize: "20px", fontWeight: 800, color: "#25f4ee" }}>
-            {course.totalLessons}
-          </div>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Lessons</div>
-        </div>
-        <div style={{ width: "1px", background: isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)" }} />
-        <div>
-          <div style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)" }}>
-            {course.totalDuration}
-          </div>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>Duration</div>
-        </div>
-      </motion.div>
-
-      {/* Start Course Button */}
-      <div style={{ padding: "0 16px" }}>
-        <Link href={`/course/${course.id}/lesson/${course.modules[0]?.lessons[0]?.id}`}>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={{
-              width: "100%",
-              padding: "16px",
-              background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-              border: "none",
-              borderRadius: "12px",
-              color: "#fff",
-              fontSize: "16px",
-              fontWeight: 700,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-              boxShadow: "0 4px 20px rgba(254,44,85,0.35)",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            Start Learning
-          </motion.button>
-        </Link>
       </div>
     </div>
   );

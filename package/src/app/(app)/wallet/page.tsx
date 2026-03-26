@@ -245,32 +245,24 @@ export default function WalletPage() {
           ))}
         </div>
 
-        {/* Withdraw Button */}
-        <motion.button
-          whileHover={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1.02 : 1 }}
-          whileTap={{ scale: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 0.98 : 1 }}
-          disabled={balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
+        {/* 3D Withdraw Button */}
+        <button
+          disabled={balance < 5000 || balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
+          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary" : "btn-3d-dark"}`}
           style={{
-            width: "100%", padding: "14px", fontSize: "15px", fontWeight: 700,
-            background: balance >= actualWithdrawAmount && actualWithdrawAmount > 0
-              ? "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)"
-              : "rgba(255,255,255,0.08)",
-            color: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "#fff" : "rgba(255,255,255,0.3)",
-            border: "none", borderRadius: "16px", 
-            cursor: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
             fontFamily: "inherit",
-            boxShadow: balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "0 4px 20px rgba(254,44,85,0.3)" : "none",
-            transition: "all 0.2s",
+            opacity: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1 : 0.5,
+            cursor: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
           }}
         >
           {t("withdrawMoney")} {selectedAmount === "all" && balance > 0 ? `($${balance.toFixed(2)})` : ""}
-        </motion.button>
+        </button>
 
         <p style={{
           fontSize: "12px", color: "var(--text-muted)",
           textAlign: "center", marginTop: "16px", lineHeight: 1.6,
         }}>
-          {t("withdrawMinimum")} $0.40. {t("withdrawTime")}
+          Minimum balance to withdraw: $5,000.00. {t("withdrawTime")}
         </p>
       </motion.div>
     </div>

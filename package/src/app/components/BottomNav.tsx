@@ -36,7 +36,7 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/course/tiktok-growth",
+      href: "/courses",
       label: t("class"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -114,37 +114,88 @@ export default function BottomNav() {
       }}
     >
       {tabs.map((tab) => {
-        const isActive = pathname === tab.href;
+        const isActive = tab.href === "/courses" 
+          ? pathname === "/courses" || pathname.startsWith("/course/")
+          : pathname === tab.href;
         return (
           <Link key={tab.href} href={tab.href} prefetch={true} style={{ textDecoration: "none", flex: 1 }}>
             <motion.div
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.88, y: 2 }}
+              whileHover={{ y: -2 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 400,
+                damping: 17,
+              }}
               style={{
                 display: "flex", flexDirection: "column", alignItems: "center",
                 justifyContent: "center", gap: "4px", padding: "8px 0",
                 cursor: "pointer", height: "100%",
+                position: "relative",
               }}
             >
+              {/* Active indicator glow */}
+              {isActive && !tab.isCenter && (
+                <motion.div
+                  layoutId="navIndicator"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "32px",
+                    height: "3px",
+                    borderRadius: "2px",
+                    background: tab.href === "/" ? "#fe2c55" : tab.href === "/wallet" ? "#ffd700" : "#25f4ee",
+                    boxShadow: `0 0 12px ${tab.href === "/" ? "rgba(254,44,85,0.6)" : tab.href === "/wallet" ? "rgba(255,215,0,0.6)" : "rgba(37,244,238,0.6)"}`,
+                  }}
+                />
+              )}
+              
               {tab.isCenter ? (
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <motion.div 
+                  whileHover={{ scale: 1.12, rotate: 90 }} 
+                  whileTap={{ scale: 0.88, rotate: 0 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 15,
+                  }}
+                >
                   {tab.icon()}
                 </motion.div>
               ) : (
                 <>
-                  <div style={{ 
-                    width: "24px", height: "24px", 
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
+                  <motion.div 
+                    animate={{ 
+                      scale: isActive ? 1.1 : 1,
+                      y: isActive ? -2 : 0,
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className={isActive ? "icon-pop" : ""}
+                    style={{ 
+                      width: "24px", height: "24px", 
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >
                     {tab.icon(isActive)}
-                  </div>
-                  <span style={{
-                    fontSize: "10px", fontWeight: isActive ? 700 : 500,
-                    color: isActive ? textColor : inactiveColor,
-                    transition: "color 0.2s",
-                    lineHeight: 1,
-                  }}>
+                  </motion.div>
+                  <motion.span 
+                    animate={{ 
+                      scale: isActive ? 1.05 : 1,
+                      fontWeight: isActive ? 700 : 500,
+                    }}
+                    style={{
+                      fontSize: "10px", fontWeight: isActive ? 700 : 500,
+                      color: isActive ? textColor : inactiveColor,
+                      transition: "color 0.2s",
+                      lineHeight: 1,
+                    }}
+                  >
                     {tab.label}
-                  </span>
+                  </motion.span>
                 </>
               )}
             </motion.div>

@@ -6,7 +6,7 @@ import CourseCard from "@/app/components/CourseCard";
 import Link from "next/link";
 import { useProgress } from "@/lib/hooks/useProgress";
 
-const tabs = ["Todos", "Em Andamento", "Concluídos"];
+const tabs = ["All", "In Progress", "Completed"];
 
 export default function MyCoursesPage() {
   const [tab, setTab] = useState(0);
@@ -39,7 +39,7 @@ export default function MyCoursesPage() {
           fontSize: "24px", fontWeight: 800, color: "#fff", marginBottom: "20px",
         }}
       >
-        Meus Cursos
+        My Courses
       </motion.h1>
 
       {/* Tabs */}
@@ -69,7 +69,7 @@ export default function MyCoursesPage() {
       {/* Content */}
       {loading ? (
         <div style={{ textAlign: "center", padding: "60px 20px" }}>
-          <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>Carregando...</div>
+          <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>Loading...</div>
         </div>
       ) : displayed.length > 0 ? (
         <div style={{
@@ -97,26 +97,25 @@ export default function MyCoursesPage() {
           animate={{ opacity: 1 }}
           style={{ textAlign: "center", padding: "60px 20px" }}
         >
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>📚</div>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
           <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#fff", marginBottom: "8px" }}>
-            Nenhum curso aqui ainda
+            No courses here yet
           </h3>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", marginBottom: "20px" }}>
-            Comece a explorar nossos cursos
+            Start exploring our courses
           </p>
           <Link href="/explore">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                padding: "12px 28px", fontSize: "14px", fontWeight: 700,
-                background: "var(--gradient-button)", color: "#fff",
-                border: "none", borderRadius: "12px", cursor: "pointer",
-                fontFamily: "inherit",
-              }}
+            <button
+              className="btn-3d btn-3d-primary"
+              style={{ fontFamily: "inherit" }}
             >
-              Explorar Cursos
-            </motion.button>
+              Explore Courses
+            </button>
           </Link>
         </motion.div>
       )}

@@ -252,26 +252,13 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
             </div>
           </div>
 
-          {/* Share Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          {/* 3D Share Button */}
+          <button
             onClick={shareLink}
+            className="btn-3d btn-3d-primary btn-3d-full btn-3d-lg"
             style={{
-              width: "100%",
-              padding: "16px",
-              background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-              border: "none",
-              borderRadius: "14px",
-              color: "#fff",
-              fontSize: "16px",
-              fontWeight: 700,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              fontFamily: "inherit",
               gap: "10px",
-              boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -282,7 +269,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
             </svg>
             Share Referral Link
-          </motion.button>
+          </button>
 
           {/* How it works */}
           <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>

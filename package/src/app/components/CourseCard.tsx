@@ -16,36 +16,72 @@ export default function CourseCard({ course, index }: { course: Course; index: n
   return (
     <Link href={`/course/${course.id}`} prefetch={true} style={{ textDecoration: "none" }}>
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.15) }}
-        whileHover={{ y: -6, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
+        initial={{ opacity: 0, y: 20, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 100,
+          damping: 15,
+          delay: Math.min(index * 0.05, 0.2) 
+        }}
+        whileHover={{ 
+          y: -8, 
+          scale: 1.02,
+          boxShadow: "0 24px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)" 
+        }}
+        whileTap={{ scale: 0.97, y: 0 }}
+        className="card-3d gpu-accelerated"
         style={{
           borderRadius: "20px", overflow: "hidden",
           background: "var(--gradient-card)",
           border: "1px solid rgba(255,255,255,0.06)",
           cursor: "pointer", position: "relative",
           boxShadow: "var(--shadow-card)",
+          transformStyle: "preserve-3d",
         }}
       >
         {/* Thumbnail */}
         <div style={{
           height: "180px", background: gradients[index % gradients.length],
           position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
+          overflow: "hidden",
         }}>
-          {/* Play button */}
-          <motion.div
-            whileHover={{ scale: 1.15 }}
+          {course.image && (
+            <motion.img
+              src={course.image}
+              alt={course.title}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          )}
+          {/* 3D Play button */}
+          <div
             style={{
-              width: "50px", height: "50px", borderRadius: "50%",
-              background: "rgba(0,0,0,0.4)",
+              width: "54px", height: "54px", borderRadius: "50%",
+              background: "linear-gradient(145deg, #ff3366 0%, #fe2c55 50%, #e91e4a 100%)",
+              boxShadow: `
+                0 4px 0 0 #b8183a,
+                0 6px 16px rgba(254, 44, 85, 0.5),
+                inset 0 1px 0 rgba(255,255,255,0.25)
+              `,
               display: "flex", alignItems: "center", justifyContent: "center",
+              position: "relative", zIndex: 1,
+              transform: "translateY(0)",
+              transition: "all 0.15s ease",
             }}
+            className="card-play-btn"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: "2px" }}>
               <path d="M8 5v14l11-7z"/>
             </svg>
-          </motion.div>
+          </div>
 
           {/* Duration badge */}
           <div style={{
