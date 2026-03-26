@@ -383,13 +383,20 @@ export default function WelcomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <Link href="/checkout">
+          {/* External checkout link - replace URL with your actual checkout */}
+          <a 
+            href="https://pay.hotmart.com/YOUR_PRODUCT_ID" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", display: "block" }}
+          >
             <button
               className="btn-3d btn-3d-primary btn-3d-lg btn-3d-full"
               style={{
                 marginBottom: "12px",
                 gap: "10px",
                 fontFamily: "inherit",
+                width: "100%",
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -398,7 +405,7 @@ export default function WelcomePage() {
               </svg>
               Get Access Now - Checkout
             </button>
-          </Link>
+          </a>
 
           <Link href="/login">
             <button
