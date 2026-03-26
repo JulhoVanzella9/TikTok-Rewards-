@@ -16,18 +16,28 @@ export default function CourseCard({ course, index }: { course: Course; index: n
   return (
     <Link href={`/course/${course.id}`} prefetch={true} style={{ textDecoration: "none" }}>
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.15) }}
-        whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        initial={{ opacity: 0, y: 20, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 100,
+          damping: 15,
+          delay: Math.min(index * 0.05, 0.2) 
+        }}
+        whileHover={{ 
+          y: -8, 
+          scale: 1.02,
+          boxShadow: "0 24px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)" 
+        }}
+        whileTap={{ scale: 0.97, y: 0 }}
+        className="card-3d gpu-accelerated"
         style={{
           borderRadius: "20px", overflow: "hidden",
           background: "var(--gradient-card)",
           border: "1px solid rgba(255,255,255,0.06)",
           cursor: "pointer", position: "relative",
           boxShadow: "var(--shadow-card)",
+          transformStyle: "preserve-3d",
         }}
       >
         {/* Thumbnail */}

@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { courses } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
+import ParticleField from "@/app/components/ParticleField";
+import ScrollReveal from "@/app/components/ScrollReveal";
+import Tilt3D from "@/app/components/Tilt3D";
 
 export default function CoursesPage() {
   const { theme } = useTheme();
@@ -13,7 +16,14 @@ export default function CoursesPage() {
       minHeight: "100vh", 
       paddingBottom: "100px",
       background: isDarkMode ? "#000" : "#f8f8f8",
+      position: "relative",
     }}>
+      {/* Subtle Particle Background */}
+      <ParticleField 
+        particleCount={20}
+        interactive={false}
+        className="gpu-accelerated"
+      />
       {/* Header */}
       <div style={{ 
         padding: "20px 16px 16px",
@@ -46,31 +56,36 @@ export default function CoursesPage() {
       <div style={{ padding: "16px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {courses.map((course, index) => (
-            <motion.div
+            <ScrollReveal 
               key={course.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                delay: index * 0.08,
-                duration: 0.4,
-                ease: [0.16, 1, 0.3, 1]
-              }}
+              animation="slide-up" 
+              delay={index * 0.08}
             >
-              <Link
-                href={`/course/${course.id}`}
-                style={{ textDecoration: "none" }}
+              <Tilt3D
+                intensity={5}
+                scale={1.02}
+                glare={true}
+                glareOpacity={0.1}
+                style={{
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                }}
               >
-                <motion.div 
-                  whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                  style={{
-                    background: isDarkMode ? "#0f0f0f" : "#fff",
-                    borderRadius: "20px",
-                    overflow: "hidden",
-                    border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  }}>
+                <Link
+                  href={`/course/${course.id}`}
+                  style={{ textDecoration: "none", display: "block" }}
+                >
+                  <motion.div 
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.15 }}
+                    className="card-float"
+                    style={{
+                      background: isDarkMode ? "#0f0f0f" : "#fff",
+                      borderRadius: "20px",
+                      overflow: "hidden",
+                      border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                    }}>
                   {/* Course Image */}
                   <div style={{
                     position: "relative",
@@ -191,8 +206,9 @@ export default function CoursesPage() {
                     </button>
                   </div>
                 </motion.div>
-              </Link>
-            </motion.div>
+                </Link>
+              </Tilt3D>
+            </ScrollReveal>
           ))}
         </div>
       </div>

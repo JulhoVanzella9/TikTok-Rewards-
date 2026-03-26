@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import ParticleField from "@/app/components/ParticleField";
 
 export default function WelcomePage() {
   const searchParams = useSearchParams();
@@ -27,38 +28,51 @@ export default function WelcomePage() {
       padding: "20px",
       background: "linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%)",
     }}>
-      {/* Animated background elements */}
+      {/* Premium Particle Background */}
+      <ParticleField 
+        particleCount={40}
+        interactive={true}
+        className="gpu-accelerated"
+      />
+      
+      {/* Animated gradient orbs */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
         <motion.div
           animate={{ 
-            y: [0, -20, 0],
-            opacity: [0.3, 0.6, 0.3],
+            y: [0, -30, 0],
+            x: [0, 15, 0],
+            scale: [1, 1.1, 1],
+            opacity: [0.4, 0.7, 0.4],
           }}
-          transition={{ duration: 3, repeat: Infinity }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: "absolute",
-            top: "10%",
-            left: "10%",
-            width: "200px",
-            height: "200px",
+            top: "5%",
+            left: "5%",
+            width: "300px",
+            height: "300px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(254,44,85,0.15) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(254,44,85,0.2) 0%, transparent 60%)",
+            filter: "blur(40px)",
           }}
         />
         <motion.div
           animate={{ 
-            y: [0, 20, 0],
+            y: [0, 30, 0],
+            x: [0, -15, 0],
+            scale: [1, 1.15, 1],
             opacity: [0.3, 0.6, 0.3],
           }}
-          transition={{ duration: 4, repeat: Infinity }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: "absolute",
-            bottom: "20%",
-            right: "5%",
-            width: "250px",
-            height: "250px",
+            bottom: "10%",
+            right: "0%",
+            width: "350px",
+            height: "350px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(37,244,238,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(37,244,238,0.15) 0%, transparent 60%)",
+            filter: "blur(50px)",
           }}
         />
       </div>

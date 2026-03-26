@@ -4,9 +4,23 @@ import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import { createClient } from "@/lib/supabase/client";
+import ParticleField from "../components/ParticleField";
+import ScrollReveal from "../components/ScrollReveal";
 
-// Faster animation variants
-const fadeIn = { hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } };
+// Premium animation variants with spring physics
+const fadeIn = { 
+  hidden: { opacity: 0, y: 20, scale: 0.97 }, 
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    }
+  } 
+};
 
 export default function HomePage() {
   const { t } = useI18n();
@@ -39,7 +53,15 @@ export default function HomePage() {
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
       paddingBottom: "20px",
+      position: "relative",
+      minHeight: "100vh",
     }}>
+      {/* Interactive Particle Background */}
+      <ParticleField 
+        particleCount={25}
+        interactive={true}
+        className="gpu-accelerated"
+      />
       {/* Balance Display */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
@@ -66,22 +88,28 @@ export default function HomePage() {
           </span>
         </div>
       </motion.div>
-      {/* Video Tutorial Section */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        transition={{ duration: 0.35 }}
-        style={{
-          borderRadius: "20px", overflow: "hidden", marginBottom: "16px",
-          background: isDarkMode 
-            ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
-            : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
-          border: `1px solid var(--border-color)`,
-          padding: "20px", position: "relative",
-          transition: "all 0.3s ease",
-        }}
-      >
+      {/* Video Tutorial Section with Premium Animation */}
+      <ScrollReveal animation="slide-up" delay={0.1}>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          whileHover={{ 
+            scale: 1.01,
+            boxShadow: "0 20px 50px rgba(254,44,85,0.15)",
+          }}
+          transition={{ duration: 0.35 }}
+          className="card-3d"
+          style={{
+            borderRadius: "20px", overflow: "hidden", marginBottom: "16px",
+            background: isDarkMode 
+              ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
+              : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
+            border: `1px solid var(--border-color)`,
+            padding: "20px", position: "relative",
+            transition: "all 0.3s ease",
+          }}
+        >
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
           <div style={{
@@ -237,6 +265,7 @@ export default function HomePage() {
           {t("installApp") || "Install App on Home Screen"}
         </button>
       </motion.div>
+      </ScrollReveal>
     </div>
   );
 }
