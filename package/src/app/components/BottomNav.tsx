@@ -36,7 +36,7 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/course/tiktok-growth",
+      href: "/course/tiktok-rewards-program",
       label: t("class"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

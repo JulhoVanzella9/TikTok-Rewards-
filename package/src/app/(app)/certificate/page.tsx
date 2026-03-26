@@ -279,7 +279,7 @@ export default function CertificatePage() {
             {t("completeCourseDesc")}
           </p>
           <motion.button
-            onClick={() => router.push("/course/tiktok-growth")}
+            onClick={() => router.push("/course/tiktok-rewards-program")}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             style={{

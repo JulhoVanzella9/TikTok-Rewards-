@@ -72,26 +72,65 @@ export default function LessonPage() {
       <div style={{ display: "flex", gap: "0" }}>
         {/* Main */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Video */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            style={{
-              position: "relative", paddingTop: "56.25%", background: "#000",
-              borderRadius: "0",
-            }}
-          >
-            <iframe
-              src={lesson.videoUrl}
+          {/* Video or Text Content */}
+          {lesson.contentType === "video" && lesson.videoUrl ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               style={{
-                position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-                border: "none",
+                position: "relative", paddingTop: "56.25%", background: "#000",
+                borderRadius: "0",
               }}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={lesson.title}
-            />
-          </motion.div>
+            >
+              <iframe
+                src={lesson.videoUrl}
+                style={{
+                  position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+                  border: "none",
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={lesson.title}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              style={{
+                padding: "32px 20px",
+                background: "linear-gradient(145deg, rgba(254,44,85,0.08) 0%, rgba(0,0,0,0.4) 100%)",
+                borderBottom: "1px solid rgba(255,255,255,0.06)",
+                minHeight: "200px",
+              }}
+            >
+              <div style={{
+                display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px",
+              }}>
+                <div style={{
+                  width: "48px", height: "48px", borderRadius: "12px",
+                  background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>Text Lesson</h3>
+                  <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>Read the content below</p>
+                </div>
+              </div>
+              <div 
+                style={{
+                  fontSize: "15px", color: "var(--text-secondary)", lineHeight: 1.8,
+                  background: "rgba(0,0,0,0.3)", padding: "24px", borderRadius: "16px",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+                dangerouslySetInnerHTML={{ __html: lesson.textContent || lesson.description }}
+              />
+            </motion.div>
+          )}
 
           {/* Lesson info */}
           <div style={{ padding: "20px" }}>
