@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import { createClient } from "@/lib/supabase/client";
+import RefundModal from "@/app/components/RefundModal";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
@@ -23,6 +24,7 @@ export default function WalletPage() {
   const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showRefundModal, setShowRefundModal] = useState(false);
 
   // Calcula o valor real do saque (se "all", usa o saldo total)
   const actualWithdrawAmount = selectedAmount === "all" ? balance : selectedAmount;
@@ -248,7 +250,7 @@ export default function WalletPage() {
         {/* 3D Withdraw Button */}
         <button
           disabled={balance < 5000 || balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
-          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary" : "btn-3d-dark"}`}
+          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary btn-3d-animated" : "btn-3d-dark"}`}
           style={{
             fontFamily: "inherit",
             opacity: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1 : 0.5,
@@ -265,6 +267,101 @@ export default function WalletPage() {
           Minimum balance to withdraw: $5,000.00. {t("withdrawTime")}
         </p>
       </motion.div>
+
+      {/* Refund Guarantee Section */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        transition={{ delay: 0.25 }}
+        style={{
+          background: isDarkMode 
+            ? "linear-gradient(135deg, rgba(37,244,238,0.08) 0%, rgba(37,244,238,0.03) 100%)"
+            : "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)",
+          borderRadius: "20px", padding: "20px",
+          border: `1px solid ${isDarkMode ? "rgba(37,244,238,0.2)" : "rgba(37,244,238,0.3)"}`,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Guarantee Badge */}
+        <div style={{
+          position: "absolute",
+          top: "12px",
+          right: "12px",
+          background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+          padding: "6px 12px",
+          borderRadius: "20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          boxShadow: "0 4px 12px rgba(37,244,238,0.3)",
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+          <span style={{ fontSize: "10px", fontWeight: 700, color: "#000" }}>
+            {t("refundGuarantee") || "Money-Back Guarantee"}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", marginTop: "32px" }}>
+          <div style={{
+            width: "48px", height: "48px", borderRadius: "50%",
+            background: "linear-gradient(135deg, rgba(37,244,238,0.2), rgba(37,244,238,0.1))",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+            border: "2px solid rgba(37,244,238,0.3)",
+          }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#25f4ee", marginBottom: "6px" }}>
+              {t("refundTitle") || "30-Day Refund Policy"}
+            </h3>
+            <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "16px" }}>
+              {t("refundDesc") || "Not satisfied with your purchase? We offer a full refund within 30 days."}
+            </p>
+          </div>
+        </div>
+        
+        {/* Centered 3D Button */}
+        <button
+          onClick={() => setShowRefundModal(true)}
+          className="btn-3d btn-3d-full btn-3d-animated"
+          style={{
+            width: "100%",
+            marginTop: "16px",
+            fontFamily: "inherit",
+            fontSize: "15px",
+            fontWeight: 700,
+            padding: "14px 24px",
+            background: "linear-gradient(135deg, #25f4ee 0%, #00d4aa 100%)",
+            color: "#000",
+            border: "none",
+            borderRadius: "14px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            boxShadow: "0 4px 0 0 #15a8a3, 0 8px 20px rgba(37, 244, 238, 0.35)",
+            cursor: "pointer",
+            transition: "all 0.15s ease",
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          {t("requestRefundBtn") || "Request Refund"}
+        </button>
+      </motion.div>
+
+      {/* Refund Modal */}
+      <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
     </div>
   );
 }

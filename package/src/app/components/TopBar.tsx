@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
+import RefundModal from "./RefundModal";
 
 const FlagUS = () => (
   <svg width="24" height="18" viewBox="0 0 24 18" style={{ borderRadius: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
@@ -43,6 +44,7 @@ const languages = [
 export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
+  const [showRefundModal, setShowRefundModal] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
@@ -117,6 +119,11 @@ export default function TopBar() {
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    )},
+    { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
       </svg>
     )},
     { label: t("logout") || "Logout", href: "#logout", isLogout: true, icon: (
@@ -501,6 +508,58 @@ export default function TopBar() {
                           PWA
                         </span>
                       </motion.button>
+                    ) : (item as { isRefund?: boolean }).isRefund ? (
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          setShowRefundModal(true);
+                        }}
+                        style={{
+                          width: "100%",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: isDarkMode 
+                            ? "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)"
+                            : "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
+                          border: "1px solid rgba(37,244,238,0.2)",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(37,244,238,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
+                        <span style={{
+                          padding: "5px 10px",
+                          background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                          borderRadius: "8px",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          color: "#000",
+                        }}>
+                          30 days
+                        </span>
+                      </motion.button>
                     ) : (item as { isLogout?: boolean }).isLogout ? (
                       <motion.button
                         whileHover={{ scale: 1.02, x: 4 }}
@@ -684,6 +743,9 @@ export default function TopBar() {
           </>
         )}
       </AnimatePresence>
+
+      {/* Refund Modal */}
+      <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
     </>
   );
 }

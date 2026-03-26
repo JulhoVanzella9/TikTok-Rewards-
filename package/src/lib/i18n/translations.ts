@@ -42,6 +42,15 @@ export const translations = {
     inviteFriends: "Invite Friends",
     logout: "Logout",
     
+    // Refund Section
+    refundGuarantee: "Money-Back Guarantee",
+    refundTitle: "30-Day Refund Policy",
+    refundDesc: "Not satisfied with your purchase? No problem! We offer a full refund within 30 days of your subscription. Your satisfaction is our priority.",
+    refundBenefits: "Full refund, no questions asked within 30 days",
+    refundProcess: "Quick and easy refund process",
+    refundSupport: "Dedicated support team to assist you",
+    requestRefundBtn: "Request Refund",
+    
     // Support
     support: "Support",
     howCanWeHelp: "How can we help?",
@@ -205,6 +214,15 @@ export const translations = {
     inviteFriends: "Convidar Amigos",
     logout: "Sair",
     
+    // Refund Section
+    refundGuarantee: "Garantia de Reembolso",
+    refundTitle: "Politica de Reembolso de 30 Dias",
+    refundDesc: "Nao ficou satisfeito com sua compra? Sem problemas! Oferecemos reembolso total em ate 30 dias da sua assinatura. Sua satisfacao e nossa prioridade.",
+    refundBenefits: "Reembolso total, sem perguntas em 30 dias",
+    refundProcess: "Processo de reembolso rapido e facil",
+    refundSupport: "Equipe de suporte dedicada para ajuda-lo",
+    requestRefundBtn: "Solicitar Reembolso",
+    
     // Support
     support: "Suporte",
     howCanWeHelp: "Como podemos ajudar?",
@@ -365,10 +383,19 @@ export const translations = {
     withdrawTime: "El dinero se recibe en hasta 7 dias habiles.",
     tiktokRewardsAccess: "Acceso TikTok Rewards",
     installApp: "Instalar App",
-    inviteFriends: "Invitar Amigos",
-    logout: "Cerrar Sesion",
-    
-    // Support
+inviteFriends: "Invitar Amigos",
+  logout: "Cerrar Sesion",
+  
+  // Refund Section
+  refundGuarantee: "Garantia de Devolucion",
+  refundTitle: "Politica de Reembolso de 30 Dias",
+  refundDesc: "No estas satisfecho con tu compra? Sin problemas! Ofrecemos reembolso total dentro de 30 dias de tu suscripcion. Tu satisfaccion es nuestra prioridad.",
+  refundBenefits: "Reembolso total, sin preguntas en 30 dias",
+  refundProcess: "Proceso de reembolso rapido y facil",
+  refundSupport: "Equipo de soporte dedicado para ayudarte",
+  requestRefundBtn: "Solicitar Reembolso",
+  
+  // Support
     support: "Soporte",
     howCanWeHelp: "Como podemos ayudarte?",
     supportDesc: "Encuentra respuestas a tus preguntas o contacta a nuestro equipo de soporte.",

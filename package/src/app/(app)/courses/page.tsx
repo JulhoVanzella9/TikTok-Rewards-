@@ -60,8 +60,9 @@ export default function CoursesPage() {
       }}>
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
-          gap: "clamp(16px, 3vw, 28px)",
+          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+          gap: "24px",
+          alignItems: "stretch",
         }}>
           {courses.map((course, index) => (
             <ScrollReveal 
@@ -90,18 +91,21 @@ export default function CoursesPage() {
                     className="card-float"
                     style={{
                       background: isDarkMode ? "#0f0f0f" : "#fff",
-                      borderRadius: "clamp(16px, 2vw, 24px)",
+                      borderRadius: "20px",
                       overflow: "hidden",
                       border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                       boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}>
                   {/* Course Image */}
                   <div style={{
                     position: "relative",
                     width: "100%",
                     aspectRatio: "16/9",
-                    maxHeight: "280px",
                     overflow: "hidden",
+                    flexShrink: 0,
                   }}>
                     <motion.img 
                       src={course.image || "/images/modules/module-01.png"} 
@@ -164,14 +168,22 @@ export default function CoursesPage() {
                   
                   {/* Course Info */}
                   <div style={{ 
-                    padding: "clamp(14px, 2vw, 24px)",
+                    padding: "16px",
                     background: isDarkMode ? "#0a0a0a" : "#fff",
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    minHeight: "180px",
                   }}>
                     <p style={{
-                      fontSize: "clamp(13px, 1.5vw, 16px)",
+                      fontSize: "13px",
                       color: "var(--text-secondary)",
-                      lineHeight: 1.6,
-                      marginBottom: "clamp(14px, 2vw, 20px)",
+                      lineHeight: 1.5,
+                      marginBottom: "12px",
+                      overflow: "hidden",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
                     }}>
                       {course.description}
                     </p>
@@ -180,10 +192,10 @@ export default function CoursesPage() {
                     <div style={{
                       display: "flex",
                       gap: "16px",
-                      flexWrap: "wrap",
+                      alignItems: "center",
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
                           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                           <line x1="16" y1="2" x2="16" y2="6"/>
                           <line x1="8" y1="2" x2="8" y2="6"/>
@@ -194,7 +206,7 @@ export default function CoursesPage() {
                         </span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
                           <polygon points="5 3 19 12 5 21 5 3"/>
                         </svg>
                         <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
@@ -206,13 +218,30 @@ export default function CoursesPage() {
                     
                     {/* 3D Start Button */}
                     <button
-                      className="btn-3d btn-3d-primary btn-3d-full"
+                      className="btn-3d btn-3d-full btn-3d-animated"
                       style={{
-                        marginTop: "clamp(14px, 2vw, 20px)",
+                        width: "100%",
+                        marginTop: "auto",
                         fontFamily: "inherit",
-                        fontSize: "clamp(14px, 1.5vw, 16px)",
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        padding: "12px 20px",
+                        background: "linear-gradient(135deg, #fe2c55 0%, #ff3366 100%)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: "0 4px 0 0 #b8183a, 0 6px 16px rgba(254, 44, 85, 0.3)",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
                       }}
                     >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
                       Start Course
                     </button>
                   </div>
