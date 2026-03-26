@@ -5,6 +5,19 @@ import Link from "next/link";
 import { getCourseById, getModuleById } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
+// Module images
+const moduleImages: Record<string, string> = {
+  "mod-1": "/images/modules/module-01.png",
+  "mod-2": "/images/modules/module-02.png",
+  "mod-3": "/images/modules/module-03.png",
+  "mod-4": "/images/modules/module-04.png",
+  "mod-5": "/images/modules/module-05.png",
+  "mod-6": "/images/modules/module-06.png",
+  "mod-7": "/images/modules/module-07.png",
+  "mod-8": "/images/modules/module-08.png",
+  "mod-9": "/images/modules/module-09.png",
+};
+
 export default function ModulePage() {
   const params = useParams();
   const router = useRouter();
@@ -86,30 +99,65 @@ export default function ModulePage() {
       paddingBottom: "100px",
       background: isDarkMode ? "#000" : "#f8f8f8",
     }}>
-      {/* Header */}
+      {/* Header with back button */}
       <div style={{ 
-        padding: "16px",
-        background: isDarkMode ? "#0a0a0a" : "#fff",
-        borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-        position: "sticky",
-        top: 0,
+        padding: "12px 16px",
+        background: isDarkMode ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.9)",
+        position: "absolute",
+        top: 0, left: 0, right: 0,
         zIndex: 10,
+        backdropFilter: "blur(10px)",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <button
-            onClick={() => router.back()}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              color: "var(--text-primary)", display: "flex", alignItems: "center",
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-          </button>
-          <h1 style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.3 }}>
+        <button
+          onClick={() => router.back()}
+          style={{
+            background: "rgba(0,0,0,0.5)", border: "none", cursor: "pointer",
+            color: "#fff", display: "flex", alignItems: "center",
+            padding: "8px 12px", borderRadius: "8px", gap: "6px",
+            fontSize: "14px", fontWeight: 500,
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back
+        </button>
+      </div>
+
+      {/* Module Banner Image */}
+      <div style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "1/1",
+        maxHeight: "280px",
+        overflow: "hidden",
+      }}>
+        <img 
+          src={moduleImages[params.moduleId as string] || "/images/modules/module-01.png"}
+          alt={module.title}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+        <div style={{
+          position: "absolute",
+          bottom: 0, left: 0, right: 0,
+          background: "linear-gradient(transparent, rgba(0,0,0,0.9))",
+          padding: "40px 16px 16px",
+        }}>
+          <h1 style={{ 
+            fontSize: "18px", 
+            fontWeight: 700, 
+            color: "#fff",
+            textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+          }}>
             {module.title}
           </h1>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", marginTop: "4px" }}>
+            {module.subModules.length} sections
+          </p>
         </div>
       </div>
 
