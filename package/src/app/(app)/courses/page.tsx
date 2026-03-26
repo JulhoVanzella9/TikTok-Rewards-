@@ -173,12 +173,17 @@ export default function CoursesPage() {
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
+                    minHeight: "180px",
                   }}>
                     <p style={{
-                      fontSize: "clamp(13px, 1.5vw, 16px)",
+                      fontSize: "13px",
                       color: "var(--text-secondary)",
-                      lineHeight: 1.6,
-                      marginBottom: "clamp(14px, 2vw, 20px)",
+                      lineHeight: 1.5,
+                      marginBottom: "12px",
+                      overflow: "hidden",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
                     }}>
                       {course.description}
                     </p>
@@ -187,10 +192,10 @@ export default function CoursesPage() {
                     <div style={{
                       display: "flex",
                       gap: "16px",
-                      flexWrap: "wrap",
+                      alignItems: "center",
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
                           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                           <line x1="16" y1="2" x2="16" y2="6"/>
                           <line x1="8" y1="2" x2="8" y2="6"/>
@@ -201,7 +206,7 @@ export default function CoursesPage() {
                         </span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
                           <polygon points="5 3 19 12 5 21 5 3"/>
                         </svg>
                         <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
@@ -212,34 +217,33 @@ export default function CoursesPage() {
                     </div>
                     
                     {/* 3D Start Button */}
-                    <div style={{ marginTop: "auto", paddingTop: "16px" }}>
-                      <button
-                        className="btn-3d btn-3d-full btn-3d-animated"
-                        style={{
-                          width: "100%",
-                          fontFamily: "inherit",
-                          fontSize: "15px",
-                          fontWeight: 700,
-                          padding: "14px 24px",
-                          background: "linear-gradient(135deg, #fe2c55 0%, #ff3366 100%)",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "14px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "10px",
-                          boxShadow: "0 4px 0 0 #b8183a, 0 8px 20px rgba(254, 44, 85, 0.35)",
-                          cursor: "pointer",
-                          transition: "all 0.15s ease",
-                        }}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <polygon points="5 3 19 12 5 21 5 3"/>
-                        </svg>
-                        Start Course
-                      </button>
-                    </div>
+                    <button
+                      className="btn-3d btn-3d-full btn-3d-animated"
+                      style={{
+                        width: "100%",
+                        marginTop: "auto",
+                        fontFamily: "inherit",
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        padding: "12px 20px",
+                        background: "linear-gradient(135deg, #fe2c55 0%, #ff3366 100%)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: "0 4px 0 0 #b8183a, 0 6px 16px rgba(254, 44, 85, 0.3)",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                      Start Course
+                    </button>
                   </div>
                 </motion.div>
                 </Link>

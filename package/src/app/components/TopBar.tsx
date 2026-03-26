@@ -518,26 +518,44 @@ export default function TopBar() {
                         }}
                         style={{
                           width: "100%",
-                          display: "flex", alignItems: "center", gap: "14px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
-                          border: "1px solid rgba(37,244,238,0.25)",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: isDarkMode 
+                            ? "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)"
+                            : "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
+                          border: "1px solid rgba(37,244,238,0.2)",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#25f4ee" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
-                          {item.label}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(37,244,238,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
                         <span style={{
-                          marginLeft: "auto",
-                          padding: "4px 8px",
-                          background: "rgba(37,244,238,0.2)",
-                          borderRadius: "6px",
+                          padding: "5px 10px",
+                          background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                          borderRadius: "8px",
                           fontSize: "11px",
-                          fontWeight: 600,
-                          color: "#25f4ee",
+                          fontWeight: 700,
+                          color: "#000",
                         }}>
                           30 days
                         </span>
