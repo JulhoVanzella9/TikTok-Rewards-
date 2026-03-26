@@ -1170,6 +1170,43 @@ nav, button {
 }
 
 /* ============================================
+   DESKTOP/TABLET RESPONSIVE STYLES
+   ============================================ */
+
+@media (min-width: 768px) {
+  /* Larger elements for desktop */
+  .btn-3d {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  
+  .btn-3d-lg {
+    padding: 18px 36px;
+    font-size: 18px;
+  }
+  
+  /* Better card sizing for desktop */
+  .card-3d,
+  .card-float {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Even larger for big screens */
+  .btn-3d {
+    padding: 16px 32px;
+    font-size: 17px;
+  }
+  
+  .btn-3d-lg {
+    padding: 20px 40px;
+    font-size: 19px;
+  }
+}
+
+/* ============================================
    MOBILE TOUCH OPTIMIZATIONS
    ============================================ */
 

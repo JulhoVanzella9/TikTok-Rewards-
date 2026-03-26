@@ -47,12 +47,12 @@ export default function HomePage() {
 
   return (
     <div style={{ 
-      padding: "8px 12px", 
-      maxWidth: "1200px", 
+      padding: "clamp(8px, 2vw, 24px) clamp(12px, 3vw, 40px)", 
+      maxWidth: "800px", 
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "80px",
+      paddingBottom: "100px",
       position: "relative",
     }}>
       {/* Interactive Particle Background - reduced for mobile performance */}
@@ -87,64 +87,71 @@ export default function HomePage() {
           </span>
         </div>
       </motion.div>
-      {/* Video Tutorial Section - Mobile Optimized */}
+      {/* Video Tutorial Section - Responsive */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         style={{
-          borderRadius: "16px", overflow: "hidden", marginBottom: "12px",
+          borderRadius: "clamp(16px, 2vw, 24px)", 
+          overflow: "hidden", 
+          marginBottom: "clamp(12px, 2vw, 24px)",
           background: isDarkMode 
             ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
             : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
           border: `1px solid var(--border-color)`,
-          padding: "16px", position: "relative",
+          padding: "clamp(16px, 3vw, 28px)", 
+          position: "relative",
         }}
       >
-        {/* Header - Compact for mobile */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+        {/* Header - Responsive */}
+        <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px, 1.5vw, 14px)", marginBottom: "clamp(6px, 1vw, 12px)" }}>
           <div style={{
-            width: "32px", height: "32px", borderRadius: "50%",
+            width: "clamp(32px, 5vw, 48px)", 
+            height: "clamp(32px, 5vw, 48px)", 
+            borderRadius: "50%",
             background: "rgba(254,44,85,0.15)",
             display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fe2c55">
+            <svg style={{ width: "clamp(14px, 2vw, 22px)", height: "clamp(14px, 2vw, 22px)" }} viewBox="0 0 24 24" fill="#fe2c55">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
           </div>
           <h2 style={{
-            fontSize: "18px", fontWeight: 800, color: "#fe2c55",
+            fontSize: "clamp(18px, 3vw, 28px)", fontWeight: 800, color: "#fe2c55",
           }}>
             {t("videoTutorial")}
           </h2>
         </div>
         
         <p style={{
-          fontSize: "12px", 
+          fontSize: "clamp(12px, 1.5vw, 16px)", 
           color: "var(--text-secondary)", 
-          lineHeight: 1.4,
-          marginBottom: "10px",
+          lineHeight: 1.5,
+          marginBottom: "clamp(10px, 2vw, 18px)",
         }}>
           {t("videoTutorialDesc")}
         </p>
 
-        {/* Video Container - Compact for mobile */}
+        {/* Video Container - Responsive */}
         <div style={{
           background: isDarkMode ? "#0a0a0f" : "#f0f0f5",
-          borderRadius: "12px",
+          borderRadius: "clamp(12px, 2vw, 18px)",
           overflow: "hidden",
           border: `1px solid var(--border-color)`,
         }}>
           {/* Video Header */}
           <div style={{
-            padding: "10px 12px",
-            display: "flex", alignItems: "center", gap: "10px",
+            padding: "clamp(10px, 2vw, 18px) clamp(12px, 2vw, 20px)",
+            display: "flex", alignItems: "center", gap: "clamp(10px, 1.5vw, 16px)",
             borderBottom: `1px solid var(--border-color)`,
             background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
           }}>
             <div style={{
-              width: "28px", height: "28px", borderRadius: "50%",
+              width: "clamp(28px, 4vw, 44px)", 
+              height: "clamp(28px, 4vw, 44px)", 
+              borderRadius: "50%",
               background: isDarkMode 
                 ? "linear-gradient(135deg, #1a1a2e, #252542)"
                 : "linear-gradient(135deg, #e8e8f0, #d0d0e0)",
@@ -152,15 +159,15 @@ export default function HomePage() {
               border: `1px solid var(--border-color)`,
               flexShrink: 0,
             }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
+              <svg style={{ width: "clamp(12px, 1.5vw, 20px)", height: "clamp(12px, 1.5vw, 20px)" }} viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
             </div>
             <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-primary)" }}>
+              <div style={{ fontSize: "clamp(13px, 1.8vw, 18px)", fontWeight: 700, color: "var(--text-primary)" }}>
                 TikTok Rewards - How to Use
               </div>
-              <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "clamp(11px, 1.4vw, 15px)", color: "var(--text-muted)" }}>
                 Support Service
               </div>
             </div>
@@ -174,29 +181,31 @@ export default function HomePage() {
             {/* Instructions */}
             <div style={{
               flex: 1,
-              padding: "12px",
+              padding: "clamp(12px, 2vw, 24px)",
               display: "flex", alignItems: "center",
             }}>
               <p style={{
-                fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.5,
+                fontSize: "clamp(12px, 1.6vw, 17px)", 
+                color: "var(--text-secondary)", 
+                lineHeight: 1.6,
                 fontWeight: 500,
               }}>
                 {t("videoInstructions")}
               </p>
             </div>
 
-            {/* Video Player - Smaller for mobile */}
+            {/* Video Player - Responsive */}
             <div style={{
-              padding: "12px",
+              padding: "clamp(12px, 2vw, 24px)",
               display: "flex", justifyContent: "center", alignItems: "center",
             }}>
               <div style={{
-                width: "100px",
+                width: "clamp(100px, 15vw, 180px)",
                 aspectRatio: "9/16",
                 background: isDarkMode 
                   ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
                   : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
-                borderRadius: "10px",
+                borderRadius: "clamp(10px, 1.5vw, 16px)",
                 border: `1px solid var(--border-color)`,
                 overflow: "hidden",
                 position: "relative",
@@ -204,25 +213,33 @@ export default function HomePage() {
               }}>
                 {/* Play Button Overlay */}
                 <motion.div 
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   style={{
-                    width: "36px", height: "36px", borderRadius: "50%",
+                    width: "clamp(36px, 5vw, 56px)", 
+                    height: "clamp(36px, 5vw, 56px)", 
+                    borderRadius: "50%",
                     background: "#fe2c55",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     cursor: "pointer",
-                    boxShadow: "0 2px 10px rgba(254,44,85,0.4)",
+                    boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
                   }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                  <svg style={{ width: "clamp(16px, 2vw, 24px)", height: "clamp(16px, 2vw, 24px)" }} viewBox="0 0 24 24" fill="#fff">
                     <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
                 </motion.div>
                 
                 {/* Video duration badge */}
                 <div style={{
-                  position: "absolute", bottom: "6px", right: "6px",
-                  background: "rgba(0,0,0,0.7)", padding: "2px 5px",
-                  borderRadius: "3px", fontSize: "9px", fontWeight: 600,
+                  position: "absolute", 
+                  bottom: "clamp(6px, 1vw, 12px)", 
+                  right: "clamp(6px, 1vw, 12px)",
+                  background: "rgba(0,0,0,0.7)", 
+                  padding: "clamp(2px, 0.5vw, 6px) clamp(5px, 1vw, 10px)",
+                  borderRadius: "4px", 
+                  fontSize: "clamp(9px, 1.2vw, 13px)", 
+                  fontWeight: 600,
                   color: "#fff",
                 }}>
                   2:45
@@ -240,14 +257,14 @@ export default function HomePage() {
             window.dispatchEvent(event);
           }}
           style={{
-            marginTop: "12px",
-            gap: "10px",
+            marginTop: "clamp(12px, 2vw, 24px)",
+            gap: "clamp(10px, 1.5vw, 14px)",
             fontFamily: "inherit",
-            padding: "12px 20px",
-            fontSize: "14px",
+            padding: "clamp(12px, 2vw, 18px) clamp(20px, 3vw, 32px)",
+            fontSize: "clamp(14px, 1.8vw, 18px)",
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg style={{ width: "clamp(18px, 2.5vw, 24px)", height: "clamp(18px, 2.5vw, 24px)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
