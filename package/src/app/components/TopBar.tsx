@@ -449,23 +449,42 @@ export default function TopBar() {
                         }}
                         style={{
                           width: "100%",
-                          display: "flex", alignItems: "center", gap: "14px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(254,44,85,0.15) 0%, rgba(254,44,85,0.08) 100%)",
-                          border: "1px solid rgba(254,44,85,0.25)",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
+                          border: "1px solid rgba(254,44,85,0.2)",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#fe2c55" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
-                          {item.label}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(254,44,85,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
+                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                              <circle cx="9" cy="7" r="4"/>
+                              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
                         <span style={{
-                          marginLeft: "auto",
-                          padding: "4px 8px",
-                          background: "#fe2c55",
-                          borderRadius: "6px",
+                          padding: "5px 10px",
+                          background: "linear-gradient(135deg, #fe2c55, #ff3366)",
+                          borderRadius: "8px",
                           fontSize: "11px",
                           fontWeight: 700,
                           color: "#fff",
@@ -484,25 +503,43 @@ export default function TopBar() {
                         }}
                         style={{
                           width: "100%",
-                          display: "flex", alignItems: "center", gap: "14px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
-                          border: "1px solid rgba(37,244,238,0.25)",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)",
+                          border: "1px solid rgba(37,244,238,0.2)",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#25f4ee" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
-                          {item.label}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(37,244,238,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                              <polyline points="7 10 12 15 17 10"/>
+                              <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
                         <span style={{
-                          marginLeft: "auto",
-                          padding: "4px 8px",
+                          padding: "5px 10px",
                           background: "rgba(37,244,238,0.2)",
-                          borderRadius: "6px",
+                          borderRadius: "8px",
                           fontSize: "11px",
-                          fontWeight: 600,
+                          fontWeight: 700,
                           color: "#25f4ee",
                         }}>
                           PWA

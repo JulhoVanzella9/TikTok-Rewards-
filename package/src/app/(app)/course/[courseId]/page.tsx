@@ -95,11 +95,15 @@ export default function CourseDetailPage() {
       </div>
 
       {/* Modules Grid */}
-      <div style={{ padding: "16px" }}>
+      <div style={{ 
+        padding: "20px",
+        maxWidth: "1200px",
+        margin: "0 auto",
+      }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "12px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "20px",
         }}>
           {course.modules.map((module, index) => {
             const courseImages = courseModuleImages[course.id] || courseModuleImages["tiktok-rewards-program"];

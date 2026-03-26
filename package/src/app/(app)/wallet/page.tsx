@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
@@ -25,6 +25,7 @@ export default function WalletPage() {
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showRefundModal, setShowRefundModal] = useState(false);
+  const [showWithdrawPopup, setShowWithdrawPopup] = useState(false);
 
   // Calcula o valor real do saque (se "all", usa o saldo total)
   const actualWithdrawAmount = selectedAmount === "all" ? balance : selectedAmount;
@@ -190,9 +191,11 @@ export default function WalletPage() {
             padding: "12px 18px", background: "rgba(0,48,135,0.15)",
             borderRadius: "12px", border: "1px solid rgba(0,112,186,0.3)",
           }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#0070ba">
-              <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.771.771 0 0 1 .76-.648h6.979c2.317 0 4.098.583 5.291 1.732.53.512.914 1.102 1.146 1.757.249.699.349 1.494.298 2.365a6.766 6.766 0 0 1-.097.82 6.1 6.1 0 0 1-.19.774 4.91 4.91 0 0 1-.305.726c-.123.25-.263.49-.42.722-.17.249-.36.485-.568.708-.227.243-.478.468-.75.674a5.38 5.38 0 0 1-.937.58c-.344.18-.717.335-1.117.465-.418.134-.866.24-1.342.316a10.18 10.18 0 0 1-1.577.114h-1.2a1.164 1.164 0 0 0-1.15.981l-.09.513-1.12 7.093-.067.421z"/>
-            </svg>
+            <img 
+              src="/images/paypal-logo.png" 
+              alt="PayPal" 
+              style={{ width: "24px", height: "24px", objectFit: "contain" }}
+            />
             <span style={{ fontSize: "15px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
           </div>
         </div>
@@ -249,12 +252,11 @@ export default function WalletPage() {
 
         {/* 3D Withdraw Button */}
         <button
-          disabled={balance < 5000 || balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
-          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary btn-3d-animated" : "btn-3d-dark"}`}
+          onClick={() => setShowWithdrawPopup(true)}
+          className="btn-3d btn-3d-full btn-3d-dark"
           style={{
             fontFamily: "inherit",
-            opacity: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1 : 0.5,
-            cursor: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "pointer" : "not-allowed",
+            cursor: "pointer",
           }}
         >
           {t("withdrawMoney")} {selectedAmount === "all" && balance > 0 ? `($${balance.toFixed(2)})` : ""}
@@ -362,6 +364,149 @@ export default function WalletPage() {
 
       {/* Refund Modal */}
       <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
+
+      {/* Withdraw Popup */}
+      <AnimatePresence>
+        {showWithdrawPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowWithdrawPopup(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.85)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px",
+              zIndex: 1000,
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%)",
+                borderRadius: "24px",
+                padding: "32px 24px",
+                maxWidth: "380px",
+                width: "100%",
+                textAlign: "center",
+                border: "1px solid rgba(255,255,255,0.1)",
+                boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+              }}
+            >
+              {/* Icon */}
+              <div style={{
+                width: "72px",
+                height: "72px",
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.1))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 20px",
+                border: "2px solid rgba(255,215,0,0.3)",
+              }}>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+
+              {/* Title */}
+              <h3 style={{
+                fontSize: "22px",
+                fontWeight: 800,
+                color: "#fff",
+                marginBottom: "12px",
+              }}>
+                Withdrawal Not Available
+              </h3>
+
+              {/* Message */}
+              <p style={{
+                fontSize: "14px",
+                color: "rgba(255,255,255,0.7)",
+                lineHeight: 1.6,
+                marginBottom: "8px",
+              }}>
+                Withdrawals are only available after reaching a minimum balance of:
+              </p>
+
+              {/* Amount */}
+              <div style={{
+                fontSize: "32px",
+                fontWeight: 900,
+                color: "#ffd700",
+                marginBottom: "16px",
+              }}>
+                $5,000.00
+              </div>
+
+              {/* Current Balance */}
+              <div style={{
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: "12px",
+                padding: "12px 16px",
+                marginBottom: "24px",
+              }}>
+                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
+                  Your current balance:
+                </span>
+                <span style={{
+                  fontSize: "18px",
+                  fontWeight: 700,
+                  color: "#fff",
+                  marginLeft: "8px",
+                }}>
+                  ${balance.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Progress Bar */}
+              <div style={{
+                background: "rgba(255,255,255,0.1)",
+                borderRadius: "8px",
+                height: "8px",
+                marginBottom: "8px",
+                overflow: "hidden",
+              }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min((balance / 5000) * 100, 100)}%` }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  style={{
+                    height: "100%",
+                    background: "linear-gradient(90deg, #fe2c55, #ff6b8a)",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+              <p style={{
+                fontSize: "12px",
+                color: "rgba(255,255,255,0.5)",
+                marginBottom: "24px",
+              }}>
+                {((balance / 5000) * 100).toFixed(1)}% of goal reached
+              </p>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setShowWithdrawPopup(false)}
+                className="btn-3d btn-3d-primary btn-3d-full"
+                style={{ fontFamily: "inherit" }}
+              >
+                I Understand
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -6,6 +6,10 @@ import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import RefundModal from "@/app/components/RefundModal";
 
+// Configuration - Replace with actual email and phone when ready
+const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
+const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
+
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
 const faqItems = [
@@ -267,9 +271,9 @@ export default function SupportPage() {
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          <span style={{ fontSize: "13px", color: "#25f4ee", fontWeight: 600 }}>
-            support@tiktokrewards.com
-          </span>
+<span style={{ fontSize: "13px", color: "#25f4ee", fontWeight: 600 }}>
+                  {SUPPORT_EMAIL}
+                  </span>
         </div>
       </motion.div>
 
@@ -342,8 +346,8 @@ export default function SupportPage() {
                   <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
                     Email
                   </div>
-                  <div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
-                    support@tiktokrewards.com
+<div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
+                  {SUPPORT_EMAIL}
                   </div>
                 </div>
               </div>
@@ -369,8 +373,8 @@ export default function SupportPage() {
                   <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "2px", fontWeight: 600 }}>
                     Phone
                   </div>
-                  <div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
-                    +1 (555) 123-4567
+<div style={{ fontSize: "14px", color: "var(--text-primary)", fontWeight: 700 }}>
+                  {SUPPORT_PHONE}
                   </div>
                 </div>
               </div>
