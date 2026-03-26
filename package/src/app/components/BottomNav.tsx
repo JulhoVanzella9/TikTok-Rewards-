@@ -134,22 +134,23 @@ export default function BottomNav() {
                 position: "relative",
               }}
             >
-              {/* Active indicator glow */}
+              {/* Active indicator - positioned below icon */}
               {isActive && !tab.isCenter && (
                 <motion.div
                   layoutId="navIndicator"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   style={{
                     position: "absolute",
-                    top: 0,
+                    bottom: "4px",
                     left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "32px",
+                    marginLeft: "-12px",
+                    width: "24px",
                     height: "3px",
                     borderRadius: "2px",
                     background: tab.href === "/" ? "#fe2c55" : tab.href === "/wallet" ? "#ffd700" : "#25f4ee",
-                    boxShadow: `0 0 12px ${tab.href === "/" ? "rgba(254,44,85,0.6)" : tab.href === "/wallet" ? "rgba(255,215,0,0.6)" : "rgba(37,244,238,0.6)"}`,
+                    boxShadow: `0 0 8px ${tab.href === "/" ? "rgba(254,44,85,0.5)" : tab.href === "/wallet" ? "rgba(255,215,0,0.5)" : "rgba(37,244,238,0.5)"}`,
                   }}
                 />
               )}
