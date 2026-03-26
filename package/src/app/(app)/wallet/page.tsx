@@ -334,7 +334,7 @@ export default function WalletPage() {
         {/* Centered 3D Button */}
         <button
           onClick={() => setShowRefundModal(true)}
-          className="btn-3d btn-3d-full btn-3d-animated"
+          className="btn-3d btn-3d-cyan btn-3d-full btn-3d-animated"
           style={{
             width: "100%",
             marginTop: "16px",
