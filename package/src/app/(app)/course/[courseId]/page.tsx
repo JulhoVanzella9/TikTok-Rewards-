@@ -53,9 +53,9 @@ export default function CourseDetailPage() {
 
   // Count total lessons
   const getTotalLessons = (moduleIndex: number) => {
-    const module = course.modules[moduleIndex];
-    if (!module || module.comingSoon) return 0;
-    return module.subModules.reduce((acc, sm) => acc + sm.lessons.length, 0);
+    const courseModule = course.modules[moduleIndex];
+    if (!courseModule || courseModule.comingSoon) return 0;
+    return courseModule.subModules.reduce((acc, sm) => acc + sm.lessons.length, 0);
   };
 
   return (

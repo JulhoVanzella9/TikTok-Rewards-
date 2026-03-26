@@ -53,9 +53,9 @@ export function getModuleById(courseId: string, moduleId: string): Module | unde
 }
 
 export function getSubModuleById(courseId: string, moduleId: string, subModuleId: string): SubModule | undefined {
-  const module = getModuleById(courseId, moduleId);
-  if (!module) return undefined;
-  return module.subModules.find((sm) => sm.id === subModuleId);
+  const courseModule = getModuleById(courseId, moduleId);
+  if (!courseModule) return undefined;
+  return courseModule.subModules.find((sm) => sm.id === subModuleId);
 }
 
 export function getAllLessons(course: Course): Lesson[] {

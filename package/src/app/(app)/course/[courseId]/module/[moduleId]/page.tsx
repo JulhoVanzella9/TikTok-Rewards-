@@ -91,11 +91,11 @@ export default function ModulePage() {
   const params = useParams();
   const router = useRouter();
   const course = getCourseById(params.courseId as string);
-  const module = getModuleById(params.courseId as string, params.moduleId as string);
+  const courseModule = getModuleById(params.courseId as string, params.moduleId as string);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
 
-  if (!course || !module) {
+  if (!course || !courseModule) {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
         <h2 style={{ color: "var(--text-primary)", marginBottom: "12px" }}>Module not found</h2>
@@ -106,7 +106,7 @@ export default function ModulePage() {
     );
   }
 
-  if (module.comingSoon) {
+  if (courseModule.comingSoon) {
     return (
       <div style={{ 
         minHeight: "100vh", 
@@ -135,7 +135,7 @@ export default function ModulePage() {
               </svg>
             </button>
             <h1 style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>
-              {module.title}
+              {courseModule.title}
             </h1>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function ModulePage() {
       }}>
         <img 
           src={getModuleImage(params.courseId as string, params.moduleId as string)}
-          alt={module.title}
+          alt={courseModule.title}
           style={{
             width: "100%",
             height: "100%",
@@ -222,17 +222,17 @@ export default function ModulePage() {
             color: "#fff",
             textShadow: "0 2px 8px rgba(0,0,0,0.5)",
           }}>
-            {module.title}
+            {courseModule.title}
           </h1>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", marginTop: "4px" }}>
-            {module.subModules.length} sections
+            {courseModule.subModules.length} sections
           </p>
         </div>
       </div>
 
       {/* SubModules List */}
       <div style={{ padding: "0" }}>
-        {module.subModules.map((subModule, index) => (
+        {courseModule.subModules.map((subModule, index) => (
           <motion.div
             key={subModule.id}
             initial={{ opacity: 0, y: 10 }}

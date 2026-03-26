@@ -9,7 +9,7 @@ export default function SubModulePage() {
   const params = useParams();
   const router = useRouter();
   const course = getCourseById(params.courseId as string);
-  const module = getModuleById(params.courseId as string, params.moduleId as string);
+  const courseModule = getModuleById(params.courseId as string, params.moduleId as string);
   const subModule = getSubModuleById(
     params.courseId as string, 
     params.moduleId as string, 
@@ -18,7 +18,7 @@ export default function SubModulePage() {
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
 
-  if (!course || !module || !subModule) {
+  if (!course || !courseModule || !subModule) {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
         <h2 style={{ color: "var(--text-primary)", marginBottom: "12px" }}>Content not found</h2>
