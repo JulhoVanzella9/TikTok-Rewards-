@@ -91,7 +91,6 @@ export const translations = {
     protectData: "How we protect your data",
     termsOfUse: "Terms of Use",
     rulesConditions: "Rules and conditions",
-    logout: "Log Out",
     loggingOut: "Logging out...",
     
     // Achievements
@@ -255,7 +254,6 @@ export const translations = {
     protectData: "Como protegemos seus dados",
     termsOfUse: "Termos de Uso",
     rulesConditions: "Regras e condicoes",
-    logout: "Sair da Conta",
     loggingOut: "Saindo...",
     
     // Achievements
@@ -419,7 +417,6 @@ export const translations = {
     protectData: "Como protegemos tus datos",
     termsOfUse: "Terminos de Uso",
     rulesConditions: "Reglas y condiciones",
-    logout: "Cerrar Sesion",
     loggingOut: "Cerrando sesion...",
     
     // Achievements
