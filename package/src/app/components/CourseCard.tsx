@@ -19,7 +19,9 @@ export default function CourseCard({ course, index }: { course: Course; index: n
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.15) }}
-        whileHover={{ y: -6, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
+        whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
         style={{
           borderRadius: "20px", overflow: "hidden",
           background: "var(--gradient-card)",
@@ -32,14 +34,34 @@ export default function CourseCard({ course, index }: { course: Course; index: n
         <div style={{
           height: "180px", background: gradients[index % gradients.length],
           position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
+          overflow: "hidden",
         }}>
+          {course.image && (
+            <motion.img
+              src={course.image}
+              alt={course.title}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          )}
           {/* Play button */}
           <motion.div
             whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.15 }}
             style={{
               width: "50px", height: "50px", borderRadius: "50%",
-              background: "rgba(0,0,0,0.4)",
+              background: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(8px)",
               display: "flex", alignItems: "center", justifyContent: "center",
+              position: "relative", zIndex: 1,
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">

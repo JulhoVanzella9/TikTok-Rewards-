@@ -120,7 +120,8 @@ export default function BottomNav() {
         return (
           <Link key={tab.href} href={tab.href} prefetch={true} style={{ textDecoration: "none", flex: 1 }}>
             <motion.div
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
               style={{
                 display: "flex", flexDirection: "column", alignItems: "center",
                 justifyContent: "center", gap: "4px", padding: "8px 0",
@@ -128,7 +129,11 @@ export default function BottomNav() {
               }}
             >
               {tab.isCenter ? (
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }} 
+                  whileTap={{ scale: 0.92 }}
+                  transition={{ duration: 0.1 }}
+                >
                   {tab.icon()}
                 </motion.div>
               ) : (

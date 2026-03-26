@@ -109,38 +109,48 @@ export default function CourseDetailPage() {
             return (
               <motion.div
                 key={module.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                initial={{ opacity: 0, y: 15, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  delay: index * 0.04,
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
               >
                 <Link
                   href={module.comingSoon ? "#" : `/course/${params.courseId}/module/${module.id}`}
                   style={{ textDecoration: "none" }}
                   onClick={(e) => module.comingSoon && e.preventDefault()}
                 >
-                  <div style={{
-                    background: isDarkMode ? "#0f0f0f" : "#fff",
-                    borderRadius: "16px",
-                    overflow: "hidden",
-                    border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                    opacity: module.comingSoon ? 0.5 : 1,
-                    cursor: module.comingSoon ? "not-allowed" : "pointer",
-                    transition: "transform 0.2s, box-shadow 0.2s",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  }}>
+                  <motion.div 
+                    whileHover={module.comingSoon ? {} : { y: -3, boxShadow: "0 12px 32px rgba(0,0,0,0.5)" }}
+                    whileTap={module.comingSoon ? {} : { scale: 0.97 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    style={{
+                      background: isDarkMode ? "#0f0f0f" : "#fff",
+                      borderRadius: "16px",
+                      overflow: "hidden",
+                      border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                      opacity: module.comingSoon ? 0.5 : 1,
+                      cursor: module.comingSoon ? "not-allowed" : "pointer",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                    }}>
                     {/* Module Image */}
                     <div style={{
                       position: "relative",
                       aspectRatio: "1/1",
                       overflow: "hidden",
                     }}>
-                      <img 
+                      <motion.img 
                         src={moduleImage} 
                         alt={module.title}
+                        whileHover={module.comingSoon ? {} : { scale: 1.05 }}
+                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                         style={{
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
+                          transformOrigin: "center",
                         }}
                       />
                       {module.comingSoon && (
@@ -190,7 +200,7 @@ export default function CourseDetailPage() {
                         {module.comingSoon ? "Coming Soon" : `${module.subModules.length} sections - ${totalLessons} lessons`}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 </Link>
               </motion.div>
             );

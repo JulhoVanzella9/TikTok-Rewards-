@@ -50,20 +50,27 @@ export default function CoursesPage() {
               key={course.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ 
+                delay: index * 0.08,
+                duration: 0.4,
+                ease: [0.16, 1, 0.3, 1]
+              }}
             >
               <Link
                 href={`/course/${course.id}`}
                 style={{ textDecoration: "none" }}
               >
-                <div style={{
-                  background: isDarkMode ? "#0f0f0f" : "#fff",
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                }}>
+                <motion.div 
+                  whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                  style={{
+                    background: isDarkMode ? "#0f0f0f" : "#fff",
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                  }}>
                   {/* Course Image */}
                   <div style={{
                     position: "relative",
@@ -71,13 +78,16 @@ export default function CoursesPage() {
                     aspectRatio: "16/9",
                     overflow: "hidden",
                   }}>
-                    <img 
+                    <motion.img 
                       src={course.image || "/images/modules/module-01.png"} 
                       alt={course.title}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
+                        transformOrigin: "center",
                       }}
                     />
                     <div style={{
@@ -171,8 +181,9 @@ export default function CoursesPage() {
                     
                     {/* Start Button */}
                     <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(254,44,85,0.4)" }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
                       style={{
                         marginTop: "16px",
                         padding: "14px",
@@ -182,12 +193,14 @@ export default function CoursesPage() {
                         fontSize: "14px",
                         fontWeight: 700,
                         color: "#fff",
+                        position: "relative",
+                        overflow: "hidden",
                       }}
                     >
-                      Start Course
+                      <span style={{ position: "relative", zIndex: 1 }}>Start Course</span>
                     </motion.div>
                   </div>
-                </div>
+                </motion.div>
               </Link>
             </motion.div>
           ))}
