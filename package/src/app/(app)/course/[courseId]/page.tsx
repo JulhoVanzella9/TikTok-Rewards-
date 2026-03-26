@@ -5,18 +5,34 @@ import Link from "next/link";
 import { getCourseById } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
-// Module images
-const moduleImages = [
-  "/images/modules/module-01.png",
-  "/images/modules/module-02.png",
-  "/images/modules/module-03.png",
-  "/images/modules/module-04.png",
-  "/images/modules/module-05.png",
-  "/images/modules/module-06.png",
-  "/images/modules/module-07.png",
-  "/images/modules/module-08.png",
-  "/images/modules/module-09.png",
-];
+// Module images for different courses
+const courseModuleImages: Record<string, string[]> = {
+  "tiktok-rewards-program": [
+    "/images/modules/module-01.png",
+    "/images/modules/module-02.png",
+    "/images/modules/module-03.png",
+    "/images/modules/module-04.png",
+    "/images/modules/module-05.png",
+    "/images/modules/module-06.png",
+    "/images/modules/module-07.png",
+    "/images/modules/module-08.png",
+    "/images/modules/module-09.png",
+  ],
+  "tiktok-community": [
+    "/images/modules/tc-module-01.jpg",
+    "/images/modules/tc-module-02.jpg",
+    "/images/modules/tc-module-03.jpg",
+    "/images/modules/tc-module-04.jpg",
+  ],
+  "money-robot": [
+    "/images/modules/mr-module-01.jpg",
+    "/images/modules/mr-module-02.jpg",
+    "/images/modules/mr-module-03.jpg",
+    "/images/modules/mr-module-04.jpg",
+    "/images/modules/mr-module-05.jpg",
+    "/images/modules/mr-module-06.jpg",
+  ],
+};
 
 export default function CourseDetailPage() {
   const params = useParams();
@@ -86,7 +102,8 @@ export default function CourseDetailPage() {
           gap: "12px",
         }}>
           {course.modules.map((module, index) => {
-            const moduleImage = moduleImages[index] || moduleImages[0];
+            const courseImages = courseModuleImages[course.id] || courseModuleImages["tiktok-rewards-program"];
+            const moduleImage = courseImages[index] || courseImages[0] || "/images/modules/module-01.png";
             const totalLessons = getTotalLessons(index);
             
             return (

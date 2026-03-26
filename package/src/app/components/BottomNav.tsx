@@ -36,7 +36,7 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/course/tiktok-rewards-program",
+      href: "/courses",
       label: t("class"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -114,7 +114,9 @@ export default function BottomNav() {
       }}
     >
       {tabs.map((tab) => {
-        const isActive = pathname === tab.href;
+        const isActive = tab.href === "/courses" 
+          ? pathname === "/courses" || pathname.startsWith("/course/")
+          : pathname === tab.href;
         return (
           <Link key={tab.href} href={tab.href} prefetch={true} style={{ textDecoration: "none", flex: 1 }}>
             <motion.div
