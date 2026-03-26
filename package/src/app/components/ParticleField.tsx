@@ -31,7 +31,8 @@ export default function ParticleField({
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const animationRef = useRef<number>();
-  const { isDarkMode } = useTheme();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   const defaultColors = isDarkMode
     ? ["#fe2c55", "#25f4ee", "#ff6b81", "#ffffff"]
