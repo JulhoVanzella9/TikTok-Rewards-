@@ -5,18 +5,87 @@ import Link from "next/link";
 import { getCourseById, getModuleById } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
-// Module images
-const moduleImages: Record<string, string> = {
-  "mod-1": "/images/modules/module-01.png",
-  "mod-2": "/images/modules/module-02.png",
-  "mod-3": "/images/modules/module-03.png",
-  "mod-4": "/images/modules/module-04.png",
-  "mod-5": "/images/modules/module-05.png",
-  "mod-6": "/images/modules/module-06.png",
-  "mod-7": "/images/modules/module-07.png",
-  "mod-8": "/images/modules/module-08.png",
-  "mod-9": "/images/modules/module-09.png",
+// Module images organized by course ID
+const courseModuleImages: Record<string, Record<string, string>> = {
+  "tiktok-rewards-program": {
+    "mod-1": "/images/modules/module-01.png",
+    "mod-2": "/images/modules/module-02.png",
+    "mod-3": "/images/modules/module-03.png",
+    "mod-4": "/images/modules/module-04.png",
+    "mod-5": "/images/modules/module-05.png",
+    "mod-6": "/images/modules/module-06.png",
+    "mod-7": "/images/modules/module-07.png",
+    "mod-8": "/images/modules/module-08.png",
+    "mod-9": "/images/modules/module-09.png",
+  },
+  "tiktok-community": {
+    "tc-mod-1": "/images/modules/tc-module-01.jpg",
+    "tc-mod-2": "/images/modules/tc-module-02.jpg",
+    "tc-mod-3": "/images/modules/tc-module-03.jpg",
+    "tc-mod-4": "/images/modules/tc-module-04.jpg",
+  },
+  "money-robot": {
+    "mr-mod-1": "/images/modules/mr-module-01.jpg",
+    "mr-mod-2": "/images/modules/mr-module-02.jpg",
+    "mr-mod-3": "/images/modules/mr-module-03.jpg",
+    "mr-mod-4": "/images/modules/mr-module-04.jpg",
+    "mr-mod-5": "/images/modules/mr-module-05.jpg",
+    "mr-mod-6": "/images/modules/mr-module-06.jpg",
+  },
 };
+
+// Array-based fallback for courses with indexed modules
+const courseModuleImagesArray: Record<string, string[]> = {
+  "tiktok-rewards-program": [
+    "/images/modules/module-01.png",
+    "/images/modules/module-02.png",
+    "/images/modules/module-03.png",
+    "/images/modules/module-04.png",
+    "/images/modules/module-05.png",
+    "/images/modules/module-06.png",
+    "/images/modules/module-07.png",
+    "/images/modules/module-08.png",
+    "/images/modules/module-09.png",
+  ],
+  "tiktok-community": [
+    "/images/modules/tc-module-01.jpg",
+    "/images/modules/tc-module-02.jpg",
+    "/images/modules/tc-module-03.jpg",
+    "/images/modules/tc-module-04.jpg",
+  ],
+  "money-robot": [
+    "/images/modules/mr-module-01.jpg",
+    "/images/modules/mr-module-02.jpg",
+    "/images/modules/mr-module-03.jpg",
+    "/images/modules/mr-module-04.jpg",
+    "/images/modules/mr-module-05.jpg",
+    "/images/modules/mr-module-06.jpg",
+  ],
+};
+
+// Helper function to get module image
+function getModuleImage(courseId: string, moduleId: string): string {
+  // First try direct mapping
+  const courseImages = courseModuleImages[courseId];
+  if (courseImages && courseImages[moduleId]) {
+    return courseImages[moduleId];
+  }
+  
+  // Fallback: try array-based lookup by extracting the module number
+  const arrayImages = courseModuleImagesArray[courseId];
+  if (arrayImages) {
+    // Extract number from moduleId (e.g., "mod-1" -> 0, "tc-mod-2" -> 1)
+    const match = moduleId.match(/(\d+)$/);
+    if (match) {
+      const index = parseInt(match[1]) - 1;
+      if (arrayImages[index]) {
+        return arrayImages[index];
+      }
+    }
+  }
+  
+  return "/images/modules/module-01.png";
+}
 
 export default function ModulePage() {
   const params = useParams();
@@ -133,7 +202,7 @@ export default function ModulePage() {
         overflow: "hidden",
       }}>
         <img 
-          src={moduleImages[params.moduleId as string] || "/images/modules/module-01.png"}
+          src={getModuleImage(params.courseId as string, params.moduleId as string)}
           alt={module.title}
           style={{
             width: "100%",
