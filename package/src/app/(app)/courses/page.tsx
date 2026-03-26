@@ -53,8 +53,16 @@ export default function CoursesPage() {
       </div>
 
       {/* Courses List */}
-      <div style={{ padding: "16px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div style={{ 
+        padding: "clamp(16px, 3vw, 32px)",
+        maxWidth: "900px",
+        margin: "0 auto",
+      }}>
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
+          gap: "clamp(16px, 3vw, 28px)",
+        }}>
           {courses.map((course, index) => (
             <ScrollReveal 
               key={course.id}
@@ -67,7 +75,7 @@ export default function CoursesPage() {
                 glare={true}
                 glareOpacity={0.1}
                 style={{
-                  borderRadius: "20px",
+                  borderRadius: "clamp(16px, 2vw, 24px)",
                   overflow: "hidden",
                 }}
               >
@@ -76,12 +84,13 @@ export default function CoursesPage() {
                   style={{ textDecoration: "none", display: "block" }}
                 >
                   <motion.div 
+                    whileHover={{ y: -4 }}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.15 }}
+                    transition={{ duration: 0.2 }}
                     className="card-float"
                     style={{
                       background: isDarkMode ? "#0f0f0f" : "#fff",
-                      borderRadius: "20px",
+                      borderRadius: "clamp(16px, 2vw, 24px)",
                       overflow: "hidden",
                       border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                       boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
@@ -91,6 +100,7 @@ export default function CoursesPage() {
                     position: "relative",
                     width: "100%",
                     aspectRatio: "16/9",
+                    maxHeight: "280px",
                     overflow: "hidden",
                   }}>
                     <motion.img 
@@ -130,12 +140,12 @@ export default function CoursesPage() {
                     {/* Title on image */}
                     <div style={{
                       position: "absolute",
-                      bottom: "16px",
-                      left: "16px",
-                      right: "16px",
+                      bottom: "clamp(14px, 2vw, 24px)",
+                      left: "clamp(14px, 2vw, 24px)",
+                      right: "clamp(14px, 2vw, 24px)",
                     }}>
                       <h2 style={{
-                        fontSize: "20px",
+                        fontSize: "clamp(18px, 2.5vw, 26px)",
                         fontWeight: 800,
                         color: "#fff",
                         textShadow: "0 2px 8px rgba(0,0,0,0.5)",
@@ -144,7 +154,7 @@ export default function CoursesPage() {
                         {course.title}
                       </h2>
                       <p style={{
-                        fontSize: "13px",
+                        fontSize: "clamp(12px, 1.4vw, 16px)",
                         color: "rgba(255,255,255,0.8)",
                       }}>
                         {course.subtitle}
@@ -154,14 +164,14 @@ export default function CoursesPage() {
                   
                   {/* Course Info */}
                   <div style={{ 
-                    padding: "16px",
+                    padding: "clamp(14px, 2vw, 24px)",
                     background: isDarkMode ? "#0a0a0a" : "#fff",
                   }}>
                     <p style={{
-                      fontSize: "14px",
+                      fontSize: "clamp(13px, 1.5vw, 16px)",
                       color: "var(--text-secondary)",
-                      lineHeight: 1.5,
-                      marginBottom: "16px",
+                      lineHeight: 1.6,
+                      marginBottom: "clamp(14px, 2vw, 20px)",
                     }}>
                       {course.description}
                     </p>
@@ -198,8 +208,9 @@ export default function CoursesPage() {
                     <button
                       className="btn-3d btn-3d-primary btn-3d-full"
                       style={{
-                        marginTop: "16px",
+                        marginTop: "clamp(14px, 2vw, 20px)",
                         fontFamily: "inherit",
+                        fontSize: "clamp(14px, 1.5vw, 16px)",
                       }}
                     >
                       Start Course
