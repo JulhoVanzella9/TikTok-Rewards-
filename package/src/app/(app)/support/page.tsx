@@ -116,15 +116,18 @@ export default function SupportPage() {
         }}
       >
         <motion.button
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.02, y: -4 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setShowRefundModal(true)}
+          className="btn-3d-icon-grow"
           style={{
             padding: "20px 16px",
             background: "linear-gradient(145deg, rgba(254,44,85,0.1), rgba(254,44,85,0.05))",
             border: "1px solid rgba(254,44,85,0.15)",
             borderRadius: "16px", cursor: "pointer",
             display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+            boxShadow: "0 4px 15px rgba(254,44,85,0.15)",
+            transition: "box-shadow 0.3s ease",
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
@@ -137,15 +140,18 @@ export default function SupportPage() {
         </motion.button>
 
         <motion.button
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.02, y: -4 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setShowHelpModal(true)}
+          className="btn-3d-icon-grow"
           style={{
             padding: "20px 16px",
             background: "linear-gradient(145deg, rgba(37,244,238,0.1), rgba(37,244,238,0.05))",
             border: "1px solid rgba(37,244,238,0.15)",
             borderRadius: "16px", cursor: "pointer",
             display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+            boxShadow: "0 4px 15px rgba(37,244,238,0.15)",
+            transition: "box-shadow 0.3s ease",
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

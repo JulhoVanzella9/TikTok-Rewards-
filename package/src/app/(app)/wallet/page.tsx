@@ -250,7 +250,7 @@ export default function WalletPage() {
         {/* 3D Withdraw Button */}
         <button
           disabled={balance < 5000 || balance < actualWithdrawAmount || actualWithdrawAmount <= 0}
-          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary" : "btn-3d-dark"}`}
+          className={`btn-3d btn-3d-full ${balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? "btn-3d-primary btn-3d-animated" : "btn-3d-dark"}`}
           style={{
             fontFamily: "inherit",
             opacity: balance >= 5000 && balance >= actualWithdrawAmount && actualWithdrawAmount > 0 ? 1 : 0.5,
@@ -328,7 +328,7 @@ export default function WalletPage() {
             </p>
             <button
               onClick={() => setShowRefundModal(true)}
-              className="btn-3d btn-3d-full"
+              className="btn-3d btn-3d-full btn-3d-float btn-3d-icon-grow"
               style={{
                 background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
                 color: "#000",

@@ -252,7 +252,7 @@ export default function HomePage() {
 
         {/* Install App Button - Always visible */}
         <button
-          className="btn-3d btn-3d-cyan btn-3d-full"
+          className="btn-3d btn-3d-cyan btn-3d-full btn-3d-animated btn-3d-icon-grow"
           onClick={() => {
             const event = new CustomEvent("triggerInstallPrompt");
             window.dispatchEvent(event);
@@ -437,7 +437,7 @@ export default function HomePage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="btn-3d btn-3d-full"
+              className="btn-3d btn-3d-full btn-3d-float btn-3d-icon-grow"
               style={{
                 background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
                 color: "#000",

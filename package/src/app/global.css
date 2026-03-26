@@ -405,6 +405,140 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   width: 100%;
 }
 
+/* ============================================
+   3D BUTTON ANIMATIONS
+   ============================================ */
+
+/* Pulse Glow Animation */
+@keyframes btn-pulse-glow {
+  0%, 100% {
+    box-shadow: 
+      0 4px 0 0 var(--btn-shadow-color, #b8183a),
+      0 6px 12px var(--btn-glow-color, rgba(254, 44, 85, 0.4)),
+      inset 0 1px 0 rgba(255,255,255,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
+  50% {
+    box-shadow: 
+      0 4px 0 0 var(--btn-shadow-color, #b8183a),
+      0 8px 25px var(--btn-glow-color, rgba(254, 44, 85, 0.6)),
+      0 0 40px var(--btn-glow-color, rgba(254, 44, 85, 0.3)),
+      inset 0 1px 0 rgba(255,255,255,0.25),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
+}
+
+/* Floating Animation */
+@keyframes btn-float {
+  0%, 100% {
+    transform: perspective(1000px) translateY(0) translateZ(0);
+  }
+  50% {
+    transform: perspective(1000px) translateY(-4px) translateZ(8px);
+  }
+}
+
+/* Bounce Animation */
+@keyframes btn-bounce {
+  0%, 100% {
+    transform: perspective(1000px) translateY(0) scale(1);
+  }
+  25% {
+    transform: perspective(1000px) translateY(-6px) scale(1.02);
+  }
+  50% {
+    transform: perspective(1000px) translateY(-3px) scale(1.01);
+  }
+  75% {
+    transform: perspective(1000px) translateY(-5px) scale(1.015);
+  }
+}
+
+/* Shine Sweep Animation */
+@keyframes btn-shine-sweep {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+/* Animated Primary Button */
+.btn-3d-animated {
+  --btn-shadow-color: #b8183a;
+  --btn-glow-color: rgba(254, 44, 85, 0.4);
+  animation: btn-pulse-glow 2s ease-in-out infinite;
+}
+
+.btn-3d-animated:hover {
+  animation: none;
+  transform: perspective(1000px) translateY(-3px) translateZ(6px);
+}
+
+.btn-3d-animated::before {
+  animation: btn-shine-sweep 3s ease-in-out infinite;
+}
+
+/* Animated Cyan Button */
+.btn-3d-cyan.btn-3d-animated {
+  --btn-shadow-color: #15a8a3;
+  --btn-glow-color: rgba(37, 244, 238, 0.4);
+}
+
+/* Animated Gold Button */
+.btn-3d-gold.btn-3d-animated {
+  --btn-shadow-color: #b39500;
+  --btn-glow-color: rgba(255, 215, 0, 0.4);
+}
+
+/* Floating Button */
+.btn-3d-float {
+  animation: btn-float 3s ease-in-out infinite;
+}
+
+.btn-3d-float:hover {
+  animation: none;
+  transform: perspective(1000px) translateY(-4px) translateZ(10px);
+}
+
+/* Bouncing Button */
+.btn-3d-bounce {
+  animation: btn-bounce 2s ease-in-out infinite;
+}
+
+.btn-3d-bounce:hover {
+  animation: none;
+  transform: perspective(1000px) translateY(-4px) scale(1.02);
+}
+
+/* Attention Grabber - combines pulse and subtle bounce */
+.btn-3d-attention {
+  animation: btn-pulse-glow 2s ease-in-out infinite, btn-float 4s ease-in-out infinite;
+}
+
+.btn-3d-attention:hover {
+  animation: none;
+  transform: perspective(1000px) translateY(-4px) translateZ(8px) scale(1.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Icon spin on hover */
+.btn-3d-icon-spin:hover svg {
+  animation: spin 0.5s ease-in-out;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Scale up icon on hover */
+.btn-3d-icon-grow:hover svg {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+}
+
 /* Light theme 3D buttons */
 [data-theme="light"] .btn-3d-dark {
   background: linear-gradient(145deg, #f5f5f5 0%, #e8e8e8 50%, #d5d5d5 100%);

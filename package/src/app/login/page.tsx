@@ -291,7 +291,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || (step === "email" && !email) || (step === "password" && !password)}
-            className="btn-3d btn-3d-primary btn-3d-full"
+            className="btn-3d btn-3d-primary btn-3d-full btn-3d-animated"
             style={{
               fontFamily: "inherit",
               marginBottom: "20px",
@@ -308,7 +308,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => setShowRefundModal(true)}
-            className="btn-3d btn-3d-dark btn-3d-full"
+            className="btn-3d btn-3d-dark btn-3d-full btn-3d-float btn-3d-icon-grow"
             style={{
               fontFamily: "inherit",
               marginBottom: "20px",

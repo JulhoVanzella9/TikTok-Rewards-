@@ -391,7 +391,7 @@ export default function WelcomePage() {
             style={{ textDecoration: "none", display: "block" }}
           >
             <button
-              className="btn-3d btn-3d-primary btn-3d-lg btn-3d-full"
+              className="btn-3d btn-3d-primary btn-3d-lg btn-3d-full btn-3d-attention btn-3d-icon-grow"
               style={{
                 marginBottom: "12px",
                 gap: "10px",
@@ -409,7 +409,7 @@ export default function WelcomePage() {
 
           <Link href="/login">
             <button
-              className="btn-3d btn-3d-dark btn-3d-full"
+              className="btn-3d btn-3d-dark btn-3d-full btn-3d-float"
               style={{ fontFamily: "inherit" }}
             >
               Already paid? Login here

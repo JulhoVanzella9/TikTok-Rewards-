@@ -206,7 +206,7 @@ export default function CoursesPage() {
                     
                     {/* 3D Start Button */}
                     <button
-                      className="btn-3d btn-3d-primary btn-3d-full"
+                      className="btn-3d btn-3d-primary btn-3d-full btn-3d-animated"
                       style={{
                         marginTop: "clamp(14px, 2vw, 20px)",
                         fontFamily: "inherit",
