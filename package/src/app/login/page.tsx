@@ -270,7 +270,6 @@ export default function LoginPage() {
                     type="text"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     onFocus={() => setFocusedField("password")}
                     onBlur={() => setFocusedField(null)}
                     required
