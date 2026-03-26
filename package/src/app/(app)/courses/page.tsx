@@ -60,8 +60,9 @@ export default function CoursesPage() {
       }}>
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
-          gap: "clamp(16px, 3vw, 28px)",
+          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+          gap: "24px",
+          alignItems: "stretch",
         }}>
           {courses.map((course, index) => (
             <ScrollReveal 
@@ -90,18 +91,21 @@ export default function CoursesPage() {
                     className="card-float"
                     style={{
                       background: isDarkMode ? "#0f0f0f" : "#fff",
-                      borderRadius: "clamp(16px, 2vw, 24px)",
+                      borderRadius: "20px",
                       overflow: "hidden",
                       border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
                       boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}>
                   {/* Course Image */}
                   <div style={{
                     position: "relative",
                     width: "100%",
                     aspectRatio: "16/9",
-                    maxHeight: "280px",
                     overflow: "hidden",
+                    flexShrink: 0,
                   }}>
                     <motion.img 
                       src={course.image || "/images/modules/module-01.png"} 
@@ -164,8 +168,11 @@ export default function CoursesPage() {
                   
                   {/* Course Info */}
                   <div style={{ 
-                    padding: "clamp(14px, 2vw, 24px)",
+                    padding: "16px",
                     background: isDarkMode ? "#0a0a0a" : "#fff",
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
                   }}>
                     <p style={{
                       fontSize: "clamp(13px, 1.5vw, 16px)",
@@ -205,19 +212,29 @@ export default function CoursesPage() {
                     </div>
                     
                     {/* 3D Start Button */}
-                    <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                    <div style={{ marginTop: "auto", paddingTop: "16px" }}>
                       <button
-                        className="btn-3d btn-3d-full btn-3d-animated btn-3d-icon-grow"
+                        className="btn-3d btn-3d-full btn-3d-animated"
                         style={{
-                          marginTop: "clamp(14px, 2vw, 20px)",
+                          width: "100%",
                           fontFamily: "inherit",
-                          fontSize: "clamp(14px, 1.5vw, 16px)",
-                          background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
+                          fontSize: "15px",
+                          fontWeight: 700,
+                          padding: "14px 24px",
+                          background: "linear-gradient(135deg, #fe2c55 0%, #ff3366 100%)",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "14px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                           gap: "10px",
-                          boxShadow: "0 4px 0 0 #b8183a, 0 6px 20px rgba(254, 44, 85, 0.4)",
+                          boxShadow: "0 4px 0 0 #b8183a, 0 8px 20px rgba(254, 44, 85, 0.35)",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
                         }}
                       >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                           <polygon points="5 3 19 12 5 21 5 3"/>
                         </svg>
                         Start Course
