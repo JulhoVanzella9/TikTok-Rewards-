@@ -174,7 +174,18 @@ export default function InstallPrompt() {
                       fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>2</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Select <strong style={{ color: "#fe2c55" }}>Add to Home Screen</strong> or <strong style={{ color: "#fe2c55" }}>Install App</strong>
+                      Tap <strong style={{ color: "#fe2c55" }}>Share</strong>
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#ffd700", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>3</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Tap <strong style={{ color: "#ffd700" }}>See more</strong>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -183,9 +194,9 @@ export default function InstallPrompt() {
                       background: "#fff", display: "flex",
                       alignItems: "center", justifyContent: "center",
                       fontWeight: 700, color: "#000", fontSize: "14px",
-                    }}>3</div>
+                    }}>4</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap <strong style={{ color: "#fff" }}>Install</strong> to confirm
+                      Select <strong style={{ color: "#fff" }}>Add to Home Screen</strong>
                     </span>
                   </div>
                 </>
