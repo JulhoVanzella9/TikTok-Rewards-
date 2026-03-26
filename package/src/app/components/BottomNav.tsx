@@ -134,7 +134,7 @@ export default function BottomNav() {
                 position: "relative",
               }}
             >
-              {/* Active indicator - positioned below icon */}
+              {/* Active indicator - positioned above icon */}
               {isActive && !tab.isCenter && (
                 <motion.div
                   layoutId="navIndicator"
@@ -143,7 +143,7 @@ export default function BottomNav() {
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   style={{
                     position: "absolute",
-                    bottom: "4px",
+                    top: "2px",
                     left: "50%",
                     marginLeft: "-12px",
                     width: "24px",
