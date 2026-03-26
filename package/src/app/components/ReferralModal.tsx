@@ -42,17 +42,17 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
   };
 
   const copyToClipboard = async () => {
-    const shareUrl = `${window.location.origin}?ref=${referralCode}`;
+    const shareUrl = `${window.location.origin}/invite/${referralCode}`;
     await navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const shareLink = async () => {
-    const shareUrl = `${window.location.origin}?ref=${referralCode}`;
+    const shareUrl = `${window.location.origin}/invite/${referralCode}`;
     const shareData = {
-      title: "TikTok Rewards",
-      text: "Join TikTok Rewards and earn money by rating videos! Use my referral code:",
+      title: "TikTok Rewards - Exclusive Invitation",
+      text: "You've been invited to join TikTok Rewards! Start earning money by rating videos:",
       url: shareUrl,
     };
 
@@ -278,9 +278,9 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {[
-                { num: "1", text: "Share your unique link with friends" },
-                { num: "2", text: "They sign up and rate their first video" },
-                { num: "3", text: "You both earn $20.00 bonus!" },
+                { num: "1", text: "Share your unique invitation link" },
+                { num: "2", text: "Friend activates their premium account" },
+                { num: "3", text: "You both earn $20.00 commission!" },
               ].map((step) => (
                 <div key={step.num} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                   <div style={{
