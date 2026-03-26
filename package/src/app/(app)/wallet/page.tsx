@@ -326,25 +326,28 @@ export default function WalletPage() {
             <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "14px" }}>
               {t("refundDesc") || "Not satisfied with your purchase? We offer a full refund within 30 days."}
             </p>
-            <button
-              onClick={() => setShowRefundModal(true)}
-              className="btn-3d btn-3d-full btn-3d-float btn-3d-icon-grow"
-              style={{
-                background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
-                color: "#000",
-                fontWeight: 700,
-                fontFamily: "inherit",
-                padding: "12px 20px",
-                fontSize: "14px",
-                gap: "8px",
-                border: "none",
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              {t("requestRefundBtn") || "Request Refund"}
-            </button>
+            <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <button
+                onClick={() => setShowRefundModal(true)}
+                className="btn-3d btn-3d-full btn-3d-animated btn-3d-icon-grow"
+                style={{
+                  background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                  color: "#000",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  padding: "14px 24px",
+                  fontSize: "15px",
+                  gap: "10px",
+                  border: "none",
+                  boxShadow: "0 4px 0 0 #15a8a3, 0 6px 20px rgba(37, 244, 238, 0.4)",
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                {t("requestRefundBtn") || "Request Refund"}
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>

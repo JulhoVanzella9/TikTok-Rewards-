@@ -433,29 +433,31 @@ export default function HomePage() {
           </div>
 
           {/* CTA Button */}
-          <Link href="/support" style={{ textDecoration: "none", display: "block" }}>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="btn-3d btn-3d-full btn-3d-float btn-3d-icon-grow"
-              style={{
-                background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
-                color: "#000",
-                fontWeight: 700,
-                fontFamily: "inherit",
-                padding: "clamp(14px, 2.5vw, 20px) clamp(24px, 4vw, 40px)",
-                fontSize: "clamp(14px, 2vw, 18px)",
-                gap: "clamp(10px, 1.5vw, 14px)",
-                border: "none",
-                boxShadow: "0 4px 20px rgba(37,244,238,0.3)",
-              }}
-            >
-              <svg style={{ width: "clamp(18px, 2.5vw, 24px)", height: "clamp(18px, 2.5vw, 24px)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              {t("requestRefundBtn") || "Request Refund"}
-            </motion.button>
-          </Link>
+          <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+            <Link href="/support" style={{ textDecoration: "none", display: "block", width: "100%" }}>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="btn-3d btn-3d-full btn-3d-animated btn-3d-icon-grow"
+                style={{
+                  background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
+                  color: "#000",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  padding: "clamp(14px, 2.5vw, 20px) clamp(24px, 4vw, 40px)",
+                  fontSize: "clamp(14px, 2vw, 18px)",
+                  gap: "clamp(10px, 1.5vw, 14px)",
+                  border: "none",
+                  boxShadow: "0 4px 0 0 #15a8a3, 0 6px 20px rgba(37, 244, 238, 0.4)",
+                }}
+              >
+                <svg style={{ width: "clamp(18px, 2.5vw, 24px)", height: "clamp(18px, 2.5vw, 24px)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                {t("requestRefundBtn") || "Request Refund"}
+              </motion.button>
+            </Link>
+          </div>
         </motion.div>
       </ScrollReveal>
     </div>

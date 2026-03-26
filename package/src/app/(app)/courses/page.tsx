@@ -205,16 +205,24 @@ export default function CoursesPage() {
                     </div>
                     
                     {/* 3D Start Button */}
-                    <button
-                      className="btn-3d btn-3d-primary btn-3d-full btn-3d-animated"
-                      style={{
-                        marginTop: "clamp(14px, 2vw, 20px)",
-                        fontFamily: "inherit",
-                        fontSize: "clamp(14px, 1.5vw, 16px)",
-                      }}
-                    >
-                      Start Course
-                    </button>
+                    <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                      <button
+                        className="btn-3d btn-3d-full btn-3d-animated btn-3d-icon-grow"
+                        style={{
+                          marginTop: "clamp(14px, 2vw, 20px)",
+                          fontFamily: "inherit",
+                          fontSize: "clamp(14px, 1.5vw, 16px)",
+                          background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
+                          gap: "10px",
+                          boxShadow: "0 4px 0 0 #b8183a, 0 6px 20px rgba(254, 44, 85, 0.4)",
+                        }}
+                      >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        Start Course
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
                 </Link>
