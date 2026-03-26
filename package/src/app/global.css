@@ -1121,6 +1121,41 @@ nav, button {
 }
 
 /* ============================================
+   MOBILE OPTIMIZATIONS - Small Screens
+   ============================================ */
+
+@media (max-width: 380px) {
+  /* Smaller buttons for very small screens */
+  .btn-3d {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  
+  .btn-3d-lg {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  
+  /* Reduce card 3D effects on mobile for performance */
+  .card-3d:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Simpler animations for mobile */
+  .card-float:hover {
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-height: 700px) {
+  /* Very short screens - reduce spacing */
+  .btn-3d {
+    padding: 10px 16px;
+  }
+}
+
+/* ============================================
    PERFORMANCE - Reduced Motion
    ============================================ */
 
@@ -1131,5 +1166,36 @@ nav, button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   MOBILE TOUCH OPTIMIZATIONS
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects on touch devices */
+  .card-3d:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .card-float:hover {
+    transform: none;
+  }
+  
+  /* Active state instead of hover */
+  .card-3d:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+  }
+  
+  .btn-3d:hover {
+    transform: none;
+  }
+  
+  .btn-3d:active {
+    transform: translateY(2px) scale(0.98);
+    transition: transform 0.05s;
   }
 }

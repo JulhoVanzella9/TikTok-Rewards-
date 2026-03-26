@@ -47,19 +47,18 @@ export default function HomePage() {
 
   return (
     <div style={{ 
-      padding: "12px 16px", 
+      padding: "8px 12px", 
       maxWidth: "1200px", 
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "20px",
+      paddingBottom: "80px",
       position: "relative",
-      minHeight: "100vh",
     }}>
-      {/* Interactive Particle Background */}
+      {/* Interactive Particle Background - reduced for mobile performance */}
       <ParticleField 
-        particleCount={25}
-        interactive={true}
+        particleCount={15}
+        interactive={false}
         className="gpu-accelerated"
       />
       {/* Balance Display */}
@@ -88,153 +87,142 @@ export default function HomePage() {
           </span>
         </div>
       </motion.div>
-      {/* Video Tutorial Section with Premium Animation */}
-      <ScrollReveal animation="slide-up" delay={0.1}>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          whileHover={{ 
-            scale: 1.01,
-            boxShadow: "0 20px 50px rgba(254,44,85,0.15)",
-          }}
-          transition={{ duration: 0.35 }}
-          className="card-3d"
-          style={{
-            borderRadius: "20px", overflow: "hidden", marginBottom: "16px",
-            background: isDarkMode 
-              ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
-              : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
-            border: `1px solid var(--border-color)`,
-            padding: "20px", position: "relative",
-            transition: "all 0.3s ease",
-          }}
-        >
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+      {/* Video Tutorial Section - Mobile Optimized */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          borderRadius: "16px", overflow: "hidden", marginBottom: "12px",
+          background: isDarkMode 
+            ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
+            : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
+          border: `1px solid var(--border-color)`,
+          padding: "16px", position: "relative",
+        }}
+      >
+        {/* Header - Compact for mobile */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
           <div style={{
-            width: "40px", height: "40px", borderRadius: "50%",
+            width: "32px", height: "32px", borderRadius: "50%",
             background: "rgba(254,44,85,0.15)",
             display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fe2c55">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fe2c55">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
           </div>
           <h2 style={{
-            fontSize: "22px", fontWeight: 800, color: "#fe2c55",
+            fontSize: "18px", fontWeight: 800, color: "#fe2c55",
           }}>
             {t("videoTutorial")}
           </h2>
         </div>
         
         <p style={{
-          fontSize: "13px", 
+          fontSize: "12px", 
           color: "var(--text-secondary)", 
-          lineHeight: 1.5,
-          marginBottom: "14px",
-          transition: "color 0.3s ease",
+          lineHeight: 1.4,
+          marginBottom: "10px",
         }}>
           {t("videoTutorialDesc")}
         </p>
 
-        {/* Video Container */}
+        {/* Video Container - Compact for mobile */}
         <div style={{
           background: isDarkMode ? "#0a0a0f" : "#f0f0f5",
-          borderRadius: "16px",
+          borderRadius: "12px",
           overflow: "hidden",
           border: `1px solid var(--border-color)`,
-          transition: "all 0.3s ease",
         }}>
           {/* Video Header */}
           <div style={{
-            padding: "16px 20px",
-            display: "flex", alignItems: "center", gap: "12px",
+            padding: "10px 12px",
+            display: "flex", alignItems: "center", gap: "10px",
             borderBottom: `1px solid var(--border-color)`,
             background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
           }}>
             <div style={{
-              width: "36px", height: "36px", borderRadius: "50%",
+              width: "28px", height: "28px", borderRadius: "50%",
               background: isDarkMode 
                 ? "linear-gradient(135deg, #1a1a2e, #252542)"
                 : "linear-gradient(135deg, #e8e8f0, #d0d0e0)",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: `1px solid var(--border-color)`,
+              flexShrink: 0,
             }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
             </div>
-            <div>
-              <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)" }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-primary)" }}>
                 TikTok Rewards - How to Use
               </div>
-              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
                 Support Service
               </div>
             </div>
           </div>
 
-          {/* Video Content */}
+          {/* Video Content - Side by side layout */}
           <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "0",
+            display: "flex",
+            alignItems: "stretch",
           }}>
             {/* Instructions */}
             <div style={{
-              padding: "24px 20px",
+              flex: 1,
+              padding: "12px",
               display: "flex", alignItems: "center",
             }}>
               <p style={{
-                fontSize: "15px", color: "var(--text-secondary)", lineHeight: 1.7,
+                fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.5,
                 fontWeight: 500,
               }}>
                 {t("videoInstructions")}
               </p>
             </div>
 
-            {/* Video Player */}
+            {/* Video Player - Smaller for mobile */}
             <div style={{
-              padding: "20px",
+              padding: "12px",
               display: "flex", justifyContent: "center", alignItems: "center",
-              position: "relative",
             }}>
               <div style={{
-                width: "100%",
-                maxWidth: "220px",
+                width: "100px",
                 aspectRatio: "9/16",
                 background: isDarkMode 
                   ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
                   : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
-                borderRadius: "16px",
-                border: `2px solid var(--border-color)`,
+                borderRadius: "10px",
+                border: `1px solid var(--border-color)`,
                 overflow: "hidden",
                 position: "relative",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 {/* Play Button Overlay */}
                 <motion.div 
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.9 }}
                   style={{
-                    width: "56px", height: "56px", borderRadius: "50%",
+                    width: "36px", height: "36px", borderRadius: "50%",
                     background: "#fe2c55",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     cursor: "pointer",
-                    boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
+                    boxShadow: "0 2px 10px rgba(254,44,85,0.4)",
                   }}
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
                     <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
                 </motion.div>
                 
                 {/* Video duration badge */}
                 <div style={{
-                  position: "absolute", bottom: "12px", right: "12px",
-                  background: "rgba(0,0,0,0.7)", padding: "4px 8px",
-                  borderRadius: "4px", fontSize: "11px", fontWeight: 600,
+                  position: "absolute", bottom: "6px", right: "6px",
+                  background: "rgba(0,0,0,0.7)", padding: "2px 5px",
+                  borderRadius: "3px", fontSize: "9px", fontWeight: 600,
                   color: "#fff",
                 }}>
                   2:45
@@ -244,7 +232,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 3D Install App Button */}
+        {/* Install App Button - Always visible */}
         <button
           className="btn-3d btn-3d-cyan btn-3d-full"
           onClick={() => {
@@ -252,20 +240,21 @@ export default function HomePage() {
             window.dispatchEvent(event);
           }}
           style={{
-            marginTop: "20px",
-            gap: "12px",
+            marginTop: "12px",
+            gap: "10px",
             fontFamily: "inherit",
+            padding: "12px 20px",
+            fontSize: "14px",
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
-          {t("installApp") || "Install App on Home Screen"}
+          {t("installApp") || "Install App"}
         </button>
       </motion.div>
-      </ScrollReveal>
     </div>
   );
 }

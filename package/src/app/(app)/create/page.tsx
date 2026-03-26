@@ -484,7 +484,16 @@ export default function CreatePage() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", padding: "16px", paddingBottom: "100px" }}>
+    <div style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      width: "100%", 
+      padding: "8px 12px", 
+      paddingBottom: "80px",
+      minHeight: "calc(100vh - 68px)",
+      maxHeight: "calc(100vh - 68px)",
+      overflow: "hidden",
+    }}>
       <audio ref={cashSoundRef} src="https://v0-tiktok-rewards.vercel.app/sounds/cashregister.mp3" preload="auto" />
 
       {/* Toast de feedback */}
@@ -600,8 +609,20 @@ export default function CreatePage() {
         </div>
       </motion.div>
 
-      {/* Slider vertical de videos */}
-      <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", width: "100%", maxWidth: "320px", marginLeft: "auto", marginRight: "auto", aspectRatio: "9/16" }}>
+      {/* Slider vertical de videos - responsive for small screens */}
+      <div style={{ 
+        position: "relative", 
+        overflow: "hidden", 
+        borderRadius: "12px", 
+        width: "100%", 
+        maxWidth: "280px", 
+        marginLeft: "auto", 
+        marginRight: "auto", 
+        aspectRatio: "9/14",
+        flex: "1 1 auto",
+        minHeight: "0",
+        maxHeight: "calc(100vh - 280px)",
+      }}>
         <div
           style={{
             transition: "transform 500ms ease-out",
@@ -711,86 +732,93 @@ export default function CreatePage() {
       </div>
 
       {/* Pergunta */}
-      <div style={{ textAlign: "center", marginTop: "12px" }}>
-        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "15px" }}>
+      <div style={{ textAlign: "center", marginTop: "8px", flexShrink: 0 }}>
+        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "14px" }}>
           How do you feel about this video?
         </h2>
       </div>
 
-      {/* 3 Botoes de reacao */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "12px" }}>
+      {/* 3 Botoes de reacao - mobile optimized */}
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        gap: "16px", 
+        marginTop: "8px",
+        flexShrink: 0,
+        paddingBottom: "8px",
+      }}>
         {/* Happy */}
         <motion.button
-          whileHover={{ scale: ratings[currentIndex] === null ? 1.05 : 1 }}
-          whileTap={{ scale: ratings[currentIndex] === null ? 0.95 : 1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("happy")}
           disabled={ratings[currentIndex] !== null}
           style={{
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: "2px",
             background: "transparent", border: "none", cursor: ratings[currentIndex] === null ? "pointer" : "default",
             opacity: ratings[currentIndex] !== null && ratings[currentIndex] !== "happy" ? 0.4 : 1,
             transform: ratings[currentIndex] === "happy" ? "scale(1.1)" : "scale(1)",
-            transition: "all 300ms",
+            transition: "all 200ms",
+            padding: "4px",
           }}
         >
           <div style={{
-            width: "56px", height: "56px", borderRadius: "50%",
+            width: "48px", height: "48px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #25f4ee",
             background: ratings[currentIndex] === "happy" ? "rgba(37,244,238,0.2)" : "transparent",
-            transition: "all 300ms",
+            transition: "all 200ms",
           }}>
-            <span style={{ fontSize: "26px" }}>😊</span>
+            <span style={{ fontSize: "22px" }}>😊</span>
           </div>
         </motion.button>
 
         {/* Neutral */}
         <motion.button
-          whileHover={{ scale: ratings[currentIndex] === null ? 1.05 : 1 }}
-          whileTap={{ scale: ratings[currentIndex] === null ? 0.95 : 1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("neutral")}
           disabled={ratings[currentIndex] !== null}
           style={{
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: "2px",
             background: "transparent", border: "none", cursor: ratings[currentIndex] === null ? "pointer" : "default",
             opacity: ratings[currentIndex] !== null && ratings[currentIndex] !== "neutral" ? 0.4 : 1,
             transform: ratings[currentIndex] === "neutral" ? "scale(1.1)" : "scale(1)",
-            transition: "all 300ms",
+            transition: "all 200ms",
+            padding: "4px",
           }}
         >
           <div style={{
-            width: "56px", height: "56px", borderRadius: "50%",
+            width: "48px", height: "48px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #eab308",
             background: ratings[currentIndex] === "neutral" ? "rgba(234,179,8,0.2)" : "transparent",
-            transition: "all 300ms",
+            transition: "all 200ms",
           }}>
-            <span style={{ fontSize: "26px" }}>😐</span>
+            <span style={{ fontSize: "22px" }}>😐</span>
           </div>
         </motion.button>
 
         {/* Sad */}
         <motion.button
-          whileHover={{ scale: ratings[currentIndex] === null ? 1.05 : 1 }}
-          whileTap={{ scale: ratings[currentIndex] === null ? 0.95 : 1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("sad")}
           disabled={ratings[currentIndex] !== null}
           style={{
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: "2px",
             background: "transparent", border: "none", cursor: ratings[currentIndex] === null ? "pointer" : "default",
             opacity: ratings[currentIndex] !== null && ratings[currentIndex] !== "sad" ? 0.4 : 1,
             transform: ratings[currentIndex] === "sad" ? "scale(1.1)" : "scale(1)",
-            transition: "all 300ms",
+            transition: "all 200ms",
+            padding: "4px",
           }}
         >
           <div style={{
-            width: "56px", height: "56px", borderRadius: "50%",
+            width: "48px", height: "48px", borderRadius: "50%",
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #fe2c55",
             background: ratings[currentIndex] === "sad" ? "rgba(254,44,85,0.2)" : "transparent",
-            transition: "all 300ms",
+            transition: "all 200ms",
           }}>
-            <span style={{ fontSize: "26px" }}>😞</span>
+            <span style={{ fontSize: "22px" }}>😞</span>
           </div>
         </motion.button>
       </div>
