@@ -21,6 +21,7 @@ export default function CheckoutPage() {
         "7 days access",
       ],
       color: "#25f4ee",
+      recommended: false,
     },
     pro: {
       name: "Pro",
@@ -51,6 +52,7 @@ export default function CheckoutPage() {
         "Early access to new features",
       ],
       color: "#ffd700",
+      recommended: false,
     },
   };
 
