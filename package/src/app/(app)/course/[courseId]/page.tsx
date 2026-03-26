@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { getCourseById, CourseModule } from "@/app/data/courses";
+import { getCourseById, Module, SubModule  } from "@/app/data/courses";
 import { useTheme } from "@/lib/theme/context";
 
 // Module images for different courses
@@ -40,8 +40,9 @@ export default function CourseDetailPage() {
   const course = getCourseById(params.courseId as string);
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
-  const [selectedModule, setSelectedModule] = useState<CourseModule | null>(null);
+  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [selectedModuleIndex, setSelectedModuleIndex] = useState<number>(0);
+  const [selectedSubModule, setSelectedSubModule] = useState<SubModule | null>(null);
 
   if (!course) {
     return (
@@ -219,9 +220,9 @@ export default function CourseDetailPage() {
         </div>
       </div>
 
-      {/* Bottom Sheet Modal */}
+      {/* Bottom Sheet Modal - Sections List */}
       <AnimatePresence>
-        {selectedModule && (
+        {selectedModule && !selectedSubModule && (
           <>
             {/* Backdrop */}
             <motion.div
@@ -285,7 +286,7 @@ export default function CourseDetailPage() {
                   color: "#fe2c55",
                   marginBottom: "4px",
                 }}>
-                  Module {String(selectedModuleIndex + 1).padStart(2, "0")} | {selectedModule.title.replace(/^Module \d+\s*-?\s*/i, "")}
+                  Module {String(selectedModuleIndex + 1).padStart(2, "0")} | {selectedModule.title.replace(/^Module \d+\s*[-|]\s*/i, "")}
                 </h2>
                 <p style={{
                   fontSize: "13px",
@@ -302,66 +303,299 @@ export default function CourseDetailPage() {
                 maxHeight: "calc(85vh - 120px)",
               }}>
                 {selectedModule.subModules.map((subModule, sIndex) => (
-                  <Link
+                  <motion.div
                     key={subModule.id}
-                    href={`/course/${params.courseId}/module/${selectedModule.id}?section=${subModule.id}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: sIndex * 0.05 }}
+                    whileHover={{ scale: 1.01, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedSubModule(subModule)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "14px",
+                      padding: "16px",
+                      marginBottom: "10px",
+                      background: isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+                      borderRadius: "14px",
+                      border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {/* Section Number */}
+                    <div style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "10px",
+                      background: isDarkMode 
+                        ? "linear-gradient(135deg, #1a1a2e, #252542)"
+                        : "linear-gradient(135deg, #f0f0f5, #e0e0e8)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 800,
+                      fontSize: "15px",
+                      color: "#fe2c55",
+                      flexShrink: 0,
+                    }}>
+                      {sIndex + 1}
+                    </div>
+
+                    {/* Section Info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h3 style={{
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "var(--text-primary)",
+                        marginBottom: "2px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}>
+                        {subModule.title}
+                      </h3>
+                      <p style={{
+                        fontSize: "12px",
+                        color: "var(--text-muted)",
+                      }}>
+                        {subModule.lessons.length} lessons
+                      </p>
+                    </div>
+
+                    {/* Arrow */}
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={isDarkMode ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Close Button */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedModule(null)}
+                style={{
+                  position: "absolute",
+                  top: "16px",
+                  right: "16px",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  background: isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
+                  border: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "var(--text-muted)",
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </motion.button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom Sheet Modal - Lessons List */}
+      <AnimatePresence>
+        {selectedSubModule && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setSelectedSubModule(null);
+                setSelectedModule(null);
+              }}
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(4px)",
+                WebkitBackdropFilter: "blur(4px)",
+                zIndex: 102,
+              }}
+            />
+
+            {/* Bottom Sheet */}
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                maxHeight: "90vh",
+                background: isDarkMode ? "#0a0a0a" : "#fff",
+                borderTopLeftRadius: "24px",
+                borderTopRightRadius: "24px",
+                zIndex: 103,
+                overflow: "hidden",
+                boxShadow: "0 -10px 40px rgba(0,0,0,0.4)",
+              }}
+            >
+              {/* Handle Bar */}
+              <div style={{
+                width: "100%",
+                padding: "12px 0",
+                display: "flex",
+                justifyContent: "center",
+              }}>
+                <div style={{
+                  width: "40px",
+                  height: "4px",
+                  borderRadius: "2px",
+                  background: isDarkMode ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.15)",
+                }}/>
+              </div>
+
+              {/* Header with Back Button */}
+              <div style={{
+                padding: "8px 20px 20px",
+                borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}`,
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+              }}>
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setSelectedSubModule(null)}
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "10px",
+                    background: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
+                    border: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    color: "var(--text-primary)",
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="15 18 9 12 15 6"/>
+                  </svg>
+                </motion.button>
+                <div>
+                  <h2 style={{
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    color: "var(--text-primary)",
+                    marginBottom: "2px",
+                  }}>
+                    {selectedSubModule.title}
+                  </h2>
+                  <p style={{
+                    fontSize: "12px",
+                    color: "var(--text-muted)",
+                  }}>
+                    {selectedSubModule.lessons.length} lessons
+                  </p>
+                </div>
+              </div>
+
+              {/* Lessons List */}
+              <div style={{
+                padding: "16px 20px",
+                overflowY: "auto",
+                maxHeight: "calc(90vh - 130px)",
+              }}>
+                {selectedSubModule.lessons.map((lesson, lIndex) => (
+                  <Link
+                    key={lesson.id}
+                    href={`/course/${params.courseId}/lesson/${lesson.id}`}
                     style={{ textDecoration: "none" }}
+                    onClick={() => {
+                      setSelectedSubModule(null);
+                      setSelectedModule(null);
+                    }}
                   >
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: sIndex * 0.05 }}
+                      transition={{ delay: lIndex * 0.03 }}
                       whileHover={{ scale: 1.01, x: 4 }}
                       whileTap={{ scale: 0.98 }}
                       style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "14px",
-                        padding: "16px",
-                        marginBottom: "10px",
+                        padding: "14px 16px",
+                        marginBottom: "8px",
                         background: isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
                         borderRadius: "14px",
                         border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
                         cursor: "pointer",
                       }}
                     >
-                      {/* Section Number */}
+                      {/* Icon - Play for video, Number for text */}
                       <div style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "10px",
-                        background: isDarkMode 
-                          ? "linear-gradient(135deg, #1a1a2e, #252542)"
-                          : "linear-gradient(135deg, #f0f0f5, #e0e0e8)",
+                        width: "42px",
+                        height: "42px",
+                        borderRadius: "50%",
+                        background: lesson.contentType === "video" 
+                          ? "#fe2c55" 
+                          : isDarkMode 
+                            ? "rgba(255,255,255,0.08)" 
+                            : "rgba(0,0,0,0.06)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontWeight: 800,
-                        fontSize: "15px",
-                        color: "#fe2c55",
                         flexShrink: 0,
                       }}>
-                        {sIndex + 1}
+                        {lesson.contentType === "video" ? (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                          </svg>
+                        ) : (
+                          <span style={{
+                            fontSize: "15px",
+                            fontWeight: 700,
+                            color: "var(--text-primary)",
+                          }}>
+                            {lIndex + 1}
+                          </span>
+                        )}
                       </div>
 
-                      {/* Section Info */}
+                      {/* Lesson Info */}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <h3 style={{
                           fontSize: "14px",
                           fontWeight: 600,
                           color: "var(--text-primary)",
-                          marginBottom: "2px",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
+                          marginBottom: "3px",
+                          lineHeight: 1.3,
                         }}>
-                          {subModule.title}
+                          {lesson.title}
                         </h3>
                         <p style={{
                           fontSize: "12px",
-                          color: "var(--text-muted)",
+                          color: lesson.contentType === "video" ? "#fe2c55" : "var(--text-muted)",
+                          fontWeight: 500,
                         }}>
-                          {subModule.lessons.length} lessons
+                          {lesson.contentType === "video" ? `Video - ${lesson.duration}` : "Text Content"}
                         </p>
                       </div>
 
@@ -386,7 +620,10 @@ export default function CourseDetailPage() {
               {/* Close Button */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedModule(null)}
+                onClick={() => {
+                  setSelectedSubModule(null);
+                  setSelectedModule(null);
+                }}
                 style={{
                   position: "absolute",
                   top: "16px",
