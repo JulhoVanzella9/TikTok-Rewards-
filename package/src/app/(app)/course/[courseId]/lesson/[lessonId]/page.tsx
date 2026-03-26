@@ -268,45 +268,47 @@ export default function LessonPage() {
                 }}>
                   {mod.title}
                 </div>
-                {mod.lessons.map((les) => {
-                  const isActive = les.id === lessonId;
-                  const gIdx = allLessons.findIndex((l) => l.id === les.id);
-                  const isCompleted = isLessonCompleted(courseId, les.id);
-                  return (
-                    <Link
-                      key={les.id}
-                      href={`/course/${courseId}/lesson/${les.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <div style={{
-                        display: "flex", alignItems: "center", gap: "12px",
-                        padding: "12px 18px", cursor: "pointer",
-                        background: isActive ? "rgba(254,44,85,0.08)" : "transparent",
-                        borderLeft: isActive ? "3px solid #fe2c55" : "3px solid transparent",
-                        transition: "all 0.2s",
-                      }}>
+                {mod.subModules?.map((subMod) => (
+                  subMod.lessons.map((les) => {
+                    const isActive = les.id === lessonId;
+                    const gIdx = allLessons.findIndex((l) => l.id === les.id);
+                    const isCompleted = isLessonCompleted(courseId, les.id);
+                    return (
+                      <Link
+                        key={les.id}
+                        href={`/course/${courseId}/lesson/${les.id}`}
+                        style={{ textDecoration: "none" }}
+                      >
                         <div style={{
-                          width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                          background: isActive ? "#fe2c55" : isCompleted ? "#25f4ee" : "rgba(255,255,255,0.04)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "10px", fontWeight: 700, color: isActive || isCompleted ? "#fff" : "#666",
+                          display: "flex", alignItems: "center", gap: "12px",
+                          padding: "12px 18px", cursor: "pointer",
+                          background: isActive ? "rgba(254,44,85,0.08)" : "transparent",
+                          borderLeft: isActive ? "3px solid #fe2c55" : "3px solid transparent",
+                          transition: "all 0.2s",
                         }}>
-                          {isActive ? "▶" : isCompleted ? "✓" : gIdx + 1}
-                        </div>
-                        <div style={{ minWidth: 0 }}>
                           <div style={{
-                            fontSize: "13px", fontWeight: isActive ? 600 : 400,
-                            color: isActive ? "#fff" : "var(--text-secondary)",
-                            overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                            width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
+                            background: isActive ? "#fe2c55" : isCompleted ? "#25f4ee" : "rgba(255,255,255,0.04)",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: "10px", fontWeight: 700, color: isActive || isCompleted ? "#fff" : "#666",
                           }}>
-                            {les.title}
+                            {isActive ? "▶" : isCompleted ? "✓" : gIdx + 1}
                           </div>
-                          <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{les.duration}</div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{
+                              fontSize: "13px", fontWeight: isActive ? 600 : 400,
+                              color: isActive ? "#fff" : "var(--text-secondary)",
+                              overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                            }}>
+                              {les.title}
+                            </div>
+                            <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{les.duration}</div>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  })
+                ))}
               </div>
             ))}
           </motion.div>
