@@ -230,27 +230,18 @@ export default function InstallPrompt() {
             <div style={{ display: "flex", gap: "8px" }}>
               <button
                 onClick={handleDismiss}
-                style={{
-                  padding: "10px 14px", borderRadius: "10px",
-                  background: "rgba(255,255,255,0.05)", border: "none",
-                  color: "rgba(255,255,255,0.6)", fontSize: "13px", fontWeight: 600,
-                  cursor: "pointer",
-                }}
+                className="btn-3d btn-3d-dark btn-3d-sm"
+                style={{ fontFamily: "inherit" }}
               >
                 Later
               </button>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={handleInstall}
-                style={{
-                  padding: "10px 16px", borderRadius: "10px",
-                  background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-                  border: "none", color: "#fff", fontSize: "13px", fontWeight: 700,
-                  cursor: "pointer",
-                }}
+                className="btn-3d btn-3d-primary btn-3d-sm"
+                style={{ fontFamily: "inherit" }}
               >
                 Install
-              </motion.button>
+              </button>
             </div>
           </div>
         )}

@@ -110,18 +110,12 @@ export default function MyCoursesPage() {
             Start exploring our courses
           </p>
           <Link href="/explore">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                padding: "12px 28px", fontSize: "14px", fontWeight: 700,
-                background: "var(--gradient-button)", color: "#fff",
-                border: "none", borderRadius: "12px", cursor: "pointer",
-                fontFamily: "inherit",
-              }}
+            <button
+              className="btn-3d btn-3d-primary"
+              style={{ fontFamily: "inherit" }}
             >
               Explore Courses
-            </motion.button>
+            </button>
           </Link>
         </motion.div>
       )}

@@ -216,53 +216,33 @@ export default function WelcomePage() {
           ))}
         </motion.div>
 
-        {/* CTA Button */}
+        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
           <Link href="/register">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            <button
+              className="btn-3d btn-3d-primary btn-3d-lg btn-3d-full"
               style={{
-                width: "100%",
-                padding: "18px",
-                background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-                border: "none",
-                borderRadius: "14px",
-                color: "#fff",
-                fontSize: "17px",
-                fontWeight: 700,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                boxShadow: "0 8px 30px rgba(254,44,85,0.4)",
                 marginBottom: "14px",
+                gap: "10px",
+                fontFamily: "inherit",
               }}
             >
               Claim Your $20 Bonus
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
-            </motion.button>
+            </button>
           </Link>
 
           <Link href="/login">
-            <button style={{
-              width: "100%",
-              padding: "16px",
-              background: "transparent",
-              border: "1px solid rgba(255,255,255,0.15)",
-              borderRadius: "14px",
-              color: "rgba(255,255,255,0.7)",
-              fontSize: "15px",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}>
+            <button
+              className="btn-3d btn-3d-dark btn-3d-full"
+              style={{ fontFamily: "inherit" }}
+            >
               Already have an account? Login
             </button>
           </Link>

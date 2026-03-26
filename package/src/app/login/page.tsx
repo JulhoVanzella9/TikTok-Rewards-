@@ -288,37 +288,29 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
 
-          {/* Continue button */}
-          <motion.button
+          {/* 3D Continue button */}
+          <button
             type="submit"
             disabled={loading || (step === "email" && !email) || (step === "password" && !password)}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
+            className="btn-3d btn-3d-primary btn-3d-full"
             style={{
-              width: "100%", padding: "16px", fontSize: "16px", fontWeight: 700,
-              background: "#fe2c55",
-              color: "#fff", border: "none", borderRadius: "12px",
-              cursor: loading ? "not-allowed" : "pointer",
               fontFamily: "inherit",
-              opacity: loading || (step === "email" && !email) || (step === "password" && !password) ? 0.6 : 1,
               marginBottom: "20px",
+              opacity: loading || (step === "email" && !email) || (step === "password" && !password) ? 0.6 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
             {loading ? "Loading..." : "Continue"}
-          </motion.button>
+          </button>
         </form>
 
-        {/* Request Refund button */}
+        {/* 3D Request Refund button */}
         {step === "email" && (
           <button
             type="button"
             onClick={() => setShowRefundModal(true)}
+            className="btn-3d btn-3d-dark btn-3d-full"
             style={{
-              width: "100%", padding: "14px 18px",
-              background: "rgba(45, 45, 80, 0.8)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "12px",
-              cursor: "pointer", color: "#fff", fontSize: "15px", fontWeight: 600,
               fontFamily: "inherit",
               marginBottom: "20px",
             }}

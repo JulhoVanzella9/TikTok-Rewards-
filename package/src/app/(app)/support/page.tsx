@@ -369,21 +369,14 @@ export default function SupportPage() {
                 </div>
               </div>
 
-              {/* Close Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              {/* 3D Close Button */}
+              <button
                 onClick={() => setShowHelpModal(false)}
-                style={{
-                  width: "100%", padding: "14px",
-                  background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
-                  border: "none", borderRadius: "14px",
-                  color: "#000", fontSize: "14px", fontWeight: 700,
-                  cursor: "pointer", fontFamily: "inherit",
-                }}
+                className="btn-3d btn-3d-cyan btn-3d-full"
+                style={{ fontFamily: "inherit" }}
               >
                 Close
-              </motion.button>
+              </button>
             </motion.div>
           </motion.div>
         )}

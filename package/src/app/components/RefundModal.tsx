@@ -149,22 +149,17 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     Please note that initiating a chargeback (a formal request to the credit provider to reverse an unrecognized transaction) without proper justification constitutes illegal conduct under the Fair Credit Billing Act (FCBA). These actions not only harm reputable and ethical businesses but also involve the refusal to acknowledge a legitimate transaction despite having received the product or service. Engaging in such practices may result in legal consequences. It is essential to maintain honesty in all online transactions to ensure a safe and trustworthy shopping environment for all parties involved.
                   </p>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <button
                     onClick={() => setStep("form")}
+                    className="btn-3d btn-3d-primary"
                     style={{
-                      padding: "14px 32px",
-                      background: "#fe2c55",
-                      border: "none", borderRadius: "8px",
-                      color: "#fff", fontSize: "14px", fontWeight: 700,
-                      cursor: "pointer", fontFamily: "inherit",
+                      fontFamily: "inherit",
                       width: "100%",
                       maxWidth: "280px",
                     }}
                   >
                     Continue Request
-                  </motion.button>
+                  </button>
                 </div>
 
                 {/* Footer Links */}
@@ -180,22 +175,16 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   </span>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <button
                   onClick={handleClose}
+                  className="btn-3d btn-3d-dark btn-3d-sm"
                   style={{
                     marginTop: "16px",
-                    padding: "12px 28px",
-                    background: "transparent",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    borderRadius: "8px",
-                    color: "#fff", fontSize: "13px", fontWeight: 600,
-                    cursor: "pointer", fontFamily: "inherit",
+                    fontFamily: "inherit",
                   }}
                 >
                   Back to Start
-                </motion.button>
+                </button>
               </>
             ) : (
               /* Form Step */
@@ -313,40 +302,31 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     </div>
 
                     <div style={{ display: "flex", gap: "12px" }}>
-                      <motion.button
+                      <button
                         type="button"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
                         onClick={handleClose}
                         disabled={isSubmitting}
+                        className="btn-3d btn-3d-dark"
                         style={{
-                          flex: 1, padding: "14px",
-                          background: "rgba(255,255,255,0.06)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          borderRadius: "12px",
-                          color: "#fff", fontSize: "14px", fontWeight: 700,
-                          cursor: "pointer", fontFamily: "inherit",
+                          flex: 1,
+                          fontFamily: "inherit",
                         }}
                       >
                         {t("cancel")}
-                      </motion.button>
-                      <motion.button
+                      </button>
+                      <button
                         type="submit"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
                         disabled={isSubmitting || !email || !purchaseCode || !reason}
+                        className="btn-3d btn-3d-primary"
                         style={{
-                          flex: 1, padding: "14px",
-                          background: "#fe2c55",
-                          border: "none", borderRadius: "12px",
-                          color: "#fff", fontSize: "14px", fontWeight: 700,
-                          cursor: isSubmitting ? "not-allowed" : "pointer",
+                          flex: 1,
                           fontFamily: "inherit",
                           opacity: isSubmitting || !email || !purchaseCode || !reason ? 0.6 : 1,
+                          cursor: isSubmitting ? "not-allowed" : "pointer",
                         }}
                       >
                         {isSubmitting ? t("submitting") : t("submit")}
-                      </motion.button>
+                      </button>
                     </div>
                   </form>
                 )}

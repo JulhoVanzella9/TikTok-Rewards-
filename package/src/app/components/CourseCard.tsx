@@ -51,23 +51,27 @@ export default function CourseCard({ course, index }: { course: Course; index: n
               }}
             />
           )}
-          {/* Play button */}
-          <motion.div
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.15 }}
+          {/* 3D Play button */}
+          <div
             style={{
-              width: "50px", height: "50px", borderRadius: "50%",
-              background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(8px)",
+              width: "54px", height: "54px", borderRadius: "50%",
+              background: "linear-gradient(145deg, #ff3366 0%, #fe2c55 50%, #e91e4a 100%)",
+              boxShadow: `
+                0 4px 0 0 #b8183a,
+                0 6px 16px rgba(254, 44, 85, 0.5),
+                inset 0 1px 0 rgba(255,255,255,0.25)
+              `,
               display: "flex", alignItems: "center", justifyContent: "center",
               position: "relative", zIndex: 1,
+              transform: "translateY(0)",
+              transition: "all 0.15s ease",
             }}
+            className="card-play-btn"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: "2px" }}>
               <path d="M8 5v14l11-7z"/>
             </svg>
-          </motion.div>
+          </div>
 
           {/* Duration badge */}
           <div style={{

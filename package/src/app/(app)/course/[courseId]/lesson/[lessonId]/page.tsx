@@ -291,77 +291,64 @@ export default function LessonPage() {
           }}>
             {prevLesson && (
               <Link href={`/course/${courseId}/lesson/${prevLesson.id}`} style={{ flex: 1 }}>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <button
+                  className="btn-3d btn-3d-dark btn-3d-full"
                   style={{
-                    width: "100%", padding: "16px", fontSize: "14px", fontWeight: 600,
-                    background: "rgba(255,255,255,0.04)", color: "var(--text-secondary)",
-                    border: "1px solid rgba(255,255,255,0.1)", borderRadius: "14px",
-                    cursor: "pointer", fontFamily: "inherit", display: "flex",
-                    alignItems: "center", justifyContent: "center", gap: "8px",
-                    transition: "all 0.2s",
+                    fontFamily: "inherit",
+                    gap: "8px",
                   }}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="15 18 9 12 15 6"/>
                   </svg>
                   Previous
-                </motion.button>
+                </button>
               </Link>
             )}
             {nextLesson ? (
-              <motion.button
-                whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(254,44,85,0.25)" }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 disabled={saving}
                 onClick={async () => {
                   setSaving(true);
                   await markLessonComplete(courseId, lessonId, allLessons.length);
                   router.push(`/course/${courseId}/lesson/${nextLesson.id}`);
                 }}
+                className="btn-3d btn-3d-primary"
                 style={{
                   flex: prevLesson ? 1.5 : 1,
-                  padding: "16px", fontSize: "14px", fontWeight: 700,
-                  background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)", color: "#fff",
-                  border: "none", borderRadius: "14px", cursor: saving ? "wait" : "pointer",
-                  fontFamily: "inherit", display: "flex",
-                  alignItems: "center", justifyContent: "center", gap: "8px",
+                  fontFamily: "inherit",
+                  gap: "8px",
+                  cursor: saving ? "wait" : "pointer",
                   opacity: saving ? 0.7 : 1,
-                  boxShadow: "0 4px 20px rgba(254,44,85,0.3)",
-                  transition: "all 0.2s",
                 }}
               >
                 {saving ? "Saving..." : "Complete & Continue"}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="9 18 15 12 9 6"/>
                 </svg>
-              </motion.button>
+              </button>
             ) : (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 disabled={saving}
                 onClick={async () => {
                   setSaving(true);
                   await markLessonComplete(courseId, lessonId, allLessons.length);
                   router.push(`/course/${courseId}`);
                 }}
+                className="btn-3d btn-3d-cyan"
                 style={{
                   flex: 1,
-                  padding: "16px", fontSize: "14px", fontWeight: 700,
-                  background: "linear-gradient(135deg, #25f4ee, #5ff7f2)", color: "#000",
-                  border: "none", borderRadius: "14px", cursor: saving ? "wait" : "pointer",
-                  fontFamily: "inherit", opacity: saving ? 0.7 : 1,
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  boxShadow: "0 4px 20px rgba(37,244,238,0.3)",
+                  fontFamily: "inherit",
+                  cursor: saving ? "wait" : "pointer",
+                  opacity: saving ? 0.7 : 1,
+                  gap: "8px",
                 }}
               >
                 {saving ? "Saving..." : "Complete Course"}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
-              </motion.button>
+              </button>
             )}
           </div>
         </motion.div>

@@ -179,26 +179,16 @@ export default function CoursesPage() {
                       </div>
                     </div>
                     
-                    {/* Start Button */}
-                    <motion.div
-                      whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(254,44,85,0.4)" }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ duration: 0.15 }}
+                    {/* 3D Start Button */}
+                    <button
+                      className="btn-3d btn-3d-primary btn-3d-full"
                       style={{
                         marginTop: "16px",
-                        padding: "14px",
-                        background: "linear-gradient(135deg, #fe2c55 0%, #ff4070 100%)",
-                        borderRadius: "12px",
-                        textAlign: "center",
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#fff",
-                        position: "relative",
-                        overflow: "hidden",
+                        fontFamily: "inherit",
                       }}
                     >
-                      <span style={{ position: "relative", zIndex: 1 }}>Start Course</span>
-                    </motion.div>
+                      Start Course
+                    </button>
                   </div>
                 </motion.div>
               </Link>
