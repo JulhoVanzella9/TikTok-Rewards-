@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 
+// Configuration - Replace with actual email and phone when ready
+const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
+const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
+
 export async function POST(request: Request) {
   try {
-    const { email, reason } = await request.json();
+    const { email, purchaseCode, reason } = await request.json();
     
-    if (!email || !reason) {
-      return NextResponse.json({ error: 'Email and reason are required' }, { status: 400 });
+    if (!email || !purchaseCode || !reason) {
+      return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
     }
     
     // Send email using a simple fetch to an email service
@@ -16,18 +20,22 @@ export async function POST(request: Request) {
 New Refund Request
 
 From: ${email}
+Purchase/Transfer Code: ${purchaseCode}
 
 Reason:
 ${reason}
 
 ---
 TikTok Rewards Support System
+Support Email: ${SUPPORT_EMAIL}
+Support Phone: ${SUPPORT_PHONE}
     `.trim();
     
     // Log the request (in production, send actual email)
     console.log('=== REFUND REQUEST ===');
-    console.log('To: julhoeduardo7@gmail.com');
+    console.log('To:', SUPPORT_EMAIL);
     console.log('From:', email);
+    console.log('Purchase Code:', purchaseCode);
     console.log('Reason:', reason);
     console.log('======================');
     
@@ -42,8 +50,8 @@ TikTok Rewards Support System
           },
           body: JSON.stringify({
             from: 'TikTok Rewards <noreply@tiktokrewards.com>',
-            to: ['julhoeduardo7@gmail.com'],
-            subject: `Refund Request from ${email}`,
+            to: [SUPPORT_EMAIL],
+            subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
             text: emailContent,
             reply_to: email,
           }),
@@ -57,7 +65,12 @@ TikTok Rewards Support System
       }
     }
     
-    return NextResponse.json({ success: true, message: 'Refund request submitted' });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Refund request submitted',
+      supportEmail: SUPPORT_EMAIL,
+      supportPhone: SUPPORT_PHONE,
+    });
   } catch (error) {
     console.error('Refund API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

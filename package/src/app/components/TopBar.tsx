@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
+import { createClient } from "@/lib/supabase/client";
 import RefundModal from "./RefundModal";
 
 const FlagUS = () => (
@@ -45,11 +46,29 @@ export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
+  const [balance, setBalance] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === "dark";
+
+  // Fetch balance from Supabase
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from("users")
+          .select("balance")
+          .eq("id", user.id)
+          .single();
+        if (data) setBalance(data.balance || 0);
+      }
+    };
+    fetchBalance();
+  }, []);
 
   // Block body scroll when menu is open
   useEffect(() => {
@@ -224,7 +243,36 @@ export default function TopBar() {
           </motion.div>
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          {/* Balance Display */}
+          <Link href="/wallet" style={{ textDecoration: "none" }}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "6px 12px",
+                background: isDarkMode ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0.05)",
+                borderRadius: "16px",
+                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                cursor: "pointer",
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              <span style={{ color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", fontSize: "11px", fontWeight: 500 }}>
+                Balance
+              </span>
+              <span style={{ fontSize: "13px", fontWeight: 700, color: isDarkMode ? "#fff" : "#000" }}>
+                ${balance.toFixed(2)}
+              </span>
+            </motion.div>
+          </Link>
+
           {/* Hamburger Menu Button */}
           <motion.button
             whileHover={{ scale: 1.1, rotate: 90 }}
@@ -449,23 +497,42 @@ export default function TopBar() {
                         }}
                         style={{
                           width: "100%",
-                          display: "flex", alignItems: "center", gap: "14px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(254,44,85,0.15) 0%, rgba(254,44,85,0.08) 100%)",
-                          border: "1px solid rgba(254,44,85,0.25)",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
+                          border: "1px solid rgba(254,44,85,0.2)",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#fe2c55" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
-                          {item.label}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(254,44,85,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
+                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                              <circle cx="9" cy="7" r="4"/>
+                              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
                         <span style={{
-                          marginLeft: "auto",
-                          padding: "4px 8px",
-                          background: "#fe2c55",
-                          borderRadius: "6px",
+                          padding: "5px 10px",
+                          background: "linear-gradient(135deg, #fe2c55, #ff3366)",
+                          borderRadius: "8px",
                           fontSize: "11px",
                           fontWeight: 700,
                           color: "#fff",
@@ -484,25 +551,43 @@ export default function TopBar() {
                         }}
                         style={{
                           width: "100%",
-                          display: "flex", alignItems: "center", gap: "14px",
-                          padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
-                          border: "1px solid rgba(37,244,238,0.25)",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          background: "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)",
+                          border: "1px solid rgba(37,244,238,0.2)",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#25f4ee" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: isDarkMode ? "#fff" : "#000" }}>
-                          {item.label}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: "rgba(37,244,238,0.15)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                              <polyline points="7 10 12 15 17 10"/>
+                              <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                          </div>
+                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
+                            {item.label}
+                          </span>
+                        </div>
                         <span style={{
-                          marginLeft: "auto",
-                          padding: "4px 8px",
+                          padding: "5px 10px",
                           background: "rgba(37,244,238,0.2)",
-                          borderRadius: "6px",
+                          borderRadius: "8px",
                           fontSize: "11px",
-                          fontWeight: 600,
+                          fontWeight: 700,
                           color: "#25f4ee",
                         }}>
                           PWA
