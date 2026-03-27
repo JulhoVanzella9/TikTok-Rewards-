@@ -19,14 +19,16 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
   
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: "/api/support-chat" }),
-    initialMessages: [
-      {
-        id: "welcome",
-        role: "assistant",
-        parts: [{ type: "text", text: "Olá! Bem-vindo ao suporte TikCash. Como posso ajudar você hoje?" }],
-      },
-    ],
   });
+  
+  // Welcome message shown before any AI messages
+  const welcomeMessage = {
+    id: "welcome",
+    role: "assistant" as const,
+    parts: [{ type: "text" as const, text: "Olá! Bem-vindo ao suporte TikCash. Como posso ajudar você hoje?" }],
+  };
+  
+  const allMessages = messages.length === 0 ? [welcomeMessage] : messages;
 
   const isLoading = status === "streaming" || status === "submitted";
 
@@ -171,7 +173,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
               minHeight: "300px",
               maxHeight: "400px",
             }}>
-              {messages.map((message) => {
+              {allMessages.map((message) => {
                 const isUser = message.role === "user";
                 const text = message.parts
                   ?.filter((p): p is { type: "text"; text: string } => p.type === "text")
