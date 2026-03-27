@@ -5,10 +5,11 @@ import { useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import RefundModal from "@/app/components/RefundModal";
+import SupportChat from "./components/SupportChat";
 
-// Configuration - Replace with actual email and phone when ready
-const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
-const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
+// Configuration
+const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
+const SUPPORT_PHONE = "+1 (555) 123-4567";
 
 const fadeIn = { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } };
 
@@ -42,6 +43,7 @@ export default function SupportPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
@@ -146,7 +148,7 @@ export default function SupportPage() {
         <motion.button
           whileHover={{ scale: 1.02, y: -4 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => setShowHelpModal(true)}
+          onClick={() => setShowChat(true)}
           className="btn-3d-icon-grow"
           style={{
             padding: "20px 16px",
@@ -159,12 +161,10 @@ export default function SupportPage() {
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 16v-4"/>
-            <path d="M12 8h.01"/>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
           <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-primary)" }}>
-            {t("helpCenter")}
+            Live Chat
           </span>
         </motion.button>
       </motion.div>
@@ -394,6 +394,9 @@ export default function SupportPage() {
 
       {/* Refund Modal */}
       <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
+
+      {/* Live Chat */}
+      <SupportChat isOpen={showChat} onClose={() => setShowChat(false)} />
     </div>
   );
 }
