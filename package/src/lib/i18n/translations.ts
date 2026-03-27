@@ -53,7 +53,6 @@ installApp: "Install App",
     requestRefundBtn: "Request Refund",
     
     // Support
-    support: "Support",
     howCanWeHelp: "How can we help?",
     supportDesc: "Find answers to your questions or contact our support team for assistance.",
     requestRefund: "Request Refund",
@@ -226,7 +225,6 @@ installApp: "Instalar App",
     requestRefundBtn: "Solicitar Reembolso",
     
     // Support
-    support: "Suporte",
     howCanWeHelp: "Como podemos ajudar?",
     supportDesc: "Encontre respostas para suas perguntas ou entre em contato com nossa equipe de suporte.",
     requestRefund: "Solicitar Reembolso",
@@ -399,7 +397,6 @@ tikcashAccess: "Acceso TikCash",
   requestRefundBtn: "Solicitar Reembolso",
   
   // Support
-    support: "Soporte",
     howCanWeHelp: "Como podemos ayudarte?",
     supportDesc: "Encuentra respuestas a tus preguntas o contacta a nuestro equipo de soporte.",
     requestRefund: "Solicitar Reembolso",
