@@ -123,7 +123,7 @@ export default function ReferralWelcomePopup({ referralCode }: ReferralWelcomePo
               marginBottom: "24px",
               lineHeight: 1.5,
             }}>
-              A friend invited you to join the TikTok Rewards Program
+              A friend invited you to join the TikCash Program
             </p>
 
             {/* Bonus card */}

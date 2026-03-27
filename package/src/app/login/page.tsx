@@ -173,7 +173,7 @@ export default function LoginPage() {
           )}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <h1 style={{ fontSize: "20px", fontWeight: 700, color: "#fff" }}>
-              Welcome to TikTok Rewards
+              Welcome to TikCash
             </h1>
           </div>
         </div>

@@ -86,7 +86,7 @@ export default function WelcomePage() {
           width: "100%",
         }}
       >
-        {/* TikTok Logo */}
+        {/* TikCash Logo */}
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -103,8 +103,12 @@ export default function WelcomePage() {
             boxShadow: "0 12px 40px rgba(254,44,85,0.3), 0 8px 20px rgba(37,244,238,0.2)",
           }}
         >
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" fill="#fff"/>
+          <svg width="38" height="38" viewBox="0 0 48 48" fill="none">
+            {/* Musical note with dollar sign */}
+            <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
+            <text x="20" y="32" textAnchor="middle" fill="#fe2c55" fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
+            <circle cx="36" cy="12" r="7" fill="#25f4ee" stroke="#fff" strokeWidth="2"/>
+            <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
           </svg>
         </motion.div>
 
@@ -156,7 +160,7 @@ export default function WelcomePage() {
             WebkitTextFillColor: "transparent",
             marginBottom: "20px",
           }}>
-            TikTok Rewards Program
+            TikCash Program
           </p>
         </motion.div>
 
@@ -201,7 +205,7 @@ export default function WelcomePage() {
             color: "rgba(255,255,255,0.7)",
             lineHeight: 1.5,
           }}>
-            To access the TikTok Rewards platform and start earning money, a one-time activation fee is required.
+            To access the TikCash platform and start earning money, a one-time activation fee is required.
           </p>
         </motion.div>
 
@@ -285,7 +289,7 @@ export default function WelcomePage() {
             What You Get:
           </h3>
           {[
-            { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", text: "Earn real money rating TikTok videos", color: "#25f4ee" },
+            { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", text: "Earn real money rating videos", color: "#25f4ee" },
             { icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z", text: "Exclusive training & video tutorials", color: "#fe2c55" },
             { icon: "M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z", text: "Fast withdrawals via PayPal or Pix", color: "#ffd700" },
             { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", text: "Lifetime premium access", color: "#25f4ee" },

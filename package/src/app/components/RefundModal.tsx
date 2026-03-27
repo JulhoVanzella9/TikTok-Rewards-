@@ -83,7 +83,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             {step === "legal" ? (
               /* Legal Notice Step */
               <>
-                {/* TikTok Rewards Logo - same as TopBar, centered */}
+                {/* TikCash Logo - same as TopBar, centered */}
                 <div style={{ 
                   display: "flex", 
                   alignItems: "center", 
@@ -91,7 +91,6 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   gap: "10px",
                   marginBottom: "24px",
                   width: "100%",
-                  transform: "translateX(-16px)",
                 }}>
                   <div style={{ 
                     width: "48px", height: "48px", 
@@ -99,12 +98,15 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     flexShrink: 0,
                   }}>
                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                      {/* Cyan layer - offset left */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
-                      {/* Red layer - offset right */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
+                      {/* Musical note with dollar - Cyan layer */}
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
+                      {/* Red layer */}
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
                       {/* White main layer */}
-                      <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#fff"/>
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
+                      <text x="20" y="32" textAnchor="middle" fill="#000" fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
+                      <circle cx="36" cy="12" r="7" fill="#25f4ee" stroke="#000" strokeWidth="2"/>
+                      <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
                     </svg>
                   </div>
                   <span style={{
@@ -115,7 +117,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
                     lineHeight: "48px",
                   }}>
-                    TikTok<span style={{ color: "#fe2c55", marginLeft: "6px" }}>Rewards</span>
+                    TikCash
                   </span>
                 </div>
 

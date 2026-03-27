@@ -221,7 +221,7 @@ export default function InstallPrompt() {
             </div>
             <div style={{ flex: 1 }}>
               <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                Install TikTok Rewards
+                Install TikCash
               </h3>
               <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>
                 Add to home screen for the best experience

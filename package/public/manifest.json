@@ -1,7 +1,7 @@
 {
-  "name": "TikTok Rewards",
-  "short_name": "TikTok Rewards",
-  "description": "Earn money by rating TikTok videos",
+  "name": "TikCash",
+  "short_name": "TikCash",
+  "description": "Earn money by rating videos",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
