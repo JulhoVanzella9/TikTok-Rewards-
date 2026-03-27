@@ -165,7 +165,7 @@ export default function TopBar() {
   <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
   </svg>
   )},
-  { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
+  { label: t("requestRefundBtn") || "Request Refund", href: "/refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
   </svg>
@@ -500,7 +500,7 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                       const event = new CustomEvent("triggerInstallPrompt");
                       window.dispatchEvent(event);
                     } else if (actionItem.isRefund) {
-                      setShowRefundModal(true);
+                      window.location.href = "/refund";
                     } else if (actionItem.isReferral) {
                       const event = new CustomEvent("openReferralModal");
                       window.dispatchEvent(event);
