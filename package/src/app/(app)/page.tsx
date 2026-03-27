@@ -3,214 +3,533 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import ParticleField from "../components/ParticleField";
-import ScrollReveal from "../components/ScrollReveal";
 import Link from "next/link";
-
-// Premium animation variants with spring physics
-const fadeIn = { 
-  hidden: { opacity: 0, y: 20, scale: 0.97 }, 
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 15,
-    }
-  } 
-};
 
 export default function HomePage() {
   const { t } = useI18n();
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
 
+  const features = [
+    {
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+          <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+        </svg>
+      ),
+      title: "Real-Time Analytics",
+      description: "Track your performance with live data and insights to optimize your content strategy.",
+      color: "#25f4ee",
+    },
+    {
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      ),
+      title: "Automated Tools",
+      description: "Save time with automation that handles repetitive tasks and maximizes efficiency.",
+      color: "#fe2c55",
+    },
+    {
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00d47e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      ),
+      title: "Secure & Private",
+      description: "Your data is protected with enterprise-grade security and privacy standards.",
+      color: "#00d47e",
+    },
+    {
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      ),
+      title: "Premium Support",
+      description: "Get help anytime with our dedicated support team ready to assist you.",
+      color: "#f59e0b",
+    },
+  ];
+
+  const gettingStartedSteps = [
+    "Navigate to the TikCash App section using the sidebar",
+    "Connect your TikTok account securely within the app",
+    "Start exploring monetization tools and analytics",
+    "Access Support if you need help or have questions",
+  ];
+
   return (
     <div style={{ 
-      padding: "clamp(8px, 2vw, 24px) clamp(12px, 3vw, 40px)", 
-      maxWidth: "800px", 
+      padding: "0",
+      maxWidth: "100%", 
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
       paddingBottom: "100px",
       position: "relative",
+      background: isDarkMode 
+        ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
+        : "linear-gradient(180deg, #f8f9fc 0%, #ffffff 50%, #f8f9fc 100%)",
+      minHeight: "100vh",
     }}>
-      {/* Interactive Particle Background - reduced for mobile performance */}
+      {/* Interactive Particle Background */}
       <ParticleField 
-        particleCount={15}
+        particleCount={20}
         interactive={false}
         className="gpu-accelerated"
       />
-      {/* Video Tutorial Section - Responsive */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          borderRadius: "clamp(16px, 2vw, 24px)", 
-          overflow: "hidden", 
-          marginBottom: "clamp(12px, 2vw, 24px)",
-          background: isDarkMode 
-            ? "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 100%)"
-            : "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(37,244,238,0.08) 100%)",
-          border: `1px solid var(--border-color)`,
-          padding: "clamp(16px, 3vw, 28px)", 
-          position: "relative",
-        }}
-      >
-        {/* Header - Responsive */}
-        <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px, 1.5vw, 14px)", marginBottom: "clamp(6px, 1vw, 12px)" }}>
-          <div style={{
-            width: "clamp(32px, 5vw, 48px)", 
-            height: "clamp(32px, 5vw, 48px)", 
-            borderRadius: "50%",
-            background: "rgba(254,44,85,0.15)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            flexShrink: 0,
-          }}>
-            <svg style={{ width: "clamp(14px, 2vw, 22px)", height: "clamp(14px, 2vw, 22px)" }} viewBox="0 0 24 24" fill="#fe2c55">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-          </div>
-          <h2 style={{
-            fontSize: "clamp(18px, 3vw, 28px)", fontWeight: 800, color: "#fe2c55",
-          }}>
-            {t("videoTutorial")}
-          </h2>
-        </div>
-        
-        <p style={{
-          fontSize: "clamp(12px, 1.5vw, 16px)", 
-          color: "var(--text-secondary)", 
-          lineHeight: 1.5,
-          marginBottom: "clamp(10px, 2vw, 18px)",
-        }}>
-          {t("videoTutorialDesc")}
-        </p>
 
-        {/* Video Container - Responsive */}
-        <div style={{
-          background: isDarkMode ? "#0a0a0f" : "#f0f0f5",
-          borderRadius: "clamp(12px, 2vw, 18px)",
-          overflow: "hidden",
-          border: `1px solid var(--border-color)`,
-        }}>
-          {/* Video Header */}
-          <div style={{
-            padding: "clamp(10px, 2vw, 18px) clamp(12px, 2vw, 20px)",
-            display: "flex", alignItems: "center", gap: "clamp(10px, 1.5vw, 16px)",
-            borderBottom: `1px solid var(--border-color)`,
-            background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
-          }}>
-            <div style={{
-              width: "clamp(28px, 4vw, 44px)", 
-              height: "clamp(28px, 4vw, 44px)", 
-              borderRadius: "50%",
-              background: isDarkMode 
-                ? "linear-gradient(135deg, #1a1a2e, #252542)"
-                : "linear-gradient(135deg, #e8e8f0, #d0d0e0)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              border: `1px solid var(--border-color)`,
-              flexShrink: 0,
-            }}>
-              <svg style={{ width: "clamp(12px, 1.5vw, 20px)", height: "clamp(12px, 1.5vw, 20px)" }} viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-              </svg>
-            </div>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: "clamp(13px, 1.8vw, 18px)", fontWeight: 700, color: "var(--text-primary)" }}>
-                TikCash - How to Use
-              </div>
-              <div style={{ fontSize: "clamp(11px, 1.4vw, 15px)", color: "var(--text-muted)" }}>
-                Support Service
-              </div>
-            </div>
-          </div>
-
-          {/* Video Player - Full Width */}
-          <div style={{
-            display: "flex", 
-            justifyContent: "center", 
-            alignItems: "center",
-            padding: "clamp(8px, 1.5vw, 16px)",
-          }}>
-            <div style={{
-              width: "100%",
-              maxWidth: "200px",
-              aspectRatio: "9/16",
-              background: isDarkMode 
-                ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
-                : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
-              borderRadius: "clamp(12px, 1.5vw, 18px)",
-              border: `1px solid var(--border-color)`,
-              overflow: "hidden",
-              position: "relative",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              {/* Play Button Overlay */}
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                style={{
-                  width: "clamp(44px, 6vw, 64px)", 
-                  height: "clamp(44px, 6vw, 64px)", 
-                  borderRadius: "50%",
-                  background: "#fe2c55",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(254,44,85,0.4)",
-                }}
-              >
-                <svg style={{ width: "clamp(18px, 2.5vw, 28px)", height: "clamp(18px, 2.5vw, 28px)" }} viewBox="0 0 24 24" fill="#fff">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              </motion.div>
-              
-              {/* Video duration badge */}
-              <div style={{
-                position: "absolute", 
-                bottom: "clamp(8px, 1.2vw, 14px)", 
-                right: "clamp(8px, 1.2vw, 14px)",
-                background: "rgba(0,0,0,0.7)", 
-                padding: "clamp(3px, 0.6vw, 8px) clamp(6px, 1vw, 12px)",
-                borderRadius: "6px", 
-                fontSize: "clamp(10px, 1.3vw, 14px)", 
-                fontWeight: 600,
-                color: "#fff",
-              }}>
-                2:45
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Install App Button - Always visible */}
-        <button
-          className="btn-3d btn-3d-cyan btn-3d-full btn-3d-animated btn-3d-icon-grow"
-          onClick={() => {
-            const event = new CustomEvent("triggerInstallPrompt");
-            window.dispatchEvent(event);
-          }}
+      {/* Hero Section */}
+      <div style={{
+        padding: "clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px)",
+        textAlign: "center",
+        position: "relative",
+        background: isDarkMode
+          ? "linear-gradient(180deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 50%, transparent 100%)"
+          : "linear-gradient(180deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.04) 50%, transparent 100%)",
+      }}>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           style={{
-            marginTop: "clamp(12px, 2vw, 24px)",
-            gap: "clamp(10px, 1.5vw, 14px)",
-            fontFamily: "inherit",
-            padding: "clamp(12px, 2vw, 18px) clamp(20px, 3vw, 32px)",
-            fontSize: "clamp(14px, 1.8vw, 18px)",
+            fontSize: "clamp(32px, 8vw, 56px)",
+            fontWeight: 900,
+            marginBottom: "16px",
+            lineHeight: 1.1,
           }}
         >
-          <svg style={{ width: "clamp(18px, 2.5vw, 24px)", height: "clamp(18px, 2.5vw, 24px)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          {t("installApp") || "Install App"}
-        </button>
-      </motion.div>
+          <span style={{ color: "var(--text-primary)" }}>Welcome to </span>
+          <span style={{
+            background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            TikCash
+          </span>
+        </motion.h1>
 
-      {/* Refund Guarantee Section */}
-      
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          style={{
+            fontSize: "clamp(16px, 3vw, 22px)",
+            color: "var(--text-secondary)",
+            maxWidth: "600px",
+            margin: "0 auto 32px",
+            lineHeight: 1.5,
+          }}
+        >
+          Your gateway to monetizing your TikTok content and maximizing your earnings
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <Link href="/create">
+            <button
+              className="btn-3d btn-3d-red btn-3d-animated btn-3d-icon-grow"
+              style={{
+                padding: "16px 32px",
+                fontSize: "18px",
+                fontWeight: 700,
+                gap: "12px",
+                fontFamily: "inherit",
+              }}
+            >
+              Launch TikCash App
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* How TikCash Works Section */}
+      <div style={{
+        padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          style={{
+            background: isDarkMode 
+              ? "rgba(255,255,255,0.03)"
+              : "rgba(255,255,255,0.8)",
+            borderRadius: "24px",
+            padding: "clamp(24px, 4vw, 40px)",
+            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+            boxShadow: isDarkMode
+              ? "0 8px 32px rgba(0,0,0,0.3)"
+              : "0 8px 32px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h2 style={{
+            fontSize: "clamp(22px, 4vw, 32px)",
+            fontWeight: 800,
+            color: "#fe2c55",
+            marginBottom: "20px",
+          }}>
+            How TikCash Works
+          </h2>
+          
+          <p style={{
+            fontSize: "clamp(14px, 2vw, 17px)",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+            marginBottom: "20px",
+          }}>
+            TikCash is your all-in-one platform for maximizing revenue from your TikTok presence. Our embedded app provides real-time analytics, monetization strategies, and automated tools to help you grow your income.
+          </p>
+
+          <p style={{
+            fontSize: "clamp(14px, 2vw, 17px)",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+          }}>
+            Click on <strong style={{ color: "#fe2c55" }}>TikCash App</strong> in the sidebar to access the full suite of tools designed to supercharge your earnings.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Video Tutorial Section */}
+      <div style={{
+        padding: "clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          style={{
+            background: isDarkMode 
+              ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
+              : "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.04) 100%)",
+            borderRadius: "24px",
+            padding: "clamp(24px, 4vw, 40px)",
+            border: `1px solid ${isDarkMode ? "rgba(254,44,85,0.2)" : "rgba(254,44,85,0.15)"}`,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+            <div style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+              background: "rgba(254,44,85,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#fe2c55">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <h2 style={{
+              fontSize: "clamp(20px, 3.5vw, 28px)",
+              fontWeight: 800,
+              color: "#fe2c55",
+            }}>
+              Video Tutorial
+            </h2>
+          </div>
+
+          <p style={{
+            fontSize: "clamp(14px, 2vw, 16px)",
+            color: "var(--text-secondary)",
+            marginBottom: "24px",
+            lineHeight: 1.6,
+          }}>
+            Watch this quick tutorial to learn how to use the TikCash app and maximize your earnings.
+          </p>
+
+          {/* Video Player */}
+          <div style={{
+            background: isDarkMode ? "#0a0a0f" : "#f0f0f5",
+            borderRadius: "16px",
+            overflow: "hidden",
+            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+          }}>
+            <div style={{
+              padding: "16px 20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "14px",
+              borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+              background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
+            }}>
+              <div style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: isDarkMode 
+                  ? "linear-gradient(135deg, #1a1a2e, #252542)"
+                  : "linear-gradient(135deg, #e8e8f0, #d0d0e0)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>
+                  TikCash - How to Use
+                </div>
+                <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+                  Support Service
+                </div>
+              </div>
+            </div>
+
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "24px",
+            }}>
+              <div style={{
+                width: "100%",
+                maxWidth: "280px",
+                aspectRatio: "9/16",
+                background: isDarkMode 
+                  ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
+                  : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
+                borderRadius: "16px",
+                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                overflow: "hidden",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  style={{
+                    width: "64px",
+                    height: "64px",
+                    borderRadius: "50%",
+                    background: "#fe2c55",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    boxShadow: "0 8px 30px rgba(254,44,85,0.5)",
+                  }}
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                </motion.div>
+                
+                <div style={{
+                  position: "absolute",
+                  bottom: "12px",
+                  right: "12px",
+                  background: "rgba(0,0,0,0.7)",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  color: "#fff",
+                }}>
+                  2:45
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Features Grid */}
+      <div style={{
+        padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "20px",
+        }}>
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+              style={{
+                background: isDarkMode 
+                  ? "rgba(255,255,255,0.03)"
+                  : "rgba(255,255,255,0.9)",
+                borderRadius: "20px",
+                padding: "28px",
+                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+                boxShadow: isDarkMode
+                  ? "0 4px 20px rgba(0,0,0,0.2)"
+                  : "0 4px 20px rgba(0,0,0,0.04)",
+              }}
+            >
+              <div style={{
+                width: "56px",
+                height: "56px",
+                borderRadius: "16px",
+                background: `${feature.color}15`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "18px",
+              }}>
+                {feature.icon}
+              </div>
+              <h3 style={{
+                fontSize: "18px",
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                marginBottom: "10px",
+              }}>
+                {feature.title}
+              </h3>
+              <p style={{
+                fontSize: "14px",
+                color: "var(--text-secondary)",
+                lineHeight: 1.6,
+              }}>
+                {feature.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Getting Started Section */}
+      <div style={{
+        padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          style={{
+            background: isDarkMode 
+              ? "rgba(255,255,255,0.03)"
+              : "rgba(255,255,255,0.8)",
+            borderRadius: "24px",
+            padding: "clamp(24px, 4vw, 40px)",
+            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+          }}
+        >
+          <h2 style={{
+            fontSize: "clamp(20px, 3.5vw, 28px)",
+            fontWeight: 800,
+            color: "var(--text-primary)",
+            marginBottom: "24px",
+          }}>
+            Getting Started
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {gettingStartedSteps.map((step, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "16px",
+                }}
+              >
+                <div style={{
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  color: "#fff",
+                  flexShrink: 0,
+                }}>
+                  {index + 1}
+                </div>
+                <p style={{
+                  fontSize: "15px",
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                  paddingTop: "3px",
+                }}>
+                  {step.includes("TikCash App") ? (
+                    <>
+                      Navigate to the <strong style={{ color: "#fe2c55" }}>TikCash App</strong> section using the sidebar
+                    </>
+                  ) : step.includes("Support") ? (
+                    <>
+                      Access <strong style={{ color: "#25f4ee" }}>Support</strong> if you need help or have questions
+                    </>
+                  ) : (
+                    step
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Install App Button */}
+      <div style={{
+        padding: "clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+        textAlign: "center",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1 }}
+        >
+          <button
+            className="btn-3d btn-3d-cyan btn-3d-full btn-3d-animated btn-3d-icon-grow"
+            onClick={() => {
+              const event = new CustomEvent("triggerInstallPrompt");
+              window.dispatchEvent(event);
+            }}
+            style={{
+              gap: "12px",
+              fontFamily: "inherit",
+              padding: "18px 36px",
+              fontSize: "18px",
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            {t("installApp") || "Install App"}
+          </button>
+        </motion.div>
+      </div>
     </div>
   );
 }

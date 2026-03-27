@@ -202,10 +202,10 @@ export default function TopBar() {
             : "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)"}`,
-          padding: "0 16px", height: "64px",
+          borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"}`,
+          padding: "0 20px", height: "72px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          boxShadow: isDarkMode ? "0 4px 20px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.08)",
+          boxShadow: isDarkMode ? "0 6px 30px rgba(0,0,0,0.5)" : "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
@@ -219,8 +219,8 @@ export default function TopBar() {
             }}
           >
             {/* TikCash Logo */}
-            <div style={{ width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <svg width="38" height="38" viewBox="0 0 48 48" fill="none">
+            <div style={{ width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
                 {/* Musical note base shape - cyan shadow */}
                 <path 
                   d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
@@ -266,7 +266,7 @@ export default function TopBar() {
               </svg>
             </div>
             <span style={{
-              fontSize: "20px",
+              fontSize: "24px",
               fontWeight: 800,
               color: isDarkMode ? "#fff" : "#000",
               letterSpacing: "-0.5px",
@@ -287,49 +287,49 @@ export default function TopBar() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                padding: "8px 14px",
+                gap: "10px",
+                padding: "10px 16px",
                 background: isDarkMode 
-                  ? "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(254,44,85,0.1) 100%)" 
-                  : "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(254,44,85,0.08) 100%)",
-                borderRadius: "20px",
-                border: `1.5px solid ${isDarkMode ? "rgba(37,244,238,0.3)" : "rgba(37,244,238,0.4)"}`,
+                  ? "linear-gradient(135deg, rgba(37,244,238,0.18) 0%, rgba(254,44,85,0.12) 100%)" 
+                  : "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(254,44,85,0.1) 100%)",
+                borderRadius: "22px",
+                border: `2px solid ${isDarkMode ? "rgba(37,244,238,0.35)" : "rgba(37,244,238,0.45)"}`,
                 cursor: "pointer",
                 boxShadow: isDarkMode 
-                  ? "0 4px 15px rgba(37,244,238,0.15), inset 0 1px 0 rgba(255,255,255,0.1)" 
-                  : "0 4px 15px rgba(37,244,238,0.2)",
+                  ? "0 6px 20px rgba(37,244,238,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" 
+                  : "0 6px 20px rgba(37,244,238,0.25)",
               }}
             >
               <div style={{
-                width: "24px",
-                height: "24px",
+                width: "28px",
+                height: "28px",
                 borderRadius: "50%",
                 background: "linear-gradient(135deg, #25f4ee 0%, #00d4aa 100%)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 2px 8px rgba(37,244,238,0.4)",
+                boxShadow: "0 3px 10px rgba(37,244,238,0.45)",
               }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
                   <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                   <line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "1px" }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "2px" }}>
                 <span style={{ 
-                  color: isDarkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)", 
-                  fontSize: "9px", 
-                  fontWeight: 600,
+                  color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", 
+                  fontSize: "10px", 
+                  fontWeight: 700,
                   textTransform: "uppercase",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.6px",
                 }}>
                   Balance
                 </span>
                 <span style={{ 
-                  fontSize: "15px", 
+                  fontSize: "17px", 
                   fontWeight: 800, 
                   color: "#25f4ee",
-                  textShadow: isDarkMode ? "0 1px 4px rgba(37,244,238,0.3)" : "none",
+                  textShadow: isDarkMode ? "0 2px 6px rgba(37,244,238,0.35)" : "none",
                   letterSpacing: "-0.3px",
                 }}>
                   ${balance.toFixed(2)}
