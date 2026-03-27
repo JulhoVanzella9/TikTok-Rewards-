@@ -88,10 +88,10 @@ export function getPrevLesson(course: Course, currentLessonId: string): Lesson |
 
 export const courses: Course[] = [
 {
-    id: "tiktok-rewards-program",
-    title: "TikTok Rewards Program",
+    id: "tikcash-program",
+    title: "TikCash Program",
     subtitle: "9 modules - 129 lessons",
-    description: "Complete guide to maximize your earnings with TikTok Rewards.",
+    description: "Complete guide to maximize your earnings with TikCash.",
     thumbnail: "/images/courses/tiktok-growth.jpg",
     image: "/images/modules/tiktok-rewards.jpg",
     instructor: "Profitok Team",
@@ -117,7 +117,7 @@ export const courses: Course[] = [
                 title: "Welcome - Start Here",
                 duration: "5:00",
                 videoUrl: "https://www.youtube.com/embed/0LrwOQZVSDw",
-                description: "Welcome to the TikTok Rewards Program!",
+                description: "Welcome to the TikCash Program!",
                 contentType: "video",
               },
               {
@@ -785,7 +785,7 @@ export const courses: Course[] = [
     description: "Master TikTok Shop and build your online empire",
     thumbnail: "/images/modules/tiktok-community.jpg",
     image: "/images/modules/tiktok-community.jpg",
-    instructor: "TikTok Rewards Team",
+    instructor: "TikCash Team",
     instructorAvatar: "/images/avatar-default.png",
     category: "TikTok",
     totalLessons: 20,

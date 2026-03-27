@@ -51,8 +51,8 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
   const shareLink = async () => {
     const shareUrl = `${window.location.origin}/invite/${referralCode}`;
     const shareData = {
-      title: "TikTok Rewards - Exclusive Invitation",
-      text: "You've been invited to join TikTok Rewards! Start earning money by rating videos:",
+      title: "TikCash - Exclusive Invitation",
+      text: "You've been invited to join TikCash! Start earning money by rating videos:",
       url: shareUrl,
     };
 

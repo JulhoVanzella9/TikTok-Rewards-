@@ -120,7 +120,7 @@ export default function TopBar() {
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       </svg>
     )},
-    { label: "TikTok Rewards", href: "/create", icon: (
+    { label: "TikCash", href: "/create", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
       </svg>
@@ -212,34 +212,62 @@ export default function TopBar() {
               gap: "8px",
             }}
           >
-            {/* TikTok Logo */}
-            <div style={{ width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#25F4EE" transform="translate(-2, -1)"/>
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill="#FE2C55" transform="translate(2, 1)"/>
-                <path d="M33.5 7.7c-1.3-1.5-2.1-3.4-2.1-5.2h-5.7v23.3c0 3.1-2.5 5.7-5.7 5.7s-5.7-2.5-5.7-5.7 2.5-5.7 5.7-5.7c.6 0 1.2.1 1.8.3v-5.5c-.6-.1-1.2-.1-1.8-.1-6.2 0-11.2 5-11.2 11.2S13.8 37 20 37s11.2-5 11.2-11.2V14.5c2.3 1.6 5.1 2.6 8.1 2.5v-5.5c-2.2-.1-4.3-1.4-5.8-3.8z" fill={isDarkMode ? "#fff" : "#000"}/>
+            {/* TikCash Logo */}
+            <div style={{ width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                {/* Musical note base shape - cyan shadow */}
+                <path 
+                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
+                  fill="#25F4EE"
+                  transform="translate(-2, -1)"
+                />
+                {/* Musical note base shape - red shadow */}
+                <path 
+                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
+                  fill="#FE2C55"
+                  transform="translate(2, 1)"
+                />
+                {/* Main musical note shape */}
+                <path 
+                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
+                  fill={isDarkMode ? "#fff" : "#000"}
+                />
+                {/* Dollar sign inside the circle */}
+                <text 
+                  x="20" 
+                  y="32" 
+                  textAnchor="middle" 
+                  fill={isDarkMode ? "#000" : "#fff"}
+                  fontSize="14"
+                  fontWeight="800"
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  $
+                </text>
+                {/* Coin indicator at top right */}
+                <circle cx="36" cy="12" r="7" fill="#25F4EE" stroke={isDarkMode ? "#000" : "#fff"} strokeWidth="2"/>
+                <text 
+                  x="36" 
+                  y="15.5" 
+                  textAnchor="middle" 
+                  fill="#000"
+                  fontSize="9"
+                  fontWeight="800"
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  $
+                </text>
               </svg>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-              <span style={{
-                fontSize: "16px",
-                fontWeight: 700,
-                color: isDarkMode ? "#fff" : "#000",
-                letterSpacing: "-0.3px",
-                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              }}>
-                TikTok
-              </span>
-              <span style={{
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "#fe2c55",
-                letterSpacing: "-0.2px",
-                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              }}>
-                Rewards
-              </span>
-            </div>
+            <span style={{
+              fontSize: "17px",
+              fontWeight: 700,
+              color: isDarkMode ? "#fff" : "#000",
+              letterSpacing: "-0.3px",
+              fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+            }}>
+              TikCash
+            </span>
           </motion.div>
         </Link>
 
@@ -821,7 +849,7 @@ export default function TopBar() {
                   color: isDarkMode ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
                   fontWeight: 500,
                 }}>
-                  TikTok Rewards v1.0
+                  TikCash v1.0
                 </p>
               </motion.div>
             </motion.div>
