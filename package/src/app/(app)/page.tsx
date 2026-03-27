@@ -355,6 +355,30 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* Install App Button - Right below video */}
+          <div style={{ textAlign: "center", marginTop: "24px" }}>
+            <button
+              className="btn-3d btn-3d-cyan btn-3d-animated btn-3d-icon-grow"
+              onClick={() => {
+                const event = new CustomEvent("triggerInstallPrompt");
+                window.dispatchEvent(event);
+              }}
+              style={{
+                gap: "12px",
+                fontFamily: "inherit",
+                padding: "16px 32px",
+                fontSize: "16px",
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Install App
+            </button>
+          </div>
         </motion.div>
       </div>
 
@@ -496,40 +520,6 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      {/* Install App Button */}
-      <div style={{
-        padding: "clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px)",
-        maxWidth: "800px",
-        margin: "0 auto",
-        textAlign: "center",
-      }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1 }}
-        >
-          <button
-            className="btn-3d btn-3d-cyan btn-3d-full btn-3d-animated btn-3d-icon-grow"
-            onClick={() => {
-              const event = new CustomEvent("triggerInstallPrompt");
-              window.dispatchEvent(event);
-            }}
-            style={{
-              gap: "12px",
-              fontFamily: "inherit",
-              padding: "18px 36px",
-              fontSize: "18px",
-            }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            {t("installApp") || "Install App"}
-          </button>
-        </motion.div>
       </div>
-    </div>
   );
 }

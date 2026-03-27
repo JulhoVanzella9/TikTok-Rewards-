@@ -25,7 +25,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
   const welcomeMessage = {
     id: "welcome",
     role: "assistant" as const,
-    parts: [{ type: "text" as const, text: "Olá! Bem-vindo ao suporte TikCash. Como posso ajudar você hoje?" }],
+    parts: [{ type: "text" as const, text: "Hello! Welcome to TikCash Support. How can I help you today?" }],
   };
   
   const allMessages = messages.length === 0 ? [welcomeMessage] : messages;
@@ -77,9 +77,9 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "calc(100% - 32px)",
-              maxWidth: "440px",
-              maxHeight: "calc(100vh - 100px)",
+              width: "calc(100% - 24px)",
+              maxWidth: "400px",
+              maxHeight: "calc(100vh - 80px)",
               background: isDarkMode ? "#1a1a1a" : "#fff",
               borderRadius: "20px",
               boxShadow: "0 25px 50px rgba(0,0,0,0.3)",
@@ -121,7 +121,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
                     color: isDarkMode ? "#fff" : "#1a1a1a",
                     marginBottom: "2px",
                   }}>
-                    TikCash Suporte
+                    TikCash Support
                   </h3>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     <div style={{
@@ -135,7 +135,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
                       fontSize: "12px", 
                       color: isDarkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)",
                     }}>
-                      Online agora
+                      Online now
                     </span>
                   </div>
                 </div>
@@ -314,7 +314,7 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Digite sua mensagem..."
+                placeholder="Type your message..."
                 disabled={isLoading}
                 style={{
                   flex: 1,
