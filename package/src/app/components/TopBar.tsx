@@ -627,7 +627,7 @@ export default function TopBar() {
 
               {/* Dark/Light Mode Toggle */}
               <motion.div 
-                custom={menuItems.length}
+                custom={topMenuItems.length}
                 variants={itemVariants}
                 initial="hidden"
                 animate="visible"
