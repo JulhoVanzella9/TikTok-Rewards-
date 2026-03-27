@@ -1,20 +1,51 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
-  <rect width="512" height="512" rx="100" fill="#000"/>
+  <rect width="512" height="512" rx="100" fill="#000000"/>
   
-  <!-- Musical note with dollar sign - Cyan shadow -->
-  <path d="M320 85V300C320 358 272 405 215 405C158 405 110 358 110 300C110 242 158 195 215 195C230 195 245 198 258 204V85H320Z" fill="#25F4EE" transform="translate(-15, -10)"/>
+  <!-- Musical note - cyan shadow -->
+  <path 
+    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
+    fill="#25F4EE"
+    transform="translate(-15, -10)"
+  />
   
-  <!-- Musical note with dollar sign - Red shadow -->
-  <path d="M320 85V300C320 358 272 405 215 405C158 405 110 358 110 300C110 242 158 195 215 195C230 195 245 198 258 204V85H320Z" fill="#FE2C55" transform="translate(15, 10)"/>
+  <!-- Musical note - red shadow -->
+  <path 
+    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
+    fill="#FE2C55"
+    transform="translate(15, 10)"
+  />
   
   <!-- Main musical note shape -->
-  <path d="M320 85V300C320 358 272 405 215 405C158 405 110 358 110 300C110 242 158 195 215 195C230 195 245 198 258 204V85H320Z" fill="#fff"/>
+  <path 
+    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
+    fill="#FFFFFF"
+  />
   
-  <!-- Dollar sign inside -->
-  <text x="215" y="340" text-anchor="middle" fill="#000" font-size="120" font-weight="800" font-family="system-ui, -apple-system, sans-serif">$</text>
+  <!-- Dollar sign inside the circle -->
+  <text 
+    x="213" 
+    y="335" 
+    text-anchor="middle" 
+    fill="#000000"
+    font-size="120"
+    font-weight="800"
+    font-family="system-ui, -apple-system, sans-serif"
+  >
+    $
+  </text>
   
-  <!-- Coin at top right -->
-  <circle cx="380" cy="130" r="60" fill="#25F4EE" stroke="#000" strokeWidth="12"/>
-  <text x="380" y="155" text-anchor="middle" fill="#000" font-size="70" font-weight="800" font-family="system-ui, -apple-system, sans-serif">$</text>
+  <!-- Coin indicator at top right -->
+  <circle cx="380" cy="130" r="60" fill="#25F4EE" stroke="#000000" stroke-width="8"/>
+  <text 
+    x="380" 
+    y="155" 
+    text-anchor="middle" 
+    fill="#000000"
+    font-size="70"
+    font-weight="800"
+    font-family="system-ui, -apple-system, sans-serif"
+  >
+    $
+  </text>
 </svg>
