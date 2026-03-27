@@ -26,7 +26,7 @@ Reason:
 ${reason}
 
 ---
-TikTok Rewards Support System
+TikCash Support System
 Support Email: ${SUPPORT_EMAIL}
 Support Phone: ${SUPPORT_PHONE}
     `.trim();
@@ -49,7 +49,7 @@ Support Phone: ${SUPPORT_PHONE}
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'TikTok Rewards <noreply@tiktokrewards.com>',
+            from: 'TikCash <noreply@tikcash.com>',
             to: [SUPPORT_EMAIL],
             subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
             text: emailContent,

@@ -10,7 +10,7 @@ const steps = [
   },
   {
     title: "2. Explore os cursos",
-    desc: "Navegue pela pagina Explorar e descubra cursos sobre criacao de conteudo, monetizacao e crescimento no TikTok.",
+    desc: "Navegue pela pagina Explorar e descubra cursos sobre criacao de conteudo, monetizacao e crescimento online.",
     color: "#25f4ee",
   },
   {

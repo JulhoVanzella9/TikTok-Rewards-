@@ -5,12 +5,12 @@
 }
 
 :root {
-  --tiktok-red: #fe2c55;
-  --tiktok-cyan: #25f4ee;
-  --tiktok-dark: #121212;
-  --tiktok-darker: #0a0a0a;
-  --tiktok-card: #1a1a2e;
-  --tiktok-card-hover: #222240;
+  --tikcash-red: #fe2c55;
+  --tikcash-cyan: #25f4ee;
+  --tikcash-dark: #121212;
+  --tikcash-darker: #0a0a0a;
+  --tikcash-card: #1a1a2e;
+  --tikcash-card-hover: #222240;
   --glass: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.08);
   --text-primary: #ffffff;
@@ -29,10 +29,10 @@
 
 /* Light Theme Variables */
 [data-theme="light"] {
-  --tiktok-dark: #f5f5f5;
-  --tiktok-darker: #ffffff;
-  --tiktok-card: #ffffff;
-  --tiktok-card-hover: #f0f0f0;
+  --tikcash-dark: #f5f5f5;
+  --tikcash-darker: #ffffff;
+  --tikcash-card: #ffffff;
+  --tikcash-card-hover: #f0f0f0;
   --glass: rgba(0, 0, 0, 0.03);
   --glass-border: rgba(0, 0, 0, 0.08);
   --text-primary: #121212;
@@ -114,7 +114,7 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
 }
 .ripple:active::after { opacity: 1; }
 
-/* TikTok-style tap feedback */
+/* TikCash-style tap feedback */
 .tap-scale {
   transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -180,7 +180,7 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
 }
 
 /* ============================================
-   3D BUTTON SYSTEM - Premium TikTok Style
+   3D BUTTON SYSTEM - Premium TikCash Style
    ============================================ */
 
 /* Base 3D Button */
@@ -623,7 +623,7 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   background-size: 200% 100%;
 }
 
-/* Snap scroll for TikTok feed */
+/* Snap scroll for TikCash feed */
 .snap-container {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
@@ -734,7 +734,7 @@ nav, button {
 
 /* ============================================
    PREMIUM $500K MOTION SYSTEM
-   Ultra-fluid, TikTok-style immersive animations
+   Ultra-fluid, TikCash-style immersive animations
    ============================================ */
 
 /* GPU-accelerated base properties */
@@ -867,7 +867,7 @@ nav, button {
 }
 
 .input-premium:focus {
-  border-color: var(--tiktok-cyan);
+  border-color: var(--tikcash-cyan);
   box-shadow: 
     0 0 0 3px rgba(37, 244, 238, 0.15),
     0 4px 20px rgba(37, 244, 238, 0.1);
@@ -895,7 +895,7 @@ nav, button {
   top: 8px;
   transform: translateY(0);
   font-size: 11px;
-  color: var(--tiktok-cyan);
+  color: var(--tikcash-cyan);
 }
 
 /* ============================================
@@ -976,7 +976,7 @@ nav, button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--tiktok-red);
+  background: var(--tikcash-red);
   pointer-events: none;
   animation: particleBurst 0.6s var(--ease-out-expo) forwards;
 }
@@ -1083,7 +1083,7 @@ nav, button {
   bottom: -2px;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--tiktok-red), var(--tiktok-cyan));
+  background: linear-gradient(90deg, var(--tikcash-red), var(--tikcash-cyan));
   transition: width 0.3s var(--ease-out-expo);
 }
 
@@ -1131,10 +1131,10 @@ nav, button {
 
 @keyframes progressGlow {
   0%, 100% { 
-    box-shadow: 0 0 5px var(--tiktok-red), 0 0 10px var(--tiktok-red);
+    box-shadow: 0 0 5px var(--tikcash-red), 0 0 10px var(--tikcash-red);
   }
   50% { 
-    box-shadow: 0 0 15px var(--tiktok-red), 0 0 25px var(--tiktok-red);
+    box-shadow: 0 0 15px var(--tikcash-red), 0 0 25px var(--tikcash-red);
   }
 }
 
@@ -1153,7 +1153,7 @@ nav, button {
   left: 0;
   height: 100%;
   width: var(--progress, 0%);
-  background: linear-gradient(90deg, var(--tiktok-red), var(--tiktok-cyan));
+  background: linear-gradient(90deg, var(--tikcash-red), var(--tikcash-cyan));
   border-radius: 3px;
   transition: width 0.5s var(--ease-out-expo);
   animation: progressGlow 2s ease-in-out infinite;
@@ -1219,7 +1219,7 @@ nav, button {
 }
 
 .text-gradient-animated {
-  background: linear-gradient(90deg, var(--tiktok-red), var(--tiktok-cyan), var(--tiktok-red));
+  background: linear-gradient(90deg, var(--tikcash-red), var(--tikcash-cyan), var(--tikcash-red));
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;

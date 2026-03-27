@@ -164,7 +164,7 @@ export default function ResetPasswordPage() {
             <div
               style={{
                 position: "relative", borderRadius: "12px",
-                border: focusedField === "password" ? "2px solid var(--tiktok-red)" : "2px solid rgba(255,255,255,0.1)",
+                border: focusedField === "password" ? "2px solid var(--tikcash-red)" : "2px solid rgba(255,255,255,0.1)",
                 transition: "border-color 0.3s, box-shadow 0.3s",
                 boxShadow: focusedField === "password" ? "0 0 0 4px rgba(254,44,85,0.1)" : "none",
                 overflow: "hidden",
@@ -197,7 +197,7 @@ export default function ResetPasswordPage() {
             <div
               style={{
                 position: "relative", borderRadius: "12px",
-                border: focusedField === "confirm" ? "2px solid var(--tiktok-red)" : "2px solid rgba(255,255,255,0.1)",
+                border: focusedField === "confirm" ? "2px solid var(--tikcash-red)" : "2px solid rgba(255,255,255,0.1)",
                 transition: "border-color 0.3s, box-shadow 0.3s",
                 boxShadow: focusedField === "confirm" ? "0 0 0 4px rgba(254,44,85,0.1)" : "none",
                 overflow: "hidden",

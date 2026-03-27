@@ -258,7 +258,7 @@ export default function SettingsPage() {
         transition={{ duration: 0.4, delay: 0.4 }}
         style={{ textAlign: "center", marginTop: "32px", fontSize: "11px", color: "var(--text-muted)" }}
       >
-        TikTok Rewards v1.0.0
+        TikCash v1.0.0
       </motion.div>
     </div>
   );

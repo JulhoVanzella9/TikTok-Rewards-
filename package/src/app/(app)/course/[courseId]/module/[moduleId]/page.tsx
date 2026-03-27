@@ -7,7 +7,7 @@ import { useTheme } from "@/lib/theme/context";
 
 // Module images organized by course ID
 const courseModuleImages: Record<string, Record<string, string>> = {
-  "tiktok-rewards-program": {
+  "tikcash-program": {
     "mod-1": "/images/modules/module-01.png",
     "mod-2": "/images/modules/module-02.png",
     "mod-3": "/images/modules/module-03.png",
@@ -18,7 +18,7 @@ const courseModuleImages: Record<string, Record<string, string>> = {
     "mod-8": "/images/modules/module-08.png",
     "mod-9": "/images/modules/module-09.png",
   },
-  "tiktok-community": {
+  "tikcash-community": {
     "tc-mod-1": "/images/modules/tc-module-01.jpg",
     "tc-mod-2": "/images/modules/tc-module-02.jpg",
     "tc-mod-3": "/images/modules/tc-module-03.jpg",
@@ -36,7 +36,7 @@ const courseModuleImages: Record<string, Record<string, string>> = {
 
 // Array-based fallback for courses with indexed modules
 const courseModuleImagesArray: Record<string, string[]> = {
-  "tiktok-rewards-program": [
+  "tikcash-program": [
     "/images/modules/module-01.png",
     "/images/modules/module-02.png",
     "/images/modules/module-03.png",
@@ -47,7 +47,7 @@ const courseModuleImagesArray: Record<string, string[]> = {
     "/images/modules/module-08.png",
     "/images/modules/module-09.png",
   ],
-  "tiktok-community": [
+  "tikcash-community": [
     "/images/modules/tc-module-01.jpg",
     "/images/modules/tc-module-02.jpg",
     "/images/modules/tc-module-03.jpg",

@@ -92,15 +92,15 @@ export const courses: Course[] = [
     title: "TikCash Program",
     subtitle: "9 modules - 129 lessons",
     description: "Complete guide to maximize your earnings with TikCash.",
-    thumbnail: "/images/courses/tiktok-growth.jpg",
-    image: "/images/modules/tiktok-rewards.jpg",
+    thumbnail: "/images/courses/tikcash-growth.jpg",
+    image: "/images/modules/tikcash-main.jpg",
     instructor: "Profitok Team",
     instructorAvatar: "/images/users/1.jpg",
     category: "Digital Marketing",
     totalLessons: 129,
     totalDuration: "15h+",
     progress: 0,
-    tags: ["TikTok", "Earnings", "Marketing", "Profits"],
+    tags: ["TikCash", "Earnings", "Marketing", "Profits"],
     modules: [
       // MODULE 01 | Youtube Profits (44 lessons total)
       {
@@ -160,7 +160,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Dear Profitok Users,</p>
 <p style="margin-bottom: 16px;">Welcome to the Profitok Support Center! We're dedicated to ensuring your experience with Profitok is seamless. Whether you have questions, encounter technical issues, or seek guidance on maximizing features, our team is here to assist you.</p>
-<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:ytrewards.ing@gmail.com" style="color: #fe2c55; font-weight: 600;">ytrewards.ing@gmail.com</a></p>
+<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:accesssupport.ai@gmail.com" style="color: #fe2c55; font-weight: 600;">accesssupport.ai@gmail.com</a></p>
 <p style="margin-bottom: 16px;">Our support team operates <strong>Monday to Friday, from 9:00 AM to 6:00 PM</strong>, and we aim to respond promptly to all inquiries during these hours.</p>
 <p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">Feedback:</strong> Your input is invaluable to us as we strive to enhance Profitok continuously. Whether it's suggestions for new features or improvements to existing ones, we'd love to hear from you.</p>
 <p style="margin-top: 24px; color: rgba(255,255,255,0.7);">Best Regards,<br/><strong style="color: #fff;">Profitok Support Team</strong></p>`,
@@ -193,7 +193,7 @@ export const courses: Course[] = [
           },
           {
             id: "sm-1-3",
-            title: "TikTok Profits",
+            title: "Video Profits",
             lessons: [
               { id: "m1-3-les-1", title: "Watch this First", duration: "4:00", videoUrl: "https://www.youtube.com/embed/0LrwOQZVSDw", description: "Important intro.", contentType: "video" },
               { id: "m1-3-les-2", title: "Step 1", duration: "5:00", videoUrl: "https://www.youtube.com/embed/KqJy4pUwsxE", description: "First step.", contentType: "video" },
@@ -328,13 +328,13 @@ export const courses: Course[] = [
           },
           {
             id: "sm-2-4",
-            title: "Earn $200-$300 Daily Watching TikTok Videos",
+            title: "Earn $200-$300 Daily Watching Videos",
             lessons: [
-              { id: "m2-4-les-1", title: "Method 1 - Watch TikTok Videos and Earn $600", duration: "10:00", videoUrl: "https://www.youtube.com/embed/j4-1Kw_kuWk", description: "Earn $600 watching videos.", contentType: "video" },
-              { id: "m2-4-les-2", title: "Method 2 - Earn $500 Per Day With TikTok", duration: "12:00", videoUrl: "https://www.youtube.com/embed/sNkzTkH6JKc", description: "Make $500 daily.", contentType: "video" },
-              { id: "m2-4-les-3", title: "Method 3 - $250 Every Day Thanks To TikTok", duration: "10:00", videoUrl: "https://www.youtube.com/embed/QhxaSXzZSCk", description: "Earn $250 daily.", contentType: "video" },
-              { id: "m2-4-les-4", title: "The 4 best ways to earn +$200 a day with TikTok", duration: "15:00", videoUrl: "https://www.youtube.com/embed/vdhquT6SQdY", description: "Top 4 methods.", contentType: "video" },
-              { id: "m2-4-les-5", title: "How He Made $1,500,000 USD With TikTok Shop Affiliate", duration: "20:00", videoUrl: "https://www.youtube.com/embed/28IjJXTfXSA", description: "Million dollar success story.", contentType: "video" },
+              { id: "m2-4-les-1", title: "Method 1 - Watch Videos and Earn $600", duration: "10:00", videoUrl: "https://www.youtube.com/embed/j4-1Kw_kuWk", description: "Earn $600 watching videos.", contentType: "video" },
+              { id: "m2-4-les-2", title: "Method 2 - Earn $500 Per Day With Videos", duration: "12:00", videoUrl: "https://www.youtube.com/embed/sNkzTkH6JKc", description: "Make $500 daily.", contentType: "video" },
+              { id: "m2-4-les-3", title: "Method 3 - $250 Every Day With Videos", duration: "10:00", videoUrl: "https://www.youtube.com/embed/QhxaSXzZSCk", description: "Earn $250 daily.", contentType: "video" },
+              { id: "m2-4-les-4", title: "The 4 best ways to earn +$200 a day with videos", duration: "15:00", videoUrl: "https://www.youtube.com/embed/vdhquT6SQdY", description: "Top 4 methods.", contentType: "video" },
+              { id: "m2-4-les-5", title: "How He Made $1,500,000 USD With Shop Affiliate", duration: "20:00", videoUrl: "https://www.youtube.com/embed/28IjJXTfXSA", description: "Million dollar success story.", contentType: "video" },
             ],
           },
           {
@@ -391,7 +391,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Dear Profitok Users,</p>
 <p style="margin-bottom: 16px;">Welcome to the Profitok Support Center! We're dedicated to ensuring your experience with Profitok is seamless.</p>
-<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:ytrewards.ing@gmail.com" style="color: #fe2c55; font-weight: 600;">ytrewards.ing@gmail.com</a></p>
+<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:accesssupport.ai@gmail.com" style="color: #fe2c55; font-weight: 600;">accesssupport.ai@gmail.com</a></p>
 <p style="margin-bottom: 16px;">Our support team operates <strong>Monday to Friday, from 9:00 AM to 6:00 PM</strong>.</p>
 <p style="margin-top: 24px; color: rgba(255,255,255,0.7);">Best Regards,<br/><strong style="color: #fff;">Profitok Support Team</strong></p>`,
               },
@@ -466,7 +466,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Dear Profitok Users,</p>
 <p style="margin-bottom: 16px;">Welcome to the Profitok Support Center! We're dedicated to ensuring your experience with Profitok is seamless.</p>
-<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:ytrewards.ing@gmail.com" style="color: #fe2c55; font-weight: 600;">ytrewards.ing@gmail.com</a></p>
+<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:accesssupport.ai@gmail.com" style="color: #fe2c55; font-weight: 600;">accesssupport.ai@gmail.com</a></p>
 <p style="margin-bottom: 16px;">Our support team operates <strong>Monday to Friday, from 9:00 AM to 6:00 PM</strong>.</p>
 <p style="margin-top: 24px; color: rgba(255,255,255,0.7);">Best Regards,<br/><strong style="color: #fff;">Profitok Support Team</strong></p>`,
               },
@@ -644,7 +644,7 @@ export const courses: Course[] = [
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to the support area</p>
 <p style="margin-bottom: 16px;">For us it is extremely important that each of you feel satisfied with the content presented, so if you have any concerns about any topic, please do not hesitate to communicate your request in this email.</p>
 <p style="margin-bottom: 16px;">We will take 2-3 days to respond due to the high number of students, so we ask for a little patience.</p>
-<p style="margin-bottom: 24px;"><a href="mailto:ytrewards.ing@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: ytrewards.ing@gmail.com</a></p>`,
+<p style="margin-bottom: 24px;"><a href="mailto:accesssupport.ai@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: accesssupport.ai@gmail.com</a></p>`,
               },
               {
                 id: "m7-2-les-2",
@@ -695,7 +695,7 @@ export const courses: Course[] = [
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Welcome to the support area</p>
 <p style="margin-bottom: 16px;">For us it is extremely important that each of you feel satisfied with the content presented, so if you have any concerns about any topic, please do not hesitate to communicate your request in this email.</p>
 <p style="margin-bottom: 16px;">We will take 2-3 days to respond due to the high number of students, so we ask for a little patience.</p>
-<p style="margin-bottom: 24px;"><a href="mailto:ytrewards.ing@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: ytrewards.ing@gmail.com</a></p>`,
+<p style="margin-bottom: 24px;"><a href="mailto:accesssupport.ai@gmail.com" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">EMAIL: accesssupport.ai@gmail.com</a></p>`,
               },
               {
                 id: "m8-1-les-3",
@@ -734,7 +734,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Dear Profitok Users,</p>
 <p style="margin-bottom: 16px;">Welcome to the Profitok Support Center! We're dedicated to ensuring your experience with Profitok is seamless. Whether you have questions, encounter technical issues, or seek guidance on maximizing features, our team is here to assist you.</p>
-<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:ytrewards.ing@gmail.com" style="color: #fe2c55; font-weight: 600;">ytrewards.ing@gmail.com</a></p>
+<p style="margin-bottom: 16px;"><strong style="color: #25f4ee;">How to Reach Us:</strong> For inquiries, assistance, or feedback, please contact us via email at <a href="mailto:accesssupport.ai@gmail.com" style="color: #fe2c55; font-weight: 600;">accesssupport.ai@gmail.com</a></p>
 <p style="margin-bottom: 16px;">Our support team operates <strong>Monday to Friday, from 9:00 AM to 6:00 PM</strong>, and we aim to respond promptly to all inquiries during these hours.</p>
 <p style="margin-bottom: 16px;"><strong style="color: #ffd700;">Feedback:</strong> Your input is invaluable to us as we strive to enhance Profitok continuously. Whether it's suggestions for new features or improvements to existing ones, we'd love to hear from you.</p>
 <p style="margin-top: 24px; color: rgba(255,255,255,0.7);">Thank you for choosing Profitok.<br/>Best Regards,<br/><strong style="color: #fff;">Profitok Support Team</strong></p>`,
@@ -777,56 +777,56 @@ export const courses: Course[] = [
       },
     ],
   },
-  // TIKTOK COMMUNITY COURSE
+  // TIKCASH COMMUNITY COURSE
   {
-    id: "tiktok-community",
-    title: "TikTok Community",
-    subtitle: "4 modules - 20 lessons",
-    description: "Master TikTok Shop and build your online empire",
-    thumbnail: "/images/modules/tiktok-community.jpg",
-    image: "/images/modules/tiktok-community.jpg",
+id: "tikcash-community",
+    title: "TikCash Community",
+    subtitle: "4 modules",
+    description: "Master online sales and build your online empire",
+    thumbnail: "/images/modules/tikcash-community.jpg",
+    image: "/images/modules/tikcash-community.jpg",
     instructor: "TikCash Team",
-    instructorAvatar: "/images/avatar-default.png",
-    category: "TikTok",
-    totalLessons: 20,
-    totalDuration: "5h 30m",
+    instructorAvatar: "/images/users/1.jpg",
+    category: "Sales",
+    totalLessons: 45,
+    totalDuration: "8h+",
     progress: 0,
-    tags: ["TikTok", "Shop", "Community", "Sales"],
+    tags: ["TikCash", "Shop", "Community", "Sales"],
     modules: [
-      // TC MODULE 1 - TikTok Shop Basics
+      // TC MODULE 1 - Online Shop Basics
       {
         id: "tc-mod-1",
-        title: "Module 01 | TikTok Shop Basics",
+        title: "Module 01 | Online Shop Basics",
         subtitle: "5 lessons",
         comingSoon: false,
         subModules: [
           {
             id: "tc-sm-1-1",
-            title: "Getting Started with TikTok Shop",
+            title: "Getting Started with Online Shop",
             lessons: [
               {
                 id: "tc-1-les-1",
-                title: "How to Use TikTok Tools to Make Money with Surveys",
+                title: "How to Use TikCash Tools to Make Money with Surveys",
                 duration: "15:00",
                 videoUrl: "",
-                description: "Make money with surveys on TikTok Shop.",
+                description: "Make money with surveys on Online Shop.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Yes, you read that right:</p>
-<p style="margin-bottom: 16px;">You can make money with surveys and interactive content on TikTok Shop.</p>
-<p style="margin-bottom: 16px;">But we're not talking about external surveys that pay pennies... we're talking about how to use interaction within TikTok to drive traffic and convert into real sales.</p>
+<p style="margin-bottom: 16px;">You can make money with surveys and interactive content on Online Shop.</p>
+<p style="margin-bottom: 16px;">But we're not talking about external surveys that pay pennies... we're talking about how to use interaction within TikCash to drive traffic and convert into real sales.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to do it strategically.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1mk_MH8PR7AO1f8sH8QoJcfPA2JvnubrJ/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
               {
                 id: "tc-1-les-2",
-                title: "How to Use TikTok Tools with Social Proof",
+                title: "How to Use TikCash Tools with Social Proof",
                 duration: "15:00",
                 videoUrl: "",
                 description: "Use social proof to convert sales.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Yes, you read that right:</p>
-<p style="margin-bottom: 16px;">You can make money with surveys and interactive content on TikTok Shop.</p>
-<p style="margin-bottom: 16px;">But we're not talking about external surveys that pay pennies... we're talking about how to use interaction within TikTok to attract traffic and convert into real sales.</p>
+<p style="margin-bottom: 16px;">You can make money with surveys and interactive content on Online Shop.</p>
+<p style="margin-bottom: 16px;">But we're not talking about external surveys that pay pennies... we're talking about how to use interaction within TikCash to attract traffic and convert into real sales.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to do it strategically.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/u/0/d/1kQYDEQKUggu5-6in3Kl7U1yjr5d2Cczd/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
@@ -837,24 +837,24 @@ export const courses: Course[] = [
                 videoUrl: "",
                 description: "Create more content efficiently.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Create More Videos for TikTok Shop in Less Time</p>
-<p style="margin-bottom: 16px;">Now that you understand it's possible to make money with TikTok Shop, the next step is this: create more content, in less time, and with better results.</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Create More Videos for Online Shop in Less Time</p>
+<p style="margin-bottom: 16px;">Now that you understand it's possible to make money with Online Shop, the next step is this: create more content, in less time, and with better results.</p>
 <p style="margin-bottom: 16px;">Because it's not just about uploading videos. It's about doing it strategically and sustainably.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, I'm going to show you how to achieve that.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/u/0/d/1QgSh4L7WKQ0-3g-YHHPas7ZNaL9Fbrj4/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
               {
                 id: "tc-1-les-4",
-                title: "The Best Time to Post on TikTok Shop",
+                title: "The Best Time to Post on Online Shop",
                 duration: "18:00",
                 videoUrl: "",
                 description: "Optimize your posting schedule.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">The Best Time to Post on TikTok Shop and Increase Sales</p>
-<p style="margin-bottom: 16px;">In this class, you'll learn step by step what TikTok Shop is and why it has become one of the most powerful platforms for selling products online.</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">The Best Time to Post on Online Shop and Increase Sales</p>
+<p style="margin-bottom: 16px;">In this class, you'll learn step by step what Online Shop is and why it has become one of the most powerful platforms for selling products online.</p>
 <p style="margin-bottom: 16px;">I'll show you how to create your store, upload your products, the best strategies to leverage the algorithm, and how to make videos that truly sell.</p>
 <p style="margin-bottom: 16px;">In addition, you'll discover current trends, real success stories, and tricks to boost your sales organically and quickly.</p>
-<p style="margin-bottom: 16px; font-weight: 600; color: #ffd700;">If you want to tap into TikTok's potential to make money, this class is for you.</p>
+<p style="margin-bottom: 16px; font-weight: 600; color: #ffd700;">If you want to tap into TikCash's potential to make money, this class is for you.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/12Qoic-msAY56dUDjTkgHYAIowql6l2ER/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
               {
@@ -864,8 +864,8 @@ export const courses: Course[] = [
                 videoUrl: "",
                 description: "No face, no problem - make money anyway.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Make Money on TikTok Shop Without Showing Your Face</p>
-<p style="margin-bottom: 16px;">Yes, it's possible. You can make money every day with TikTok Shop without showing your face, without speaking, without recording yourself directly.</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Make Money on Online Shop Without Showing Your Face</p>
+<p style="margin-bottom: 16px;">Yes, it's possible. You can make money every day with Online Shop without showing your face, without speaking, without recording yourself directly.</p>
 <p style="margin-bottom: 16px;">And no, it's not magic. <strong style="color: #25f4ee;">It's strategy.</strong></p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to do it step by step.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/u/0/d/13XaRF0NPJYqmFP-Oml7F0Q4w4de2riqs/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
@@ -887,13 +887,13 @@ export const courses: Course[] = [
             lessons: [
               {
                 id: "tc-2-les-1",
-                title: "Create a Sustainable Routine for TikTok Shop",
+                title: "Create a Sustainable Routine for Online Shop",
                 duration: "12:00",
                 videoUrl: "",
                 description: "Build a consistent routine.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Create a Routine to Make Money with TikTok Shop</p>
-<p style="margin-bottom: 16px;">This is one of the most common mistakes people make when starting on TikTok Shop: <strong>Not having a clear routine.</strong></p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Create a Routine to Make Money with Online Shop</p>
+<p style="margin-bottom: 16px;">This is one of the most common mistakes people make when starting on Online Shop: <strong>Not having a clear routine.</strong></p>
 <p style="margin-bottom: 16px;">They post whenever they can. They edit in a rush. And they keep jumping from one idea to another without tracking results.</p>
 <p style="margin-bottom: 16px; color: #fe2c55;">The problem? That doesn't generate consistent income.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, I'm going to show you how to create a simple and effective routine to sell every day in an organized way.</p>
@@ -906,9 +906,9 @@ export const courses: Course[] = [
                 videoUrl: "",
                 description: "The truth about quick money.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Make $20 in 12 Minutes with TikTok Shop? Myth or Reality</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Make $20 in 12 Minutes with Online Shop? Myth or Reality</p>
 <p style="margin-bottom: 16px;">You've probably seen promises like: "Make $20 in just 12 minutes with this app!"</p>
-<p style="margin-bottom: 16px;">And yes... it sounds like hype. But on TikTok Shop, there's a hidden truth:</p>
+<p style="margin-bottom: 16px;">And yes... it sounds like hype. But on Online Shop, there's a hidden truth:</p>
 <p style="margin-bottom: 16px; color: #ffd700; font-weight: 600;">You can make $20 or more with a single video.</p>
 <p style="margin-bottom: 16px;">Not in exactly 12 minutes, but with quick, well-thought-out content and the right product.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, we're going to separate the myths from the real strategy.</p>
@@ -922,22 +922,22 @@ export const courses: Course[] = [
                 description: "Go viral without being known.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Go Viral Without Being Known</p>
-<p style="margin-bottom: 16px;">Yes. It's possible. You upload a video on TikTok. You have no followers. No one knows you. Zero authority.</p>
+<p style="margin-bottom: 16px;">Yes. It's possible. You upload a video on TikCash. You have no followers. No one knows you. Zero authority.</p>
 <p style="margin-bottom: 16px;">And still... that video can blow up. <strong style="color: #ffd700;">100K. 500K. 1 million views.</strong></p>
-<p style="margin-bottom: 16px;">That doesn't happen on Instagram. It doesn't happen on YouTube. But on TikTok... it does.</p>
+<p style="margin-bottom: 16px;">That doesn't happen on Instagram. It doesn't happen on YouTube. But on TikCash... it does.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">And today you're going to understand why.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/15BYE_IDzYYYrjMTCQkDrISe4uBaK4UIl/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
               {
                 id: "tc-2-les-4",
-                title: "Anatomy of a Viral TikTok",
+                title: "Anatomy of a Viral TikCash",
                 duration: "15:00",
                 videoUrl: "",
                 description: "Structure videos that blow up.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Anatomy of a Viral TikTok: How to Structure Videos That Blow Up</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Anatomy of a Viral TikCash: How to Structure Videos That Blow Up</p>
 <p style="margin-bottom: 16px;">Viral isn't magic. <strong style="color: #25f4ee;">It's a formula.</strong></p>
-<p style="margin-bottom: 16px;">And even though it might seem like some videos "just blew up," deep down all viral TikToks share a similar structure.</p>
+<p style="margin-bottom: 16px;">And even though it might seem like some videos "just blew up," deep down all viral TikCashs share a similar structure.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to identify it, build it... and replicate it.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1GWefCv_a5QVtRGZ_p0guBp_TVdqWpsh4/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
@@ -946,10 +946,10 @@ export const courses: Course[] = [
                 title: "How to Make the Algorithm Love You",
                 duration: "16:00",
                 videoUrl: "",
-                description: "7 signals TikTok detects.",
+                description: "7 signals TikCash detects.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">7 Signals TikTok Detects</p>
-<p style="margin-bottom: 16px;">Yes, TikTok "sees" your videos. But more importantly: it interprets how people react to them.</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">7 Signals TikCash Detects</p>
+<p style="margin-bottom: 16px;">Yes, TikCash "sees" your videos. But more importantly: it interprets how people react to them.</p>
 <p style="margin-bottom: 16px;">And based on that, it decides: "Do we show it to 100 more people? Or do we bury it?"</p>
 <p style="margin-bottom: 16px; font-weight: 600; color: #fe2c55;">Today, you're going to discover the 7 signals the algorithm loves — and how to activate them in every video.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/12JCPy1Jt2Dh_SSrgq3kiikOIHJ6K2fka/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
@@ -978,20 +978,20 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Videos That Sell: How to Turn Views into Clicks, Messages, and Money</p>
 <p style="margin-bottom: 16px;">Views don't pay the bills. <strong style="color: #ffd700;">What matters is turning attention into action.</strong></p>
-<p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to use TikTok to sell without looking like a salesperson — in a natural, effective, and direct way.</p>
+<p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to use TikCash to sell without looking like a salesperson — in a natural, effective, and direct way.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/u/0/d/1iwloAxPoy3Khz-QCUHw3jASV8OMd-osf/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
               {
                 id: "tc-3-les-2",
-                title: "TikTok Without Showing Your Face",
+                title: "TikCash Without Showing Your Face",
                 duration: "12:00",
                 videoUrl: "",
                 description: "Grow automatically with voice and text.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">TikTok Without Showing Your Face</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">TikCash Without Showing Your Face</p>
 <p style="margin-bottom: 16px;">Don't like being on camera? Don't like talking? Don't want to show your face?</p>
 <p style="margin-bottom: 16px; color: #25f4ee; font-weight: 600;">Good news: you don't have to.</p>
-<p style="margin-bottom: 16px;">TikTok allows you to grow automatically if you use the right tools.</p>
+<p style="margin-bottom: 16px;">TikCash allows you to grow automatically if you use the right tools.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, I'll show you how to create viral content without ever showing up.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1A9ImOa8uK7Ye3jgqHDhBy8G_Bo_UtDJ0/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
@@ -1003,7 +1003,7 @@ export const courses: Course[] = [
                 description: "Produce viral videos without burning out.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Creatives That Blow Up: The 1-3-1 Method</p>
-<p style="margin-bottom: 16px;">Creating content every day can be exhausting. Most people quit TikTok not because they lack ideas, but because they lack a system.</p>
+<p style="margin-bottom: 16px;">Creating content every day can be exhausting. Most people quit TikCash not because they lack ideas, but because they lack a system.</p>
 <p style="margin-bottom: 16px; font-weight: 600; color: #ffd700;">Today, I'll teach you the 1-3-1 method, a simple formula to create, organize, and publish viral content without burning out.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1EeYhz6ZNobT4Mgg6cetgS4GIzrkpvVCN/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
@@ -1028,7 +1028,7 @@ export const courses: Course[] = [
                 description: "Use trends without losing your essence.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Trends vs Authority</p>
-<p style="margin-bottom: 16px;">TikTok loves trends. And yes, using them can give you a massive boost in views.</p>
+<p style="margin-bottom: 16px;">TikCash loves trends. And yes, using them can give you a massive boost in views.</p>
 <p style="margin-bottom: 16px; color: #fe2c55;">But here's the problem: Many creators get lost in the trends. They become just another face. They lose their voice. They lose their authority.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to use trends to your advantage without losing what makes you unique.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1plY1o732fxF646HXCpjWDO1PCLEKbj1I/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
@@ -1064,15 +1064,15 @@ export const courses: Course[] = [
             lessons: [
               {
                 id: "tc-4-les-1",
-                title: "The Routine of High-Earning TikTokers",
+                title: "The Routine of High-Earning TikCashers",
                 duration: "16:00",
                 videoUrl: "",
-                description: "How successful TikTokers organize their day.",
+                description: "How successful TikCashers organize their day.",
                 contentType: "text",
-                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">The Routine of High-Earning TikTokers</p>
+                textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">The Routine of High-Earning TikCashers</p>
 <p style="margin-bottom: 16px;">You see them on screen. They grow, they sell, they go viral. Looks easy, right?</p>
 <p style="margin-bottom: 16px;">But what you don't see... is the routine behind it.</p>
-<p style="margin-bottom: 16px; color: #ffd700;">Because no one makes money on TikTok just by randomly posting videos. There's a method. There's discipline. There's focus.</p>
+<p style="margin-bottom: 16px; color: #ffd700;">Because no one makes money on TikCash just by randomly posting videos. There's a method. There's discipline. There's focus.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">And in this lesson, I'm going to show you exactly that.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/15LsMnFl0oQsL_qshcccXaWjxSCvbc7KV/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
               },
@@ -1084,7 +1084,7 @@ export const courses: Course[] = [
                 description: "Make smart decisions without going crazy.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Analyze Your Metrics Without Going Crazy</p>
-<p style="margin-bottom: 16px;">TikTok gives you numbers. Lots of them.</p>
+<p style="margin-bottom: 16px;">TikCash gives you numbers. Lots of them.</p>
 <p style="margin-bottom: 16px;">But if you don't know how to read them, they confuse you more than they help.</p>
 <p style="margin-bottom: 16px; font-weight: 600; color: #25f4ee;">Today, you're going to learn how to look at your metrics like an expert. Fast. Clear. Impactful.</p>
 <p style="margin-bottom: 24px;"><a href="https://drive.google.com/file/d/1UMga7bqDjbj6xd5SeNcM0QQOzjQSxINU/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #25f4ee 0%, #00c4b8 100%); color: #000; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">WATCH LESSON</a></p>`,
@@ -1111,7 +1111,7 @@ export const courses: Course[] = [
                 description: "Stop talking to yourself.",
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">How to Build a Real Community</p>
-<p style="margin-bottom: 16px;">Posting on TikTok isn't just about uploading videos. It's about building a relationship. A community.</p>
+<p style="margin-bottom: 16px;">Posting on TikCash isn't just about uploading videos. It's about building a relationship. A community.</p>
 <p style="margin-bottom: 16px;">Because if no one comments... If no one responds... If no one waits for your next content...</p>
 <p style="margin-bottom: 16px; color: #fe2c55;">Then you don't have an audience. You have a number.</p>
 <p style="margin-bottom: 16px; font-weight: 600;">Today, you're going to learn how to stop speaking into the void and start building a real base of people who follow you, respect you, and recommend you.</p>

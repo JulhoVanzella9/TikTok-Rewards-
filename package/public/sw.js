@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tiktok-rewards-v1';
+const CACHE_NAME = 'tikcash-v1';
 const urlsToCache = [
   '/',
   '/create',
