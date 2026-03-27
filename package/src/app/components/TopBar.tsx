@@ -47,6 +47,8 @@ export default function TopBar() {
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [balanceAnimation, setBalanceAnimation] = useState(false);
+  const [lastEarnedAmount, setLastEarnedAmount] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
@@ -68,6 +70,26 @@ export default function TopBar() {
       }
     };
     fetchBalance();
+  }, []);
+
+  // Listen for balance updates from video rating
+  useEffect(() => {
+    const handleBalanceUpdate = (event: CustomEvent<{ amount: number }>) => {
+      const amount = event.detail.amount;
+      setLastEarnedAmount(amount);
+      setBalanceAnimation(true);
+      setBalance(prev => prev + amount);
+      
+      // Reset animation after delay
+      setTimeout(() => {
+        setBalanceAnimation(false);
+      }, 2000);
+    };
+
+    window.addEventListener("balanceUpdated", handleBalanceUpdate as EventListener);
+    return () => {
+      window.removeEventListener("balanceUpdated", handleBalanceUpdate as EventListener);
+    };
   }, []);
 
   // Block body scroll when menu is open
@@ -203,11 +225,36 @@ export default function TopBar() {
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"}`,
-          padding: "0 20px", height: "72px",
+          padding: "0 16px", height: "64px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           boxShadow: isDarkMode ? "0 6px 30px rgba(0,0,0,0.5)" : "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
+        {/* Left - Hamburger Menu */}
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={() => setMenuOpen(true)}
+          style={{
+            background: isDarkMode 
+              ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
+              : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
+            border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+            borderRadius: "12px", width: "42px", height: "42px",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
+            transition: "all 0.3s ease",
+            boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </motion.button>
+
+        {/* Center - TikCash Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
           <motion.div 
             whileHover={{ scale: 1.05 }} 
@@ -215,153 +262,112 @@ export default function TopBar() {
             style={{ 
               display: "flex", 
               alignItems: "center", 
-              gap: "8px",
+              gap: "6px",
             }}
           >
             {/* TikCash Logo */}
-            <div style={{ width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
-                {/* Musical note base shape - cyan shadow */}
+            <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
                 <path 
                   d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
                   fill="#25F4EE"
                   transform="translate(-2, -1)"
                 />
-                {/* Musical note base shape - red shadow */}
                 <path 
                   d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
                   fill="#FE2C55"
                   transform="translate(2, 1)"
                 />
-                {/* Main musical note shape */}
                 <path 
                   d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
                   fill={isDarkMode ? "#fff" : "#000"}
                 />
-                {/* Dollar sign inside the circle */}
-                <text 
-                  x="20" 
-                  y="32" 
-                  textAnchor="middle" 
-                  fill={isDarkMode ? "#000" : "#fff"}
-                  fontSize="14"
-                  fontWeight="800"
-                  fontFamily="system-ui, -apple-system, sans-serif"
-                >
-                  $
-                </text>
-                {/* Coin indicator at top right */}
+                <text x="20" y="32" textAnchor="middle" fill={isDarkMode ? "#000" : "#fff"} fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
                 <circle cx="36" cy="12" r="7" fill="#25F4EE" stroke={isDarkMode ? "#000" : "#fff"} strokeWidth="2"/>
-                <text 
-                  x="36" 
-                  y="15.5" 
-                  textAnchor="middle" 
-                  fill="#000"
-                  fontSize="9"
-                  fontWeight="800"
-                  fontFamily="system-ui, -apple-system, sans-serif"
-                >
-                  $
-                </text>
+                <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
               </svg>
             </div>
             <span style={{
-              fontSize: "24px",
+              fontSize: "20px",
               fontWeight: 800,
               color: isDarkMode ? "#fff" : "#000",
               letterSpacing: "-0.5px",
               fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              textShadow: isDarkMode ? "0 2px 8px rgba(0,0,0,0.3)" : "none",
             }}>
               Tik<span style={{ color: "#fe2c55" }}>Cash</span>
             </span>
           </motion.div>
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {/* Balance Display */}
-          <Link href="/wallet" style={{ textDecoration: "none" }}>
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "10px 16px",
-                background: isDarkMode 
-                  ? "linear-gradient(135deg, rgba(37,244,238,0.18) 0%, rgba(254,44,85,0.12) 100%)" 
-                  : "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(254,44,85,0.1) 100%)",
-                borderRadius: "22px",
-                border: `2px solid ${isDarkMode ? "rgba(37,244,238,0.35)" : "rgba(37,244,238,0.45)"}`,
-                cursor: "pointer",
-                boxShadow: isDarkMode 
-                  ? "0 6px 20px rgba(37,244,238,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" 
-                  : "0 6px 20px rgba(37,244,238,0.25)",
-              }}
-            >
-              <div style={{
-                width: "28px",
-                height: "28px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #25f4ee 0%, #00d4aa 100%)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 3px 10px rgba(37,244,238,0.45)",
-              }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                  <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "2px" }}>
-                <span style={{ 
-                  color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", 
-                  fontSize: "10px", 
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.6px",
-                }}>
-                  Balance
-                </span>
-                <span style={{ 
-                  fontSize: "17px", 
-                  fontWeight: 800, 
-                  color: "#25f4ee",
-                  textShadow: isDarkMode ? "0 2px 6px rgba(37,244,238,0.35)" : "none",
-                  letterSpacing: "-0.3px",
-                }}>
-                  ${balance.toFixed(2)}
-                </span>
-              </div>
-            </motion.div>
-          </Link>
-
-          {/* Hamburger Menu Button */}
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={() => setMenuOpen(true)}
+        {/* Right - Balance Display (simplified, like reference image) */}
+        <Link href="/wallet" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 14px",
               background: isDarkMode 
-                ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
-                : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
-              border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
-              borderRadius: "14px", width: "44px", height: "44px",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
-              transition: "all 0.3s ease",
-              boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
+                ? "rgba(0,0,0,0.6)" 
+                : "rgba(255,255,255,0.9)",
+              borderRadius: "20px",
+              border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+              cursor: "pointer",
+              position: "relative",
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <line x1="3" y1="12" x2="21" y2="12"/>
-              <line x1="3" y1="18" x2="21" y2="18"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
             </svg>
-          </motion.button>
-        </div>
+            <span style={{ 
+              color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", 
+              fontSize: "13px", 
+              fontWeight: 600,
+            }}>
+              Balance
+            </span>
+            <motion.span 
+              key={balance}
+              initial={balanceAnimation ? { scale: 1.3, color: "#22c55e" } : false}
+              animate={{ scale: 1, color: "#25f4ee" }}
+              transition={{ duration: 0.5 }}
+              style={{ 
+                fontSize: "15px", 
+                fontWeight: 800, 
+                color: "#25f4ee",
+              }}
+            >
+              ${balance.toFixed(2)}
+            </motion.span>
+            
+            {/* Floating +amount animation */}
+            <AnimatePresence>
+              {balanceAnimation && (
+                <motion.div
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 0, y: -25 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5 }}
+                  style={{
+                    position: "absolute",
+                    top: "-12px",
+                    right: "10px",
+                    color: "#22c55e",
+                    fontSize: "14px",
+                    fontWeight: 800,
+                    whiteSpace: "nowrap",
+                    textShadow: "0 2px 8px rgba(34,197,94,0.5)",
+                  }}
+                >
+                  +${lastEarnedAmount.toFixed(2)}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </Link>
       </motion.header>
 
       {/* Menu Overlay */}

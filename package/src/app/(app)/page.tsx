@@ -84,138 +84,16 @@ export default function HomePage() {
         className="gpu-accelerated"
       />
 
-      {/* Hero Section */}
+      {/* 1. Video Tutorial Section - FIRST */}
       <div style={{
-        padding: "clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px)",
-        textAlign: "center",
-        position: "relative",
-        background: isDarkMode
-          ? "linear-gradient(180deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 50%, transparent 100%)"
-          : "linear-gradient(180deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.04) 50%, transparent 100%)",
-      }}>
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            fontSize: "clamp(32px, 8vw, 56px)",
-            fontWeight: 900,
-            marginBottom: "16px",
-            lineHeight: 1.1,
-          }}
-        >
-          <span style={{ color: "var(--text-primary)" }}>Welcome to </span>
-          <span style={{
-            background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}>
-            TikCash
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          style={{
-            fontSize: "clamp(16px, 3vw, 22px)",
-            color: "var(--text-secondary)",
-            maxWidth: "600px",
-            margin: "0 auto 32px",
-            lineHeight: 1.5,
-          }}
-        >
-          Your gateway to monetizing your TikTok content and maximizing your earnings
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <Link href="/create">
-            <button
-              className="btn-3d btn-3d-red btn-3d-animated btn-3d-icon-grow"
-              style={{
-                padding: "16px 32px",
-                fontSize: "18px",
-                fontWeight: 700,
-                gap: "12px",
-                fontFamily: "inherit",
-              }}
-            >
-              Launch TikCash App
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </button>
-          </Link>
-        </motion.div>
-      </div>
-
-      {/* How TikCash Works Section */}
-      <div style={{
-        padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
+        padding: "clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px)",
         maxWidth: "800px",
         margin: "0 auto",
       }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          style={{
-            background: isDarkMode 
-              ? "rgba(255,255,255,0.03)"
-              : "rgba(255,255,255,0.8)",
-            borderRadius: "24px",
-            padding: "clamp(24px, 4vw, 40px)",
-            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-            boxShadow: isDarkMode
-              ? "0 8px 32px rgba(0,0,0,0.3)"
-              : "0 8px 32px rgba(0,0,0,0.06)",
-          }}
-        >
-          <h2 style={{
-            fontSize: "clamp(22px, 4vw, 32px)",
-            fontWeight: 800,
-            color: "#fe2c55",
-            marginBottom: "20px",
-          }}>
-            How TikCash Works
-          </h2>
-          
-          <p style={{
-            fontSize: "clamp(14px, 2vw, 17px)",
-            color: "var(--text-secondary)",
-            lineHeight: 1.7,
-            marginBottom: "20px",
-          }}>
-            TikCash is your all-in-one platform for maximizing revenue from your TikTok presence. Our embedded app provides real-time analytics, monetization strategies, and automated tools to help you grow your income.
-          </p>
-
-          <p style={{
-            fontSize: "clamp(14px, 2vw, 17px)",
-            color: "var(--text-secondary)",
-            lineHeight: 1.7,
-          }}>
-            Click on <strong style={{ color: "#fe2c55" }}>TikCash App</strong> in the sidebar to access the full suite of tools designed to supercharge your earnings.
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Video Tutorial Section */}
-      <div style={{
-        padding: "clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px)",
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5 }}
           style={{
             background: isDarkMode 
               ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
@@ -382,7 +260,129 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      {/* Features Grid */}
+      {/* 2. Welcome to TikCash - Hero Section */}
+      <div style={{
+        padding: "clamp(32px, 6vw, 60px) clamp(20px, 5vw, 60px)",
+        textAlign: "center",
+        position: "relative",
+        background: isDarkMode
+          ? "linear-gradient(180deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.05) 50%, transparent 100%)"
+          : "linear-gradient(180deg, rgba(254,44,85,0.06) 0%, rgba(37,244,238,0.04) 50%, transparent 100%)",
+      }}>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          style={{
+            fontSize: "clamp(32px, 8vw, 56px)",
+            fontWeight: 900,
+            marginBottom: "16px",
+            lineHeight: 1.1,
+          }}
+        >
+          <span style={{ color: "var(--text-primary)" }}>Welcome to </span>
+          <span style={{
+            background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            TikCash
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={{
+            fontSize: "clamp(16px, 3vw, 22px)",
+            color: "var(--text-secondary)",
+            maxWidth: "600px",
+            margin: "0 auto 32px",
+            lineHeight: 1.5,
+          }}
+        >
+          Your gateway to monetizing your TikTok content and maximizing your earnings
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <Link href="/create">
+            <button
+              className="btn-3d btn-3d-red btn-3d-animated btn-3d-icon-grow"
+              style={{
+                padding: "16px 32px",
+                fontSize: "18px",
+                fontWeight: 700,
+                gap: "12px",
+                fontFamily: "inherit",
+              }}
+            >
+              Launch TikCash App
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* 3. How TikCash Works Section */}
+      <div style={{
+        padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          style={{
+            background: isDarkMode 
+              ? "rgba(255,255,255,0.03)"
+              : "rgba(255,255,255,0.8)",
+            borderRadius: "24px",
+            padding: "clamp(24px, 4vw, 40px)",
+            border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+            boxShadow: isDarkMode
+              ? "0 8px 32px rgba(0,0,0,0.3)"
+              : "0 8px 32px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h2 style={{
+            fontSize: "clamp(22px, 4vw, 32px)",
+            fontWeight: 800,
+            color: "#fe2c55",
+            marginBottom: "20px",
+          }}>
+            How TikCash Works
+          </h2>
+          
+          <p style={{
+            fontSize: "clamp(14px, 2vw, 17px)",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+            marginBottom: "20px",
+          }}>
+            TikCash is your all-in-one platform for maximizing revenue from your TikTok presence. Our embedded app provides real-time analytics, monetization strategies, and automated tools to help you grow your income.
+          </p>
+
+          <p style={{
+            fontSize: "clamp(14px, 2vw, 17px)",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+          }}>
+            Click on <strong style={{ color: "#fe2c55" }}>TikCash App</strong> in the sidebar to access the full suite of tools designed to supercharge your earnings.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* 4. Features Grid */}
       <div style={{
         padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
         maxWidth: "800px",
@@ -443,7 +443,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Getting Started Section */}
+      {/* 5. Getting Started Section */}
       <div style={{
         padding: "clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px)",
         maxWidth: "800px",
@@ -519,7 +519,6 @@ export default function HomePage() {
           </div>
         </motion.div>
       </div>
-
-      </div>
+    </div>
   );
 }
