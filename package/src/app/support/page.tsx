@@ -30,7 +30,7 @@ export default function SupportPage() {
     },
     {
       question: "Como solicitar reembolso?",
-      answer: "Envie um email para contactmgcomp@gmail.com com seu código de compra dentro de 30 dias."
+      answer: "Envie um email para accesssupport.ai@gmail.com com seu código de compra dentro de 30 dias."
     },
     {
       question: "Posso usar em dispositivos móveis?",
@@ -120,7 +120,7 @@ export default function SupportPage() {
               Receba ajuda por email em até 24 horas
             </p>
             <a 
-              href="mailto:contactmgcomp@gmail.com"
+              href="mailto:accesssupport.ai@gmail.com"
               style={{
                 display: "block",
                 width: "100%",
