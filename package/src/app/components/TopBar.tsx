@@ -157,19 +157,19 @@ export default function TopBar() {
         <line x1="12" y1="15" x2="12" y2="3"/>
       </svg>
     )},
-    { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-    )},
-    { label: t("inviteFriends") || "Invite Friends", href: "#referral", isReferral: true, badge: "+$20", badgeColor: "#00d47e", icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    )},
+{ label: t("inviteFriends") || "Invite Friends", href: "#referral", isReferral: true, badge: "+$20", badgeColor: "#00d47e", icon: (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+  <circle cx="9" cy="7" r="4"/>
+  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
+  )},
+  { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+  )},
     { label: t("logout") || "Logout", href: "#logout", isLogout: true, icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -179,19 +179,19 @@ export default function TopBar() {
     )},
   ];
 
-  // Animation variants
+// Animation variants - menu slides from left
   const menuVariants = {
-    hidden: { x: "100%", opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { type: "spring" as const, damping: 25, stiffness: 300 }
-    },
-    exit: {
-      x: "100%",
-      opacity: 0,
-      transition: { type: "spring" as const, damping: 30, stiffness: 400 }
-    }
+  hidden: { x: "-100%", opacity: 0 },
+  visible: {
+  x: 0,
+  opacity: 1,
+  transition: { type: "spring" as const, damping: 25, stiffness: 300 }
+  },
+  exit: {
+  x: "-100%",
+  opacity: 0,
+  transition: { type: "spring" as const, damping: 30, stiffness: 400 }
+  }
   };
 
   const itemVariants = {
@@ -383,12 +383,12 @@ export default function TopBar() {
               animate="visible"
               exit="exit"
               style={{
-                position: "fixed", top: 0, right: 0, bottom: 0,
-                width: "300px", maxWidth: "85vw", zIndex: 101,
-                background: isDarkMode 
-                  ? "linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%)"
-                  : "linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)",
-                borderLeft: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+position: "fixed", top: 0, left: 0, bottom: 0,
+  width: "300px", maxWidth: "85vw", zIndex: 101,
+  background: isDarkMode
+  ? "linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%)"
+  : "linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)",
+  borderRight: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
                 padding: "24px",
                 display: "flex", flexDirection: "column",
                 boxShadow: "-10px 0 40px rgba(0,0,0,0.3)",
