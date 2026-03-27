@@ -66,29 +66,37 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
             }}
           />
 
-          {/* Chat Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 400 }}
+          {/* Chat Modal Container - Using flexbox for perfect centering */}
+          <div
             style={{
               position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "calc(100% - 24px)",
-              maxWidth: "400px",
-              maxHeight: "calc(100vh - 80px)",
-              background: isDarkMode ? "#1a1a1a" : "#fff",
-              borderRadius: "20px",
-              boxShadow: "0 25px 50px rgba(0,0,0,0.3)",
+              inset: 0,
               display: "flex",
-              flexDirection: "column",
-              overflow: "hidden",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "12px",
               zIndex: 101,
+              pointerEvents: "none",
             }}
           >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 400 }}
+              style={{
+                width: "100%",
+                maxWidth: "380px",
+                maxHeight: "calc(100vh - 100px)",
+                background: isDarkMode ? "#1a1a1a" : "#fff",
+                borderRadius: "20px",
+                boxShadow: "0 25px 50px rgba(0,0,0,0.3)",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
+                pointerEvents: "auto",
+              }}
+            >
             {/* Header */}
             <div style={{
               display: "flex",
@@ -354,7 +362,8 @@ export default function SupportChat({ isOpen, onClose }: SupportChatProps) {
                 </svg>
               </button>
             </form>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
