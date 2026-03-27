@@ -37,8 +37,12 @@ export async function POST(req: Request) {
       system: SYSTEM_PROMPT,
       messages: await convertToModelMessages(messages),
       abortSignal: req.signal,
-      maxTokens: 500,
-      temperature: 0.7,
+      providerOptions: {
+        openai: {
+          max_tokens: 500,
+          temperature: 0.7,
+        },
+      },
     })
 
     return result.toUIMessageStreamResponse()
