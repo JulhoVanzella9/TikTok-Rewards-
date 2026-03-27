@@ -25,7 +25,7 @@ export const achievements: Achievement[] = [
   { id: "first-lesson", title: "Primeiro Passo", description: "Complete sua primeira lição", icon: "🎯", xp: 50, rarity: "common", category: "Aprendizado" },
   { id: "first-course", title: "Estudante Dedicado", description: "Complete seu primeiro curso", icon: "📚", xp: 200, rarity: "common", category: "Aprendizado" },
   { id: "five-courses", title: "Mestre dos Cursos", description: "Complete 5 cursos", icon: "🏆", xp: 500, rarity: "rare", category: "Aprendizado", maxProgress: 5 },
-  { id: "ten-courses", title: "Expert TikTok", description: "Complete 10 cursos", icon: "👑", xp: 1000, rarity: "epic", category: "Aprendizado", maxProgress: 10 },
+  { id: "ten-courses", title: "Expert TikCash", description: "Complete 10 cursos", icon: "👑", xp: 1000, rarity: "epic", category: "Aprendizado", maxProgress: 10 },
   { id: "streak-3", title: "Consistência", description: "Mantenha uma sequência de 3 dias", icon: "🔥", xp: 100, rarity: "common", category: "Dedicação", maxProgress: 3 },
   { id: "streak-7", title: "Semana Perfeita", description: "Mantenha uma sequência de 7 dias", icon: "⚡", xp: 300, rarity: "rare", category: "Dedicação", maxProgress: 7 },
   { id: "streak-30", title: "Mês de Fogo", description: "Mantenha uma sequência de 30 dias", icon: "💎", xp: 1000, rarity: "epic", category: "Dedicação", maxProgress: 30 },

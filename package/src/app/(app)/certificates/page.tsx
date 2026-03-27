@@ -158,7 +158,7 @@ export default function CertificatesPage() {
                   {cert.course_title}
                 </div>
                 <div style={{ fontSize: "11px", color: "#25f4ee" }}>
-                  TikTok Rewards Academy - 2025
+                  TikCash Academy - 2025
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.05 }}

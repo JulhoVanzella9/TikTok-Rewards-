@@ -37,10 +37,11 @@ export const translations = {
     getCoinsBtn: "Get Coins",
     mobileRecharge: "Mobile Recharge",
     withdrawTime: "Money is received within 7 business days.",
-    tiktokRewardsAccess: "TikCash Access",
-    installApp: "Install App",
-    inviteFriends: "Invite Friends",
-    logout: "Logout",
+    tikcashAccess: "TikCash Access",
+installApp: "Install App",
+  inviteFriends: "Invite Friends",
+  support: "Support",
+  logout: "Logout",
     
     // Refund Section
     refundGuarantee: "Money-Back Guarantee",
@@ -209,10 +210,11 @@ export const translations = {
     getCoinsBtn: "Obter Moedas",
     mobileRecharge: "Recarga Movel",
     withdrawTime: "O dinheiro e recebido em ate 7 dias uteis.",
-    tiktokRewardsAccess: "Acesso TikCash",
-    installApp: "Instalar App",
-    inviteFriends: "Convidar Amigos",
-    logout: "Sair",
+    tikcashAccess: "Acesso TikCash",
+installApp: "Instalar App",
+  inviteFriends: "Convidar Amigos",
+  support: "Suporte",
+  logout: "Sair",
     
     // Refund Section
     refundGuarantee: "Garantia de Reembolso",
@@ -381,9 +383,10 @@ export const translations = {
     getCoinsBtn: "Obtener Monedas",
     mobileRecharge: "Recarga Movil",
     withdrawTime: "El dinero se recibe en hasta 7 dias habiles.",
-    tiktokRewardsAccess: "Acceso TikCash",
-    installApp: "Instalar App",
-inviteFriends: "Invitar Amigos",
+tikcashAccess: "Acceso TikCash",
+  installApp: "Instalar App",
+  inviteFriends: "Invitar Amigos",
+  support: "Soporte",
   logout: "Cerrar Sesion",
   
   // Refund Section

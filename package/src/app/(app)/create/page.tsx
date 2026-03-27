@@ -23,7 +23,7 @@ const videoData = [
   },
   {
     videoSrc: "https://v0-tiktok-rewards.vercel.app/videos/video-3.mp4",
-    title: "This dance trend is taking over TikTok",
+    title: "This dance trend is taking over the internet",
     duration: "0:18",
     views: "156.2M",
     likes: "28.1M",

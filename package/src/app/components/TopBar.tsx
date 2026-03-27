@@ -100,21 +100,15 @@ export default function TopBar() {
     setLanguagePopupOpen(false);
   };
 
-  const menuItems = [
+  // Top section menu items (normal navigation)
+  const topMenuItems = [
     { label: t("wallet"), href: "/wallet", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
         <line x1="1" y1="10" x2="23" y2="10"/>
       </svg>
     )},
-    { label: t("language"), href: "#language", isLanguage: true, icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-    )},
-    { label: t("class"), href: "/course/tiktok-rewards-program", icon: (
+    { label: t("class"), href: "/course/tikcash-program", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
@@ -125,24 +119,33 @@ export default function TopBar() {
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
       </svg>
     )},
-    { label: t("inviteFriends") || "Invite Friends", href: "#referral", isReferral: true, icon: (
+    { label: t("support") || "Support", href: "/support", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>
     )},
-    { label: t("installApp") || "Install App", href: "#install", isInstall: true, icon: (
+  ];
+
+  // Bottom section menu items (actions)
+  const bottomMenuItems = [
+    { label: t("installApp") || "Install App", href: "#install", isInstall: true, badge: "PWA", badgeColor: "#25f4ee", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
       </svg>
     )},
-    { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, icon: (
+    { label: t("requestRefundBtn") || "Request Refund", href: "#refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    )},
+    { label: t("inviteFriends") || "Invite Friends", href: "#referral", isReferral: true, badge: "+$20", badgeColor: "#00d47e", icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
     )},
     { label: t("logout") || "Logout", href: "#logout", isLogout: true, icon: (
@@ -194,12 +197,15 @@ export default function TopBar() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: "sticky", top: 0, zIndex: 50,
-          background: isDarkMode ? "rgba(0,0,0,0.95)" : "rgba(255,255,255,0.95)",
+          background: isDarkMode 
+            ? "linear-gradient(180deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.95) 100%)" 
+            : "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
-          padding: "0 20px", height: "56px",
+          borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)"}`,
+          padding: "0 16px", height: "64px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
+          boxShadow: isDarkMode ? "0 4px 20px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.08)",
         }}
       >
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
@@ -213,8 +219,8 @@ export default function TopBar() {
             }}
           >
             {/* TikCash Logo */}
-            <div style={{ width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+            <div style={{ width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <svg width="38" height="38" viewBox="0 0 48 48" fill="none">
                 {/* Musical note base shape - cyan shadow */}
                 <path 
                   d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
@@ -260,13 +266,14 @@ export default function TopBar() {
               </svg>
             </div>
             <span style={{
-              fontSize: "17px",
-              fontWeight: 700,
+              fontSize: "20px",
+              fontWeight: 800,
               color: isDarkMode ? "#fff" : "#000",
-              letterSpacing: "-0.3px",
+              letterSpacing: "-0.5px",
               fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+              textShadow: isDarkMode ? "0 2px 8px rgba(0,0,0,0.3)" : "none",
             }}>
-              TikCash
+              Tik<span style={{ color: "#fe2c55" }}>Cash</span>
             </span>
           </motion.div>
         </Link>
@@ -275,47 +282,80 @@ export default function TopBar() {
           {/* Balance Display */}
           <Link href="/wallet" style={{ textDecoration: "none" }}>
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
-                padding: "6px 12px",
-                background: isDarkMode ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0.05)",
-                borderRadius: "16px",
-                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                gap: "8px",
+                padding: "8px 14px",
+                background: isDarkMode 
+                  ? "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(254,44,85,0.1) 100%)" 
+                  : "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(254,44,85,0.08) 100%)",
+                borderRadius: "20px",
+                border: `1.5px solid ${isDarkMode ? "rgba(37,244,238,0.3)" : "rgba(37,244,238,0.4)"}`,
                 cursor: "pointer",
+                boxShadow: isDarkMode 
+                  ? "0 4px 15px rgba(37,244,238,0.15), inset 0 1px 0 rgba(255,255,255,0.1)" 
+                  : "0 4px 15px rgba(37,244,238,0.2)",
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                <line x1="1" y1="10" x2="23" y2="10"/>
-              </svg>
-              <span style={{ color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", fontSize: "11px", fontWeight: 500 }}>
-                Balance
-              </span>
-              <span style={{ fontSize: "13px", fontWeight: 700, color: isDarkMode ? "#fff" : "#000" }}>
-                ${balance.toFixed(2)}
-              </span>
+              <div style={{
+                width: "24px",
+                height: "24px",
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, #25f4ee 0%, #00d4aa 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(37,244,238,0.4)",
+              }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "1px" }}>
+                <span style={{ 
+                  color: isDarkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)", 
+                  fontSize: "9px", 
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}>
+                  Balance
+                </span>
+                <span style={{ 
+                  fontSize: "15px", 
+                  fontWeight: 800, 
+                  color: "#25f4ee",
+                  textShadow: isDarkMode ? "0 1px 4px rgba(37,244,238,0.3)" : "none",
+                  letterSpacing: "-0.3px",
+                }}>
+                  ${balance.toFixed(2)}
+                </span>
+              </div>
             </motion.div>
           </Link>
 
           {/* Hamburger Menu Button */}
           <motion.button
-            whileHover={{ scale: 1.1, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => setMenuOpen(true)}
             style={{
-              background: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)",
-              border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-              borderRadius: "50%", width: "38px", height: "38px",
+              background: isDarkMode 
+                ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
+                : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
+              border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+              borderRadius: "14px", width: "44px", height: "44px",
               display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: isDarkMode ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.8)",
+              cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
               transition: "all 0.3s ease",
+              boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="6" x2="21" y2="6"/>
               <line x1="3" y1="12" x2="21" y2="12"/>
               <line x1="3" y1="18" x2="21" y2="18"/>
@@ -390,9 +430,9 @@ export default function TopBar() {
                 </motion.button>
               </motion.div>
 
-              {/* Menu Items */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", position: "relative" }}>
-                {menuItems.map((item, index) => (
+              {/* Top Menu Items - Navigation */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {topMenuItems.map((item, index) => (
                   <motion.div
                     key={item.href}
                     custom={index}
@@ -400,348 +440,177 @@ export default function TopBar() {
                     initial="hidden"
                     animate="visible"
                   >
-                    {item.isLanguage ? (
-                      <div style={{ position: "relative" }}>
-                        <motion.button
-                          whileHover={{ scale: 1.02, x: 4 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => setLanguagePopupOpen(!languagePopupOpen)}
-                          style={{
-                            width: "100%",
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                            gap: "14px",
-                            padding: "16px 18px", borderRadius: "14px",
-                            background: languagePopupOpen 
-                              ? (isDarkMode ? "rgba(254,44,85,0.15)" : "rgba(254,44,85,0.1)")
-                              : (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"),
-                            border: languagePopupOpen 
-                              ? "1px solid rgba(254,44,85,0.3)" 
-                              : `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-                            cursor: "pointer",
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                            <span style={{ color: languagePopupOpen ? "#fe2c55" : (isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)") }}>
-                              {item.icon}
-                            </span>
-                            <span style={{ 
-                              fontSize: "15px", fontWeight: 600,
-                              color: isDarkMode ? "#fff" : "#000",
-                            }}>
-                              {item.label}
-                            </span>
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <currentLang.Flag />
-                            <motion.svg 
-                              animate={{ rotate: languagePopupOpen ? 180 : 0 }}
-                              width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                              stroke={isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)"} 
-                              strokeWidth="2"
-                            >
-                              <polyline points="6 9 12 15 18 9"/>
-                            </motion.svg>
-                          </div>
-                        </motion.button>
-                        
-                        {/* Language Popup */}
-                        <AnimatePresence>
-                          {languagePopupOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                              transition={{ type: "spring", damping: 25, stiffness: 400 }}
-                              style={{
-                                position: "absolute",
-                                top: "100%",
-                                left: 0,
-                                right: 0,
-                                marginTop: "8px",
-                                background: isDarkMode ? "#1a1a1a" : "#fff",
-                                borderRadius: "14px",
-                                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                                overflow: "hidden",
-                                boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-                                zIndex: 10,
-                              }}
-                            >
-                              {languages.map((lang, langIndex) => (
-                                <motion.button
-                                  key={lang.code}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: langIndex * 0.05 }}
-                                  whileHover={{ backgroundColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)" }}
-                                  whileTap={{ scale: 0.98 }}
-                                  onClick={() => handleLanguageSelect(lang.code)}
-                                  style={{
-                                    width: "100%",
-                                    display: "flex", alignItems: "center", gap: "12px",
-                                    padding: "14px 18px",
-                                    background: language === lang.code 
-                                      ? (isDarkMode ? "rgba(254,44,85,0.15)" : "rgba(254,44,85,0.1)")
-                                      : "transparent",
-                                    border: "none",
-                                    borderBottom: langIndex < languages.length - 1 
-                                      ? `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}` 
-                                      : "none",
-                                    cursor: "pointer",
-                                    transition: "all 0.2s",
-                                  }}
-                                >
-                                  <lang.Flag />
-                                  <span style={{ 
-                                    fontSize: "15px", fontWeight: language === lang.code ? 700 : 500,
-                                    color: language === lang.code ? "#fe2c55" : (isDarkMode ? "#fff" : "#000"),
-                                  }}>
-                                    {lang.label}
-                                  </span>
-                                  {language === lang.code && (
-                                    <motion.svg 
-                                      initial={{ scale: 0 }}
-                                      animate={{ scale: 1 }}
-                                      style={{ marginLeft: "auto" }}
-                                      width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="3"
-                                    >
-                                      <polyline points="20 6 9 17 4 12"/>
-                                    </motion.svg>
-                                  )}
-                                </motion.button>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (item as { isReferral?: boolean }).isReferral ? (
-                      <motion.button
+                    <Link href={item.href} onClick={() => setMenuOpen(false)}>
+                      <motion.div
                         whileHover={{ scale: 1.02, x: 4 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          const event = new CustomEvent("openReferralModal");
-                          window.dispatchEvent(event);
-                        }}
                         style={{
-                          width: "100%",
-                          display: "flex", 
-                          alignItems: "center", 
-                          justifyContent: "space-between",
-                          padding: "14px 16px", 
-                          borderRadius: "12px",
-                          background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
-                          border: "1px solid rgba(254,44,85,0.2)",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <div style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "8px",
-                            background: "rgba(254,44,85,0.15)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
-                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                              <circle cx="9" cy="7" r="4"/>
-                              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                          </div>
-                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
-                            {item.label}
-                          </span>
-                        </div>
-                        <span style={{
-                          padding: "5px 10px",
-                          background: "linear-gradient(135deg, #fe2c55, #ff3366)",
-                          borderRadius: "8px",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          color: "#fff",
-                        }}>
-                          +$20
-                        </span>
-                      </motion.button>
-                    ) : (item as { isInstall?: boolean }).isInstall ? (
-                      <motion.button
-                        whileHover={{ scale: 1.02, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          const event = new CustomEvent("triggerInstallPrompt");
-                          window.dispatchEvent(event);
-                        }}
-                        style={{
-                          width: "100%",
-                          display: "flex", 
-                          alignItems: "center", 
-                          justifyContent: "space-between",
-                          padding: "14px 16px", 
-                          borderRadius: "12px",
-                          background: "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)",
-                          border: "1px solid rgba(37,244,238,0.2)",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <div style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "8px",
-                            background: "rgba(37,244,238,0.15)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                              <polyline points="7 10 12 15 17 10"/>
-                              <line x1="12" y1="15" x2="12" y2="3"/>
-                            </svg>
-                          </div>
-                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
-                            {item.label}
-                          </span>
-                        </div>
-                        <span style={{
-                          padding: "5px 10px",
-                          background: "rgba(37,244,238,0.2)",
-                          borderRadius: "8px",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          color: "#25f4ee",
-                        }}>
-                          PWA
-                        </span>
-                      </motion.button>
-                    ) : (item as { isRefund?: boolean }).isRefund ? (
-                      <motion.button
-                        whileHover={{ scale: 1.02, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setShowRefundModal(true);
-                        }}
-                        style={{
-                          width: "100%",
-                          display: "flex", 
-                          alignItems: "center", 
-                          justifyContent: "space-between",
-                          padding: "14px 16px", 
-                          borderRadius: "12px",
-                          background: isDarkMode 
-                            ? "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)"
-                            : "linear-gradient(135deg, rgba(37,244,238,0.15) 0%, rgba(37,244,238,0.08) 100%)",
-                          border: "1px solid rgba(37,244,238,0.2)",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                          <div style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "8px",
-                            background: "rgba(37,244,238,0.15)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            </svg>
-                          </div>
-                          <span style={{ fontSize: "14px", fontWeight: 600, color: isDarkMode ? "#fff" : "#1a1a1a" }}>
-                            {item.label}
-                          </span>
-                        </div>
-                        <span style={{
-                          padding: "5px 10px",
-                          background: "linear-gradient(135deg, #25f4ee, #00d4aa)",
-                          borderRadius: "8px",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          color: "#000",
-                        }}>
-                          30 days
-                        </span>
-                      </motion.button>
-                    ) : (item as { isLogout?: boolean }).isLogout ? (
-                      <motion.button
-                        whileHover={{ scale: 1.02, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={async () => {
-                          setMenuOpen(false);
-                          const supabase = (await import("@/lib/supabase/client")).createClient();
-                          await supabase.auth.signOut();
-                          window.location.href = "/login";
-                        }}
-                        style={{
-                          width: "100%",
                           display: "flex", alignItems: "center", gap: "14px",
                           padding: "16px 18px", borderRadius: "14px",
-                          background: "linear-gradient(135deg, rgba(239,68,68,0.15) 0%, rgba(239,68,68,0.08) 100%)",
-                          border: "1px solid rgba(239,68,68,0.25)",
+                          background: pathname === item.href 
+                            ? (isDarkMode ? "rgba(254,44,85,0.15)" : "rgba(254,44,85,0.1)")
+                            : (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"),
+                          border: pathname === item.href 
+                            ? "1px solid rgba(254,44,85,0.3)" 
+                            : `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <span style={{ color: "#ef4444" }}>{item.icon}</span>
-                        <span style={{ fontSize: "15px", fontWeight: 600, color: "#ef4444" }}>
+                        <span style={{ color: pathname === item.href ? "#fe2c55" : (isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)") }}>
+                          {item.icon}
+                        </span>
+                        <span style={{ 
+                          fontSize: "15px", fontWeight: 600,
+                          color: pathname === item.href ? (isDarkMode ? "#fff" : "#000") : (isDarkMode ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.9)"),
+                        }}>
                           {item.label}
                         </span>
-                      </motion.button>
-                    ) : (
-                      <Link href={item.href} onClick={() => setMenuOpen(false)}>
-                        <motion.div
-                          whileHover={{ scale: 1.02, x: 4 }}
-                          whileTap={{ scale: 0.98 }}
-                          style={{
-                            display: "flex", alignItems: "center", gap: "14px",
-                            padding: "16px 18px", borderRadius: "14px",
-                            background: pathname === item.href 
-                              ? (isDarkMode ? "rgba(254,44,85,0.15)" : "rgba(254,44,85,0.1)")
-                              : (isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"),
-                            border: pathname === item.href 
-                              ? "1px solid rgba(254,44,85,0.3)" 
-                              : `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
-                            cursor: "pointer",
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          <span style={{ color: pathname === item.href ? "#fe2c55" : (isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)") }}>
+                        {pathname === item.href && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            style={{
+                              marginLeft: "auto",
+                              width: "8px", height: "8px",
+                              borderRadius: "50%",
+                              background: "#fe2c55",
+                              boxShadow: "0 0 10px rgba(254,44,85,0.5)",
+                            }}
+                          />
+                        )}
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.2 }}
+                style={{ 
+                  height: "1px", 
+                  background: `linear-gradient(90deg, transparent, ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}, transparent)`,
+                  margin: "16px 0" 
+                }} 
+              />
+
+              {/* Bottom Menu Items - Actions */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {bottomMenuItems.map((item, index) => {
+                  const actionItem = item as { isInstall?: boolean; isRefund?: boolean; isReferral?: boolean; isLogout?: boolean; badge?: string; badgeColor?: string };
+                  
+                  const handleClick = async () => {
+                    setMenuOpen(false);
+                    if (actionItem.isInstall) {
+                      const event = new CustomEvent("triggerInstallPrompt");
+                      window.dispatchEvent(event);
+                    } else if (actionItem.isRefund) {
+                      setShowRefundModal(true);
+                    } else if (actionItem.isReferral) {
+                      const event = new CustomEvent("openReferralModal");
+                      window.dispatchEvent(event);
+                    } else if (actionItem.isLogout) {
+                      const supabase = (await import("@/lib/supabase/client")).createClient();
+                      await supabase.auth.signOut();
+                      window.location.href = "/login";
+                    }
+                  };
+
+                  const getBgStyle = () => {
+                    if (actionItem.isLogout) {
+                      return {
+                        background: "linear-gradient(135deg, rgba(239,68,68,0.12) 0%, rgba(239,68,68,0.06) 100%)",
+                        border: "1px solid rgba(239,68,68,0.25)",
+                      };
+                    }
+                    if (actionItem.isReferral) {
+                      return {
+                        background: "linear-gradient(135deg, rgba(0,212,126,0.12) 0%, rgba(0,212,126,0.06) 100%)",
+                        border: "1px solid rgba(0,212,126,0.25)",
+                      };
+                    }
+                    if (actionItem.isRefund) {
+                      return {
+                        background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
+                        border: "1px solid rgba(254,44,85,0.25)",
+                      };
+                    }
+                    return {
+                      background: "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.06) 100%)",
+                      border: "1px solid rgba(37,244,238,0.25)",
+                    };
+                  };
+
+                  const getIconColor = () => {
+                    if (actionItem.isLogout) return "#ef4444";
+                    if (actionItem.isReferral) return "#00d47e";
+                    if (actionItem.isRefund) return "#fe2c55";
+                    return "#25f4ee";
+                  };
+
+                  return (
+                    <motion.div
+                      key={item.href}
+                      custom={index + topMenuItems.length}
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleClick}
+                        style={{
+                          width: "100%",
+                          display: "flex", 
+                          alignItems: "center", 
+                          justifyContent: "space-between",
+                          padding: "14px 16px", 
+                          borderRadius: "12px",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          ...getBgStyle(),
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          <div style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "8px",
+                            background: `${getIconColor()}20`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: getIconColor(),
+                          }}>
                             {item.icon}
-                          </span>
+                          </div>
                           <span style={{ 
-                            fontSize: "15px", fontWeight: 600,
-                            color: pathname === item.href ? (isDarkMode ? "#fff" : "#000") : (isDarkMode ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.9)"),
+                            fontSize: "14px", 
+                            fontWeight: 600, 
+                            color: actionItem.isLogout ? "#ef4444" : (isDarkMode ? "#fff" : "#1a1a1a") 
                           }}>
                             {item.label}
                           </span>
-                          {pathname === item.href && (
-                            <motion.div
-                              layoutId="activeIndicator"
-                              style={{
-                                marginLeft: "auto",
-                                width: "8px", height: "8px",
-                                borderRadius: "50%",
-                                background: "#fe2c55",
-                                boxShadow: "0 0 10px rgba(254,44,85,0.5)",
-                              }}
-                            />
-                          )}
-                        </motion.div>
-                      </Link>
-                    )}
-                  </motion.div>
-                ))}
+                        </div>
+                        {actionItem.badge && (
+                          <span style={{
+                            padding: "5px 10px",
+                            background: actionItem.badgeColor,
+                            borderRadius: "8px",
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            color: actionItem.badgeColor === "#25f4ee" ? "#000" : "#fff",
+                          }}>
+                            {actionItem.badge}
+                          </span>
+                        )}
+                      </motion.button>
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Divider */}

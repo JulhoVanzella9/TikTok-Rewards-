@@ -8,7 +8,7 @@ import { useTheme } from "@/lib/theme/context";
 
 // Module images for different courses
 const courseModuleImages: Record<string, string[]> = {
-  "tiktok-rewards-program": [
+  "tikcash-program": [
     "/images/modules/module-01.png",
     "/images/modules/module-02.png",
     "/images/modules/module-03.png",
@@ -19,7 +19,7 @@ const courseModuleImages: Record<string, string[]> = {
     "/images/modules/module-08.png",
     "/images/modules/module-09.png",
   ],
-  "tiktok-community": [
+  "tikcash-community": [
     "/images/modules/tc-module-01.jpg",
     "/images/modules/tc-module-02.jpg",
     "/images/modules/tc-module-03.jpg",
@@ -110,7 +110,7 @@ export default function CourseDetailPage() {
           gap: "20px",
         }}>
           {course.modules.map((module, index) => {
-            const courseImages = courseModuleImages[course.id] || courseModuleImages["tiktok-rewards-program"];
+            const courseImages = courseModuleImages[course.id] || courseModuleImages["tikcash-program"];
             const moduleImage = courseImages[index] || courseImages[0] || "/images/modules/module-01.png";
             const totalLessons = getTotalLessons(index);
             

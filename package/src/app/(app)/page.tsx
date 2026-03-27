@@ -120,7 +120,7 @@ export default function HomePage() {
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: "clamp(13px, 1.8vw, 18px)", fontWeight: 700, color: "var(--text-primary)" }}>
-                TikTok Rewards - How to Use
+                TikCash - How to Use
               </div>
               <div style={{ fontSize: "clamp(11px, 1.4vw, 15px)", color: "var(--text-muted)" }}>
                 Support Service
