@@ -47,6 +47,8 @@ export default function TopBar() {
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [balanceAnimation, setBalanceAnimation] = useState(false);
+  const [lastEarnedAmount, setLastEarnedAmount] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
@@ -68,6 +70,26 @@ export default function TopBar() {
       }
     };
     fetchBalance();
+  }, []);
+
+  // Listen for balance updates from video rating
+  useEffect(() => {
+    const handleBalanceUpdate = (event: CustomEvent<{ amount: number }>) => {
+      const amount = event.detail.amount;
+      setLastEarnedAmount(amount);
+      setBalanceAnimation(true);
+      setBalance(prev => prev + amount);
+      
+      // Reset animation after delay
+      setTimeout(() => {
+        setBalanceAnimation(false);
+      }, 2000);
+    };
+
+    window.addEventListener("balanceUpdated", handleBalanceUpdate as EventListener);
+    return () => {
+      window.removeEventListener("balanceUpdated", handleBalanceUpdate as EventListener);
+    };
   }, []);
 
   // Block body scroll when menu is open
@@ -315,7 +337,7 @@ export default function TopBar() {
                   <line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "2px" }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "2px", position: "relative" }}>
                 <span style={{ 
                   color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", 
                   fontSize: "10px", 
@@ -325,15 +347,45 @@ export default function TopBar() {
                 }}>
                   Balance
                 </span>
-                <span style={{ 
-                  fontSize: "17px", 
-                  fontWeight: 800, 
-                  color: "#25f4ee",
-                  textShadow: isDarkMode ? "0 2px 6px rgba(37,244,238,0.35)" : "none",
-                  letterSpacing: "-0.3px",
-                }}>
+                <motion.span 
+                  key={balance}
+                  initial={balanceAnimation ? { scale: 1.3, color: "#22c55e" } : false}
+                  animate={{ scale: 1, color: "#25f4ee" }}
+                  transition={{ duration: 0.5 }}
+                  style={{ 
+                    fontSize: "17px", 
+                    fontWeight: 800, 
+                    color: "#25f4ee",
+                    textShadow: isDarkMode ? "0 2px 6px rgba(37,244,238,0.35)" : "none",
+                    letterSpacing: "-0.3px",
+                  }}
+                >
                   ${balance.toFixed(2)}
-                </span>
+                </motion.span>
+                
+                {/* Floating +amount animation */}
+                <AnimatePresence>
+                  {balanceAnimation && (
+                    <motion.div
+                      initial={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 0, y: -30 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1.5 }}
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-20px",
+                        color: "#22c55e",
+                        fontSize: "14px",
+                        fontWeight: 800,
+                        whiteSpace: "nowrap",
+                        textShadow: "0 2px 8px rgba(34,197,94,0.5)",
+                      }}
+                    >
+                      +${lastEarnedAmount.toFixed(2)}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </Link>
