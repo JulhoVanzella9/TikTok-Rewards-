@@ -230,76 +230,63 @@ export default function TopBar() {
           boxShadow: isDarkMode ? "0 6px 30px rgba(0,0,0,0.5)" : "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Left - Hamburger Menu */}
-        <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
-          onClick={() => setMenuOpen(true)}
-          style={{
-            background: isDarkMode 
-              ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
-              : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
-            border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
-            borderRadius: "12px", width: "42px", height: "42px",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
-            transition: "all 0.3s ease",
-            boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        {/* Left Section - Menu + Logo together */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          {/* Hamburger Menu */}
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={() => setMenuOpen(true)}
+            style={{
+              background: isDarkMode 
+                ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
+                : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
+              border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+              borderRadius: "12px", width: "42px", height: "42px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
+              transition: "all 0.3s ease",
+              boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="6" x2="21" y2="6"/>
             <line x1="3" y1="12" x2="21" y2="12"/>
             <line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
         </motion.button>
 
-        {/* Center - TikCash Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-          <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            style={{ 
-              display: "flex", 
-              alignItems: "center", 
-              gap: "6px",
-            }}
-          >
-            {/* TikCash Logo */}
-            <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
-                <path 
-                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-                  fill="#25F4EE"
-                  transform="translate(-2, -1)"
-                />
-                <path 
-                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-                  fill="#FE2C55"
-                  transform="translate(2, 1)"
-                />
-                <path 
-                  d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-                  fill={isDarkMode ? "#fff" : "#000"}
-                />
-                <text x="20" y="32" textAnchor="middle" fill={isDarkMode ? "#000" : "#fff"} fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
-                <circle cx="36" cy="12" r="7" fill="#25F4EE" stroke={isDarkMode ? "#000" : "#fff"} strokeWidth="2"/>
-                <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
-              </svg>
-            </div>
-            <span style={{
-              fontSize: "20px",
-              fontWeight: 800,
-              color: isDarkMode ? "#fff" : "#000",
-              letterSpacing: "-0.5px",
-              fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-            }}>
-              Tik<span style={{ color: "#fe2c55" }}>Cash</span>
-            </span>
-          </motion.div>
-        </Link>
+        {/* TikCash Logo - next to menu */}
+          <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }}
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              <div style={{ width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
+                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
+                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill={isDarkMode ? "#fff" : "#000"}/>
+                  <text x="20" y="32" textAnchor="middle" fill={isDarkMode ? "#000" : "#fff"} fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
+                  <circle cx="36" cy="12" r="7" fill="#25F4EE" stroke={isDarkMode ? "#000" : "#fff"} strokeWidth="2"/>
+                  <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
+                </svg>
+              </div>
+              <span style={{
+                fontSize: "18px",
+                fontWeight: 800,
+                color: isDarkMode ? "#fff" : "#000",
+                letterSpacing: "-0.5px",
+                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+              }}>
+                Tik<span style={{ color: "#fe2c55" }}>Cash</span>
+              </span>
+            </motion.div>
+          </Link>
+        </div>
 
-        {/* Right - Balance Display (simplified, like reference image) */}
+        {/* Right - Balance Display */}
         <Link href="/wallet" style={{ textDecoration: "none" }}>
           <motion.div
             whileHover={{ scale: 1.03 }}
