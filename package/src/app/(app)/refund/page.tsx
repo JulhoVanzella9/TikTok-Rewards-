@@ -44,7 +44,7 @@ export default function RefundPage() {
       minHeight: "100vh",
       background: "linear-gradient(180deg, #0a0a0a 0%, #111 100%)",
       padding: "20px 16px",
-      paddingBottom: "140px",
+      paddingBottom: "200px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -68,6 +68,7 @@ export default function RefundPage() {
               alignItems: "center", 
               justifyContent: "center",
               gap: "10px",
+              marginTop: "20px",
               marginBottom: "24px",
             }}>
               <div style={{ width: "48px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center" }}>
