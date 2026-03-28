@@ -599,7 +599,6 @@ export default function CreatePage() {
         marginRight: "auto", 
         aspectRatio: "9/14",
         flexShrink: 0,
-        maxHeight: "min(55vh, 420px)",
       }}>
         <div
           style={{
