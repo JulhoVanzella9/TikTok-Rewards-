@@ -1,51 +1,18 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="512" height="512" rx="100" fill="#000000"/>
-  
-  <!-- Musical note - cyan shadow -->
-  <path 
-    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
-    fill="#25F4EE"
-    transform="translate(-15, -10)"
-  />
-  
-  <!-- Musical note - red shadow -->
-  <path 
-    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
-    fill="#FE2C55"
-    transform="translate(15, 10)"
-  />
-  
-  <!-- Main musical note shape -->
-  <path 
-    d="M320 85V298C320 356.5 271.5 405 213 405C154.5 405 106 356.5 106 298C106 239.5 154.5 191 213 191C229 191 245 194.2 256 200.5V85H320Z" 
-    fill="#FFFFFF"
-  />
-  
-  <!-- Dollar sign inside the circle -->
-  <text 
-    x="213" 
-    y="335" 
-    text-anchor="middle" 
-    fill="#000000"
-    font-size="120"
-    font-weight="800"
-    font-family="system-ui, -apple-system, sans-serif"
-  >
-    $
-  </text>
-  
-  <!-- Coin indicator at top right -->
-  <circle cx="380" cy="130" r="60" fill="#25F4EE" stroke="#000000" stroke-width="8"/>
-  <text 
-    x="380" 
-    y="155" 
-    text-anchor="middle" 
-    fill="#000000"
-    font-size="70"
-    font-weight="800"
-    font-family="system-ui, -apple-system, sans-serif"
-  >
-    $
-  </text>
+  <rect width="512" height="512" rx="110" fill="#000000"/>
+  <!-- cyan shadow -->
+  <path d="M320 90V305C320 370 268 420 203 420C138 420 86 368 86 303C86 238 138 186 203 186C221 186 239 190 252 197V90H320Z"
+    fill="#25F4EE" transform="translate(-18,-12)"/>
+  <!-- red shadow -->
+  <path d="M320 90V305C320 370 268 420 203 420C138 420 86 368 86 303C86 238 138 186 203 186C221 186 239 190 252 197V90H320Z"
+    fill="#FE2C55" transform="translate(18,12)"/>
+  <!-- white main note -->
+  <path d="M320 90V305C320 370 268 420 203 420C138 420 86 368 86 303C86 238 138 186 203 186C221 186 239 190 252 197V90H320Z"
+    fill="#FFFFFF"/>
+  <!-- dollar in circle -->
+  <circle cx="203" cy="310" r="72" fill="#000000"/>
+  <text x="203" y="340" text-anchor="middle" fill="#FFFFFF" font-size="90" font-weight="800" font-family="system-ui,sans-serif">$</text>
+  <!-- top right coin -->
+  <circle cx="390" cy="135" r="58" fill="#25F4EE" stroke="#000" stroke-width="8"/>
+  <text x="390" y="158" text-anchor="middle" fill="#000000" font-size="66" font-weight="800" font-family="system-ui,sans-serif">$</text>
 </svg>
