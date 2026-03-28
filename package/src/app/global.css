@@ -206,10 +206,12 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  /* Prevent flicker on hover */
+  /* Prevent flicker - GPU acceleration */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  will-change: transform, box-shadow;
+  -webkit-transform: perspective(1000px) translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 3D Primary Button (Red/Pink) */
@@ -1533,9 +1535,32 @@ nav, button {
 
 /* ============================================
    MOBILE TOUCH OPTIMIZATIONS
+   Fix flickering/neon glitch on mobile
    ============================================ */
 
 @media (hover: none) and (pointer: coarse) {
+  /* Disable ALL animations on touch devices to prevent flickering */
+  .btn-3d,
+  .btn-3d-animated,
+  .btn-3d-float,
+  .btn-3d-bounce,
+  .btn-3d-attention {
+    animation: none !important;
+    will-change: auto;
+    transform: perspective(1000px) translateZ(0);
+    -webkit-transform: perspective(1000px) translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* Remove animated glow effects that cause flickering */
+  .btn-3d-animated::before,
+  .btn-3d-float::before,
+  .btn-3d::before {
+    animation: none !important;
+    display: none;
+  }
+  
   /* Disable hover effects on touch devices */
   .card-3d:hover {
     transform: none;

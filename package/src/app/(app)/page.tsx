@@ -183,39 +183,20 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div 
-              className="video-container"
+            <video
+              src="/video.mp4"
+              controls
+              playsInline
+              preload="auto"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "16px",
-                margin: "0",
                 width: "100%",
-                boxSizing: "border-box",
+                height: "auto",
+                aspectRatio: "9/16",
+                objectFit: "cover",
+                borderRadius: "0 0 16px 16px",
+                display: "block",
               }}
-            >
-              <video
-                src="/video.mp4"
-                controls
-                playsInline
-                preload="auto"
-                poster=""
-                style={{
-                  width: "100%",
-                  maxWidth: "280px",
-                  aspectRatio: "9/16",
-                  objectFit: "cover",
-                  borderRadius: "16px",
-                  display: "block",
-                  margin: "0 auto",
-                  padding: "0",
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                }}
-              />
-            </div>
+            />
           </div>
 
           {/* Install App Button - Right below video */}
