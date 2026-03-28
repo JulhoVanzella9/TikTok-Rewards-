@@ -127,17 +127,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       flexDirection: "column",
       transition: "background 0.3s ease, color 0.3s ease",
       overflow: "hidden",
+      width: "100%",
+      maxWidth: "100vw",
+      boxSizing: "border-box",
     }}>
       <TopBar />
       <main style={{ 
         flex: 1,
-        paddingBottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
+        paddingBottom: "calc(clamp(70px, 18vw, 88px) + env(safe-area-inset-bottom, 0px))",
         paddingTop: "0px",
         overflowY: "auto",
         overflowX: "hidden",
         WebkitOverflowScrolling: "touch",
         width: "100%",
         maxWidth: "100vw",
+        boxSizing: "border-box",
       }}>
         {children}
       </main>
