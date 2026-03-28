@@ -583,131 +583,90 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Slider vertical de videos - FULLY RESPONSIVE using clamp */}
-      <div 
-        className="video-slider-container"
-        style={{ 
-          position: "relative", 
-          overflow: "hidden", 
-          borderRadius: "clamp(12px, 3vw, 20px)", 
-          width: "min(calc(100vw - clamp(32px, 8vw, 56px)), clamp(260px, 70vw, 360px))", 
+      {/* Video player - one at a time with AnimatePresence */}
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          borderRadius: "clamp(12px, 3vw, 20px)",
+          width: "min(calc(100vw - clamp(32px, 8vw, 56px)), clamp(260px, 70vw, 360px))",
           height: "clamp(280px, calc(100vh - clamp(220px, 35vh, 300px)), 550px)",
           minHeight: "250px",
           maxHeight: "65vh",
-          marginLeft: "auto", 
+          marginLeft: "auto",
           marginRight: "auto",
           flexShrink: 0,
-          background: isDarkMode ? "#0a0a0a" : "#f0f0f0",
-          boxShadow: isDarkMode 
-            ? "0 8px 32px rgba(0,0,0,0.5)" 
-            : "0 8px 32px rgba(0,0,0,0.15)",
-        }}>
-        <div
-          style={{
-            transition: "transform 500ms ease-out",
-            transform: `translateY(-${currentIndex * 100}%)`,
-            height: "100%",
-          }}
-        >
-          {videoData.map((video, index) => (
-            <div key={index} style={{ position: "relative", width: "100%", height: "100%" }}>
-              <div style={{
-                position: "relative", width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden",
-                background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)",
-              }}>
-                {index === currentIndex ? (
-                  <video
-                    ref={el => { videoRefs.current[index] = el; }}
-                    src={video.videoSrc}
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                    loop
-                    playsInline
-                    muted
-                    autoPlay
-                    preload="auto"
-                  />
-                ) : index === currentIndex + 1 ? (
-                  // preload only next video silently
-                  <video
-                    ref={el => { videoRefs.current[index] = el; }}
-                    src={video.videoSrc}
-                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0 }}
-                    muted
-                    preload="auto"
-                    playsInline
-                  />
-                ) : (
-                  <div style={{
-                    position: "absolute", inset: 0, background: "#1a1a1a",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    <div style={{
-                      width: "40px", height: "40px",
-                      border: "2px solid rgba(255,255,255,0.2)",
-                      borderTopColor: "#fff",
-                      borderRadius: "50%",
-                      animation: "spin 1s linear infinite",
-                    }}/>
-                  </div>
-                )}
+          background: "#000",
+          boxShadow: isDarkMode ? "0 8px 32px rgba(0,0,0,0.5)" : "0 8px 32px rgba(0,0,0,0.15)",
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.25 }}
+            style={{ position: "absolute", inset: 0 }}
+          >
+            {/* current video — key forces remount = guaranteed autoplay */}
+            <video
+              key={videoData[currentIndex]?.videoSrc}
+              ref={el => { videoRefs.current[currentIndex] = el; }}
+              src={videoData[currentIndex]?.videoSrc}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+              loop
+              playsInline
+              muted
+              autoPlay
+              preload="auto"
+            />
 
-                {/* Gradient overlay */}
-                <div style={{
-                  position: "absolute", inset: 0, pointerEvents: "none",
-                  background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%)",
-                }}/>
+            {/* Gradient overlay */}
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%)",
+            }} />
 
-                {/* Video info */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ color: "#fff", fontWeight: 700, fontSize: "14px" }}>{video.creator}</p>
-                      <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", marginTop: "4px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                        {video.title}
-                      </p>
-                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px", marginTop: "8px" }}>
-                        {video.views} views &nbsp; {video.likes} likes
-                      </p>
-                    </div>
-                    <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", background: "rgba(0,0,0,0.5)", padding: "4px 8px", borderRadius: "4px" }}>
-                      {video.duration}
-                    </span>
-                  </div>
+            {/* Video info */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "16px" }}>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+                <div style={{ flex: 1 }}>
+                  <p style={{ color: "#fff", fontWeight: 700, fontSize: "14px" }}>{videoData[currentIndex]?.creator}</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px", marginTop: "4px" }}>
+                    {videoData[currentIndex]?.views} views &nbsp; {videoData[currentIndex]?.likes} likes
+                  </p>
                 </div>
-
-                {/* Rated badge */}
-                {ratings[index] !== null && (
-                  <div style={{
-                    position: "absolute", top: "12px", right: "12px",
-                    background: "rgba(34,197,94,0.9)", color: "#fff",
-                    padding: "4px 12px", borderRadius: "20px",
-                    fontSize: "12px", fontWeight: 700,
-                    display: "flex", alignItems: "center", gap: "4px",
-                  }}>
-                    <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                    </svg>
-                    Rated
-                  </div>
-                )}
+                <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", background: "rgba(0,0,0,0.5)", padding: "3px 7px", borderRadius: "4px" }}>
+                  {videoData[currentIndex]?.duration}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Progress bar top */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "4px",
-          background: "rgba(255,255,255,0.12)", zIndex: 10,
-        }}>
+        {/* preload next video in background */}
+        {currentIndex + 1 < videoData.length && (
+          <video
+            key={`pre-${videoData[currentIndex + 1]?.videoSrc}`}
+            src={videoData[currentIndex + 1]?.videoSrc}
+            style={{ display: "none" }}
+            muted
+            preload="auto"
+            playsInline
+          />
+        )}
+
+        {/* Progress bar */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "rgba(255,255,255,0.12)", zIndex: 10 }}>
           <motion.div
-            animate={{ width: `${((ratings.filter(r => r !== null).length) / (videoData.length || 1)) * 100}%` }}
+            animate={{ width: `${(ratings.filter(r => r !== null).length / (videoData.length || 1)) * 100}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             style={{ height: "100%", background: "linear-gradient(90deg, #25f4ee, #fe2c55)", borderRadius: "0 2px 2px 0" }}
           />
         </div>
 
-        {/* Counter badge */}
+        {/* Counter */}
         <div style={{
           position: "absolute", top: "10px", right: "10px", zIndex: 10,
           background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
