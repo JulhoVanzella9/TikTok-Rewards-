@@ -62,39 +62,9 @@ export default function RefundPage() {
       >
         {step === "legal" ? (
           <>
-            {/* TikCash Logo */}
-            <div style={{ 
-              display: "flex", 
-              alignItems: "center", 
-              justifyContent: "center",
-              gap: "10px",
-              marginTop: "20px",
-              marginBottom: "24px",
-            }}>
-              <div style={{ width: "48px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
-                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
-                  <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
-                  <text x="20" y="32" textAnchor="middle" fill="#000" fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
-                  <circle cx="36" cy="12" r="7" fill="#25f4ee" stroke="#000" strokeWidth="2"/>
-                  <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
-                </svg>
-              </div>
-              <span style={{
-                fontSize: "24px",
-                fontWeight: 800,
-                color: "#fff",
-                letterSpacing: "-0.5px",
-                fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-              }}>
-                TikCash
-              </span>
-            </div>
-
             <h2 style={{ 
-              fontSize: "16px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
-              marginBottom: "20px", textAlign: "center",
+              fontSize: "18px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
+              marginBottom: "20px", marginTop: "10px", textAlign: "center",
             }}>
               Community
             </h2>
@@ -136,10 +106,6 @@ export default function RefundPage() {
               <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Terms of Use</span>
               <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Privacy Policy</span>
             </div>
-
-            <Link href="/" className="btn-3d btn-3d-dark btn-3d-sm" style={{ marginTop: "16px", fontFamily: "inherit", textDecoration: "none" }}>
-              Back to Start
-            </Link>
           </>
         ) : (
           <div style={{
