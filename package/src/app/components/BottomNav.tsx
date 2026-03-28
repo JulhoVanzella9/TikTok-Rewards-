@@ -36,11 +36,12 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/feed",
-      label: "Feed",
+      href: "/courses",
+      label: t("class"),
       icon: (active: boolean) => (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#25f4ee" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"/>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
         </svg>
       ),
     },
@@ -72,6 +73,15 @@ export default function BottomNav() {
             </svg>
           </div>
         </div>
+      ),
+    },
+    {
+      href: "/feed",
+      label: "Feed",
+      icon: (active: boolean) => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
       ),
     },
     {
