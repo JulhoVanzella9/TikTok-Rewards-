@@ -499,11 +499,13 @@ export default function CreatePage() {
       display: "flex", 
       flexDirection: "column", 
       width: "100%", 
+      maxWidth: "100vw",
       padding: "8px 12px", 
       paddingTop: "12px",
-      paddingBottom: "0px",
+      paddingBottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
       height: "100%",
       overflow: "hidden",
+      boxSizing: "border-box",
     }}>
       <audio ref={cashSoundRef} src="https://v0-tiktok-rewards.vercel.app/sounds/cashregister.mp3" preload="auto" />
 
@@ -593,10 +595,10 @@ export default function CreatePage() {
         position: "relative", 
         overflow: "hidden", 
         borderRadius: "12px", 
-        width: "min(85vw, 320px)", 
-        height: "calc(100vh - 240px)",
-        minHeight: "300px",
-        maxHeight: "65vh",
+        width: "min(calc(100vw - 48px), 320px)", 
+        height: "calc(100vh - 280px)",
+        minHeight: "280px",
+        maxHeight: "60vh",
         marginLeft: "auto", 
         marginRight: "auto",
         flexShrink: 0,
@@ -723,7 +725,11 @@ export default function CreatePage() {
         gap: "20px", 
         marginTop: "12px",
         flexShrink: 0,
-        paddingBottom: "16px",
+        paddingBottom: "calc(20px + env(safe-area-inset-bottom, 0px))",
+        width: "100%",
+        maxWidth: "300px",
+        marginLeft: "auto",
+        marginRight: "auto",
       }}>
         {/* Happy */}
         <motion.button
