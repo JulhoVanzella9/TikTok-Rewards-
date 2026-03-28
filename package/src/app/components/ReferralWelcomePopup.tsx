@@ -11,13 +11,11 @@ export default function ReferralWelcomePopup({ referralCode }: ReferralWelcomePo
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    // Check if we have a referral code from URL or localStorage
-    const storedCode = localStorage.getItem("referral_code");
-    const code = referralCode || storedCode;
-    
-    if (code && !hasShown) {
-      // Store the code
-      localStorage.setItem("referral_code", code);
+    // ONLY show popup if referralCode is passed directly from URL (not from localStorage)
+    // This ensures the popup only appears when someone clicks an actual referral link
+    if (referralCode && !hasShown) {
+      // Store the code for later use
+      localStorage.setItem("referral_code", referralCode);
       
       // Check if we've already shown the popup this session
       const shownThisSession = sessionStorage.getItem("referral_popup_shown");
