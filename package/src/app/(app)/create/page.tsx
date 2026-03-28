@@ -720,6 +720,7 @@ export default function CreatePage() {
       }}>
         {/* Happy */}
         <motion.button
+          whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("happy")}
           disabled={ratings[currentIndex] !== null}
@@ -732,19 +733,23 @@ export default function CreatePage() {
             padding: "4px",
           }}
         >
-          <div style={{
-            width: "48px", height: "48px", borderRadius: "50%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            border: "2px solid #25f4ee",
-            background: ratings[currentIndex] === "happy" ? "rgba(37,244,238,0.2)" : "transparent",
-            transition: "all 200ms",
-          }}>
+          <motion.div 
+            whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            style={{
+              width: "48px", height: "48px", borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: "2px solid #25f4ee",
+              background: ratings[currentIndex] === "happy" ? "rgba(37,244,238,0.2)" : "transparent",
+              transition: "all 200ms",
+            }}
+          >
             <span style={{ fontSize: "22px" }}>😊</span>
-          </div>
+          </motion.div>
         </motion.button>
 
         {/* Neutral */}
         <motion.button
+          whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("neutral")}
           disabled={ratings[currentIndex] !== null}
@@ -757,19 +762,23 @@ export default function CreatePage() {
             padding: "4px",
           }}
         >
-          <div style={{
-            width: "48px", height: "48px", borderRadius: "50%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            border: "2px solid #eab308",
-            background: ratings[currentIndex] === "neutral" ? "rgba(234,179,8,0.2)" : "transparent",
-            transition: "all 200ms",
-          }}>
+          <motion.div 
+            whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            style={{
+              width: "48px", height: "48px", borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: "2px solid #eab308",
+              background: ratings[currentIndex] === "neutral" ? "rgba(234,179,8,0.2)" : "transparent",
+              transition: "all 200ms",
+            }}
+          >
             <span style={{ fontSize: "22px" }}>😐</span>
-          </div>
+          </motion.div>
         </motion.button>
 
         {/* Sad */}
         <motion.button
+          whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => handleReaction("sad")}
           disabled={ratings[currentIndex] !== null}
@@ -782,15 +791,18 @@ export default function CreatePage() {
             padding: "4px",
           }}
         >
-          <div style={{
-            width: "48px", height: "48px", borderRadius: "50%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            border: "2px solid #fe2c55",
-            background: ratings[currentIndex] === "sad" ? "rgba(254,44,85,0.2)" : "transparent",
-            transition: "all 200ms",
-          }}>
+          <motion.div 
+            whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            style={{
+              width: "48px", height: "48px", borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: "2px solid #fe2c55",
+              background: ratings[currentIndex] === "sad" ? "rgba(254,44,85,0.2)" : "transparent",
+              transition: "all 200ms",
+            }}
+          >
             <span style={{ fontSize: "22px" }}>😞</span>
-          </div>
+          </motion.div>
         </motion.button>
       </div>
 

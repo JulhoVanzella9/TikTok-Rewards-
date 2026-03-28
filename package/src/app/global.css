@@ -198,9 +198,13 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   overflow: hidden;
   transform-style: preserve-3d;
   transform: perspective(1000px) translateZ(0);
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  /* Prevent flicker on hover */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, box-shadow;
 }
 
 /* 3D Primary Button (Red/Pink) */
@@ -232,6 +236,43 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
     inset 0 1px 0 rgba(255,255,255,0.15),
     inset 0 -1px 0 rgba(0,0,0,0.15);
   transition: all 0.05s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3D Red Button (alias for primary) */
+.btn-3d-red {
+  background: linear-gradient(145deg, #ff3366 0%, #fe2c55 50%, #e91e4a 100%);
+  color: #fff;
+  box-shadow: 
+    0 4px 0 0 #b8183a,
+    0 6px 12px rgba(254, 44, 85, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0,0,0,0.1);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.btn-3d-red:hover {
+  transform: perspective(1000px) translateY(-2px) translateZ(4px);
+  box-shadow: 
+    0 6px 0 0 #b8183a,
+    0 10px 20px rgba(254, 44, 85, 0.5),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+.btn-3d-red:active {
+  transform: perspective(1000px) translateY(2px) translateZ(0);
+  box-shadow: 
+    0 2px 0 0 #b8183a,
+    0 3px 8px rgba(254, 44, 85, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.15);
+  transition: all 0.05s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animated Red Button */
+.btn-3d-red.btn-3d-animated {
+  --btn-shadow-color: #b8183a;
+  --btn-glow-color: rgba(254, 44, 85, 0.4);
 }
 
 /* 3D Cyan Button */
@@ -710,9 +751,16 @@ nav, button {
   user-select: none;
 }
 
-/* Theme transition for all elements */
+/* Theme transition for all elements - exclude buttons to prevent flicker */
 *, *::before, *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease;
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.3s, 0.3s, 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Override for buttons - use their specific transitions */
+.btn-3d, .btn-3d::before, .btn-3d::after {
+  transition-property: transform, box-shadow, opacity, left;
 }
 
 /* Light theme specific overrides for common patterns */

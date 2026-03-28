@@ -193,66 +193,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
             </div>
           </div>
 
-          {/* Referral Code */}
-          <div style={{
-            background: "rgba(255,255,255,0.03)",
-            borderRadius: "16px",
-            padding: "16px",
-            marginBottom: "16px",
-            border: "1px solid rgba(255,255,255,0.06)",
-          }}>
-            <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginBottom: "8px", fontWeight: 600 }}>
-              YOUR REFERRAL CODE
-            </div>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              background: "rgba(0,0,0,0.3)",
-              borderRadius: "12px",
-              padding: "12px 16px",
-            }}>
-              <span style={{ flex: 1, fontSize: "18px", fontWeight: 700, color: "#fff", letterSpacing: "2px" }}>
-                {loading ? "Loading..." : referralCode}
-              </span>
-              <button
-                onClick={copyToClipboard}
-                style={{
-                  background: copied ? "rgba(37,244,238,0.2)" : "rgba(255,255,255,0.1)",
-                  border: "none",
-                  borderRadius: "8px",
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  color: copied ? "#25f4ee" : "#fff",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  transition: "all 0.2s",
-                }}
-              >
-                {copied ? (
-                  <>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M20 6L9 17l-5-5"/>
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2"/>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                    </svg>
-                    Copy
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* 3D Share Button */}
+          {/* Share Button */}
           <button
             onClick={shareLink}
             className="btn-3d btn-3d-primary btn-3d-full btn-3d-lg"
