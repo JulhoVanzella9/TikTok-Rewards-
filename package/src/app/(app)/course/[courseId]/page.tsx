@@ -326,11 +326,10 @@ export default function CourseDetailPage() {
                 {selectedModule.subModules.map((subModule, sIndex) => (
                   <motion.div
                     key={subModule.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: sIndex * 0.05 }}
-                    whileHover={{ scale: 1.01, x: 4 }}
-                    whileTap={{ scale: 0.98 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.15 }}
+                    whileTap={{ scale: 0.98, backgroundColor: isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)" }}
                     onClick={() => setSelectedSubModule(subModule)}
                     style={{
                       display: "flex",
@@ -556,11 +555,10 @@ export default function CourseDetailPage() {
                     }}
                   >
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: lIndex * 0.03 }}
-                      whileHover={{ scale: 1.01, x: 4 }}
-                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.15 }}
+                      whileTap={{ scale: 0.98, backgroundColor: isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)" }}
                       style={{
                         display: "flex",
                         alignItems: "center",
