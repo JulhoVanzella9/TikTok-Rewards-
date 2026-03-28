@@ -62,9 +62,30 @@ export default function RefundPage() {
       >
         {step === "legal" ? (
           <>
+            {/* Back Button */}
+            <Link 
+              href="/support"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                color: "rgba(255,255,255,0.7)",
+                fontSize: "14px",
+                fontWeight: 600,
+                textDecoration: "none",
+                marginBottom: "16px",
+                alignSelf: "flex-start",
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back to Support
+            </Link>
+
             <h2 style={{ 
               fontSize: "18px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
-              marginBottom: "20px", marginTop: "10px", textAlign: "center",
+              marginBottom: "20px", textAlign: "center",
             }}>
               Community
             </h2>

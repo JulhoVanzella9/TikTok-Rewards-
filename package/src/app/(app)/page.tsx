@@ -86,8 +86,8 @@ export default function HomePage() {
 
 {/* 1. Video Tutorial Section - FIRST */}
   <div style={{
-  padding: "clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px)",
-  paddingBottom: "clamp(40px, 6vw, 60px)",
+  padding: "clamp(16px, 3vw, 40px) clamp(12px, 3vw, 40px)",
+  paddingBottom: "clamp(24px, 4vw, 60px)",
   maxWidth: "800px",
   margin: "0 auto",
   }}>
@@ -99,27 +99,28 @@ export default function HomePage() {
             background: isDarkMode 
               ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
               : "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.04) 100%)",
-            borderRadius: "24px",
-            padding: "clamp(24px, 4vw, 40px)",
+            borderRadius: "clamp(16px, 3vw, 24px)",
+            padding: "clamp(16px, 3vw, 40px)",
             border: `1px solid ${isDarkMode ? "rgba(254,44,85,0.2)" : "rgba(254,44,85,0.15)"}`,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px, 2vw, 14px)", marginBottom: "clamp(10px, 2vw, 16px)" }}>
             <div style={{
-              width: "48px",
-              height: "48px",
+              width: "clamp(36px, 8vw, 48px)",
+              height: "clamp(36px, 8vw, 48px)",
               borderRadius: "50%",
               background: "rgba(254,44,85,0.15)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexShrink: 0,
             }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#fe2c55">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fe2c55">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </div>
             <h2 style={{
-              fontSize: "clamp(20px, 3.5vw, 28px)",
+              fontSize: "clamp(18px, 4vw, 28px)",
               fontWeight: 800,
               color: "#fe2c55",
             }}>
@@ -128,10 +129,10 @@ export default function HomePage() {
           </div>
 
           <p style={{
-            fontSize: "clamp(14px, 2vw, 16px)",
+            fontSize: "clamp(12px, 2.5vw, 16px)",
             color: "var(--text-secondary)",
-            marginBottom: "24px",
-            lineHeight: 1.6,
+            marginBottom: "clamp(14px, 3vw, 24px)",
+            lineHeight: 1.5,
           }}>
             Watch this quick tutorial to learn how to use the TikCash app and maximize your earnings.
           </p>
@@ -144,16 +145,16 @@ export default function HomePage() {
             border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
           }}>
             <div style={{
-              padding: "16px 20px",
+              padding: "clamp(10px, 2vw, 16px) clamp(12px, 2.5vw, 20px)",
               display: "flex",
               alignItems: "center",
-              gap: "14px",
+              gap: "clamp(10px, 2vw, 14px)",
               borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
               background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
             }}>
               <div style={{
-                width: "40px",
-                height: "40px",
+                width: "clamp(32px, 7vw, 40px)",
+                height: "clamp(32px, 7vw, 40px)",
                 borderRadius: "50%",
                 background: isDarkMode 
                   ? "linear-gradient(135deg, #1a1a2e, #252542)"
@@ -161,17 +162,18 @@ export default function HomePage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexShrink: 0,
                 border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
               }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
                   <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
                 </svg>
               </div>
               <div>
-                <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>
+                <div style={{ fontSize: "clamp(13px, 3vw, 16px)", fontWeight: 700, color: "var(--text-primary)" }}>
                   TikCash - How to Use
                 </div>
-                <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+                <div style={{ fontSize: "clamp(11px, 2.5vw, 14px)", color: "var(--text-muted)" }}>
                   Support Service
                 </div>
               </div>
@@ -181,16 +183,16 @@ export default function HomePage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              padding: "24px",
+              padding: "clamp(12px, 3vw, 24px)",
             }}>
               <div style={{
                 width: "100%",
-                maxWidth: "280px",
+                maxWidth: "min(220px, 50vw)",
                 aspectRatio: "9/16",
                 background: isDarkMode 
                   ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
                   : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
-                borderRadius: "16px",
+                borderRadius: "clamp(10px, 2vw, 16px)",
                 border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
                 overflow: "hidden",
                 position: "relative",
@@ -202,8 +204,8 @@ export default function HomePage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   style={{
-                    width: "64px",
-                    height: "64px",
+                    width: "clamp(48px, 10vw, 64px)",
+                    height: "clamp(48px, 10vw, 64px)",
                     borderRadius: "50%",
                     background: "#fe2c55",
                     display: "flex",
@@ -213,19 +215,19 @@ export default function HomePage() {
                     boxShadow: "0 8px 30px rgba(254,44,85,0.5)",
                   }}
                 >
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff">
                     <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
                 </motion.div>
                 
                 <div style={{
                   position: "absolute",
-                  bottom: "12px",
-                  right: "12px",
+                  bottom: "8px",
+                  right: "8px",
                   background: "rgba(0,0,0,0.7)",
-                  padding: "6px 12px",
-                  borderRadius: "6px",
-                  fontSize: "13px",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  fontSize: "11px",
                   fontWeight: 600,
                   color: "#fff",
                 }}>
@@ -236,7 +238,7 @@ export default function HomePage() {
           </div>
 
           {/* Install App Button - Right below video */}
-          <div style={{ textAlign: "center", marginTop: "24px" }}>
+          <div style={{ textAlign: "center", marginTop: "clamp(16px, 3vw, 24px)" }}>
             <button
               className="btn-3d btn-3d-cyan btn-3d-animated btn-3d-icon-grow"
               onClick={() => {
@@ -244,13 +246,13 @@ export default function HomePage() {
                 window.dispatchEvent(event);
               }}
               style={{
-                gap: "12px",
+                gap: "8px",
                 fontFamily: "inherit",
-                padding: "16px 32px",
-                fontSize: "16px",
+                padding: "clamp(12px, 2.5vw, 16px) clamp(20px, 4vw, 32px)",
+                fontSize: "clamp(14px, 3vw, 16px)",
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
