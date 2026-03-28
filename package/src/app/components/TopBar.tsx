@@ -55,18 +55,18 @@ export default function TopBar() {
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === "dark";
 
-  // Fetch balance from Supabase
+  // Fetch balance from Supabase video_ratings table
   useEffect(() => {
     const fetchBalance = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data } = await supabase
-          .from("users")
-          .select("balance")
-          .eq("id", user.id)
+          .from("video_ratings")
+          .select("total_earned")
+          .eq("user_id", user.id)
           .single();
-        if (data) setBalance(data.balance || 0);
+        if (data) setBalance(Number(data.total_earned) || 0);
       }
     };
     fetchBalance();

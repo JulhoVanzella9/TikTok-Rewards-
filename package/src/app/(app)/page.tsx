@@ -183,6 +183,20 @@ export default function HomePage() {
               </div>
             </div>
 
+            <video
+              src="/video.mp4"
+              controls
+              playsInline
+              preload="auto"
+              style={{
+                width: "100%",
+                height: "auto",
+                aspectRatio: "9/16",
+                objectFit: "cover",
+                borderRadius: "0 0 16px 16px",
+                display: "block",
+              }}
+            />
             <div
               className="video-container"
               style={{
