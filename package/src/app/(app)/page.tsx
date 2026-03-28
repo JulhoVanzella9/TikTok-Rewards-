@@ -187,7 +187,7 @@ export default function HomePage() {
               className="video-container"
               style={{
                 width: "100%",
-                aspectRatio: "9/16",
+                height: "460px",
                 background: "#000",
                 margin: "0",
                 padding: "0",
@@ -200,10 +200,10 @@ export default function HomePage() {
                 allow="autoplay"
                 style={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
+                  top: "-38px",
+                  left: "-2px",
+                  width: "calc(100% + 4px)",
+                  height: "calc(100% + 76px)",
                   border: "none",
                 }}
               />
