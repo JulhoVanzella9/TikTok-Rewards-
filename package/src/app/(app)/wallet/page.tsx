@@ -59,7 +59,13 @@ export default function WalletPage() {
   });
 
   return (
-    <div style={{ padding: "12px 16px", maxWidth: "600px", margin: "0 auto", paddingBottom: "20px" }}>
+    <div style={{ 
+      padding: "clamp(12px, 3vw, 20px) clamp(14px, 4vw, 24px)", 
+      maxWidth: "min(600px, calc(100vw - 24px))", 
+      margin: "0 auto", 
+      paddingBottom: "clamp(16px, 4vw, 24px)",
+      boxSizing: "border-box",
+    }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, x: -10 }}
@@ -116,9 +122,14 @@ export default function WalletPage() {
           {t("yourBalance")}
         </div>
         <div style={{
-          fontSize: "36px", fontWeight: 900, color: "var(--text-primary)",
-          display: "flex", alignItems: "center", gap: "12px",
+          fontSize: "clamp(28px, 8vw, 40px)", 
+          fontWeight: 900, 
+          color: "var(--text-primary)",
+          display: "flex", 
+          alignItems: "center", 
+          gap: "clamp(8px, 2vw, 14px)",
           position: "relative",
+          flexWrap: "wrap",
         }}>
           {loading ? "..." : formattedBalance}
           <motion.div 
@@ -202,8 +213,10 @@ export default function WalletPage() {
 
         {/* Amount Selection */}
         <div style={{
-          display: "grid", gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "10px", marginBottom: "16px",
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(120px, calc(50% - 6px)), 1fr))",
+          gap: "clamp(8px, 2vw, 12px)", 
+          marginBottom: "clamp(12px, 3vw, 18px)",
         }}>
           {withdrawAmounts.map((amount) => (
             <motion.button
@@ -241,8 +254,11 @@ export default function WalletPage() {
                 </div>
               )}
               <span style={{
-                fontSize: "17px", fontWeight: 800,
+                fontSize: "clamp(14px, 4vw, 17px)", 
+                fontWeight: 800,
                 color: selectedAmount === amount.value ? "#fe2c55" : "var(--text-primary)",
+                wordBreak: "break-word",
+                textAlign: "center",
               }}>
                 {amount.value === "all" ? `All ($${balance.toFixed(2)})` : amount.label}
               </span>

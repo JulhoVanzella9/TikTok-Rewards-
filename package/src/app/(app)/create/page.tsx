@@ -500,13 +500,14 @@ export default function CreatePage() {
       flexDirection: "column", 
       width: "100%", 
       maxWidth: "100vw",
-      padding: "8px 12px", 
-      paddingTop: "12px",
-      paddingBottom: "calc(24px + env(safe-area-inset-bottom, 0px))",
+      padding: "clamp(8px, 2vw, 16px) clamp(12px, 3vw, 20px)", 
+      paddingTop: "clamp(8px, 2vw, 16px)",
+      paddingBottom: "calc(clamp(20px, 5vw, 32px) + env(safe-area-inset-bottom, 0px))",
       height: "100%",
-      minHeight: "calc(100vh - 80px)",
+      minHeight: "calc(100vh - clamp(70px, 18vw, 90px))",
       overflow: "hidden",
       boxSizing: "border-box",
+      alignItems: "center",
     }}>
       <audio ref={cashSoundRef} src="https://v0-tiktok-rewards.vercel.app/sounds/cashregister.mp3" preload="auto" />
 
@@ -591,19 +592,25 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Slider vertical de videos - FULLY RESPONSIVE using vh */}
-      <div style={{ 
-        position: "relative", 
-        overflow: "hidden", 
-        borderRadius: "12px", 
-        width: "min(calc(100vw - 48px), 320px)", 
-        height: "calc(100vh - 280px)",
-        minHeight: "280px",
-        maxHeight: "60vh",
-        marginLeft: "auto", 
-        marginRight: "auto",
-        flexShrink: 0,
-      }}>
+      {/* Slider vertical de videos - FULLY RESPONSIVE using clamp */}
+      <div 
+        className="video-slider-container"
+        style={{ 
+          position: "relative", 
+          overflow: "hidden", 
+          borderRadius: "clamp(12px, 3vw, 20px)", 
+          width: "min(calc(100vw - clamp(32px, 8vw, 56px)), clamp(260px, 70vw, 360px))", 
+          height: "clamp(280px, calc(100vh - clamp(220px, 35vh, 300px)), 550px)",
+          minHeight: "250px",
+          maxHeight: "65vh",
+          marginLeft: "auto", 
+          marginRight: "auto",
+          flexShrink: 0,
+          background: isDarkMode ? "#0a0a0a" : "#f0f0f0",
+          boxShadow: isDarkMode 
+            ? "0 8px 32px rgba(0,0,0,0.5)" 
+            : "0 8px 32px rgba(0,0,0,0.15)",
+        }}>
         <div
           style={{
             transition: "transform 500ms ease-out",
@@ -720,18 +727,20 @@ export default function CreatePage() {
       </div>
 
       {/* 3 Botoes de reacao - mobile optimized */}
-      <div style={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        gap: "20px", 
-        marginTop: "12px",
-        flexShrink: 0,
-        paddingBottom: "calc(20px + env(safe-area-inset-bottom, 0px))",
-        width: "100%",
-        maxWidth: "300px",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}>
+      <div 
+        className="reaction-buttons"
+        style={{ 
+          display: "flex", 
+          justifyContent: "center", 
+          gap: "clamp(16px, 5vw, 28px)", 
+          marginTop: "clamp(8px, 2vw, 16px)",
+          flexShrink: 0,
+          paddingBottom: "calc(clamp(12px, 3vw, 24px) + env(safe-area-inset-bottom, 0px))",
+          width: "100%",
+          maxWidth: "min(320px, calc(100vw - 32px))",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}>
         {/* Happy */}
         <motion.button
           whileHover={{ scale: 1.15 }}
@@ -749,15 +758,18 @@ export default function CreatePage() {
         >
           <motion.div 
             whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            className="reaction-button"
             style={{
-              width: "48px", height: "48px", borderRadius: "50%",
+              width: "clamp(44px, 12vw, 56px)", 
+              height: "clamp(44px, 12vw, 56px)", 
+              borderRadius: "50%",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: "2px solid #25f4ee",
               background: ratings[currentIndex] === "happy" ? "rgba(37,244,238,0.2)" : "transparent",
               transition: "all 200ms",
             }}
           >
-            <span style={{ fontSize: "22px" }}>😊</span>
+            <span style={{ fontSize: "clamp(20px, 5vw, 26px)" }}>😊</span>
           </motion.div>
         </motion.button>
 
@@ -778,15 +790,18 @@ export default function CreatePage() {
         >
           <motion.div 
             whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            className="reaction-button"
             style={{
-              width: "48px", height: "48px", borderRadius: "50%",
+              width: "clamp(44px, 12vw, 56px)", 
+              height: "clamp(44px, 12vw, 56px)", 
+              borderRadius: "50%",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: "2px solid #eab308",
               background: ratings[currentIndex] === "neutral" ? "rgba(234,179,8,0.2)" : "transparent",
               transition: "all 200ms",
             }}
           >
-            <span style={{ fontSize: "22px" }}>😐</span>
+            <span style={{ fontSize: "clamp(20px, 5vw, 26px)" }}>😐</span>
           </motion.div>
         </motion.button>
 
@@ -807,15 +822,18 @@ export default function CreatePage() {
         >
           <motion.div 
             whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+            className="reaction-button"
             style={{
-              width: "48px", height: "48px", borderRadius: "50%",
+              width: "clamp(44px, 12vw, 56px)", 
+              height: "clamp(44px, 12vw, 56px)", 
+              borderRadius: "50%",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: "2px solid #fe2c55",
               background: ratings[currentIndex] === "sad" ? "rgba(254,44,85,0.2)" : "transparent",
               transition: "all 200ms",
             }}
           >
-            <span style={{ fontSize: "22px" }}>😞</span>
+            <span style={{ fontSize: "clamp(20px, 5vw, 26px)" }}>😞</span>
           </motion.div>
         </motion.button>
       </div>

@@ -109,14 +109,17 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(180deg, #0a0a1a 0%, #000000 50%, #0a0512 100%)",
-        padding: "20px",
+        padding: "clamp(16px, 4vw, 24px)",
+        paddingTop: "calc(clamp(16px, 4vw, 24px) + env(safe-area-inset-top, 0px))",
+        paddingBottom: "calc(clamp(16px, 4vw, 24px) + env(safe-area-inset-bottom, 0px))",
         position: "relative",
         overflow: "hidden",
+        boxSizing: "border-box",
       }}
     >
       {/* Background orbs */}
@@ -144,13 +147,15 @@ export default function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         style={{
-          width: "100%", maxWidth: "400px",
+          width: "100%", 
+          maxWidth: "min(400px, calc(100vw - 32px))",
           background: "linear-gradient(145deg, rgba(26,26,46,0.98) 0%, rgba(18,18,30,0.99) 100%)",
-          borderRadius: "24px",
+          borderRadius: "clamp(18px, 5vw, 24px)",
           border: "1px solid rgba(255,255,255,0.08)",
-          padding: "32px 28px",
+          padding: "clamp(24px, 6vw, 36px) clamp(20px, 5vw, 32px)",
           position: "relative",
           boxShadow: "0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
+          boxSizing: "border-box",
         }}
       >
         {/* Header */}
@@ -300,6 +305,8 @@ export default function LoginPage() {
             {loading ? "Loading..." : "Continue"}
           </button>
         </form>
+
+
 
         {/* Terms */}
         <p

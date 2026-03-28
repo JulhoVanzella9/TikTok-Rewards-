@@ -67,15 +67,16 @@ export default function HomePage() {
     <div style={{ 
       padding: "0",
       maxWidth: "100vw", 
+      width: "100%",
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "calc(120px + env(safe-area-inset-bottom, 0px))",
+      paddingBottom: "calc(clamp(100px, 25vw, 140px) + env(safe-area-inset-bottom, 0px))",
       position: "relative",
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
         : "linear-gradient(180deg, #f8f9fc 0%, #ffffff 50%, #f8f9fc 100%)",
-      minHeight: "100vh",
+      minHeight: "100dvh",
       overflowX: "hidden",
       boxSizing: "border-box",
     }}>
@@ -88,9 +89,9 @@ export default function HomePage() {
 
 {/* 1. Video Tutorial Section - FIRST */}
   <div style={{
-    padding: "20px 16px",
-    paddingBottom: "32px",
-    maxWidth: "calc(100vw - 32px)",
+    padding: "clamp(16px, 4vw, 24px) clamp(14px, 3.5vw, 20px)",
+    paddingBottom: "clamp(24px, 6vw, 36px)",
+    maxWidth: "min(calc(100vw - 24px), 700px)",
     margin: "0 auto",
     boxSizing: "border-box",
   }}>
@@ -182,61 +183,38 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "16px",
-            }}>
-              <div style={{
-                width: "min(70%, 260px)",
-                maxWidth: "280px",
-                aspectRatio: "9/16",
-                background: isDarkMode 
-                  ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
-                  : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
-                borderRadius: "16px",
-                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
-                overflow: "hidden",
-                position: "relative",
+            <div 
+              className="video-container"
+              style={{
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "center",
-              }}>
-                <motion.div 
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    borderRadius: "50%",
-                    background: "#fe2c55",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    boxShadow: "0 8px 30px rgba(254,44,85,0.5)",
-                  }}
-                >
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
-                  </svg>
-                </motion.div>
-                
-                <div style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  right: "12px",
-                  background: "rgba(0,0,0,0.7)",
-                  padding: "6px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  color: "#fff",
-                }}>
-                  2:45
-                </div>
-              </div>
+                alignItems: "center",
+                padding: "16px",
+                margin: "0",
+                width: "100%",
+                boxSizing: "border-box",
+              }}
+            >
+              <video
+                src="/video.mp4"
+                controls
+                playsInline
+                preload="auto"
+                poster=""
+                style={{
+                  width: "100%",
+                  maxWidth: "280px",
+                  aspectRatio: "9/16",
+                  objectFit: "cover",
+                  borderRadius: "16px",
+                  display: "block",
+                  margin: "0 auto",
+                  padding: "0",
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                }}
+              />
             </div>
           </div>
 
@@ -396,8 +374,8 @@ export default function HomePage() {
       }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: "20px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, clamp(240px, 40vw, 300px)), 1fr))",
+          gap: "clamp(14px, 3.5vw, 24px)",
         }}>
           {features.map((feature, index) => (
             <motion.div
@@ -409,8 +387,8 @@ export default function HomePage() {
                 background: isDarkMode 
                   ? "rgba(255,255,255,0.03)"
                   : "rgba(255,255,255,0.9)",
-                borderRadius: "20px",
-                padding: "28px",
+                borderRadius: "clamp(14px, 4vw, 22px)",
+                padding: "clamp(18px, 5vw, 30px)",
                 border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
                 boxShadow: isDarkMode
                   ? "0 4px 20px rgba(0,0,0,0.2)"

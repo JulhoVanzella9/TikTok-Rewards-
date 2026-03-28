@@ -60,8 +60,8 @@ export default function CoursesPage() {
       }}>
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-          gap: "24px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, clamp(280px, 45vw, 360px)), 1fr))",
+          gap: "clamp(16px, 4vw, 28px)",
           alignItems: "stretch",
         }}>
           {courses.map((course, index) => (
@@ -168,12 +168,12 @@ export default function CoursesPage() {
                   
                   {/* Course Info */}
                   <div style={{ 
-                    padding: "16px",
+                    padding: "clamp(12px, 3vw, 20px)",
                     background: isDarkMode ? "#0a0a0a" : "#fff",
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
-                    minHeight: "180px",
+                    minHeight: "clamp(150px, 35vw, 200px)",
                   }}>
                     <p style={{
                       fontSize: "13px",
