@@ -183,60 +183,45 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "16px",
-            }}>
+            <div 
+              className="video-container"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "0",
+                margin: "0",
+                width: "100%",
+              }}
+            >
               <div style={{
-                width: "min(70%, 260px)",
+                width: "100%",
                 maxWidth: "280px",
                 aspectRatio: "9/16",
-                background: isDarkMode 
-                  ? "linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%)"
-                  : "linear-gradient(180deg, #d0d0e0 0%, #b0b0c0 100%)",
                 borderRadius: "16px",
-                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
                 overflow: "hidden",
                 position: "relative",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                background: "#000",
+                margin: "0 auto",
               }}>
-                <motion.div 
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                <video
+                  src="/video.mp4"
+                  controls
+                  playsInline
+                  preload="metadata"
                   style={{
-                    width: "60px",
-                    height: "60px",
-                    borderRadius: "50%",
-                    background: "#fe2c55",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    boxShadow: "0 8px 30px rgba(254,44,85,0.5)",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: "16px",
+                    display: "block",
+                    margin: "0",
+                    padding: "0",
                   }}
-                >
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
-                  </svg>
-                </motion.div>
-                
-                <div style={{
-                  position: "absolute",
-                  bottom: "12px",
-                  right: "12px",
-                  background: "rgba(0,0,0,0.7)",
-                  padding: "6px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  color: "#fff",
-                }}>
-                  2:45
-                </div>
+                />
               </div>
             </div>
           </div>
