@@ -150,7 +150,7 @@ export default function TopBar() {
 
   // Bottom section menu items (actions)
   const bottomMenuItems = [
-    { label: t("installApp") || "Install App", href: "#install", isInstall: true, badge: "PWA", badgeColor: "#25f4ee", icon: (
+    { label: t("installApp") || "Install App", href: "#install", isInstall: true, badge: "App", badgeColor: "#25f4ee", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
@@ -266,8 +266,8 @@ export default function TopBar() {
               whileTap={{ scale: 0.95 }}
               style={{ display: "flex", alignItems: "center", gap: "6px" }}
             >
-              <div style={{ width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+              <div style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill={isDarkMode ? "#fff" : "#000"}/>
@@ -277,7 +277,7 @@ export default function TopBar() {
                 </svg>
               </div>
               <span style={{
-                fontSize: "clamp(15px, 4vw, 19px)",
+                fontSize: "clamp(18px, 5vw, 24px)",
                 fontWeight: 800,
                 color: isDarkMode ? "#fff" : "#000",
                 letterSpacing: "-0.5px",
@@ -310,27 +310,24 @@ export default function TopBar() {
               flexShrink: 0,
             }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
               <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
               <line x1="1" y1="10" x2="23" y2="10"/>
             </svg>
-            <span style={{ 
+            <span style={{
               color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
-              fontSize: "clamp(9px, 2.5vw, 12px)",
+              fontSize: "clamp(11px, 3vw, 14px)",
               fontWeight: 600,
-              display: "none",
-            }}
-            className="balance-label-desktop"
-            >
+            }}>
               Balance
             </span>
-            <motion.span 
+            <motion.span
               key={balance}
               initial={balanceAnimation ? { scale: 1.3, color: "#22c55e" } : false}
               animate={{ scale: 1, color: "#25f4ee" }}
               transition={{ duration: 0.5 }}
-              style={{ 
-                fontSize: "clamp(11px, 3vw, 14px)",
+              style={{
+                fontSize: "clamp(14px, 3.5vw, 18px)",
                 fontWeight: 800,
                 color: "#25f4ee",
                 whiteSpace: "nowrap",
