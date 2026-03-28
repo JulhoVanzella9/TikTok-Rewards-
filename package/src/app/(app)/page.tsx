@@ -192,24 +192,19 @@ export default function HomePage() {
                 margin: "0",
                 padding: "0",
                 overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                position: "relative",
               }}
             >
-              <video
-                src="/video.mp4"
-                controls
-                playsInline
-                preload="metadata"
+              <iframe
+                src="https://drive.google.com/file/d/1S6ytaMYJ4ce3D_v2c5AecKlQPtNis4rR/preview"
+                allow="autoplay"
                 style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
                   width: "100%",
                   height: "100%",
-                  objectFit: "contain",
-                  display: "block",
                   border: "none",
-                  outline: "none",
-                  background: "#000",
                 }}
               />
             </div>
