@@ -176,28 +176,10 @@ export default function CreatePage() {
   const slideTo = useCallback((idx: number) => {
     if (idx < 0 || idx >= videoData.length) return;
     if (idx === currentIndex) return;
-    if (animating) return;
-
     setAnimating(true);
-
-    if (!loadedVideos.includes(idx)) {
-      setLoadedVideos((prev) => [...prev, idx]);
-    }
-
-    if (idx + 1 < videoData.length && !loadedVideos.includes(idx + 1)) {
-      setLoadedVideos((prev) => [...prev, idx + 1]);
-    }
-
     setCurrentIndex(idx);
-
-    setTimeout(() => {
-      updateVideoMutes(idx);
-    }, 300);
-
-    setTimeout(() => {
-      setAnimating(false);
-    }, 500);
-  }, [currentIndex, animating, loadedVideos, updateVideoMutes]);
+    setTimeout(() => setAnimating(false), 500);
+  }, [currentIndex, videoData.length]);
 
   const goNext = useCallback(() => {
     if (currentIndex < videoData.length - 1) {
@@ -206,6 +188,7 @@ export default function CreatePage() {
   }, [currentIndex, slideTo]);
 
   const handleReaction = useCallback(async (reaction: string) => {
+    if (videoData.length === 0 || ratings.length !== videoData.length) return;
     if (ratings[currentIndex] !== null) return;
     if (animating) return;
     if (!userId) return;
@@ -284,7 +267,7 @@ export default function CreatePage() {
     }
 
 // Check if all videos rated
-      const allDone = newRatings.every((r) => r !== null);
+      const allDone = newRatings.length === videoData.length && newRatings.every((r) => r !== null);
       if (allDone) {
         // Request notification permission and schedule reminder for 24h
         requestNotificationPermission().then((granted) => {
@@ -306,11 +289,27 @@ export default function CreatePage() {
     }
   }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned, userId]);
 
-  // Play video whenever videoData or currentIndex changes
+  // Play current video via DOM ref (muted for autoplay policy)
   useEffect(() => {
     if (loading || videoData.length === 0) return;
-    setTimeout(() => updateVideoMutes(currentIndex), 300);
-  }, [loading, videoData.length, currentIndex, updateVideoMutes]);
+    const tryPlay = () => {
+      videoRefs.current.forEach((v, i) => {
+        if (!v) return;
+        if (i === currentIndex) {
+          v.muted = false;
+          v.currentTime = 0;
+          v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+        } else {
+          v.pause();
+          v.muted = true;
+        }
+      });
+    };
+    // try immediately then retry after DOM settles
+    tryPlay();
+    const t = setTimeout(tryPlay, 400);
+    return () => clearTimeout(t);
+  }, [loading, videoData.length, currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setVideoRef = (index: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[index] = el;
@@ -630,20 +629,16 @@ export default function CreatePage() {
               }}>
                 {Math.abs(index - currentIndex) <= 1 ? (
                   <video
-                    ref={setVideoRef(index)}
+                    ref={el => {
+                      videoRefs.current[index] = el;
+                      if (el) { el.muted = index !== currentIndex; }
+                    }}
                     src={video.videoSrc}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                     loop
                     playsInline
-                    muted
+                    autoPlay={index === currentIndex}
                     preload={index === currentIndex ? "auto" : "none"}
-                    onCanPlay={() => {
-                      const v = videoRefs.current[index];
-                      if (index === currentIndex && v) {
-                        v.muted = false;
-                        v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
-                      }
-                    }}
                   />
                 ) : (
                   <div style={{
