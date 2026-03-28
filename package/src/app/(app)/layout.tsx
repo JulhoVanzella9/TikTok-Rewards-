@@ -116,7 +116,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div style={{ 
-      minHeight: "100vh",
       minHeight: "100dvh",
       height: "100%",
       background: isDarkMode ? "#000" : "#f5f5f5", 
