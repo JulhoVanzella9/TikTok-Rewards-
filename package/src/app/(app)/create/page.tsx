@@ -5,36 +5,49 @@ import { createClient } from "@/lib/supabase/client";
 import { useTheme } from "@/lib/theme/context";
 import { scheduleRatingsAvailableNotification, requestNotificationPermission } from "@/lib/notifications";
 
-const videoData = [
-  {
-    videoSrc: "https://v0-tiktok-rewards.vercel.app/videos/video-1.mp4",
-    title: "When the DJ drops your favorite song at the party",
+function seededRng(seed: number) {
+  let s = seed;
+  return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+}
+function fakeNum(seed: string, min: number, max: number) {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) & 0x7fffffff;
+  return min + (h % (max - min));
+}
+function fmt(n: number) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+  return n.toString();
+}
+function dailyPick(arr: string[], count: number): string[] {
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const rng = seededRng(seed);
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, count);
+}
+function fileToVideoData(file: string) {
+  const creator = "@" + file.split("_")[0];
+  const views = fakeNum(file + "v", 10_000, 9_800_000);
+  const likes = fakeNum(file + "l", 500, Math.floor(views * 0.15));
+  return {
+    videoSrc: `/videos/${file}`,
+    title: "TikTok viral video",
     duration: "0:15",
-    views: "89.3M",
-    likes: "12.4M",
-    creator: "@party.vibes",
-  },
-  {
-    videoSrc: "https://v0-tiktok-rewards.vercel.app/videos/video-2.mp4",
-    title: "POV: You finally beat that impossible level",
-    duration: "0:22",
-    views: "45.7M",
-    likes: "8.9M",
-    creator: "@gamer.moments",
-  },
-  {
-    videoSrc: "https://v0-tiktok-rewards.vercel.app/videos/video-3.mp4",
-    title: "This dance trend is taking over the internet",
-    duration: "0:18",
-    views: "156.2M",
-    likes: "28.1M",
-    creator: "@dance.central",
-  },
-];
+    views: fmt(views),
+    likes: fmt(likes),
+    creator,
+  };
+}
 
 export default function CreatePage() {
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
+  const [videoData, setVideoData] = useState<ReturnType<typeof fileToVideoData>[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState<(string | null)[]>([null, null, null]);
   const [animating, setAnimating] = useState(false);
@@ -47,6 +60,12 @@ export default function CreatePage() {
   const [allRated, setAllRated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/videos/index.json")
+      .then(r => r.json())
+      .then((all: string[]) => setVideoData(dailyPick(all, 3).map(fileToVideoData)));
+  }, []);
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const cashSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -313,7 +332,7 @@ export default function CreatePage() {
   };
 
   // Loading screen
-  if (loading) {
+  if (loading || videoData.length === 0) {
     return (
       <div style={{
         display: "flex", flexDirection: "column", alignItems: "center",

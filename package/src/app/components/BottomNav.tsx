@@ -76,15 +76,6 @@ export default function BottomNav() {
       ),
     },
     {
-      href: "/feed",
-      label: "Feed",
-      icon: (active: boolean) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#fe2c55" : inactiveColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-      ),
-    },
-    {
       href: "/support",
       label: t("support"),
       icon: (active: boolean) => (
