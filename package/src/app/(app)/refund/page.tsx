@@ -44,7 +44,7 @@ export default function RefundPage() {
       minHeight: "100vh",
       background: "linear-gradient(180deg, #0a0a0a 0%, #111 100%)",
       padding: "20px 16px",
-      paddingBottom: "120px",
+      paddingBottom: "140px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
