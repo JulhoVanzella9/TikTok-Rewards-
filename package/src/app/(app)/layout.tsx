@@ -116,11 +116,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div style={{ 
-      minHeight: "100dvh",
-      height: "100%",
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       background: isDarkMode ? "#000" : "#f5f5f5", 
       color: isDarkMode ? "#fff" : "#121212",
-      position: "relative",
       display: "flex",
       flexDirection: "column",
       transition: "background 0.3s ease, color 0.3s ease",
