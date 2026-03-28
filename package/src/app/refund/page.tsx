@@ -44,17 +44,22 @@ export default function RefundPage() {
       minHeight: "100vh",
       background: "linear-gradient(180deg, #0a0a0a 0%, #111 100%)",
       padding: "20px 16px",
-      paddingBottom: "200px",
+      paddingTop: "24px",
+      paddingBottom: "calc(120px + env(safe-area-inset-bottom, 0px))",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      overflowX: "hidden",
+      width: "100%",
+      maxWidth: "100vw",
+      boxSizing: "border-box",
     }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         style={{
           width: "100%",
-          maxWidth: step === "legal" ? "600px" : "420px",
+          maxWidth: step === "legal" ? "calc(100vw - 32px)" : "calc(100vw - 32px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

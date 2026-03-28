@@ -66,16 +66,18 @@ export default function HomePage() {
   return (
     <div style={{ 
       padding: "0",
-      maxWidth: "100%", 
+      maxWidth: "100vw", 
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "120px",
+      paddingBottom: "calc(120px + env(safe-area-inset-bottom, 0px))",
       position: "relative",
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
         : "linear-gradient(180deg, #f8f9fc 0%, #ffffff 50%, #f8f9fc 100%)",
       minHeight: "100vh",
+      overflowX: "hidden",
+      boxSizing: "border-box",
     }}>
       {/* Interactive Particle Background */}
       <ParticleField 
@@ -88,8 +90,9 @@ export default function HomePage() {
   <div style={{
     padding: "20px 16px",
     paddingBottom: "32px",
-    maxWidth: "600px",
+    maxWidth: "calc(100vw - 32px)",
     margin: "0 auto",
+    boxSizing: "border-box",
   }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -734,6 +734,15 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
 /* Mobile safe areas */
 html {
   padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Hide scrollbar on mobile */
@@ -745,6 +754,46 @@ html {
 /* Responsive typography */
 @media (max-width: 375px) {
   html { font-size: 14px; }
+}
+
+/* ============================================
+   MOBILE RESPONSIVENESS FIXES
+   Fixes for 320px-430px screen widths
+   ============================================ */
+
+/* Ensure all containers respect viewport width */
+.video-container, .video-card, [class*="video"] {
+  width: 100%;
+  max-width: calc(100vw - 32px);
+  margin: 0 auto;
+}
+
+/* Fix emoji reaction buttons */
+@media screen and (max-width: 380px) {
+  .emoji-btn, .emoji-buttons-row button {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .emoji-btn, .emoji-buttons-row button {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+  }
+}
+
+/* Ensure long text wraps properly */
+.legal-notice, [class*="legal"], [class*="notice"] {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Content padding for bottom navbar */
+.page-content, .main-content {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
 }
 
 /* Touch action improvements for mobile */
