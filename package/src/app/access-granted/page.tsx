@@ -50,7 +50,7 @@ export default function AccessGrantedPage() {
 
       // Main Card Background
       const cardY = bannerY + bannerHeight + 15;
-      const cardHeight = 175;
+      const cardHeight = 195;
       
       pdf.setFillColor(30, 35, 42);
       pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "F");
@@ -104,45 +104,47 @@ export default function AccessGrantedPage() {
       pdf.text(emailText2, pageWidth / 2, cardY + 116, { align: "center" });
 
       // Green Access Button (with clickable link)
-      const btnY = cardY + 135;
+      const btnY = cardY + 128;
       const btnWidth = contentWidth - 20;
-      const btnHeight = 18;
+      const btnHeight = 16;
       const btnX = margin + 10;
       
       pdf.setFillColor(34, 197, 94); // Green like reference
       pdf.roundedRect(btnX, btnY, btnWidth, btnHeight, 5, 5, "F");
       
-      pdf.setFontSize(14);
+      pdf.setFontSize(12);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(255, 255, 255);
-      pdf.text("CLICK HERE TO ACCESS", pageWidth / 2, btnY + 12, { align: "center" });
+      pdf.text("CLICK HERE TO ACCESS", pageWidth / 2, btnY + 11, { align: "center" });
       
       // Add clickable link to the button
       pdf.link(btnX, btnY, btnWidth, btnHeight, { url: accessUrl });
 
-      // Text below button
-      const belowBtnY = cardY + cardHeight + 12;
-      pdf.setFontSize(10);
+      // Text below button (inside card)
+      pdf.setFontSize(9);
       pdf.setFont("helvetica", "normal");
       pdf.setTextColor(140, 140, 140);
-      pdf.text("Don't worry! When you click the button above,", pageWidth / 2, belowBtnY, { align: "center" });
-      pdf.text("a new page will open.", pageWidth / 2, belowBtnY + 6, { align: "center" });
+      pdf.text("Don't worry! When you click the button above,", pageWidth / 2, btnY + 26, { align: "center" });
+      pdf.text("a new page will open.", pageWidth / 2, btnY + 32, { align: "center" });
 
-      // Support section
-      const supportY = belowBtnY + 20;
-      pdf.setFontSize(10);
+      // Support section (inside card) - IMPORTANT: Email must be visible
+      pdf.setFontSize(9);
       pdf.setTextColor(140, 140, 140);
-      pdf.text("For any questions, send a message to", pageWidth / 2, supportY, { align: "center" });
-      pdf.text("support at the email", pageWidth / 2, supportY + 6, { align: "center" });
+      pdf.text("For any questions, contact support:", pageWidth / 2, btnY + 46, { align: "center" });
       
-      pdf.setFontSize(12);
+      // Email with background highlight
+      pdf.setFillColor(40, 45, 55);
+      const emailBoxWidth = 130;
+      const emailBoxX = (pageWidth - emailBoxWidth) / 2;
+      pdf.roundedRect(emailBoxX, btnY + 50, emailBoxWidth, 12, 3, 3, "F");
+      
+      pdf.setFontSize(11);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(255, 255, 255);
-      pdf.text(supportEmail, pageWidth / 2, supportY + 16, { align: "center" });
+      pdf.text(supportEmail, pageWidth / 2, btnY + 58, { align: "center" });
       
       // Add clickable email link
-      const emailWidth = pdf.getTextWidth(supportEmail);
-      pdf.link((pageWidth - emailWidth) / 2, supportY + 10, emailWidth, 8, { url: `mailto:${supportEmail}` });
+      pdf.link(emailBoxX, btnY + 50, emailBoxWidth, 12, { url: `mailto:${supportEmail}` });
 
       // TikCash Logo at bottom
       const logoY = pageHeight - 35;
