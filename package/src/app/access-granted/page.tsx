@@ -235,6 +235,7 @@ export default function AccessGrantedPage() {
             display: "flex",
             alignItems: "center",
             gap: "16px",
+            marginBottom: "16px",
           }}>
             <div style={{
               width: "50px",
@@ -257,6 +258,40 @@ export default function AccessGrantedPage() {
               </p>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", margin: "4px 0 0 0" }}>
                 All access details were sent to your registered email!
+              </p>
+            </div>
+          </div>
+
+          {/* Support Notice - Same Style */}
+          <div style={{
+            background: "linear-gradient(135deg, rgba(37,244,238,0.1) 0%, rgba(37,244,238,0.05) 100%)",
+            border: "1px solid rgba(37,244,238,0.25)",
+            borderRadius: "14px",
+            padding: "20px 24px",
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+          }}>
+            <div style={{
+              width: "50px",
+              height: "50px",
+              borderRadius: "12px",
+              background: "rgba(37,244,238,0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+            </div>
+            <div style={{ textAlign: "left" }}>
+              <p style={{ fontSize: "16px", fontWeight: 700, color: "#fff", margin: 0 }}>
+                Need Support?
+              </p>
+              <p style={{ fontSize: "14px", color: "#25f4ee", margin: "4px 0 0 0", fontWeight: 600 }}>
+                {supportEmail}
               </p>
             </div>
           </div>
@@ -300,45 +335,6 @@ export default function AccessGrantedPage() {
           }}>
             A new page will open when you click the button above.
           </p>
-        </div>
-
-        {/* Support Section - VISIBLE EMAIL */}
-        <div style={{
-          width: "100%",
-          maxWidth: "600px",
-          marginTop: "32px",
-          padding: "28px 32px",
-          background: "linear-gradient(135deg, rgba(37,244,238,0.08) 0%, rgba(37,244,238,0.02) 100%)",
-          borderRadius: "16px",
-          border: "2px solid rgba(37,244,238,0.3)",
-          textAlign: "center",
-        }}>
-          <p style={{
-            fontSize: "18px",
-            color: "#fff",
-            margin: "0 0 16px 0",
-            fontWeight: 600,
-          }}>
-            If you need support, contact:
-          </p>
-          <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "12px",
-            color: "#25f4ee",
-            fontSize: "22px",
-            fontWeight: 800,
-            padding: "16px 28px",
-            background: "rgba(0,0,0,0.5)",
-            borderRadius: "12px",
-            border: "2px solid #25f4ee",
-          }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2.5">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="M22 6l-10 7L2 6"/>
-            </svg>
-            {supportEmail}
-          </div>
         </div>
 
         {/* TikCash Logo Footer */}
