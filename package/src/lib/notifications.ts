@@ -87,7 +87,7 @@ export async function showNotification(title: string, body: string, tag?: string
     // Try to use service worker notification for better reliability
     if ("serviceWorker" in navigator) {
       const registration = await navigator.serviceWorker.ready;
-      await registration.showNotification(title, {
+      const options: NotificationOptions & { vibrate?: number[]; actions?: Array<{ action: string; title: string }> } = {
         body,
         icon: "/icons/icon-192x192.jpg",
         badge: "/icons/icon-192x192.jpg",
@@ -98,7 +98,8 @@ export async function showNotification(title: string, body: string, tag?: string
           { action: "open", title: "Open App" },
           { action: "close", title: "Dismiss" },
         ],
-      });
+      };
+      await registration.showNotification(title, options);
       return true;
     } else {
       // Fallback to regular notification
