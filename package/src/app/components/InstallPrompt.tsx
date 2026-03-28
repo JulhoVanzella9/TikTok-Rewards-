@@ -7,22 +7,34 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+type DeviceType = "ios" | "android" | "desktop" | "unknown";
+
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+  const [deviceType, setDeviceType] = useState<DeviceType>("unknown");
+  const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
     // Check if already installed
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
     if (isStandalone) return;
 
-    // Check if iOS
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    setIsIOS(isIOSDevice);
+    // Detect device type
+    const userAgent = navigator.userAgent.toLowerCase();
+    let detectedDevice: DeviceType = "unknown";
+    
+    if (/iphone|ipad|ipod/.test(userAgent)) {
+      detectedDevice = "ios";
+    } else if (/android/.test(userAgent)) {
+      detectedDevice = "android";
+    } else if (/windows|macintosh|linux/.test(userAgent) && !/mobile/.test(userAgent)) {
+      detectedDevice = "desktop";
+    }
+    
+    setDeviceType(detectedDevice);
 
-    // Listen for install prompt
+    // Listen for install prompt (Chrome/Android)
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -31,20 +43,18 @@ export default function InstallPrompt() {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
 
-    // Show iOS prompt after a delay
-    if (isIOSDevice) {
-      const hasShownIOSPrompt = localStorage.getItem("iosPromptShown");
-      if (!hasShownIOSPrompt) {
+    // Show prompt after a delay for iOS (no native install prompt)
+    if (detectedDevice === "ios") {
+      const hasShownPrompt = localStorage.getItem("installPromptShown");
+      if (!hasShownPrompt) {
         setTimeout(() => setShowPrompt(true), 3000);
       }
     }
 
-    // Listen for custom trigger event
+    // Listen for custom trigger event from menu
     const handleTrigger = () => {
       setShowPrompt(true);
-      if (isIOSDevice) {
-        setShowIOSInstructions(true);
-      }
+      setShowInstructions(true);
     };
     window.addEventListener("triggerInstallPrompt", handleTrigger);
 
@@ -55,13 +65,8 @@ export default function InstallPrompt() {
   }, []);
 
   const handleInstall = async () => {
-    if (isIOS) {
-      setShowIOSInstructions(true);
-      localStorage.setItem("iosPromptShown", "true");
-      return;
-    }
-
     if (deferredPrompt) {
+      // Native install prompt available (Chrome/Android)
       await deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === "accepted") {
@@ -69,14 +74,25 @@ export default function InstallPrompt() {
       }
       setDeferredPrompt(null);
     } else {
-      // No native prompt available, show manual instructions
-      setShowIOSInstructions(true);
+      // No native prompt - show manual instructions
+      setShowInstructions(true);
+      localStorage.setItem("installPromptShown", "true");
     }
   };
 
   const handleDismiss = () => {
     setShowPrompt(false);
-    localStorage.setItem("iosPromptShown", "true");
+    setShowInstructions(false);
+    localStorage.setItem("installPromptShown", "true");
+  };
+
+  const getDeviceTitle = () => {
+    switch (deviceType) {
+      case "ios": return "Install on iPhone/iPad";
+      case "android": return "Install on Android";
+      case "desktop": return "Install on Computer";
+      default: return "Install App";
+    }
   };
 
   if (!showPrompt) return null;
@@ -101,11 +117,11 @@ export default function InstallPrompt() {
           boxShadow: "0 -4px 32px rgba(0,0,0,0.5)",
         }}
       >
-        {showIOSInstructions ? (
+        {showInstructions ? (
           <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
               <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>
-                {isIOS ? "Install on iPhone/iPad" : "Install on Android"}
+                {getDeviceTitle()}
               </h3>
               <button
                 onClick={handleDismiss}
@@ -117,7 +133,7 @@ export default function InstallPrompt() {
               </button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {isIOS ? (
+              {deviceType === "ios" ? (
                 <>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{
@@ -127,7 +143,7 @@ export default function InstallPrompt() {
                       fontWeight: 700, color: "#000", fontSize: "14px",
                     }}>1</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap the <strong style={{ color: "#25f4ee" }}>Share</strong> button at the bottom of Safari
+                      Tap the <strong style={{ color: "#25f4ee" }}>Share</strong> button <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(bottom center in Safari)</span>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -138,7 +154,7 @@ export default function InstallPrompt() {
                       fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>2</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Scroll and tap <strong style={{ color: "#fe2c55" }}>Add to Home Screen</strong>
+                      Scroll down and tap <strong style={{ color: "#fe2c55" }}>Add to Home Screen</strong>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -153,7 +169,7 @@ export default function InstallPrompt() {
                     </span>
                   </div>
                 </>
-              ) : (
+              ) : deviceType === "android" ? (
                 <>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{
@@ -163,7 +179,7 @@ export default function InstallPrompt() {
                       fontWeight: 700, color: "#000", fontSize: "14px",
                     }}>1</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap the <strong style={{ color: "#25f4ee" }}>three dots menu</strong> (top right)
+                      Tap <strong style={{ color: "#25f4ee" }}>menu</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(3 dots, top right)</span>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -174,18 +190,7 @@ export default function InstallPrompt() {
                       fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>2</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap <strong style={{ color: "#fe2c55" }}>Share</strong>
-                    </span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <div style={{
-                      width: "32px", height: "32px", borderRadius: "8px",
-                      background: "#ffd700", display: "flex",
-                      alignItems: "center", justifyContent: "center",
-                      fontWeight: 700, color: "#000", fontSize: "14px",
-                    }}>3</div>
-                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap <strong style={{ color: "#ffd700" }}>See more</strong>
+                      Tap <strong style={{ color: "#fe2c55" }}>Install app</strong> or <strong style={{ color: "#fe2c55" }}>Add to Home screen</strong>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -194,9 +199,34 @@ export default function InstallPrompt() {
                       background: "#fff", display: "flex",
                       alignItems: "center", justifyContent: "center",
                       fontWeight: 700, color: "#000", fontSize: "14px",
-                    }}>4</div>
+                    }}>3</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Select <strong style={{ color: "#fff" }}>Add to Home Screen</strong>
+                      Tap <strong style={{ color: "#fff" }}>Install</strong> to confirm
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#25f4ee", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#000", fontSize: "14px",
+                    }}>1</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Click the <strong style={{ color: "#25f4ee" }}>install icon</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(in address bar)</span>
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "32px", height: "32px", borderRadius: "8px",
+                      background: "#fe2c55", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
+                    }}>2</div>
+                    <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
+                      Click <strong style={{ color: "#fe2c55" }}>Install</strong> to add the app
                     </span>
                   </div>
                 </>

@@ -58,8 +58,8 @@ export default function HomePage() {
 
   const gettingStartedSteps = [
     "Navigate to the TikCash App section using the sidebar",
-    "Connect your TikTok account securely within the app",
-    "Start exploring monetization tools and analytics",
+    "Start watching videos and earn rewards daily",
+    "Track your earnings and withdraw your balance anytime",
     "Access Support if you need help or have questions",
   ];
 
@@ -504,11 +504,11 @@ export default function HomePage() {
                 }}>
                   {step.includes("TikCash App") ? (
                     <>
-                      Navigate to the <strong style={{ color: "#fe2c55" }}>TikCash App</strong> section using the sidebar
+                      Navigate to the <Link href="/create" style={{ color: "#fe2c55", fontWeight: 700, textDecoration: "underline", textUnderlineOffset: "2px" }}>TikCash App</Link> section using the sidebar
                     </>
                   ) : step.includes("Support") ? (
                     <>
-                      Access <strong style={{ color: "#25f4ee" }}>Support</strong> if you need help or have questions
+                      Access <Link href="/support" style={{ color: "#25f4ee", fontWeight: 700, textDecoration: "underline", textUnderlineOffset: "2px" }}>Support</Link> if you need help or have questions
                     </>
                   ) : (
                     step
