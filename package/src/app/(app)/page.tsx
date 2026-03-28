@@ -70,7 +70,7 @@ export default function HomePage() {
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "100px",
+      paddingBottom: "160px",
       position: "relative",
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
@@ -84,12 +84,13 @@ export default function HomePage() {
         className="gpu-accelerated"
       />
 
-      {/* 1. Video Tutorial Section - FIRST */}
-      <div style={{
-        padding: "clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px)",
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}>
+{/* 1. Video Tutorial Section - FIRST */}
+  <div style={{
+  padding: "clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px)",
+  paddingBottom: "clamp(40px, 6vw, 60px)",
+  maxWidth: "800px",
+  margin: "0 auto",
+  }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
