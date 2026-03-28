@@ -209,7 +209,8 @@ export default function HomePage() {
               }}
             >
               <video
-                src="https://media.githubusercontent.com/media/JulhoVanzella9/TikTok-Rewards-/main/package/public/video.mp4"
+                src="/video.mp4"
+                controls
                 playsInline
                 preload="metadata"
                 controlsList="nodownload nofullscreen noremoteplayback"
@@ -222,9 +223,7 @@ export default function HomePage() {
                   outline: "none",
                   background: "#000",
                 }}
-              >
-                <track kind="captions" />
-              </video>
+              />
             </div>
           </div>
 
