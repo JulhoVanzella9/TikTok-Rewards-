@@ -76,7 +76,6 @@ export default function HomePage() {
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
         : "linear-gradient(180deg, #f8f9fc 0%, #ffffff 50%, #f8f9fc 100%)",
-      minHeight: "100vh",
       minHeight: "100dvh",
       overflowX: "hidden",
       boxSizing: "border-box",
