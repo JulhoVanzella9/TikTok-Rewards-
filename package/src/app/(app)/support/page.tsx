@@ -46,7 +46,13 @@ export default function SupportPage() {
   const [showChat, setShowChat] = useState(false);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto", paddingBottom: "100px" }}>
+    <div style={{ 
+      padding: "clamp(16px, 4vw, 24px)", 
+      maxWidth: "min(600px, calc(100vw - 24px))", 
+      margin: "0 auto", 
+      paddingBottom: "clamp(80px, 20vw, 120px)",
+      boxSizing: "border-box",
+    }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, x: -10 }}
@@ -117,8 +123,10 @@ export default function SupportPage() {
         variants={fadeIn}
         transition={{ delay: 0.1 }}
         style={{
-          display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px",
-          marginBottom: "24px",
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(140px, calc(50% - 8px)), 1fr))", 
+          gap: "clamp(10px, 2.5vw, 14px)",
+          marginBottom: "clamp(18px, 4vw, 26px)",
         }}
       >
         <motion.button

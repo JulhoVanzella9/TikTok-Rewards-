@@ -225,9 +225,14 @@ export default function TopBar() {
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"}`,
-          padding: "0 10px", height: "56px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "0 clamp(8px, 2vw, 14px)", 
+          height: "clamp(50px, 13vw, 60px)",
+          display: "flex", 
+          alignItems: "center", 
+          justifyContent: "space-between",
           boxShadow: isDarkMode ? "0 6px 30px rgba(0,0,0,0.5)" : "0 4px 20px rgba(0,0,0,0.1)",
+          maxWidth: "100vw",
+          boxSizing: "border-box",
         }}
       >
         {/* Left Section - Menu + Logo */}
@@ -272,11 +277,12 @@ export default function TopBar() {
                 </svg>
               </div>
               <span style={{
-                fontSize: "18px",
+                fontSize: "clamp(15px, 4vw, 19px)",
                 fontWeight: 800,
                 color: isDarkMode ? "#fff" : "#000",
                 letterSpacing: "-0.5px",
                 fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
+                whiteSpace: "nowrap",
               }}>
                 Tik<span style={{ color: "#fe2c55" }}>Cash</span>
               </span>
@@ -292,15 +298,16 @@ export default function TopBar() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "5px",
-              padding: "6px 10px",
+              gap: "clamp(3px, 1vw, 6px)",
+              padding: "clamp(4px, 1.2vw, 7px) clamp(7px, 2vw, 12px)",
               background: isDarkMode 
                 ? "rgba(0,0,0,0.6)" 
                 : "rgba(255,255,255,0.9)",
-              borderRadius: "20px",
+              borderRadius: "clamp(16px, 4vw, 22px)",
               border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
               cursor: "pointer",
               position: "relative",
+              flexShrink: 0,
             }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
@@ -309,9 +316,12 @@ export default function TopBar() {
             </svg>
             <span style={{ 
               color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
-              fontSize: "11px",
+              fontSize: "clamp(9px, 2.5vw, 12px)",
               fontWeight: 600,
-            }}>
+              display: "none",
+            }}
+            className="balance-label-desktop"
+            >
               Balance
             </span>
             <motion.span 
@@ -320,9 +330,10 @@ export default function TopBar() {
               animate={{ scale: 1, color: "#25f4ee" }}
               transition={{ duration: 0.5 }}
               style={{ 
-                fontSize: "13px",
+                fontSize: "clamp(11px, 3vw, 14px)",
                 fontWeight: 800,
                 color: "#25f4ee",
+                whiteSpace: "nowrap",
               }}
             >
               ${balance.toFixed(2)}

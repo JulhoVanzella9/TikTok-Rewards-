@@ -112,11 +112,13 @@ export default function BottomNav() {
         display: "flex", 
         alignItems: "center", 
         justifyContent: "space-around",
-        height: "calc(68px + env(safe-area-inset-bottom, 0px))",
-        paddingLeft: "4px",
-        paddingRight: "4px",
+        height: "calc(clamp(60px, 16vw, 72px) + env(safe-area-inset-bottom, 0px))",
+        paddingLeft: "clamp(2px, 1vw, 8px)",
+        paddingRight: "clamp(2px, 1vw, 8px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         transition: "background 0.3s ease, border-color 0.3s ease",
+        maxWidth: "100vw",
+        boxSizing: "border-box",
       }}
     >
       {tabs.map((tab) => {
@@ -195,10 +197,12 @@ export default function BottomNav() {
                       fontWeight: isActive ? 700 : 500,
                     }}
                     style={{
-                      fontSize: "10px", fontWeight: isActive ? 700 : 500,
+                      fontSize: "clamp(9px, 2.5vw, 11px)", 
+                      fontWeight: isActive ? 700 : 500,
                       color: isActive ? textColor : inactiveColor,
                       transition: "color 0.2s",
                       lineHeight: 1,
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {tab.label}
