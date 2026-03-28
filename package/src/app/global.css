@@ -762,11 +762,19 @@ body {
    ============================================ */
 
 /* Base container styles - fluid and responsive */
-.video-container, .video-card, [class*="video"] {
+.video-card, [class*="video-card"] {
   width: 100%;
   max-width: calc(100vw - 2rem);
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+.video-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Responsive typography system */

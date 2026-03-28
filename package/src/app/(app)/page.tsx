@@ -183,36 +183,33 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div 
+            <div
               className="video-container"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "16px",
-                margin: "0",
                 width: "100%",
-                boxSizing: "border-box",
+                aspectRatio: "9/16",
+                background: "#000",
+                margin: "0",
+                padding: "0",
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <video
                 src="/video.mp4"
                 controls
                 playsInline
-                preload="auto"
-                poster=""
+                preload="metadata"
                 style={{
                   width: "100%",
-                  maxWidth: "280px",
-                  aspectRatio: "9/16",
-                  objectFit: "cover",
-                  borderRadius: "16px",
+                  height: "100%",
+                  objectFit: "contain",
                   display: "block",
-                  margin: "0 auto",
-                  padding: "0",
                   border: "none",
                   outline: "none",
-                  background: "transparent",
+                  background: "#000",
                 }}
               />
             </div>
