@@ -49,8 +49,8 @@ export default function AccessGrantedPage() {
       pdf.text("CONGRATULATIONS!", pageWidth / 2, bannerY + 14, { align: "center" });
 
       // Main Card Background
-      const cardY = bannerY + bannerHeight + 15;
-      const cardHeight = 195;
+      const cardY = bannerY + bannerHeight + 12;
+      const cardHeight = 210;
       
       pdf.setFillColor(30, 35, 42);
       pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "F");
@@ -128,23 +128,29 @@ export default function AccessGrantedPage() {
       pdf.text("a new page will open.", pageWidth / 2, btnY + 32, { align: "center" });
 
       // Support section (inside card) - IMPORTANT: Email must be visible
-      pdf.setFontSize(9);
-      pdf.setTextColor(140, 140, 140);
-      pdf.text("For any questions, contact support:", pageWidth / 2, btnY + 46, { align: "center" });
+      pdf.setFontSize(10);
+      pdf.setTextColor(160, 160, 160);
+      pdf.text("For any questions, contact support at:", pageWidth / 2, btnY + 48, { align: "center" });
       
-      // Email with background highlight
-      pdf.setFillColor(40, 45, 55);
-      const emailBoxWidth = 130;
+      // Email with background highlight - BIGGER AND MORE VISIBLE
+      pdf.setFillColor(50, 55, 65);
+      const emailBoxWidth = 145;
+      const emailBoxHeight = 14;
       const emailBoxX = (pageWidth - emailBoxWidth) / 2;
-      pdf.roundedRect(emailBoxX, btnY + 50, emailBoxWidth, 12, 3, 3, "F");
+      pdf.roundedRect(emailBoxX, btnY + 54, emailBoxWidth, emailBoxHeight, 4, 4, "F");
       
-      pdf.setFontSize(11);
+      // Email border
+      pdf.setDrawColor(80, 90, 100);
+      pdf.setLineWidth(0.3);
+      pdf.roundedRect(emailBoxX, btnY + 54, emailBoxWidth, emailBoxHeight, 4, 4, "S");
+      
+      pdf.setFontSize(12);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(255, 255, 255);
-      pdf.text(supportEmail, pageWidth / 2, btnY + 58, { align: "center" });
+      pdf.text(supportEmail, pageWidth / 2, btnY + 63, { align: "center" });
       
       // Add clickable email link
-      pdf.link(emailBoxX, btnY + 50, emailBoxWidth, 12, { url: `mailto:${supportEmail}` });
+      pdf.link(emailBoxX, btnY + 54, emailBoxWidth, emailBoxHeight, { url: `mailto:${supportEmail}` });
 
       // TikCash Logo at bottom
       const logoY = pageHeight - 35;
