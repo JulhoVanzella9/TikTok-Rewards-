@@ -183,20 +183,27 @@ export default function HomePage() {
               </div>
             </div>
 
-            <video
-              src="/video.mp4"
-              controls
-              playsInline
-              preload="metadata"
-              controlsList="nodownload nofullscreen noremoteplayback"
-              disablePictureInPicture
-              style={{
-                width: "100%",
-                height: "auto",
-                display: "block",
-                borderRadius: "0 0 16px 16px",
-              }}
-            />
+            <div style={{
+              position: "relative",
+              width: "100%",
+              paddingBottom: "56.25%",
+              borderRadius: "0 0 16px 16px",
+              overflow: "hidden",
+            }}>
+              <iframe
+                src="https://www.youtube.com/embed/3ABhL8rLozk?rel=0&modestbranding=1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                }}
+              />
+            </div>
           </div>
 
           {/* Install App Button - Right below video */}
