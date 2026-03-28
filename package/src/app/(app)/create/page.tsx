@@ -49,7 +49,8 @@ export default function CreatePage() {
   const isDarkMode = theme === "dark";
   const [videoData, setVideoData] = useState<ReturnType<typeof fileToVideoData>[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [ratings, setRatings] = useState<(string | null)[]>([null, null, null]);
+  const [ratings, setRatings] = useState<(string | null)[]>([]);
+  const savedProgressRef = useRef(0);
   const [animating, setAnimating] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastData, setToastData] = useState({ emoji: "", text: "", type: "" });
@@ -64,7 +65,15 @@ export default function CreatePage() {
   useEffect(() => {
     fetch("/videos/index.json")
       .then(r => r.json())
-      .then((all: string[]) => setVideoData(dailyPick(all, 3).map(fileToVideoData)));
+      .then((all: string[]) => {
+        const picked = dailyPick(all, 20).map(fileToVideoData);
+        setVideoData(picked);
+        const saved = savedProgressRef.current;
+        const init = new Array(picked.length).fill(null) as (string | null)[];
+        for (let i = 0; i < saved; i++) init[i] = "done";
+        setRatings(init);
+        if (saved > 0) setCurrentIndex(Math.min(saved, picked.length - 1));
+      });
   }, []);
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -95,8 +104,8 @@ export default function CreatePage() {
         const now = new Date();
         const hoursDiff = (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60);
 
-        if (hoursDiff < 24 && ratingData.ratings_count >= 3) {
-          // Limit reached - less than 24h and already rated 3 videos
+        if (hoursDiff < 24 && ratingData.ratings_count >= 20) {
+          // Limit reached - less than 24h and already rated 20 videos
           setLimitReached(true);
           setTotalEarned(ratingData.total_earned || 0);
         } else if (hoursDiff >= 24) {
@@ -111,22 +120,11 @@ export default function CreatePage() {
               updated_at: new Date().toISOString()
             })
             .eq("user_id", user.id);
-        } else if (hoursDiff < 24 && ratingData.ratings_count < 3) {
+        } else if (hoursDiff < 24 && ratingData.ratings_count < 20) {
           // User has progress but not finished - restore their position
           const savedIndex = ratingData.current_video_index || 0;
-          setCurrentIndex(savedIndex);
+          savedProgressRef.current = savedIndex;
           setTotalEarned(ratingData.total_earned || 0);
-          // Mark previous videos as rated (we don't know the actual ratings, but they're done)
-          const newRatings = [...ratings];
-          for (let i = 0; i < savedIndex; i++) {
-            newRatings[i] = "done"; // Mark as completed
-          }
-          setRatings(newRatings);
-          // Preload videos from saved index
-          const videosToLoad = [savedIndex];
-          if (savedIndex + 1 < videoData.length) videosToLoad.push(savedIndex + 1);
-          if (savedIndex + 2 < videoData.length) videosToLoad.push(savedIndex + 2);
-          setLoadedVideos(videosToLoad);
         }
       }
 
@@ -212,8 +210,8 @@ export default function CreatePage() {
     if (animating) return;
     if (!userId) return;
 
-    // amount em dolares (40-67 dolares por video para total final de 140-200 em 3 videos)
-    const amountDollars = Math.floor(Math.random() * (67 - 40 + 1)) + 40;
+    // amount em dolares (~6-12 por video, total ~120-240 em 20 videos)
+    const amountDollars = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
     const newTotal = totalEarned + amountDollars;
     setTotalEarned(newTotal);
 
@@ -706,23 +704,26 @@ export default function CreatePage() {
           ))}
         </div>
 
-        {/* Progress dots */}
+        {/* Progress bar top */}
         <div style={{
-          position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)",
-          display: "flex", flexDirection: "column", gap: "8px", zIndex: 10,
+          position: "absolute", top: 0, left: 0, right: 0, height: "4px",
+          background: "rgba(255,255,255,0.12)", zIndex: 10,
         }}>
-          {videoData.map((_, index) => (
-            <div
-              key={index}
-              style={{
-                width: "6px",
-                height: index === currentIndex ? "24px" : "6px",
-                borderRadius: "3px",
-                transition: "all 300ms",
-                background: index === currentIndex ? "#25f4ee" : ratings[index] !== null ? "#22c55e" : "rgba(255,255,255,0.3)",
-              }}
-            />
-          ))}
+          <motion.div
+            animate={{ width: `${((ratings.filter(r => r !== null).length) / (videoData.length || 1)) * 100}%` }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            style={{ height: "100%", background: "linear-gradient(90deg, #25f4ee, #fe2c55)", borderRadius: "0 2px 2px 0" }}
+          />
+        </div>
+
+        {/* Counter badge */}
+        <div style={{
+          position: "absolute", top: "10px", right: "10px", zIndex: 10,
+          background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
+          borderRadius: "99px", padding: "3px 10px",
+          fontSize: "11px", fontWeight: 700, color: "#fff",
+        }}>
+          {ratings.filter(r => r !== null).length}/{videoData.length}
         </div>
       </div>
 
