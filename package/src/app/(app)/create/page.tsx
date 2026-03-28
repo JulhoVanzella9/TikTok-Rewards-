@@ -598,8 +598,7 @@ export default function CreatePage() {
         marginLeft: "auto", 
         marginRight: "auto", 
         aspectRatio: "9/14",
-        flex: "1 1 auto",
-        minHeight: "0",
+        flexShrink: 0,
         maxHeight: "min(55vh, 420px)",
       }}>
         <div
