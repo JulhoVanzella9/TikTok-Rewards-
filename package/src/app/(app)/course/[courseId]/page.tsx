@@ -251,10 +251,10 @@ export default function CourseDetailPage() {
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               style={{
                 position: "fixed",
-                bottom: 0,
+                bottom: "calc(68px + env(safe-area-inset-bottom, 0px))",
                 left: 0,
                 right: 0,
-                maxHeight: "85vh",
+                maxHeight: "70vh",
                 background: isDarkMode ? "#0f0f0f" : "#fff",
                 borderTopLeftRadius: "24px",
                 borderTopRightRadius: "24px",
@@ -444,10 +444,10 @@ export default function CourseDetailPage() {
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               style={{
                 position: "fixed",
-                bottom: 0,
+                bottom: "calc(68px + env(safe-area-inset-bottom, 0px))",
                 left: 0,
                 right: 0,
-                maxHeight: "90vh",
+                maxHeight: "75vh",
                 background: isDarkMode ? "#0a0a0a" : "#fff",
                 borderTopLeftRadius: "24px",
                 borderTopRightRadius: "24px",
