@@ -1,157 +1,28 @@
 "use client";
 import { useRef } from "react";
-import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function AccessGrantedPage() {
   const a4Ref = useRef<HTMLDivElement>(null);
   const password = "myacess2026";
   const supportEmail = "accesssupport.ai@gmail.com";
-  const accessUrl = "https://tik-cash.vercel.app";
 
-  const downloadPDF = async () => {
+  const downloadImage = async () => {
+    if (!a4Ref.current) return;
+    
     try {
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
+      const canvas = await html2canvas(a4Ref.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#0d1117",
       });
-
-      const pageWidth = 210;
-      const pageHeight = 297;
-      const margin = 20;
-      const contentWidth = pageWidth - 2 * margin;
-
-      // Background
-      pdf.setFillColor(13, 17, 23);
-      pdf.rect(0, 0, pageWidth, pageHeight, "F");
-
-      // Congratulations Banner
-      const bannerY = 25;
-      const bannerHeight = 22;
-      pdf.setFillColor(254, 44, 85);
-      pdf.roundedRect(margin, bannerY, contentWidth, bannerHeight, 6, 6, "F");
-
-      pdf.setFontSize(20);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text("CONGRATULATIONS!", pageWidth / 2, bannerY + 14, { align: "center" });
-
-      // Main Card
-      const cardY = bannerY + bannerHeight + 12;
-      const cardHeight = 170;
-      pdf.setFillColor(20, 30, 35);
-      pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "F");
-      pdf.setDrawColor(37, 244, 238);
-      pdf.setLineWidth(0.5);
-      pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "S");
-
-      // Access Granted Title
-      pdf.setFontSize(28);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text("Access Granted", pageWidth / 2, cardY + 25, { align: "center" });
-
-      // Subtitle
-      pdf.setFontSize(10);
-      pdf.setTextColor(37, 244, 238);
-      pdf.text("YOUR PREMIUM ACCOUNT IS READY", pageWidth / 2, cardY + 35, { align: "center" });
-
-      // Instructions
-      pdf.setFontSize(11);
-      pdf.setFont("helvetica", "normal");
-      pdf.setTextColor(200, 200, 200);
-      pdf.text("To access, log in with the same email used", pageWidth / 2, cardY + 52, { align: "center" });
-      pdf.text("during purchase and use the password below:", pageWidth / 2, cardY + 60, { align: "center" });
-
-      // Password Box
-      const passBoxY = cardY + 70;
-      pdf.setFillColor(30, 40, 45);
-      pdf.roundedRect(margin + 30, passBoxY, contentWidth - 60, 22, 5, 5, "F");
-      pdf.setDrawColor(37, 244, 238);
-      pdf.setLineWidth(1);
-      pdf.roundedRect(margin + 30, passBoxY, contentWidth - 60, 22, 5, 5, "S");
-
-      pdf.setFontSize(18);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text(password, pageWidth / 2, passBoxY + 14, { align: "center" });
-
-      // Check Email Notice
-      pdf.setFontSize(11);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(254, 44, 85);
-      pdf.text("Check Your Email", pageWidth / 2, cardY + 108, { align: "center" });
-      pdf.setFont("helvetica", "normal");
-      pdf.setTextColor(180, 180, 180);
-      pdf.setFontSize(10);
-      pdf.text("All access details were sent to your registered email!", pageWidth / 2, cardY + 116, { align: "center" });
-
-      // Green Access Button
-      const btnY = cardY + 128;
-      const btnWidth = contentWidth - 30;
-      const btnHeight = 16;
-      const btnX = margin + 15;
-
-      pdf.setFillColor(34, 197, 94);
-      pdf.roundedRect(btnX, btnY, btnWidth, btnHeight, 5, 5, "F");
-
-      pdf.setFontSize(12);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text("CLICK HERE TO ACCESS", pageWidth / 2, btnY + 10.5, { align: "center" });
-
-      // Clickable link on button
-      pdf.link(btnX, btnY, btnWidth, btnHeight, { url: accessUrl });
-
-      // Text below button
-      pdf.setFontSize(9);
-      pdf.setFont("helvetica", "normal");
-      pdf.setTextColor(140, 140, 140);
-      pdf.text("A new page will open when you click the button above.", pageWidth / 2, cardY + 158, { align: "center" });
-
-      // Support Section Card
-      const supportY = cardY + cardHeight + 15;
-      const supportHeight = 35;
-      pdf.setFillColor(25, 30, 35);
-      pdf.roundedRect(margin, supportY, contentWidth, supportHeight, 6, 6, "F");
-      pdf.setDrawColor(60, 70, 80);
-      pdf.setLineWidth(0.3);
-      pdf.roundedRect(margin, supportY, contentWidth, supportHeight, 6, 6, "S");
-
-      pdf.setFontSize(10);
-      pdf.setTextColor(160, 160, 160);
-      pdf.text("For any questions, contact support at:", pageWidth / 2, supportY + 12, { align: "center" });
-
-      // Email - highlighted
-      pdf.setFillColor(40, 50, 55);
-      const emailBoxWidth = 100;
-      const emailBoxX = (pageWidth - emailBoxWidth) / 2;
-      pdf.roundedRect(emailBoxX, supportY + 17, emailBoxWidth, 12, 3, 3, "F");
-
-      pdf.setFontSize(11);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(37, 244, 238);
-      pdf.text(supportEmail, pageWidth / 2, supportY + 25, { align: "center" });
-
-      // Clickable email
-      pdf.link(emailBoxX, supportY + 17, emailBoxWidth, 12, { url: `mailto:${supportEmail}` });
-
-      // TikCash Footer
-      const footerY = pageHeight - 30;
-      pdf.setFontSize(18);
-      pdf.setFont("helvetica", "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text("TikCash", pageWidth / 2, footerY, { align: "center" });
-
-      pdf.setFontSize(9);
-      pdf.setFont("helvetica", "normal");
-      pdf.setTextColor(120, 120, 120);
-      pdf.text("Start earning with every video you watch", pageWidth / 2, footerY + 8, { align: "center" });
-
-      // Save PDF
-      pdf.save("TikCash-Access-Granted.pdf");
+      
+      const link = document.createElement("a");
+      link.download = "TikCash-Access-Granted.png";
+      link.href = canvas.toDataURL("image/png", 1.0);
+      link.click();
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error("Error generating image:", error);
     }
   };
 
@@ -167,7 +38,7 @@ export default function AccessGrantedPage() {
     }}>
       {/* Download Button */}
       <button
-        onClick={downloadPDF}
+        onClick={downloadImage}
         style={{
           display: "flex",
           alignItems: "center",
@@ -431,40 +302,42 @@ export default function AccessGrantedPage() {
           </p>
         </div>
 
-        {/* Support Section */}
+        {/* Support Section - VISIBLE EMAIL */}
         <div style={{
           width: "100%",
           maxWidth: "600px",
           marginTop: "32px",
-          padding: "24px",
-          background: "rgba(255,255,255,0.03)",
+          padding: "28px 32px",
+          background: "linear-gradient(135deg, rgba(37,244,238,0.08) 0%, rgba(37,244,238,0.02) 100%)",
           borderRadius: "16px",
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "2px solid rgba(37,244,238,0.3)",
           textAlign: "center",
         }}>
           <p style={{
-            fontSize: "14px",
-            color: "rgba(255,255,255,0.6)",
-            margin: "0 0 12px 0",
+            fontSize: "18px",
+            color: "#fff",
+            margin: "0 0 16px 0",
+            fontWeight: 600,
           }}>
-            For any questions, send a message to support at:
+            If you need support, contact:
           </p>
           <div style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: "10px",
-            color: "#fff",
-            fontSize: "17px",
-            fontWeight: 700,
-            padding: "12px 20px",
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "10px",
+            gap: "12px",
+            color: "#25f4ee",
+            fontSize: "22px",
+            fontWeight: 800,
+            padding: "16px 28px",
+            background: "rgba(0,0,0,0.5)",
+            borderRadius: "12px",
+            border: "2px solid #25f4ee",
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2.5">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
               <path d="M22 6l-10 7L2 6"/>
             </svg>
-            accesssupport.ai@gmail.com
+            {supportEmail}
           </div>
         </div>
 
