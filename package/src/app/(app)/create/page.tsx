@@ -289,31 +289,19 @@ export default function CreatePage() {
     }
   }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned, userId]);
 
-  // Play current video via DOM ref (muted for autoplay policy)
+  // Play current video (always muted = autoplay guaranteed)
   useEffect(() => {
     if (loading || videoData.length === 0) return;
-    const tryPlay = () => {
-      videoRefs.current.forEach((v, i) => {
-        if (!v) return;
-        if (i === currentIndex) {
-          v.muted = false;
-          v.currentTime = 0;
-          v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
-        } else {
-          v.pause();
-          v.muted = true;
-        }
-      });
-    };
-    // try immediately then retry after DOM settles
-    tryPlay();
-    const t = setTimeout(tryPlay, 400);
-    return () => clearTimeout(t);
-  }, [loading, videoData.length, currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const setVideoRef = (index: number) => (el: HTMLVideoElement | null) => {
-    videoRefs.current[index] = el;
-  };
+    const v = videoRefs.current[currentIndex];
+    if (v) {
+      v.muted = true;
+      v.play().catch(() => {});
+    }
+    // pause previous
+    videoRefs.current.forEach((ref, i) => {
+      if (i !== currentIndex && ref) ref.pause();
+    });
+  }, [loading, currentIndex, videoData.length]);
 
   // Loading screen
   if (loading || videoData.length === 0) {
@@ -627,18 +615,26 @@ export default function CreatePage() {
                 position: "relative", width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden",
                 background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)",
               }}>
-                {Math.abs(index - currentIndex) <= 1 ? (
+                {index === currentIndex ? (
                   <video
-                    ref={el => {
-                      videoRefs.current[index] = el;
-                      if (el) { el.muted = index !== currentIndex; }
-                    }}
+                    ref={el => { videoRefs.current[index] = el; }}
                     src={video.videoSrc}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                     loop
                     playsInline
-                    autoPlay={index === currentIndex}
-                    preload={index === currentIndex ? "auto" : "none"}
+                    muted
+                    autoPlay
+                    preload="auto"
+                  />
+                ) : index === currentIndex + 1 ? (
+                  // preload only next video silently
+                  <video
+                    ref={el => { videoRefs.current[index] = el; }}
+                    src={video.videoSrc}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0 }}
+                    muted
+                    preload="auto"
+                    playsInline
                   />
                 ) : (
                   <div style={{
