@@ -588,16 +588,17 @@ export default function CreatePage() {
         )}
       </AnimatePresence>
 
-      {/* Slider vertical de videos - responsive for small screens */}
+      {/* Slider vertical de videos - FULLY RESPONSIVE using vh */}
       <div style={{ 
         position: "relative", 
         overflow: "hidden", 
         borderRadius: "12px", 
-        width: "100%", 
-        maxWidth: "280px", 
+        width: "min(85vw, 320px)", 
+        height: "calc(100vh - 240px)",
+        minHeight: "300px",
+        maxHeight: "65vh",
         marginLeft: "auto", 
-        marginRight: "auto", 
-        aspectRatio: "9/14",
+        marginRight: "auto",
         flexShrink: 0,
       }}>
         <div
@@ -709,8 +710,8 @@ export default function CreatePage() {
       </div>
 
       {/* Pergunta */}
-      <div style={{ textAlign: "center", marginTop: "8px", flexShrink: 0 }}>
-        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "14px" }}>
+      <div style={{ textAlign: "center", marginTop: "12px", flexShrink: 0 }}>
+        <h2 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "15px" }}>
           How do you feel about this video?
         </h2>
       </div>
@@ -719,10 +720,10 @@ export default function CreatePage() {
       <div style={{ 
         display: "flex", 
         justifyContent: "center", 
-        gap: "16px", 
-        marginTop: "8px",
+        gap: "20px", 
+        marginTop: "12px",
         flexShrink: 0,
-        paddingBottom: "8px",
+        paddingBottom: "16px",
       }}>
         {/* Happy */}
         <motion.button

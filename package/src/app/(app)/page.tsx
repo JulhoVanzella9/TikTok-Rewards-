@@ -70,7 +70,7 @@ export default function HomePage() {
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "160px",
+      paddingBottom: "120px",
       position: "relative",
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
@@ -86,10 +86,10 @@ export default function HomePage() {
 
 {/* 1. Video Tutorial Section - FIRST */}
   <div style={{
-  padding: "clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px)",
-  paddingBottom: "clamp(40px, 6vw, 60px)",
-  maxWidth: "800px",
-  margin: "0 auto",
+    padding: "20px 16px",
+    paddingBottom: "32px",
+    maxWidth: "600px",
+    margin: "0 auto",
   }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,27 +99,28 @@ export default function HomePage() {
             background: isDarkMode 
               ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
               : "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.04) 100%)",
-            borderRadius: "24px",
-            padding: "clamp(24px, 4vw, 40px)",
+            borderRadius: "20px",
+            padding: "24px",
             border: `1px solid ${isDarkMode ? "rgba(254,44,85,0.2)" : "rgba(254,44,85,0.15)"}`,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
             <div style={{
-              width: "48px",
-              height: "48px",
+              width: "44px",
+              height: "44px",
               borderRadius: "50%",
               background: "rgba(254,44,85,0.15)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexShrink: 0,
             }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#fe2c55">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#fe2c55">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </div>
             <h2 style={{
-              fontSize: "clamp(20px, 3.5vw, 28px)",
+              fontSize: "22px",
               fontWeight: 800,
               color: "#fe2c55",
             }}>
@@ -128,10 +129,10 @@ export default function HomePage() {
           </div>
 
           <p style={{
-            fontSize: "clamp(14px, 2vw, 16px)",
+            fontSize: "14px",
             color: "var(--text-secondary)",
-            marginBottom: "24px",
-            lineHeight: 1.6,
+            marginBottom: "20px",
+            lineHeight: 1.5,
           }}>
             Watch this quick tutorial to learn how to use the TikCash app and maximize your earnings.
           </p>
@@ -144,16 +145,16 @@ export default function HomePage() {
             border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
           }}>
             <div style={{
-              padding: "16px 20px",
+              padding: "14px 16px",
               display: "flex",
               alignItems: "center",
-              gap: "14px",
+              gap: "12px",
               borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
               background: isDarkMode ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.8)",
             }}>
               <div style={{
-                width: "40px",
-                height: "40px",
+                width: "38px",
+                height: "38px",
                 borderRadius: "50%",
                 background: isDarkMode 
                   ? "linear-gradient(135deg, #1a1a2e, #252542)"
@@ -161,6 +162,7 @@ export default function HomePage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexShrink: 0,
                 border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
               }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDarkMode ? "#fff" : "#333"} strokeWidth="2">
@@ -168,10 +170,10 @@ export default function HomePage() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>
+                <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--text-primary)" }}>
                   TikCash - How to Use
                 </div>
-                <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+                <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
                   Support Service
                 </div>
               </div>
@@ -181,10 +183,10 @@ export default function HomePage() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              padding: "24px",
+              padding: "16px",
             }}>
               <div style={{
-                width: "100%",
+                width: "min(70%, 260px)",
                 maxWidth: "280px",
                 aspectRatio: "9/16",
                 background: isDarkMode 
@@ -202,8 +204,8 @@ export default function HomePage() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   style={{
-                    width: "64px",
-                    height: "64px",
+                    width: "60px",
+                    height: "60px",
                     borderRadius: "50%",
                     background: "#fe2c55",
                     display: "flex",
@@ -213,7 +215,7 @@ export default function HomePage() {
                     boxShadow: "0 8px 30px rgba(254,44,85,0.5)",
                   }}
                 >
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">
                     <polygon points="5 3 19 12 5 21 5 3"/>
                   </svg>
                 </motion.div>
@@ -223,9 +225,9 @@ export default function HomePage() {
                   bottom: "12px",
                   right: "12px",
                   background: "rgba(0,0,0,0.7)",
-                  padding: "6px 12px",
+                  padding: "6px 10px",
                   borderRadius: "6px",
-                  fontSize: "13px",
+                  fontSize: "12px",
                   fontWeight: 600,
                   color: "#fff",
                 }}>
@@ -236,7 +238,7 @@ export default function HomePage() {
           </div>
 
           {/* Install App Button - Right below video */}
-          <div style={{ textAlign: "center", marginTop: "24px" }}>
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button
               className="btn-3d btn-3d-cyan btn-3d-animated btn-3d-icon-grow"
               onClick={() => {
@@ -244,13 +246,13 @@ export default function HomePage() {
                 window.dispatchEvent(event);
               }}
               style={{
-                gap: "12px",
+                gap: "10px",
                 fontFamily: "inherit",
-                padding: "16px 32px",
-                fontSize: "16px",
+                padding: "14px 28px",
+                fontSize: "15px",
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
