@@ -500,9 +500,9 @@ export default function CreatePage() {
       flexDirection: "column", 
       width: "100%", 
       padding: "8px 12px", 
-      paddingBottom: "80px",
-      minHeight: "calc(100vh - 68px)",
-      maxHeight: "calc(100vh - 68px)",
+      paddingTop: "12px",
+      paddingBottom: "0px",
+      height: "100%",
       overflow: "hidden",
     }}>
       <audio ref={cashSoundRef} src="https://v0-tiktok-rewards.vercel.app/sounds/cashregister.mp3" preload="auto" />
@@ -598,9 +598,8 @@ export default function CreatePage() {
         marginLeft: "auto", 
         marginRight: "auto", 
         aspectRatio: "9/14",
-        flex: "1 1 auto",
-        minHeight: "0",
-        maxHeight: "calc(100vh - 280px)",
+        flexShrink: 0,
+        maxHeight: "min(55vh, 420px)",
       }}>
         <div
           style={{

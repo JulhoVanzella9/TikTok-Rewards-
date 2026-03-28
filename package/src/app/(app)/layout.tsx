@@ -116,16 +116,25 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div style={{ 
-      minHeight: "100vh", 
+      minHeight: "100vh",
+      minHeight: "100dvh",
+      height: "100%",
       background: isDarkMode ? "#000" : "#f5f5f5", 
       color: isDarkMode ? "#fff" : "#121212",
       position: "relative",
+      display: "flex",
+      flexDirection: "column",
       transition: "background 0.3s ease, color 0.3s ease",
+      overflow: "hidden",
     }}>
       <TopBar />
       <main style={{ 
-        paddingBottom: "calc(80px + env(safe-area-inset-bottom, 0px))", 
-        minHeight: "100vh" 
+        flex: 1,
+        paddingBottom: "calc(68px + env(safe-area-inset-bottom, 0px))",
+        paddingTop: "0px",
+        overflowY: "auto",
+        overflowX: "hidden",
+        WebkitOverflowScrolling: "touch",
       }}>
         {children}
       </main>
