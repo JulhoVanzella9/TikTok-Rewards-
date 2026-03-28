@@ -89,9 +89,8 @@ export default function HomePage() {
 
 {/* 1. Video Tutorial Section - FIRST */}
   <div style={{
-    padding: "clamp(16px, 4vw, 24px) clamp(14px, 3.5vw, 20px)",
-    paddingBottom: "clamp(24px, 6vw, 36px)",
-    maxWidth: "min(calc(100vw - 24px), 700px)",
+    padding: "12px 6px 16px 6px",
+    maxWidth: "min(calc(100vw - 8px), 700px)",
     margin: "0 auto",
     boxSizing: "border-box",
   }}>
@@ -100,11 +99,11 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           style={{
-            background: isDarkMode 
+            background: isDarkMode
               ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
               : "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.04) 100%)",
-            borderRadius: "20px",
-            padding: "24px",
+            borderRadius: "16px",
+            padding: "16px 16px 0 16px",
             border: `1px solid ${isDarkMode ? "rgba(254,44,85,0.2)" : "rgba(254,44,85,0.15)"}`,
           }}
         >
@@ -143,16 +142,14 @@ export default function HomePage() {
 
           {/* Video Player */}
           <div style={{
-            margin: "0 -12px -12px -12px",
-            padding: "0 12px 12px 12px",
+            margin: "16px -16px 0 -16px",
           }}>
             <div style={{
               position: "relative",
               width: "100%",
               paddingBottom: "56.25%",
-              borderRadius: "14px",
+              borderRadius: "0 0 16px 16px",
               overflow: "hidden",
-              boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
             }}>
               <iframe
                 src="https://www.youtube.com/embed/3ABhL8rLozk?rel=0&modestbranding=1"
