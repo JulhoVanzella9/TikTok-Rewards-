@@ -308,24 +308,11 @@ export default function CreatePage() {
     }
   }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned, userId]);
 
+  // Play video whenever videoData or currentIndex changes
   useEffect(() => {
-    if (loading) return;
-    
-    setTimeout(() => {
-      updateVideoMutes(0);
-    }, 500);
-
-    setTimeout(() => {
-      if (!loadedVideos.includes(1)) {
-        setLoadedVideos((prev) => [...prev, 1]);
-      }
-      setTimeout(() => {
-        if (!loadedVideos.includes(2)) {
-          setLoadedVideos((prev) => [...prev, 2]);
-        }
-      }, 1000);
-    }, 1500);
-  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (loading || videoData.length === 0) return;
+    setTimeout(() => updateVideoMutes(currentIndex), 300);
+  }, [loading, videoData.length, currentIndex, updateVideoMutes]);
 
   const setVideoRef = (index: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[index] = el;
@@ -643,19 +630,20 @@ export default function CreatePage() {
                 position: "relative", width: "100%", height: "100%", borderRadius: "16px", overflow: "hidden",
                 background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)",
               }}>
-                {loadedVideos.includes(index) ? (
+                {Math.abs(index - currentIndex) <= 1 ? (
                   <video
                     ref={setVideoRef(index)}
                     src={video.videoSrc}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                    autoPlay={index === currentIndex}
                     loop
                     playsInline
-                    muted={index !== currentIndex}
-                    preload={index === 0 ? "auto" : "metadata"}
+                    muted
+                    preload={index === currentIndex ? "auto" : "none"}
                     onCanPlay={() => {
-                      if (index === currentIndex && videoRefs.current[index]) {
-                        videoRefs.current[index]!.play().catch(() => {});
+                      const v = videoRefs.current[index];
+                      if (index === currentIndex && v) {
+                        v.muted = false;
+                        v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
                       }
                     }}
                   />
