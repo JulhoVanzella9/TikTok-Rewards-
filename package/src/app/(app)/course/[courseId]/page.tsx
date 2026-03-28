@@ -302,8 +302,10 @@ export default function CourseDetailPage() {
               {/* Sections List */}
               <div style={{
                 padding: "16px 20px",
+                paddingBottom: "24px",
                 overflowY: "auto",
-                maxHeight: "calc(85vh - 120px)",
+                maxHeight: "calc(70vh - 100px)",
+                WebkitOverflowScrolling: "touch",
               }}>
                 {selectedModule.subModules.map((subModule, sIndex) => (
                   <motion.div
@@ -521,8 +523,10 @@ export default function CourseDetailPage() {
               {/* Lessons List */}
               <div style={{
                 padding: "16px 20px",
+                paddingBottom: "24px",
                 overflowY: "auto",
-                maxHeight: "calc(90vh - 130px)",
+                maxHeight: "calc(75vh - 120px)",
+                WebkitOverflowScrolling: "touch",
               }}>
                 {selectedSubModule.lessons.map((lesson, lIndex) => (
                   <Link
@@ -618,6 +622,18 @@ export default function CourseDetailPage() {
                     </motion.div>
                   </Link>
                 ))}
+                {/* Scroll indicator - shows there's more content */}
+                {selectedSubModule.lessons.length > 4 && (
+                  <div style={{
+                    textAlign: "center",
+                    padding: "12px 0 8px",
+                    color: "var(--text-muted)",
+                    fontSize: "11px",
+                    opacity: 0.5,
+                  }}>
+                    Scroll for more lessons
+                  </div>
+                )}
               </div>
 
               {/* Close Button */}
