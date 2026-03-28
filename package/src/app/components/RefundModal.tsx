@@ -61,7 +61,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             position: "fixed", inset: 0,
             background: "rgba(0,0,0,0.95)",
             display: "flex", alignItems: "flex-start", justifyContent: "center",
-            padding: "16px", zIndex: 1000,
+            padding: "8px", zIndex: 1000,
             flexDirection: "column",
             overflowY: "auto",
             WebkitOverflowScrolling: "touch",
@@ -77,27 +77,27 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
               width: "100%", maxWidth: step === "legal" ? "600px" : "420px",
               display: "flex", flexDirection: "column", alignItems: "center",
               margin: "auto",
-              padding: "20px 0",
+              padding: "10px 0",
             }}
           >
             {step === "legal" ? (
               /* Legal Notice Step */
               <>
                 {/* TikCash Logo - same as TopBar, centered */}
-                <div style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
                   justifyContent: "center",
-                  gap: "10px",
-                  marginBottom: "24px",
+                  gap: "8px",
+                  marginBottom: "16px",
                   width: "100%",
                 }}>
-                  <div style={{ 
-                    width: "48px", height: "48px", 
+                  <div style={{
+                    width: "36px", height: "36px",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
-                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
                       {/* Musical note with dollar - Cyan layer */}
                       <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
                       {/* Red layer */}
@@ -110,12 +110,12 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     </svg>
                   </div>
                   <span style={{
-                    fontSize: "24px",
+                    fontSize: "20px",
                     fontWeight: 800,
                     color: "#fff",
                     letterSpacing: "-0.5px",
                     fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-                    lineHeight: "48px",
+                    lineHeight: 1,
                   }}>
                     TikCash
                   </span>

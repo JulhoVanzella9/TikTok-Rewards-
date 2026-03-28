@@ -225,38 +225,36 @@ export default function TopBar() {
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           borderBottom: `1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"}`,
-          padding: "0 16px", height: "64px",
+          padding: "0 10px", height: "56px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           boxShadow: isDarkMode ? "0 6px 30px rgba(0,0,0,0.5)" : "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Left Section - Menu + Logo together */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {/* Hamburger Menu */}
+        {/* Left Section - Menu + Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          {/* Hamburger Menu - compact */}
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             onClick={() => setMenuOpen(true)}
             style={{
-              background: isDarkMode 
-                ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)" 
-                : "linear-gradient(135deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 100%)",
-              border: `1.5px solid ${isDarkMode ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
-              borderRadius: "12px", width: "42px", height: "42px",
+              background: "none",
+              border: "none",
+              width: "28px", height: "28px",
               display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: isDarkMode ? "#fff" : "#000",
-              transition: "all 0.3s ease",
-              boxShadow: isDarkMode ? "0 4px 12px rgba(0,0,0,0.3)" : "0 4px 12px rgba(0,0,0,0.08)",
+              cursor: "pointer", color: isDarkMode ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)",
+              padding: 0,
+              flexShrink: 0,
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </motion.button>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </motion.button>
 
-        {/* TikCash Logo - next to menu */}
+          {/* TikCash Logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             <motion.div 
               whileHover={{ scale: 1.05 }} 
@@ -294,8 +292,8 @@ export default function TopBar() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "8px",
-              padding: "8px 14px",
+              gap: "5px",
+              padding: "6px 10px",
               background: isDarkMode 
                 ? "rgba(0,0,0,0.6)" 
                 : "rgba(255,255,255,0.9)",
@@ -310,8 +308,8 @@ export default function TopBar() {
               <line x1="1" y1="10" x2="23" y2="10"/>
             </svg>
             <span style={{ 
-              color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)", 
-              fontSize: "13px", 
+              color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
+              fontSize: "11px",
               fontWeight: 600,
             }}>
               Balance
@@ -322,8 +320,8 @@ export default function TopBar() {
               animate={{ scale: 1, color: "#25f4ee" }}
               transition={{ duration: 0.5 }}
               style={{ 
-                fontSize: "15px", 
-                fontWeight: 800, 
+                fontSize: "13px",
+                fontWeight: 800,
                 color: "#25f4ee",
               }}
             >
