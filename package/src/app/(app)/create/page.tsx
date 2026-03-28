@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { useTheme } from "@/lib/theme/context";
+import { scheduleRatingsAvailableNotification, requestNotificationPermission } from "@/lib/notifications";
 
 const videoData = [
   {
@@ -265,16 +266,23 @@ export default function CreatePage() {
       }
     }
 
-    // Check if all videos rated
-    const allDone = newRatings.every((r) => r !== null);
-    if (allDone) {
-      setTimeout(() => {
-        setAllRated(true);
+// Check if all videos rated
+      const allDone = newRatings.every((r) => r !== null);
+      if (allDone) {
+        // Request notification permission and schedule reminder for 24h
+        requestNotificationPermission().then((granted) => {
+          if (granted) {
+            scheduleRatingsAvailableNotification();
+          }
+        });
+        
         setTimeout(() => {
-          setLimitReached(true);
-        }, 2000);
-      }, 1000);
-    } else {
+          setAllRated(true);
+          setTimeout(() => {
+            setLimitReached(true);
+          }, 2000);
+        }, 1000);
+      } else {
       setTimeout(() => {
         goNext();
       }, 900);

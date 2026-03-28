@@ -3,6 +3,7 @@ import "./global.css";
 import { I18nProvider } from "@/lib/i18n/context";
 import { ThemeProvider } from "@/lib/theme/context";
 import { useEffect } from "react";
+import { checkScheduledNotifications } from "@/lib/notifications";
 
 export default function RootLayout({
   children,
@@ -15,13 +16,15 @@ export default function RootLayout({
       navigator.serviceWorker.register("/sw.js").catch(console.error);
     }
 
-    // Request notification permission after user interaction
-    const requestNotificationPermission = async () => {
-      if ("Notification" in window && Notification.permission === "default") {
-        // Will be requested later on user action
-      }
-    };
-    requestNotificationPermission();
+    // Check for scheduled notifications that need to be shown
+    checkScheduledNotifications();
+    
+    // Check periodically for scheduled notifications
+    const notificationInterval = setInterval(() => {
+      checkScheduledNotifications();
+    }, 60000); // Check every minute
+
+    return () => clearInterval(notificationInterval);
   }, []);
 
   return (
