@@ -103,7 +103,7 @@ export default function HomePage() {
               ? "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(37,244,238,0.05) 100%)"
               : "linear-gradient(135deg, rgba(254,44,85,0.08) 0%, rgba(37,244,238,0.04) 100%)",
             borderRadius: "16px",
-            padding: "16px 16px 0 16px",
+            padding: "16px 16px 20px 16px",
             border: `1px solid ${isDarkMode ? "rgba(254,44,85,0.2)" : "rgba(254,44,85,0.15)"}`,
           }}
         >
@@ -149,7 +149,7 @@ export default function HomePage() {
               position: "relative",
               width: "100%",
               paddingBottom: "56.25%",
-              borderRadius: "0 0 12px 12px",
+              borderRadius: "12px",
               overflow: "hidden",
             }}>
               <iframe
