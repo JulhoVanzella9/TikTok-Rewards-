@@ -70,7 +70,7 @@ export default function HomePage() {
       margin: "0 auto",
       color: "var(--text-primary)",
       transition: "color 0.3s ease",
-      paddingBottom: "160px",
+      paddingBottom: "200px",
       position: "relative",
       background: isDarkMode 
         ? "linear-gradient(180deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)"
