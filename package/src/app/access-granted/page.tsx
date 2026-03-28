@@ -1,36 +1,174 @@
 "use client";
 import { useRef } from "react";
-import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 export default function AccessGrantedPage() {
   const a4Ref = useRef<HTMLDivElement>(null);
   const password = "myacess2026";
+  const accessUrl = "https://tik-cash.vercel.app";
+  const supportEmail = "accesssupport.ai@gmail.com";
 
   const downloadPDF = async () => {
-    if (!a4Ref.current) return;
-    
     try {
-      const canvas = await html2canvas(a4Ref.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#0a0a0a",
-        width: 794, // A4 width at 96 DPI
-        height: 1123, // A4 height at 96 DPI
+      // Create PDF in A4 format (210 x 297 mm)
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
       });
+
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const margin = 20;
+      const contentWidth = pageWidth - (margin * 2);
+
+      // Background
+      pdf.setFillColor(10, 10, 10);
+      pdf.rect(0, 0, pageWidth, pageHeight, "F");
+
+      // Decorative circles
+      pdf.setFillColor(254, 44, 85);
+      pdf.setGState(pdf.GState({ opacity: 0.1 }));
+      pdf.circle(pageWidth + 20, -20, 80, "F");
+      pdf.setFillColor(37, 244, 238);
+      pdf.circle(-20, pageHeight + 20, 80, "F");
+      pdf.setGState(pdf.GState({ opacity: 1 }));
+
+      // CONGRATULATIONS Banner (Green like the reference)
+      const bannerY = 25;
+      const bannerHeight = 22;
       
-      const link = document.createElement("a");
-      link.download = "TikCash-Access-Granted.png";
-      link.href = canvas.toDataURL("image/png", 1.0);
-      link.click();
+      // Green gradient background
+      pdf.setFillColor(34, 197, 94); // Green
+      pdf.roundedRect(margin, bannerY, contentWidth, bannerHeight, 6, 6, "F");
+      
+      // Banner text
+      pdf.setFontSize(24);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text("CONGRATULATIONS!", pageWidth / 2, bannerY + 14, { align: "center" });
+
+      // Main Card Background
+      const cardY = bannerY + bannerHeight + 15;
+      const cardHeight = 175;
+      
+      pdf.setFillColor(30, 35, 42);
+      pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "F");
+      
+      // Card border
+      pdf.setDrawColor(55, 65, 81);
+      pdf.setLineWidth(0.5);
+      pdf.roundedRect(margin, cardY, contentWidth, cardHeight, 8, 8, "S");
+
+      // "Access Granted" title
+      pdf.setFontSize(28);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text("Access Granted", pageWidth / 2, cardY + 25, { align: "center" });
+
+      // Instructions text
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(180, 180, 180);
+      const instructionText = "To access, log in with the same email used";
+      const instructionText2 = "during purchase and use the password:";
+      pdf.text(instructionText, pageWidth / 2, cardY + 42, { align: "center" });
+      pdf.text(instructionText2, pageWidth / 2, cardY + 50, { align: "center" });
+
+      // Password box
+      const passBoxY = cardY + 58;
+      const passBoxWidth = 90;
+      const passBoxHeight = 16;
+      const passBoxX = (pageWidth - passBoxWidth) / 2;
+      
+      pdf.setFillColor(40, 45, 55);
+      pdf.roundedRect(passBoxX, passBoxY, passBoxWidth, passBoxHeight, 4, 4, "F");
+      
+      pdf.setFontSize(16);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text(password, pageWidth / 2, passBoxY + 11, { align: "center" });
+
+      // "Check your email" section
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text("Check your email:", pageWidth / 2, cardY + 95, { align: "center" });
+
+      pdf.setFontSize(11);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(160, 160, 160);
+      const emailText1 = "All Access Details Were Sent";
+      const emailText2 = "To Your Registered E-Mail!";
+      pdf.text(emailText1, pageWidth / 2, cardY + 108, { align: "center" });
+      pdf.text(emailText2, pageWidth / 2, cardY + 116, { align: "center" });
+
+      // Green Access Button (with clickable link)
+      const btnY = cardY + 135;
+      const btnWidth = contentWidth - 20;
+      const btnHeight = 18;
+      const btnX = margin + 10;
+      
+      pdf.setFillColor(34, 197, 94); // Green like reference
+      pdf.roundedRect(btnX, btnY, btnWidth, btnHeight, 5, 5, "F");
+      
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text("CLICK HERE TO ACCESS", pageWidth / 2, btnY + 12, { align: "center" });
+      
+      // Add clickable link to the button
+      pdf.link(btnX, btnY, btnWidth, btnHeight, { url: accessUrl });
+
+      // Text below button
+      const belowBtnY = cardY + cardHeight + 12;
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(140, 140, 140);
+      pdf.text("Don't worry! When you click the button above,", pageWidth / 2, belowBtnY, { align: "center" });
+      pdf.text("a new page will open.", pageWidth / 2, belowBtnY + 6, { align: "center" });
+
+      // Support section
+      const supportY = belowBtnY + 20;
+      pdf.setFontSize(10);
+      pdf.setTextColor(140, 140, 140);
+      pdf.text("For any questions, send a message to", pageWidth / 2, supportY, { align: "center" });
+      pdf.text("support at the email", pageWidth / 2, supportY + 6, { align: "center" });
+      
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text(supportEmail, pageWidth / 2, supportY + 16, { align: "center" });
+      
+      // Add clickable email link
+      const emailWidth = pdf.getTextWidth(supportEmail);
+      pdf.link((pageWidth - emailWidth) / 2, supportY + 10, emailWidth, 8, { url: `mailto:${supportEmail}` });
+
+      // TikCash Logo at bottom
+      const logoY = pageHeight - 35;
+      pdf.setFontSize(20);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(37, 244, 238);
+      pdf.text("Tik", pageWidth / 2 - 12, logoY, { align: "center" });
+      pdf.setTextColor(254, 44, 85);
+      pdf.text("Cash", pageWidth / 2 + 15, logoY, { align: "center" });
+      
+      pdf.setFontSize(9);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(100, 100, 100);
+      pdf.text("Start earning with every video you watch", pageWidth / 2, logoY + 8, { align: "center" });
+
+      // Download
+      pdf.save("TikCash-Access-Granted.pdf");
     } catch (error) {
-      console.error("Error generating image:", error);
+      console.error("Error generating PDF:", error);
     }
   };
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#1a1a1a",
+      background: "#0a0a0a",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -62,313 +200,225 @@ export default function AccessGrantedPage() {
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Download A4 Image
+        Download PDF
       </button>
 
-      {/* A4 Container - 210mm x 297mm (794px x 1123px at 96 DPI) */}
+      {/* Preview - A4 Container */}
       <div
         ref={a4Ref}
         style={{
-          width: "794px",
-          height: "1123px",
-          background: "linear-gradient(180deg, #0d1117 0%, #0a0a0a 100%)",
+          width: "100%",
+          maxWidth: "420px",
+          aspectRatio: "210/297",
+          background: "#0a0a0a",
           boxShadow: "0 8px 60px rgba(0,0,0,0.8)",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          padding: "60px 50px",
+          padding: "32px 24px",
           boxSizing: "border-box",
           position: "relative",
           overflow: "hidden",
+          borderRadius: "8px",
         }}
       >
         {/* Decorative Background Elements */}
         <div style={{
           position: "absolute",
-          top: "-100px",
-          right: "-100px",
-          width: "300px",
-          height: "300px",
-          background: "radial-gradient(circle, rgba(254,44,85,0.15) 0%, transparent 70%)",
+          top: "-80px",
+          right: "-80px",
+          width: "200px",
+          height: "200px",
+          background: "radial-gradient(circle, rgba(254,44,85,0.12) 0%, transparent 70%)",
           borderRadius: "50%",
         }} />
         <div style={{
           position: "absolute",
-          bottom: "-100px",
-          left: "-100px",
-          width: "300px",
-          height: "300px",
-          background: "radial-gradient(circle, rgba(37,244,238,0.15) 0%, transparent 70%)",
+          bottom: "-80px",
+          left: "-80px",
+          width: "200px",
+          height: "200px",
+          background: "radial-gradient(circle, rgba(37,244,238,0.12) 0%, transparent 70%)",
           borderRadius: "50%",
         }} />
 
-        {/* Congratulations Banner */}
+        {/* Congratulations Banner - GREEN like reference */}
         <div style={{
           width: "100%",
-          maxWidth: "600px",
-          background: "linear-gradient(135deg, #fe2c55 0%, #ff1744 50%, #d41442 100%)",
-          borderRadius: "20px",
-          padding: "28px 40px",
+          background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+          borderRadius: "14px",
+          padding: "18px 24px",
           textAlign: "center",
-          marginBottom: "40px",
-          boxShadow: "0 8px 40px rgba(254,44,85,0.4)",
-          border: "2px solid rgba(255,255,255,0.15)",
-          position: "relative",
+          marginBottom: "20px",
+          boxShadow: "0 4px 20px rgba(34,197,94,0.35)",
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
-            <span style={{ fontSize: "42px" }}>🎁</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px" }}>
+            <span style={{ fontSize: "26px" }}>🎁</span>
             <h1 style={{
-              fontSize: "36px",
+              fontSize: "22px",
               fontWeight: 900,
               color: "#fff",
               margin: 0,
-              textShadow: "0 3px 12px rgba(0,0,0,0.4)",
-              letterSpacing: "3px",
+              textShadow: "0 2px 8px rgba(0,0,0,0.3)",
+              letterSpacing: "2px",
             }}>
               CONGRATULATIONS!
             </h1>
-            <span style={{ fontSize: "42px" }}>🎁</span>
+            <span style={{ fontSize: "26px" }}>🎁</span>
           </div>
         </div>
 
         {/* Main Card */}
         <div style={{
           width: "100%",
-          maxWidth: "600px",
-          background: "linear-gradient(180deg, rgba(37,244,238,0.08) 0%, rgba(37,244,238,0.02) 100%)",
-          border: "1px solid rgba(37,244,238,0.2)",
-          borderRadius: "24px",
-          padding: "48px 40px",
+          background: "linear-gradient(180deg, rgba(40,45,55,0.95) 0%, rgba(30,35,42,0.95) 100%)",
+          border: "1px solid rgba(55,65,81,0.5)",
+          borderRadius: "16px",
+          padding: "28px 20px",
           textAlign: "center",
-          position: "relative",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
         }}>
-          {/* Success Icon */}
-          <div style={{
-            width: "90px",
-            height: "90px",
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #25f4ee 0%, #17b8b3 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 32px",
-            boxShadow: "0 10px 40px rgba(37,244,238,0.4)",
-          }}>
-            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
-          </div>
-
+          {/* Access Granted Title */}
           <h2 style={{
-            fontSize: "40px",
+            fontSize: "26px",
             fontWeight: 800,
             color: "#fff",
-            margin: "0 0 12px 0",
+            margin: "0 0 16px 0",
           }}>
             Access Granted
           </h2>
 
+          {/* Instructions */}
           <p style={{
-            fontSize: "16px",
-            color: "#25f4ee",
-            fontWeight: 600,
-            margin: "0 0 36px 0",
-            textTransform: "uppercase",
-            letterSpacing: "3px",
+            fontSize: "13px",
+            color: "rgba(255,255,255,0.75)",
+            lineHeight: 1.7,
+            margin: "0 0 16px 0",
           }}>
-            Your Premium Account is Ready
+            To access, log in with the <strong style={{ color: "#fff" }}>same email</strong> used during purchase and use the password:
           </p>
 
-          {/* Instructions */}
+          {/* Password Box */}
           <div style={{
             background: "rgba(0,0,0,0.4)",
-            borderRadius: "16px",
-            padding: "24px",
-            marginBottom: "32px",
-            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "10px",
+            padding: "12px 24px",
+            display: "inline-block",
+            margin: "0 auto 20px",
           }}>
-            <p style={{
-              fontSize: "17px",
-              color: "rgba(255,255,255,0.85)",
-              lineHeight: 1.8,
-              margin: 0,
+            <span style={{
+              fontSize: "18px",
+              fontWeight: 700,
+              color: "#fff",
+              letterSpacing: "1px",
+              fontFamily: "monospace",
             }}>
-              To access, log in with the <strong style={{ color: "#fff" }}>same email</strong> used during purchase and use the password below:
-            </p>
+              {password}
+            </span>
           </div>
 
-          {/* Password Box */}
-          <div style={{ marginBottom: "36px" }}>
-            <p style={{
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.5)",
-              margin: "0 0 12px 0",
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-            }}>
-              Your Password
-            </p>
-            <div style={{
-              background: "linear-gradient(135deg, rgba(37,244,238,0.12) 0%, rgba(37,244,238,0.04) 100%)",
-              border: "3px solid #25f4ee",
-              borderRadius: "16px",
-              padding: "20px 36px",
-              display: "inline-block",
-            }}>
-              <span style={{
-                fontSize: "32px",
-                fontWeight: 800,
-                color: "#fff",
-                letterSpacing: "4px",
-                fontFamily: "monospace",
-              }}>
-                {password}
-              </span>
-            </div>
-          </div>
-
-          {/* Email Notice */}
-          <div style={{
-            background: "linear-gradient(135deg, rgba(254,44,85,0.1) 0%, rgba(254,44,85,0.05) 100%)",
-            border: "1px solid rgba(254,44,85,0.25)",
-            borderRadius: "14px",
-            padding: "20px 24px",
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
+          {/* Check Email Section */}
+          <p style={{
+            fontSize: "14px",
+            fontWeight: 700,
+            color: "#fff",
+            margin: "0 0 8px 0",
           }}>
-            <div style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "12px",
-              background: "rgba(254,44,85,0.2)",
+            Check your email:
+          </p>
+          <p style={{
+            fontSize: "12px",
+            color: "rgba(255,255,255,0.6)",
+            lineHeight: 1.6,
+            margin: "0 0 24px 0",
+          }}>
+            All Access Details Were Sent<br />
+            To Your Registered E-Mail!
+          </p>
+
+          {/* GREEN Access Button */}
+          <a
+            href={accessUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="M22 6l-10 7L2 6"/>
-              </svg>
-            </div>
-            <div style={{ textAlign: "left" }}>
-              <p style={{ fontSize: "16px", fontWeight: 700, color: "#fff", margin: 0 }}>
-                Check Your Email
-              </p>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", margin: "4px 0 0 0" }}>
-                All access details were sent to your registered email!
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Access Button */}
-        <div style={{
-          width: "100%",
-          maxWidth: "600px",
-          marginTop: "32px",
-        }}>
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "14px",
-            width: "100%",
-            background: "linear-gradient(135deg, #25f4ee 0%, #1ed4cf 50%, #17b8b3 100%)",
-            color: "#000",
-            fontSize: "20px",
-            fontWeight: 800,
-            padding: "24px 36px",
-            borderRadius: "16px",
-            textDecoration: "none",
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            boxShadow: "0 6px 0 0 #0f8a87, 0 14px 40px rgba(37,244,238,0.35)",
-          }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M15 3h6v6M14 10l6.1-6.1M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>
-            </svg>
+              gap: "10px",
+              width: "100%",
+              background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 800,
+              padding: "16px 20px",
+              borderRadius: "12px",
+              textDecoration: "none",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              boxShadow: "0 4px 20px rgba(34,197,94,0.35)",
+              marginBottom: "16px",
+            }}
+          >
             CLICK HERE TO ACCESS
-          </div>
+          </a>
 
           <p style={{
-            fontSize: "14px",
-            color: "rgba(255,255,255,0.5)",
-            lineHeight: 1.6,
-            margin: "20px 0 0 0",
-            textAlign: "center",
+            fontSize: "11px",
+            color: "rgba(255,255,255,0.45)",
+            lineHeight: 1.5,
+            margin: "0 0 20px 0",
           }}>
-            A new page will open when you click the button above.
+            {"Don't worry! When you click the button above,"}<br />
+            a new page will open.
           </p>
-        </div>
 
-        {/* Support Section */}
-        <div style={{
-          width: "100%",
-          maxWidth: "600px",
-          marginTop: "32px",
-          padding: "24px",
-          background: "rgba(255,255,255,0.03)",
-          borderRadius: "16px",
-          border: "1px solid rgba(255,255,255,0.06)",
-          textAlign: "center",
-        }}>
-          <p style={{
-            fontSize: "14px",
-            color: "rgba(255,255,255,0.6)",
-            margin: "0 0 12px 0",
-          }}>
-            For any questions, send a message to support at:
-          </p>
+          {/* Support Section */}
           <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "10px",
-            color: "#fff",
-            fontSize: "17px",
-            fontWeight: 700,
-            padding: "12px 20px",
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "10px",
+            marginTop: "auto",
+            paddingTop: "16px",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="M22 6l-10 7L2 6"/>
-            </svg>
-            accesssupport.ai@gmail.com
+            <p style={{
+              fontSize: "11px",
+              color: "rgba(255,255,255,0.5)",
+              margin: "0 0 8px 0",
+            }}>
+              For any questions, send a message to<br />
+              support at the email
+            </p>
+            <a 
+              href={`mailto:${supportEmail}`}
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#fff",
+                textDecoration: "underline",
+                textDecorationStyle: "dotted",
+                textUnderlineOffset: "4px",
+              }}
+            >
+              {supportEmail}
+            </a>
           </div>
         </div>
 
         {/* TikCash Logo Footer */}
         <div style={{
-          marginTop: "auto",
-          paddingTop: "32px",
+          marginTop: "20px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "12px",
+          gap: "6px",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
-              <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
-              <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
-              <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
-              <text x="20" y="32" textAnchor="middle" fill="#000" fontSize="14" fontWeight="800">$</text>
-              <circle cx="36" cy="12" r="7" fill="#25F4EE" stroke="#000" strokeWidth="2"/>
-              <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800">$</text>
-            </svg>
-            <span style={{
-              fontSize: "26px",
-              fontWeight: 800,
-              color: "#fff",
-            }}>
-              TikCash
-            </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <span style={{ fontSize: "18px", fontWeight: 800, color: "#25f4ee" }}>Tik</span>
+            <span style={{ fontSize: "18px", fontWeight: 800, color: "#fe2c55" }}>Cash</span>
           </div>
           <p style={{
-            fontSize: "13px",
-            color: "rgba(255,255,255,0.4)",
+            fontSize: "10px",
+            color: "rgba(255,255,255,0.35)",
             margin: 0,
           }}>
             Start earning with every video you watch
