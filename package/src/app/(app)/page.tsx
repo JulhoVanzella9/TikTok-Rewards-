@@ -187,26 +187,30 @@ export default function HomePage() {
               className="video-container"
               style={{
                 width: "100%",
-                height: "460px",
                 background: "#000",
                 margin: "0",
                 padding: "0",
                 overflow: "hidden",
-                position: "relative",
+                lineHeight: 0,
               }}
             >
-              <iframe
-                src="https://drive.google.com/file/d/1S6ytaMYJ4ce3D_v2c5AecKlQPtNis4rR/preview"
-                allow="autoplay"
+              <video
+                src="https://media.githubusercontent.com/media/JulhoVanzella9/TikTok-Rewards-/main/package/public/video.mp4"
+                playsInline
+                preload="metadata"
+                controlsList="nodownload nofullscreen noremoteplayback"
+                disablePictureInPicture
                 style={{
-                  position: "absolute",
-                  top: "-38px",
-                  left: "-2px",
-                  width: "calc(100% + 4px)",
-                  height: "calc(100% + 76px)",
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
                   border: "none",
+                  outline: "none",
+                  background: "#000",
                 }}
-              />
+              >
+                <track kind="captions" />
+              </video>
             </div>
           </div>
 
