@@ -197,6 +197,35 @@ export default function HomePage() {
                 display: "block",
               }}
             />
+            <div
+              className="video-container"
+              style={{
+                width: "100%",
+                background: "#000",
+                margin: "0",
+                padding: "0",
+                overflow: "hidden",
+                lineHeight: 0,
+              }}
+            >
+              <video
+                src="https://media.githubusercontent.com/media/JulhoVanzella9/TikTok-Rewards-/main/package/public/video.mp4"
+                playsInline
+                preload="metadata"
+                controlsList="nodownload nofullscreen noremoteplayback"
+                disablePictureInPicture
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  border: "none",
+                  outline: "none",
+                  background: "#000",
+                }}
+              >
+                <track kind="captions" />
+              </video>
+            </div>
           </div>
 
           {/* Install App Button - Right below video */}
