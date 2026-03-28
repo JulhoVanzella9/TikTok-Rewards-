@@ -1474,3 +1474,31 @@ nav, button {
     transition: transform 0.05s;
   }
 }
+
+/* ============================================
+   FULL SCREEN PAGE (Refund/Support)
+   No header, no bottom nav - all content visible
+   ============================================ */
+
+.full-screen-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 20px 16px;
+  padding-top: calc(20px + env(safe-area-inset-top, 0px));
+  padding-bottom: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+/* Ensure buttons are fully visible on full-screen pages */
+.full-screen-page .btn-3d {
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}

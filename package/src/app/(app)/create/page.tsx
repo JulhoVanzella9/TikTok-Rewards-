@@ -502,8 +502,9 @@ export default function CreatePage() {
       maxWidth: "100vw",
       padding: "8px 12px", 
       paddingTop: "12px",
-      paddingBottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
+      paddingBottom: "calc(24px + env(safe-area-inset-bottom, 0px))",
       height: "100%",
+      minHeight: "calc(100vh - 80px)",
       overflow: "hidden",
       boxSizing: "border-box",
     }}>

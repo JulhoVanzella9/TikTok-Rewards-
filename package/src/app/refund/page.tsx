@@ -39,80 +39,87 @@ export default function RefundPage() {
     }, 2000);
   };
 
+  // TikCash Logo SVG component
+  const TikCashLogo = () => (
+    <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
+      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
+      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
+      <text x="20" y="32" textAnchor="middle" fill="#000" fontSize="14" fontWeight="800">$</text>
+      <circle cx="36" cy="12" r="7" fill="#25f4ee" stroke="#000" strokeWidth="2"/>
+      <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800">$</text>
+    </svg>
+  );
+
   return (
     <div style={{
       minHeight: "100vh",
+      minHeight: "100dvh",
       background: "linear-gradient(180deg, #0a0a0a 0%, #111 100%)",
       padding: "20px 16px",
-      paddingTop: "24px",
-      paddingBottom: "calc(120px + env(safe-area-inset-bottom, 0px))",
+      paddingTop: "env(safe-area-inset-top, 20px)",
+      paddingBottom: "40px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       overflowX: "hidden",
+      overflowY: "auto",
       width: "100%",
       maxWidth: "100vw",
       boxSizing: "border-box",
+      WebkitOverflowScrolling: "touch",
     }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         style={{
           width: "100%",
-          maxWidth: step === "legal" ? "calc(100vw - 32px)" : "calc(100vw - 32px)",
+          maxWidth: "500px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          padding: "0 16px",
+          boxSizing: "border-box",
         }}
       >
         {step === "legal" ? (
           <>
-            {/* Back Button */}
-            <Link 
-              href="/support"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "rgba(255,255,255,0.7)",
-                fontSize: "14px",
-                fontWeight: 600,
-                textDecoration: "none",
-                marginBottom: "16px",
-                alignSelf: "flex-start",
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Back to Support
-            </Link>
-
-            <h2 style={{ 
-              fontSize: "18px", fontWeight: 600, color: "rgba(255,255,255,0.7)", 
-              marginBottom: "20px", textAlign: "center",
+            {/* Header with Logo */}
+            <div style={{ 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              marginBottom: "24px",
+              marginTop: "10px",
             }}>
-              Community
-            </h2>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                <TikCashLogo />
+                <span style={{ fontSize: "22px", fontWeight: 800, color: "#fff" }}>TikCash</span>
+              </div>
+              <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.6)" }}>Community</p>
+            </div>
 
+            {/* Legal Notice Card */}
             <div style={{
-              background: "#000",
-              padding: "24px 16px",
+              background: "rgba(0,0,0,0.6)",
+              padding: "24px 20px",
               width: "100%",
               textAlign: "center",
-              borderRadius: "12px",
+              borderRadius: "16px",
               border: "1px solid rgba(255,255,255,0.1)",
+              marginBottom: "24px",
             }}>
               <h3 style={{ 
-                fontSize: "16px", fontWeight: 800, color: "#fff", 
-                marginBottom: "16px", letterSpacing: "0.5px",
+                fontSize: "15px", fontWeight: 800, color: "#fff", 
+                marginBottom: "20px", letterSpacing: "0.5px",
+                textTransform: "uppercase",
               }}>
-                LEGAL CONSEQUENCES NOTICE
+                Legal Consequences Notice
               </h3>
 
               <p style={{ 
-                fontSize: "13px", color: "rgba(255,255,255,0.7)", 
-                lineHeight: 1.7, marginBottom: "24px",
+                fontSize: "14px", color: "rgba(255,255,255,0.75)", 
+                lineHeight: 1.7, marginBottom: "28px",
                 textAlign: "left",
               }}>
                 Please note that initiating a chargeback (a formal request to the credit provider to reverse an unrecognized transaction) without proper justification constitutes illegal conduct under the Fair Credit Billing Act (FCBA). These actions not only harm reputable and ethical businesses but also involve the refusal to acknowledge a legitimate transaction despite having received the product or service. Engaging in such practices may result in legal consequences. It is essential to maintain honesty in all online transactions to ensure a safe and trustworthy shopping environment for all parties involved.
@@ -121,17 +128,33 @@ export default function RefundPage() {
               <button
                 onClick={() => setStep("form")}
                 className="btn-3d btn-3d-primary"
-                style={{ fontFamily: "inherit", width: "100%", maxWidth: "280px" }}
+                style={{ fontFamily: "inherit", width: "100%", maxWidth: "300px" }}
               >
                 Continue Request
               </button>
             </div>
 
             {/* Footer Links */}
-            <div style={{ display: "flex", gap: "20px", marginTop: "24px", justifyContent: "center", flexWrap: "wrap" }}>
-              <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Terms of Use</span>
-              <span style={{ fontSize: "12px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Privacy Policy</span>
+            <div style={{ display: "flex", gap: "24px", marginBottom: "24px", justifyContent: "center" }}>
+              <span style={{ fontSize: "13px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Terms of Use</span>
+              <span style={{ fontSize: "13px", color: "#fff", fontWeight: 600, cursor: "pointer" }}>Privacy Policy</span>
             </div>
+
+            {/* Back to Start Button */}
+            <Link
+              href="/"
+              className="btn-3d btn-3d-dark"
+              style={{ 
+                fontFamily: "inherit", 
+                textDecoration: "none", 
+                textAlign: "center",
+                width: "100%",
+                maxWidth: "300px",
+                marginBottom: "20px",
+              }}
+            >
+              Back to Start
+            </Link>
           </>
         ) : (
           <div style={{
