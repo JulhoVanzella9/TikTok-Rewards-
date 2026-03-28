@@ -143,14 +143,16 @@ export default function HomePage() {
 
           {/* Video Player */}
           <div style={{
-            margin: "0 -24px -24px -24px",
-            borderRadius: "0 0 20px 20px",
-            overflow: "hidden",
+            margin: "0 -12px -12px -12px",
+            padding: "0 12px 12px 12px",
           }}>
             <div style={{
               position: "relative",
               width: "100%",
               paddingBottom: "56.25%",
+              borderRadius: "14px",
+              overflow: "hidden",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
             }}>
               <iframe
                 src="https://www.youtube.com/embed/3ABhL8rLozk?rel=0&modestbranding=1"
