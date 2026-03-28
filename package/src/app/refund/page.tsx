@@ -53,7 +53,6 @@ export default function RefundPage() {
 
   return (
     <div style={{
-      minHeight: "100vh",
       minHeight: "100dvh",
       background: "linear-gradient(180deg, #0a0a0a 0%, #111 100%)",
       padding: "20px 16px",
