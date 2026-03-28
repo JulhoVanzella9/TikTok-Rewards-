@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useI18n } from "@/lib/i18n/context";
 import { motion, AnimatePresence } from "framer-motion";
-import RefundModal from "@/app/components/RefundModal";
 import ReferralWelcomePopup from "@/app/components/ReferralWelcomePopup";
 
 export default function LoginPage() {
@@ -18,7 +17,6 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [showRefundModal, setShowRefundModal] = useState(false);
 
   const getRedirectUrl = () => {
     if (typeof window !== "undefined") {
@@ -303,21 +301,6 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* 3D Request Refund button */}
-        {step === "email" && (
-          <button
-            type="button"
-            onClick={() => setShowRefundModal(true)}
-            className="btn-3d btn-3d-dark btn-3d-full btn-3d-float btn-3d-icon-grow"
-            style={{
-              fontFamily: "inherit",
-              marginBottom: "20px",
-            }}
-          >
-            Request Refund
-          </button>
-        )}
-
         {/* Terms */}
         <p
           style={{
@@ -332,9 +315,6 @@ export default function LoginPage() {
         </p>
       </motion.div>
 
-      {/* Refund Modal */}
-      <RefundModal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} />
-      
       {/* Referral Welcome Popup */}
       <ReferralWelcomePopup referralCode={referralCode} />
     </div>
