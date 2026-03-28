@@ -189,40 +189,32 @@ export default function HomePage() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                padding: "0",
+                padding: "16px",
                 margin: "0",
                 width: "100%",
+                boxSizing: "border-box",
               }}
             >
-              <div style={{
-                width: "100%",
-                maxWidth: "280px",
-                aspectRatio: "9/16",
-                borderRadius: "16px",
-                overflow: "hidden",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#000",
-                margin: "0 auto",
-              }}>
-                <video
-                  src="/video.mp4"
-                  controls
-                  playsInline
-                  preload="metadata"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                    borderRadius: "16px",
-                    display: "block",
-                    margin: "0",
-                    padding: "0",
-                  }}
-                />
-              </div>
+              <video
+                src="/video.mp4"
+                controls
+                playsInline
+                preload="auto"
+                poster=""
+                style={{
+                  width: "100%",
+                  maxWidth: "280px",
+                  aspectRatio: "9/16",
+                  objectFit: "cover",
+                  borderRadius: "16px",
+                  display: "block",
+                  margin: "0 auto",
+                  padding: "0",
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                }}
+              />
             </div>
           </div>
 
