@@ -187,44 +187,16 @@ export default function HomePage() {
               src="/video.mp4"
               controls
               playsInline
-              preload="auto"
+              preload="metadata"
+              controlsList="nodownload nofullscreen noremoteplayback"
+              disablePictureInPicture
               style={{
                 width: "100%",
                 height: "auto",
-                aspectRatio: "9/16",
-                objectFit: "cover",
-                borderRadius: "0 0 16px 16px",
                 display: "block",
+                borderRadius: "0 0 16px 16px",
               }}
             />
-            <div
-              className="video-container"
-              style={{
-                width: "100%",
-                background: "#000",
-                margin: "0",
-                padding: "0",
-                overflow: "hidden",
-                lineHeight: 0,
-              }}
-            >
-              <video
-                src="/video.mp4"
-                controls
-                playsInline
-                preload="metadata"
-                controlsList="nodownload nofullscreen noremoteplayback"
-                disablePictureInPicture
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  display: "block",
-                  border: "none",
-                  outline: "none",
-                  background: "#000",
-                }}
-              />
-            </div>
           </div>
 
           {/* Install App Button - Right below video */}
