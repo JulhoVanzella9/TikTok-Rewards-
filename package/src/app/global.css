@@ -49,6 +49,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  height: -webkit-fill-available;
 }
 
 body {
@@ -59,6 +61,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
 }
 
 /* Light theme body override */
@@ -669,11 +674,13 @@ a { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; co
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
   height: 100vh;
+  height: 100dvh;
   -webkit-overflow-scrolling: touch;
 }
 .snap-item {
   scroll-snap-align: start;
   height: 100vh;
+  height: 100dvh;
 }
 
 /* Glass morphism */

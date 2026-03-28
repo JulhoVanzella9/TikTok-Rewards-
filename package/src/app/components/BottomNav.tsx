@@ -100,13 +100,19 @@ export default function BottomNav() {
     <nav
       className="bottom-nav"
       style={{
-        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-        background: isDarkMode ? "rgba(0,0,0,0.98)" : "rgba(255,255,255,0.98)",
+        position: "fixed", 
+        bottom: 0, 
+        left: 0, 
+        right: 0, 
+        zIndex: 100,
+        background: isDarkMode ? "#000" : "#fff",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         borderTop: `1px solid ${isDarkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
-        display: "flex", alignItems: "center", justifyContent: "space-around",
-        height: "68px",
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-around",
+        height: "calc(68px + env(safe-area-inset-bottom, 0px))",
         paddingLeft: "4px",
         paddingRight: "4px",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
