@@ -142,13 +142,14 @@ export default function HomePage() {
 
           {/* Video Player */}
           <div style={{
-            margin: "16px -16px 0 -16px",
+            margin: "16px -11px 0 -11px",
+            padding: "0 0 5px 0",
           }}>
             <div style={{
               position: "relative",
               width: "100%",
               paddingBottom: "56.25%",
-              borderRadius: "0 0 16px 16px",
+              borderRadius: "0 0 12px 12px",
               overflow: "hidden",
             }}>
               <iframe
