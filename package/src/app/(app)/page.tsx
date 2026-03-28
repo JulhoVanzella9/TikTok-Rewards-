@@ -58,8 +58,8 @@ export default function HomePage() {
 
   const gettingStartedSteps = [
     "Navigate to the TikCash App section using the sidebar",
-    "Connect your TikTok account securely within the app",
-    "Start exploring monetization tools and analytics",
+    "Start watching videos and earn rewards daily",
+    "Track your earnings and withdraw your balance anytime",
     "Access Support if you need help or have questions",
   ];
 
