@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -43,6 +43,21 @@ export default function CourseDetailPage() {
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [selectedModuleIndex, setSelectedModuleIndex] = useState<number>(0);
   const [selectedSubModule, setSelectedSubModule] = useState<SubModule | null>(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedModule || selectedSubModule) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [selectedModule, selectedSubModule]);
 
   if (!course) {
     return (
@@ -306,6 +321,7 @@ export default function CourseDetailPage() {
                 overflowY: "auto",
                 maxHeight: "calc(70vh - 100px)",
                 WebkitOverflowScrolling: "touch",
+                overscrollBehavior: "contain",
               }}>
                 {selectedModule.subModules.map((subModule, sIndex) => (
                   <motion.div
@@ -527,6 +543,7 @@ export default function CourseDetailPage() {
                 overflowY: "auto",
                 maxHeight: "calc(75vh - 120px)",
                 WebkitOverflowScrolling: "touch",
+                overscrollBehavior: "contain",
               }}>
                 {selectedSubModule.lessons.map((lesson, lIndex) => (
                   <Link
