@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 
+// ── Storage key for persisting video index ─────────────────────────────────
+const STORAGE_KEY = "tikcash_feed_current_index";
+const STORAGE_DATE_KEY = "tikcash_feed_date";
+
 // ── seeded shuffle (mesma ordem o dia todo, muda todo dia) ─────────────────
 function seededRng(seed: number) {
   let s = seed;
@@ -18,6 +22,42 @@ function dailyShuffle<T>(arr: T[]): T[] {
   return a.slice(0, 20);
 }
 
+// ── Get today's date string for comparison ─────────────────────────────────
+function getTodayString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+
+// ── Get saved index from sessionStorage (only if same day) ─────────────────
+function getSavedIndex(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const savedDate = sessionStorage.getItem(STORAGE_DATE_KEY);
+    const today = getTodayString();
+    // Reset index if it's a new day (since videos shuffle daily)
+    if (savedDate !== today) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.setItem(STORAGE_DATE_KEY, today);
+      return 0;
+    }
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    return saved ? parseInt(saved, 10) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+// ── Save index to sessionStorage ───────────────────────────────────────────
+function saveIndex(index: number) {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(STORAGE_KEY, index.toString());
+    sessionStorage.setItem(STORAGE_DATE_KEY, getTodayString());
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 // ── fake stats estáveis por seed ───────────────────────────────────────────
 function fakeNum(seed: string, min: number, max: number) {
   let h = 0;
@@ -32,7 +72,7 @@ function fmt(n: number) {
 
 export default function FeedPage() {
   const [videos, setVideos] = useState<string[]>([]);
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(() => getSavedIndex());
   const [liked, setLiked] = useState<Set<number>>(new Set());
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -42,8 +82,22 @@ export default function FeedPage() {
   useEffect(() => {
     fetch("/videos/index.json")
       .then(r => r.json())
-      .then((all: string[]) => setVideos(dailyShuffle(all)));
+      .then((all: string[]) => {
+        const shuffled = dailyShuffle(all);
+        setVideos(shuffled);
+        // Ensure saved index is within bounds
+        const savedIdx = getSavedIndex();
+        if (savedIdx >= shuffled.length) {
+          setCurrent(0);
+          saveIndex(0);
+        }
+      });
   }, []);
+
+  // Save current index whenever it changes
+  useEffect(() => {
+    saveIndex(current);
+  }, [current]);
 
   // pausa todos, toca o atual
   useEffect(() => {
