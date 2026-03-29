@@ -41,7 +41,7 @@ export default function CreatePage() {
   const [showToast, setShowToast] = useState(false);
   const [toastData, setToastData] = useState({ emoji: "", text: "", type: "" });
   const [totalEarned, setTotalEarned] = useState(0);
-  const [loadedVideos, setLoadedVideos] = useState<number[]>([0, 1, 2]);
+  const [loadedVideos, setLoadedVideos] = useState<number[]>([0]);
   const [displayedBalance, setDisplayedBalance] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
   const [allRated, setAllRated] = useState(false);
@@ -289,23 +289,24 @@ export default function CreatePage() {
     }
   }, [ratings, currentIndex, animating, displayToast, goNext, totalEarned, userId]);
 
-  // Track if this is the initial mount to start playback at restored position
-  const initialMountRef = useRef(true);
-
-  // Start playback at the current index (restored from DB or 0)
   useEffect(() => {
     if (loading) return;
     
-    // Only run on initial mount after loading completes
-    if (initialMountRef.current) {
-      initialMountRef.current = false;
-      
-      // Use the currentIndex which may have been restored from Supabase
+    setTimeout(() => {
+      updateVideoMutes(0);
+    }, 500);
+
+    setTimeout(() => {
+      if (!loadedVideos.includes(1)) {
+        setLoadedVideos((prev) => [...prev, 1]);
+      }
       setTimeout(() => {
-        updateVideoMutes(currentIndex);
-      }, 500);
-    }
-  }, [loading, currentIndex, updateVideoMutes]);
+        if (!loadedVideos.includes(2)) {
+          setLoadedVideos((prev) => [...prev, 2]);
+        }
+      }, 1000);
+    }, 1500);
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setVideoRef = (index: number) => (el: HTMLVideoElement | null) => {
     videoRefs.current[index] = el;
