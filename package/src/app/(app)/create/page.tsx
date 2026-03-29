@@ -50,7 +50,7 @@ export default function CreatePage() {
   const [videoData, setVideoData] = useState<ReturnType<typeof fileToVideoData>[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState<(string | null)[]>([]);
-  const savedProgressRef = useRef(0);
+  const [savedProgress, setSavedProgress] = useState<number | null>(null);
   const [animating, setAnimating] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastData, setToastData] = useState({ emoji: "", text: "", type: "" });
@@ -61,20 +61,25 @@ export default function CreatePage() {
   const [allRated, setAllRated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [supabaseDataLoaded, setSupabaseDataLoaded] = useState(false);
 
+  // Load videos ONLY after Supabase data is loaded
   useEffect(() => {
+    if (!supabaseDataLoaded) return;
+    
     fetch("/videos/index.json")
       .then(r => r.json())
       .then((all: string[]) => {
         const picked = dailyPick(all, 20).map(fileToVideoData);
         setVideoData(picked);
-        const saved = savedProgressRef.current;
+        const saved = savedProgress || 0;
         const init = new Array(picked.length).fill(null) as (string | null)[];
         for (let i = 0; i < saved; i++) init[i] = "done";
         setRatings(init);
+        // Set currentIndex to the saved position (next video to watch)
         if (saved > 0) setCurrentIndex(Math.min(saved, picked.length - 1));
       });
-  }, []);
+  }, [supabaseDataLoaded, savedProgress]);
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const cashSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -86,6 +91,7 @@ export default function CreatePage() {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
+        setSupabaseDataLoaded(true);
         setLoading(false);
         return;
       }
@@ -120,14 +126,20 @@ export default function CreatePage() {
               updated_at: new Date().toISOString()
             })
             .eq("user_id", user.id);
+          // Reset saved progress for new day
+          setSavedProgress(0);
         } else if (hoursDiff < 24 && ratingData.ratings_count < 20) {
           // User has progress but not finished - restore their position
           const savedIndex = ratingData.current_video_index || 0;
-          savedProgressRef.current = savedIndex;
+          setSavedProgress(savedIndex);
           setTotalEarned(ratingData.total_earned || 0);
         }
+      } else {
+        // No rating data yet - new user
+        setSavedProgress(0);
       }
 
+      setSupabaseDataLoaded(true);
       setLoading(false);
     };
 
