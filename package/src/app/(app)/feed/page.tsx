@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-// ── Storage key for persisting video index ─────────────────────────────────
+// ── Storage keys for persisting video state ────────────────────────────────
 const STORAGE_KEY = "tikcash_feed_current_index";
+const STORAGE_TIME_KEY = "tikcash_feed_current_time";
 const STORAGE_DATE_KEY = "tikcash_feed_date";
 
 // ── seeded shuffle (mesma ordem o dia todo, muda todo dia) ─────────────────
@@ -58,6 +59,30 @@ function saveIndex(index: number) {
   }
 }
 
+// ── Get saved playback time from sessionStorage ────────────────────────────
+function getSavedTime(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const savedDate = sessionStorage.getItem(STORAGE_DATE_KEY);
+    const today = getTodayString();
+    if (savedDate !== today) return 0;
+    const saved = sessionStorage.getItem(STORAGE_TIME_KEY);
+    return saved ? parseFloat(saved) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+// ── Save playback time to sessionStorage ───────────────────────────────────
+function saveTime(time: number) {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(STORAGE_TIME_KEY, time.toString());
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 // ── fake stats estáveis por seed ───────────────────────────────────────────
 function fakeNum(seed: string, min: number, max: number) {
   let h = 0;
@@ -77,6 +102,8 @@ export default function FeedPage() {
   const [muted, setMuted] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pendingTimeRestore = useRef<number | null>(getSavedTime());
+  const isFirstLoad = useRef(true);
 
   // carrega lista de vídeos
   useEffect(() => {
@@ -99,14 +126,66 @@ export default function FeedPage() {
     saveIndex(current);
   }, [current]);
 
-  // pausa todos, toca o atual
+  // pausa todos, toca o atual com tempo restaurado
   useEffect(() => {
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
-      if (i === current) { v.currentTime = 0; v.play().catch(() => {}); }
-      else { v.pause(); v.currentTime = 0; }
+      if (i === current) {
+        // Restore saved time on first load, otherwise start from beginning
+        if (isFirstLoad.current && pendingTimeRestore.current !== null && pendingTimeRestore.current > 0) {
+          v.currentTime = pendingTimeRestore.current;
+          pendingTimeRestore.current = null;
+          isFirstLoad.current = false;
+        } else if (isFirstLoad.current) {
+          // First load but no saved time - just mark as loaded
+          isFirstLoad.current = false;
+        } else {
+          // Navigating to a new video - reset time
+          v.currentTime = 0;
+          saveTime(0);
+        }
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+        v.currentTime = 0;
+      }
     });
   }, [current, videos]);
+
+  // Save playback time periodically and on visibility change
+  useEffect(() => {
+    const saveCurrentTime = () => {
+      const v = videoRefs.current[current];
+      if (v && !isNaN(v.currentTime)) {
+        saveTime(v.currentTime);
+      }
+    };
+
+    // Save time every second while playing
+    const interval = setInterval(saveCurrentTime, 1000);
+
+    // Save time when user leaves the page
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        saveCurrentTime();
+      }
+    };
+
+    // Save time before unload
+    const handleBeforeUnload = () => {
+      saveCurrentTime();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      saveCurrentTime(); // Save on cleanup
+    };
+  }, [current]);
 
   // scroll para o vídeo atual
   useEffect(() => {
