@@ -22,22 +22,22 @@ export interface UserAchievement {
 
 // Lista de conquistas disponíveis
 export const achievements: Achievement[] = [
-  { id: "first-lesson", title: "Primeiro Passo", description: "Complete sua primeira lição", icon: "🎯", xp: 50, rarity: "common", category: "Aprendizado" },
-  { id: "first-course", title: "Estudante Dedicado", description: "Complete seu primeiro curso", icon: "📚", xp: 200, rarity: "common", category: "Aprendizado" },
-  { id: "five-courses", title: "Mestre dos Cursos", description: "Complete 5 cursos", icon: "🏆", xp: 500, rarity: "rare", category: "Aprendizado", maxProgress: 5 },
-  { id: "ten-courses", title: "Expert TikCash", description: "Complete 10 cursos", icon: "👑", xp: 1000, rarity: "epic", category: "Aprendizado", maxProgress: 10 },
-  { id: "streak-3", title: "Consistência", description: "Mantenha uma sequência de 3 dias", icon: "🔥", xp: 100, rarity: "common", category: "Dedicação", maxProgress: 3 },
-  { id: "streak-7", title: "Semana Perfeita", description: "Mantenha uma sequência de 7 dias", icon: "⚡", xp: 300, rarity: "rare", category: "Dedicação", maxProgress: 7 },
-  { id: "streak-30", title: "Mês de Fogo", description: "Mantenha uma sequência de 30 dias", icon: "💎", xp: 1000, rarity: "epic", category: "Dedicação", maxProgress: 30 },
-  { id: "watch-1h", title: "Espectador", description: "Assista 1 hora de conteúdo", icon: "👀", xp: 50, rarity: "common", category: "Tempo" },
-  { id: "watch-10h", title: "Maratonista", description: "Assista 10 horas de conteúdo", icon: "🎬", xp: 300, rarity: "rare", category: "Tempo" },
-  { id: "watch-50h", title: "Viciado em Aprender", description: "Assista 50 horas de conteúdo", icon: "🌟", xp: 800, rarity: "epic", category: "Tempo" },
-  { id: "xp-1000", title: "Coletor de XP", description: "Acumule 1000 XP", icon: "✨", xp: 100, rarity: "common", category: "Progresso", maxProgress: 1000 },
-  { id: "xp-5000", title: "XP Master", description: "Acumule 5000 XP", icon: "💫", xp: 500, rarity: "rare", category: "Progresso", maxProgress: 5000 },
-  { id: "all-categories", title: "Explorador", description: "Complete um curso de cada categoria", icon: "🗺️", xp: 750, rarity: "epic", category: "Exploração" },
-  { id: "perfect-quiz", title: "Gênio", description: "Acerte 100% em um quiz", icon: "🧠", xp: 200, rarity: "rare", category: "Quiz" },
-  { id: "early-bird", title: "Madrugador", description: "Estude antes das 7h da manhã", icon: "🌅", xp: 100, rarity: "common", category: "Especial" },
-  { id: "night-owl", title: "Coruja Noturna", description: "Estude depois das 23h", icon: "🦉", xp: 100, rarity: "common", category: "Especial" },
+  { id: "first-lesson", title: "First Step", description: "Complete your first lesson", icon: "🎯", xp: 50, rarity: "common", category: "Learning" },
+  { id: "first-course", title: "Dedicated Student", description: "Complete your first course", icon: "📚", xp: 200, rarity: "common", category: "Learning" },
+  { id: "five-courses", title: "Course Master", description: "Complete 5 courses", icon: "🏆", xp: 500, rarity: "rare", category: "Learning", maxProgress: 5 },
+  { id: "ten-courses", title: "TikCash Expert", description: "Complete 10 courses", icon: "👑", xp: 1000, rarity: "epic", category: "Learning", maxProgress: 10 },
+  { id: "streak-3", title: "Consistency", description: "Maintain a 3-day streak", icon: "🔥", xp: 100, rarity: "common", category: "Dedication", maxProgress: 3 },
+  { id: "streak-7", title: "Perfect Week", description: "Maintain a 7-day streak", icon: "⚡", xp: 300, rarity: "rare", category: "Dedication", maxProgress: 7 },
+  { id: "streak-30", title: "On Fire", description: "Maintain a 30-day streak", icon: "💎", xp: 1000, rarity: "epic", category: "Dedication", maxProgress: 30 },
+  { id: "watch-1h", title: "Viewer", description: "Watch 1 hour of content", icon: "👀", xp: 50, rarity: "common", category: "Time" },
+  { id: "watch-10h", title: "Binge Watcher", description: "Watch 10 hours of content", icon: "🎬", xp: 300, rarity: "rare", category: "Time" },
+  { id: "watch-50h", title: "Learning Addict", description: "Watch 50 hours of content", icon: "🌟", xp: 800, rarity: "epic", category: "Time" },
+  { id: "xp-1000", title: "XP Collector", description: "Accumulate 1000 XP", icon: "✨", xp: 100, rarity: "common", category: "Progress", maxProgress: 1000 },
+  { id: "xp-5000", title: "XP Master", description: "Accumulate 5000 XP", icon: "💫", xp: 500, rarity: "rare", category: "Progress", maxProgress: 5000 },
+  { id: "all-categories", title: "Explorer", description: "Complete a course in every category", icon: "🗺️", xp: 750, rarity: "epic", category: "Exploration" },
+  { id: "perfect-quiz", title: "Genius", description: "Score 100% on a quiz", icon: "🧠", xp: 200, rarity: "rare", category: "Quiz" },
+  { id: "early-bird", title: "Early Bird", description: "Study before 7am", icon: "🌅", xp: 100, rarity: "common", category: "Special" },
+  { id: "night-owl", title: "Night Owl", description: "Study after 11pm", icon: "🦉", xp: 100, rarity: "common", category: "Special" },
 ];
 
 export function useAchievements() {

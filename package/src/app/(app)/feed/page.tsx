@@ -84,7 +84,7 @@ export default function FeedPage() {
 
   if (!videos.length) return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#aaa", fontSize: 14 }}>
-      Carregando vídeos...
+      Loading videos...
     </div>
   );
 
@@ -162,7 +162,7 @@ export default function FeedPage() {
                 @{file.split("_")[0]}
               </div>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,.7)", textShadow: "0 1px 4px rgba(0,0,0,.8)" }}>
-                {fmt(views)} visualizações
+                {fmt(views)} views
               </div>
             </div>
 
@@ -183,7 +183,7 @@ export default function FeedPage() {
               {/* mute */}
               <ActionBtn
                 icon={muted ? "🔇" : "🔊"}
-                label={muted ? "Mudo" : "Som"}
+                label={muted ? "Muted" : "Sound"}
                 onClick={() => setMuted(m => !m)}
               />
             </div>

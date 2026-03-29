@@ -14,16 +14,16 @@ type ActivityItem = {
 };
 
 const activityData: ActivityItem[] = [
-  { id: "1", type: "lesson", title: "Aula Assistida", description: "Estratégias de Monetização - Monetização Digital", icon: "▶️", time: "Hoje, 14:32", color: "#fe2c55" },
-  { id: "2", type: "streak", title: "Streak Mantido!", description: "7 dias consecutivos de estudo", icon: "🔥", time: "Hoje, 10:00", color: "#ff6b35" },
-  { id: "3", type: "lesson", title: "Aula Assistida", description: "Algoritmo de Crescimento - Growth Mastery", icon: "▶️", time: "Ontem, 21:15", color: "#fe2c55" },
-  { id: "4", type: "achievement", title: "Conquista Desbloqueada", description: "Dedicado - 20 horas de conteúdo assistido", icon: "🎯", time: "Ontem, 20:45", color: "#a855f7" },
-  { id: "5", type: "lesson", title: "Aula Assistida", description: "Iluminação e Cenário - Content Creator Pro", icon: "▶️", time: "Ontem, 19:30", color: "#fe2c55" },
-  { id: "6", type: "course", title: "Curso Concluído!", description: "Growth Mastery - Todas as aulas completas", icon: "🎓", time: "3 dias atrás", color: "#25f4ee" },
-  { id: "7", type: "lesson", title: "Aula Assistida", description: "Análise de Métricas - Growth Mastery", icon: "▶️", time: "3 dias atrás", color: "#fe2c55" },
-  { id: "8", type: "achievement", title: "Conquista Desbloqueada", description: "Primeiro Curso - Complete um curso inteiro", icon: "🎓", time: "3 dias atrás", color: "#a855f7" },
-  { id: "9", type: "lesson", title: "Aula Assistida", description: "Criando Roteiros Virais - Content Creator Pro", icon: "▶️", time: "4 dias atrás", color: "#fe2c55" },
-  { id: "10", type: "streak", title: "Streak Iniciado", description: "Primeiro dia de estudos consistentes!", icon: "⚡", time: "1 semana atrás", color: "#ff6b35" },
+  { id: "1", type: "lesson", title: "Lesson Watched", description: "Monetization Strategies - Digital Monetization", icon: "▶️", time: "Today, 14:32", color: "#fe2c55" },
+  { id: "2", type: "streak", title: "Streak Kept!", description: "7 consecutive days of studying", icon: "🔥", time: "Today, 10:00", color: "#ff6b35" },
+  { id: "3", type: "lesson", title: "Lesson Watched", description: "Growth Algorithm - Growth Mastery", icon: "▶️", time: "Yesterday, 21:15", color: "#fe2c55" },
+  { id: "4", type: "achievement", title: "Achievement Unlocked", description: "Dedicated - 20 hours of content watched", icon: "🎯", time: "Yesterday, 20:45", color: "#a855f7" },
+  { id: "5", type: "lesson", title: "Lesson Watched", description: "Lighting & Setup - Content Creator Pro", icon: "▶️", time: "Yesterday, 19:30", color: "#fe2c55" },
+  { id: "6", type: "course", title: "Course Completed!", description: "Growth Mastery - All lessons complete", icon: "🎓", time: "3 days ago", color: "#25f4ee" },
+  { id: "7", type: "lesson", title: "Lesson Watched", description: "Metrics Analysis - Growth Mastery", icon: "▶️", time: "3 days ago", color: "#fe2c55" },
+  { id: "8", type: "achievement", title: "Achievement Unlocked", description: "First Course - Complete an entire course", icon: "🎓", time: "3 days ago", color: "#a855f7" },
+  { id: "9", type: "lesson", title: "Lesson Watched", description: "Creating Viral Scripts - Content Creator Pro", icon: "▶️", time: "4 days ago", color: "#fe2c55" },
+  { id: "10", type: "streak", title: "Streak Started", description: "First day of consistent studying!", icon: "⚡", time: "1 week ago", color: "#ff6b35" },
 ];
 
 export default function ActivityPage() {
@@ -50,9 +50,9 @@ export default function ActivityPage() {
           </svg>
         </Link>
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Histórico de Atividade</h1>
+          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Activity History</h1>
           <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-            Sua jornada de aprendizado
+            Your learning journey
           </p>
         </div>
       </motion.div>
@@ -101,10 +101,10 @@ export default function ActivityPage() {
         }}
       >
         <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff", marginBottom: "16px" }}>
-          Esta Semana
+          This Week
         </div>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", height: "80px", gap: "8px" }}>
-          {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map((day, i) => {
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => {
             const heights = [45, 70, 30, 80, 55, 20, 65];
             const isToday = i === 6;
             return (
@@ -135,7 +135,7 @@ export default function ActivityPage() {
 
       {/* Activity Timeline */}
       <h3 style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-muted)", marginBottom: "16px", textTransform: "uppercase", letterSpacing: "1px" }}>
-        Atividades Recentes
+        Recent Activity
       </h3>
       <div style={{ position: "relative" }}>
         {/* Timeline line */}

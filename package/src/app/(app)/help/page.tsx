@@ -7,35 +7,35 @@ type FAQItem = { question: string; answer: string };
 
 const faqs: FAQItem[] = [
   {
-    question: "Como começo a assistir um curso?",
-    answer: "Vá até a página Explorar, escolha um curso e clique em \"Começar Curso\". Você será direcionado para a primeira aula automaticamente.",
+    question: "How do I start watching a course?",
+    answer: "Go to the Explore page, choose a course and click \"Start Course\". You will be directed to the first lesson automatically.",
   },
   {
-    question: "Os cursos têm certificado?",
-    answer: "Sim! Ao completar 100% de um curso, seu certificado é gerado automaticamente e fica disponível na seção \"Meus Certificados\" do seu perfil.",
+    question: "Do courses have certificates?",
+    answer: "Yes! When you complete 100% of a course, your certificate is generated automatically and available in the \"My Certificates\" section of your profile.",
   },
   {
-    question: "Posso assistir offline?",
-    answer: "No momento, os cursos estão disponíveis apenas online. Estamos trabalhando para disponibilizar download de aulas em breve.",
+    question: "Can I watch offline?",
+    answer: "Currently, courses are only available online. We are working on making lesson downloads available soon.",
   },
   {
-    question: "Como funciona o streak?",
-    answer: "O streak conta quantos dias consecutivos você assistiu pelo menos uma aula. Mantenha seu streak ativo para desbloquear conquistas especiais!",
+    question: "How does the streak work?",
+    answer: "The streak counts how many consecutive days you watched at least one lesson. Keep your streak active to unlock special achievements!",
   },
   {
-    question: "Posso acessar de vários dispositivos?",
-    answer: "Sim! Seu progresso é sincronizado automaticamente. Basta fazer login na mesma conta em qualquer dispositivo.",
+    question: "Can I access from multiple devices?",
+    answer: "Yes! Your progress is automatically synced. Just log in to the same account on any device.",
   },
   {
-    question: "Como solicitar reembolso?",
-    answer: "Para solicitar reembolso, entre em contato conosco pelo email suporte@tikmoney.com dentro de 7 dias após a compra.",
+    question: "How do I request a refund?",
+    answer: "To request a refund, contact us at support@tikmoney.com within 7 days of purchase.",
   },
 ];
 
 const contactOptions = [
-  { icon: "💬", title: "Chat ao Vivo", desc: "Resposta em até 5 minutos", available: true, color: "#25f4ee" },
-  { icon: "📧", title: "Email", desc: "suporte@tikmoney.com", available: true, color: "#fe2c55" },
-  { icon: "📱", title: "WhatsApp", desc: "Seg-Sex, 9h às 18h", available: true, color: "#25d366" },
+  { icon: "💬", title: "Live Chat", desc: "Response within 5 minutes", available: true, color: "#25f4ee" },
+  { icon: "📧", title: "Email", desc: "support@tikmoney.com", available: true, color: "#fe2c55" },
+  { icon: "📱", title: "WhatsApp", desc: "Mon-Fri, 9am to 6pm", available: true, color: "#25d366" },
 ];
 
 export default function HelpPage() {
@@ -61,8 +61,8 @@ export default function HelpPage() {
           </svg>
         </Link>
         <div>
-          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Ajuda & Suporte</h1>
-          <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>Como podemos ajudar?</p>
+          <h1 style={{ fontSize: "22px", fontWeight: 900, color: "#fff" }}>Help & Support</h1>
+          <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>How can we help you?</p>
         </div>
       </motion.div>
 
@@ -179,10 +179,10 @@ export default function HelpPage() {
           {!feedbackSent ? (
             <>
               <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff", marginBottom: "6px" }}>
-                Como está sua experiência?
+                How is your experience?
               </div>
               <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "16px" }}>
-                Sua opinião nos ajuda a melhorar
+                Your feedback helps us improve
               </div>
 
               <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "16px" }}>
@@ -219,7 +219,7 @@ export default function HelpPage() {
                     fontFamily: "inherit",
                   }}
                 >
-                  Enviar Avaliação
+                  Submit Rating
                 </motion.button>
               )}
             </>
@@ -231,10 +231,10 @@ export default function HelpPage() {
             >
               <div style={{ fontSize: "40px", marginBottom: "12px" }}>💖</div>
               <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
-                Obrigado!
+                Thank you!
               </div>
               <div style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-                Sua avaliação foi enviada com sucesso
+                Your rating was submitted successfully
               </div>
             </motion.div>
           )}
@@ -244,20 +244,20 @@ export default function HelpPage() {
       {/* Resources */}
       <section>
         <h3 style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-muted)", marginBottom: "14px", textTransform: "uppercase", letterSpacing: "1px" }}>
-          Recursos
+          Resources
         </h3>
         {[
-          { label: "Guia de Inicio Rapido", desc: "Aprenda a usar a plataforma", href: "/guide", icon: (
+          { label: "Quick Start Guide", desc: "Learn how to use the platform", href: "/guide", icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
             </svg>
           )},
-          { label: "Politica de Privacidade", desc: "Como protegemos seus dados", href: "/privacy", icon: (
+          { label: "Privacy Policy", desc: "How we protect your data", href: "/privacy", icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
           )},
-          { label: "Termos de Uso", desc: "Regras e condicoes", href: "/terms", icon: (
+          { label: "Terms of Use", desc: "Rules and conditions", href: "/terms", icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
             </svg>
