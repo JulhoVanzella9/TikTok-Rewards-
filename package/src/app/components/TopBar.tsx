@@ -302,12 +302,12 @@ export default function TopBar() {
               display: "flex",
               alignItems: "center",
               gap: "clamp(3px, 1vw, 6px)",
-              padding: "clamp(4px, 1.2vw, 7px) clamp(7px, 2vw, 12px)",
-              background: isDarkMode 
-                ? "rgba(0,0,0,0.6)" 
+              padding: "clamp(6px, 1.5vw, 10px) clamp(10px, 2.5vw, 16px)",
+              background: isDarkMode
+                ? "rgba(0,0,0,0.6)"
                 : "rgba(255,255,255,0.9)",
-              borderRadius: "clamp(16px, 4vw, 22px)",
-              border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+              borderRadius: "clamp(10px, 2.5vw, 14px)",
+              border: `2px dashed #25f4ee`,
               cursor: "pointer",
               position: "relative",
               flexShrink: 0,
