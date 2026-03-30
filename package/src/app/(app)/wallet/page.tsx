@@ -192,48 +192,36 @@ export default function WalletPage() {
 
         {/* Payment Methods */}
         <div style={{
-          display: "flex", alignItems: "center", gap: "10px",
+          display: "flex", alignItems: "center", gap: "8px",
           marginBottom: "16px", flexWrap: "wrap",
         }}>
-          {/* PayPal */}
-          <div style={{
-            display: "flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px", background: "rgba(0,48,135,0.15)",
-            borderRadius: "12px", border: "1px solid rgba(0,112,186,0.3)",
-          }}>
-            <img
-              src="/images/paypal-logo.png"
-              alt="PayPal"
-              style={{ width: "22px", height: "22px", objectFit: "contain" }}
-            />
-            <span style={{ fontSize: "14px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
-          </div>
-          {/* JPMorgan Chase */}
-          <div style={{
-            display: "flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px", background: "rgba(17,122,202,0.15)",
-            borderRadius: "12px", border: "1px solid rgba(17,122,202,0.35)",
-          }}>
-            <img
-              src="/images/chase-bank.png"
-              alt="Chase"
-              style={{ width: "26px", height: "26px", objectFit: "contain" }}
-            />
-            <span style={{ fontSize: "14px", color: "#117ACA", fontWeight: 800 }}>Chase</span>
-          </div>
-          {/* Bank of America */}
-          <div style={{
-            display: "flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px", background: "rgba(218,41,28,0.1)",
-            borderRadius: "12px", border: "1px solid rgba(218,41,28,0.25)",
-          }}>
-            <img
-              src="/images/bank-of-america.png"
-              alt="Bank of America"
-              style={{ width: "30px", height: "22px", objectFit: "contain" }}
-            />
-            <span style={{ fontSize: "14px", color: "#DA291C", fontWeight: 800 }}>Bank of America</span>
-          </div>
+          {[
+            { name: "PayPal", icon: "/images/paypal-logo.png", color: "#0070ba", size: 16 },
+            { name: "Chase", icon: "/images/chase-bank.png", color: "#117ACA", size: 16 },
+            { name: "Bank of America", icon: "/images/bank-of-america.png", color: "#DA291C", size: 18 },
+          ].map((method) => (
+            <motion.button
+              key={method.name}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                padding: "6px 12px",
+                background: isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+                borderRadius: "20px",
+                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
+            >
+              <img
+                src={method.icon}
+                alt={method.name}
+                style={{ width: `${method.size}px`, height: `${method.size}px`, objectFit: "contain" }}
+              />
+              <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>{method.name}</span>
+            </motion.button>
+          ))}
         </div>
 
         {/* Amount Selection */}
