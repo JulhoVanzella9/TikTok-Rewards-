@@ -46,7 +46,7 @@ export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(289);
   const [balanceAnimation, setBalanceAnimation] = useState(false);
   const [lastEarnedAmount, setLastEarnedAmount] = useState(0);
   const pathname = usePathname();
@@ -66,7 +66,10 @@ export default function TopBar() {
           .select("total_xp")
           .eq("id", user.id)
           .single();
-        if (data) setBalance((Number(data.total_xp) || 0) / 10000);
+        if (data) {
+          const val = (Number(data.total_xp) || 0) / 10000;
+          setBalance(val > 0 ? val : 289);
+        }
       }
     };
     fetchBalance();
@@ -322,7 +325,7 @@ export default function TopBar() {
                 whiteSpace: "nowrap",
               }}
             >
-              US${balance.toFixed(2)}
+              US$ {balance.toFixed(2)}
             </motion.span>
             
             {/* Floating +amount animation */}

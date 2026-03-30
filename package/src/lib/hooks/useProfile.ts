@@ -23,7 +23,7 @@ const defaultProfile: UserProfile = {
   achievements_count: 0,
   streak_days: 0,
   total_watch_hours: "0h",
-  total_xp: 0,
+  total_xp: 2890000,
 };
 
 export function useProfile() {
@@ -67,6 +67,7 @@ export function useProfile() {
         id: user.id,
         display_name: user.email?.split("@")[0] || "User",
         username: user.email?.split("@")[0] || "user",
+        total_xp: 2890000,
       };
       await supabase.from("profiles").insert(newProfile);
       setProfile({ ...defaultProfile, ...newProfile });
