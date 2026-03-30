@@ -192,22 +192,47 @@ export default function WalletPage() {
           {t("withdrawMoney")}
         </h2>
 
-        {/* Payment Method */}
+        {/* Payment Methods */}
         <div style={{
           display: "flex", alignItems: "center", gap: "10px",
-          marginBottom: "16px",
+          marginBottom: "16px", flexWrap: "wrap",
         }}>
+          {/* PayPal */}
           <div style={{
             display: "flex", alignItems: "center", gap: "10px",
-            padding: "12px 18px", background: "rgba(0,48,135,0.15)",
+            padding: "10px 16px", background: "rgba(0,48,135,0.15)",
             borderRadius: "12px", border: "1px solid rgba(0,112,186,0.3)",
           }}>
-            <img 
-              src="/images/paypal-logo.png" 
-              alt="PayPal" 
-              style={{ width: "24px", height: "24px", objectFit: "contain" }}
+            <img
+              src="/images/paypal-logo.png"
+              alt="PayPal"
+              style={{ width: "22px", height: "22px", objectFit: "contain" }}
             />
-            <span style={{ fontSize: "15px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
+            <span style={{ fontSize: "14px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
+          </div>
+          {/* Venmo */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "10px",
+            padding: "10px 16px", background: "rgba(0,130,196,0.15)",
+            borderRadius: "12px", border: "1px solid rgba(0,130,196,0.3)",
+          }}>
+            <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+              <rect width="48" height="48" rx="10" fill="#3D95CE"/>
+              <path d="M33.5 10c.8 1.3 1.1 2.7 1.1 4.4 0 5.5-4.7 12.7-8.5 17.7H17L14 11.2l8.2-.8 1.7 13c1.6-2.6 3.5-6.7 3.5-9.5 0-1.5-.3-2.6-.7-3.5L33.5 10z" fill="#fff"/>
+            </svg>
+            <span style={{ fontSize: "14px", color: "#3D95CE", fontWeight: 800 }}>Venmo</span>
+          </div>
+          {/* Cash App */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "10px",
+            padding: "10px 16px", background: "rgba(0,214,90,0.12)",
+            borderRadius: "12px", border: "1px solid rgba(0,214,90,0.3)",
+          }}>
+            <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+              <rect width="48" height="48" rx="10" fill="#00D15A"/>
+              <path d="M28.6 20.4c-.4-.3-1.8-1.1-4.6-1.5l-.8-3.2h-2.6l.7 3c-.7.1-1.4.2-2 .4l-.7-3H16l.8 3.1c-2 .8-3 2.1-3 3.8 0 1.3.5 2.2 1.4 2.8.7.4 1.7.7 3 .9l.9 3.5h2.6l-.9-3.3c.7-.1 1.4-.2 2-.4l.9 3.7h2.6l-.9-3.5c2.3-.7 3.6-2.1 3.6-3.9 0-1.4-.8-2.5-1.4-2.9zm-5.5 4.5l-1.5-5.8c1.8.2 3 .8 3 1.9 0 1.4-1.1 2.5-1.5 3.9zm-3.5-5.9 1.5 5.8c-1.8-.2-2.9-.8-2.9-1.9 0-1.3 1-2.5 1.4-3.9z" fill="#fff"/>
+            </svg>
+            <span style={{ fontSize: "14px", color: "#00D15A", fontWeight: 800 }}>Cash App</span>
           </div>
         </div>
 

@@ -55,18 +55,18 @@ export default function TopBar() {
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === "dark";
 
-  // Fetch balance from Supabase video_ratings table
+  // Fetch balance from profiles.total_xp (same source as wallet)
   useEffect(() => {
     const fetchBalance = async () => {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data } = await supabase
-          .from("video_ratings")
-          .select("total_earned")
-          .eq("user_id", user.id)
+          .from("profiles")
+          .select("total_xp")
+          .eq("id", user.id)
           .single();
-        if (data) setBalance(Number(data.total_earned) || 0);
+        if (data) setBalance((Number(data.total_xp) || 0) / 10000);
       }
     };
     fetchBalance();
@@ -310,17 +310,6 @@ export default function TopBar() {
               flexShrink: 0,
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="2">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-            <span style={{
-              color: isDarkMode ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
-              fontSize: "clamp(11px, 3vw, 14px)",
-              fontWeight: 600,
-            }}>
-              Balance
-            </span>
             <motion.span
               key={balance}
               initial={balanceAnimation ? { scale: 1.3, color: "#22c55e" } : false}
@@ -333,7 +322,7 @@ export default function TopBar() {
                 whiteSpace: "nowrap",
               }}
             >
-              ${balance.toFixed(2)}
+              US${balance.toFixed(2)}
             </motion.span>
             
             {/* Floating +amount animation */}

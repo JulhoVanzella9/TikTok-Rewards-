@@ -512,7 +512,7 @@ export default function CreatePage() {
       boxSizing: "border-box",
       alignItems: "center",
     }}>
-      <audio ref={cashSoundRef} src="https://v0-tiktok-rewards.vercel.app/sounds/cashregister.mp3" preload="auto" />
+      <audio ref={cashSoundRef} src="/sounds/cashregister.mp3" preload="auto" />
 
       {/* Toast de feedback */}
       <AnimatePresence>
