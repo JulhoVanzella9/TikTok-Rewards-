@@ -26,6 +26,7 @@ export default function WalletPage() {
   const [loading, setLoading] = useState(true);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showWithdrawPopup, setShowWithdrawPopup] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState("PayPal");
 
   // Calcula o valor real do saque (se "all", usa o saldo total)
   const actualWithdrawAmount = selectedAmount === "all" ? balance : selectedAmount;
@@ -199,29 +200,53 @@ export default function WalletPage() {
             { name: "PayPal", icon: "/images/paypal-logo.png", color: "#0070ba", size: 16 },
             { name: "Chase", icon: "/images/chase-bank.png", color: "#117ACA", size: 16 },
             { name: "Bank of America", icon: "/images/bank-of-america.png", color: "#DA291C", size: 18 },
-          ].map((method) => (
-            <motion.button
-              key={method.name}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              style={{
-                display: "flex", alignItems: "center", gap: "6px",
-                padding: "6px 12px",
-                background: isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-                borderRadius: "20px",
-                border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`,
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              <img
-                src={method.icon}
-                alt={method.name}
-                style={{ width: `${method.size}px`, height: `${method.size}px`, objectFit: "contain" }}
-              />
-              <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontWeight: 600 }}>{method.name}</span>
-            </motion.button>
-          ))}
+          ].map((method) => {
+            const isSelected = selectedMethod === method.name;
+            return (
+              <motion.button
+                key={method.name}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.93 }}
+                onClick={() => setSelectedMethod(method.name)}
+                animate={{
+                  borderColor: isSelected ? method.color : isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
+                }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  display: "flex", alignItems: "center", gap: "6px",
+                  padding: "6px 12px",
+                  background: isSelected
+                    ? `${method.color}15`
+                    : isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+                  borderRadius: "20px",
+                  border: `2px solid ${isSelected ? method.color : "transparent"}`,
+                  cursor: "pointer",
+                  transition: "background 0.2s",
+                  outline: "none",
+                }}
+              >
+                <img
+                  src={method.icon}
+                  alt={method.name}
+                  style={{ width: `${method.size}px`, height: `${method.size}px`, objectFit: "contain" }}
+                />
+                <span style={{
+                  fontSize: "12px",
+                  color: isSelected ? method.color : "var(--text-secondary)",
+                  fontWeight: isSelected ? 700 : 600,
+                }}>{method.name}</span>
+                {isSelected && (
+                  <motion.svg
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    width="12" height="12" viewBox="0 0 24 24" fill={method.color} stroke="none"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </motion.svg>
+                )}
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Amount Selection */}
