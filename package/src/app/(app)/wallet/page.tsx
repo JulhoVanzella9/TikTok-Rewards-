@@ -216,16 +216,11 @@ export default function WalletPage() {
             padding: "10px 16px", background: "rgba(17,122,202,0.15)",
             borderRadius: "12px", border: "1px solid rgba(17,122,202,0.35)",
           }}>
-            {/* Chase octagon pinwheel logo */}
-            <svg width="26" height="26" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M28,2 L72,2 L98,28 L98,72 L72,98 L28,98 L2,72 L2,28 Z" fill="#117ACA"/>
-              {/* White offset cross creating 4 blue pinwheel sections */}
-              <rect x="43" y="2" width="10" height="49" fill="white"/>
-              <rect x="47" y="49" width="10" height="49" fill="white"/>
-              <rect x="2" y="43" width="49" height="10" fill="white"/>
-              <rect x="49" y="47" width="49" height="10" fill="white"/>
-              <rect x="43" y="43" width="14" height="14" fill="white"/>
-            </svg>
+            <img
+              src="/images/chase-bank.png"
+              alt="Chase"
+              style={{ width: "26px", height: "26px", objectFit: "contain" }}
+            />
             <span style={{ fontSize: "14px", color: "#117ACA", fontWeight: 800 }}>Chase</span>
           </div>
           {/* Bank of America */}
@@ -234,18 +229,11 @@ export default function WalletPage() {
             padding: "10px 16px", background: "rgba(218,41,28,0.1)",
             borderRadius: "12px", border: "1px solid rgba(218,41,28,0.25)",
           }}>
-            {/* BofA diagonal stripes logo */}
-            <svg width="36" height="22" viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
-              <rect width="180" height="110" rx="4" fill="white"/>
-              {/* 3 blue diagonal stripes */}
-              <polygon points="5,110 45,0 62,0 22,110" fill="#012169"/>
-              <polygon points="22,110 62,0 79,0 39,110" fill="#012169"/>
-              <polygon points="39,110 79,0 96,0 56,110" fill="#012169"/>
-              {/* 3 red diagonal stripes */}
-              <polygon points="84,110 124,0 141,0 101,110" fill="#DA291C"/>
-              <polygon points="101,110 141,0 158,0 118,110" fill="#DA291C"/>
-              <polygon points="118,110 158,0 175,0 180,0 180,15 135,110" fill="#DA291C"/>
-            </svg>
+            <img
+              src="/images/bank-of-america.png"
+              alt="Bank of America"
+              style={{ width: "30px", height: "22px", objectFit: "contain" }}
+            />
             <span style={{ fontSize: "14px", color: "#DA291C", fontWeight: 800 }}>Bank of America</span>
           </div>
         </div>
