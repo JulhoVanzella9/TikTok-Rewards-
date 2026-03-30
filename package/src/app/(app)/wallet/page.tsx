@@ -210,29 +210,43 @@ export default function WalletPage() {
             />
             <span style={{ fontSize: "14px", color: "#0070ba", fontWeight: 800 }}>PayPal</span>
           </div>
-          {/* Venmo */}
+          {/* JPMorgan Chase */}
           <div style={{
             display: "flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px", background: "rgba(0,130,196,0.15)",
-            borderRadius: "12px", border: "1px solid rgba(0,130,196,0.3)",
+            padding: "10px 16px", background: "rgba(17,122,202,0.15)",
+            borderRadius: "12px", border: "1px solid rgba(17,122,202,0.35)",
           }}>
-            <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="10" fill="#3D95CE"/>
-              <path d="M33.5 10c.8 1.3 1.1 2.7 1.1 4.4 0 5.5-4.7 12.7-8.5 17.7H17L14 11.2l8.2-.8 1.7 13c1.6-2.6 3.5-6.7 3.5-9.5 0-1.5-.3-2.6-.7-3.5L33.5 10z" fill="#fff"/>
+            {/* Chase octagon pinwheel logo */}
+            <svg width="26" height="26" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M28,2 L72,2 L98,28 L98,72 L72,98 L28,98 L2,72 L2,28 Z" fill="#117ACA"/>
+              {/* White offset cross creating 4 blue pinwheel sections */}
+              <rect x="43" y="2" width="10" height="49" fill="white"/>
+              <rect x="47" y="49" width="10" height="49" fill="white"/>
+              <rect x="2" y="43" width="49" height="10" fill="white"/>
+              <rect x="49" y="47" width="49" height="10" fill="white"/>
+              <rect x="43" y="43" width="14" height="14" fill="white"/>
             </svg>
-            <span style={{ fontSize: "14px", color: "#3D95CE", fontWeight: 800 }}>Venmo</span>
+            <span style={{ fontSize: "14px", color: "#117ACA", fontWeight: 800 }}>Chase</span>
           </div>
-          {/* Cash App */}
+          {/* Bank of America */}
           <div style={{
             display: "flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px", background: "rgba(0,214,90,0.12)",
-            borderRadius: "12px", border: "1px solid rgba(0,214,90,0.3)",
+            padding: "10px 16px", background: "rgba(218,41,28,0.1)",
+            borderRadius: "12px", border: "1px solid rgba(218,41,28,0.25)",
           }}>
-            <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="10" fill="#00D15A"/>
-              <path d="M28.6 20.4c-.4-.3-1.8-1.1-4.6-1.5l-.8-3.2h-2.6l.7 3c-.7.1-1.4.2-2 .4l-.7-3H16l.8 3.1c-2 .8-3 2.1-3 3.8 0 1.3.5 2.2 1.4 2.8.7.4 1.7.7 3 .9l.9 3.5h2.6l-.9-3.3c.7-.1 1.4-.2 2-.4l.9 3.7h2.6l-.9-3.5c2.3-.7 3.6-2.1 3.6-3.9 0-1.4-.8-2.5-1.4-2.9zm-5.5 4.5l-1.5-5.8c1.8.2 3 .8 3 1.9 0 1.4-1.1 2.5-1.5 3.9zm-3.5-5.9 1.5 5.8c-1.8-.2-2.9-.8-2.9-1.9 0-1.3 1-2.5 1.4-3.9z" fill="#fff"/>
+            {/* BofA diagonal stripes logo */}
+            <svg width="36" height="22" viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+              <rect width="180" height="110" rx="4" fill="white"/>
+              {/* 3 blue diagonal stripes */}
+              <polygon points="5,110 45,0 62,0 22,110" fill="#012169"/>
+              <polygon points="22,110 62,0 79,0 39,110" fill="#012169"/>
+              <polygon points="39,110 79,0 96,0 56,110" fill="#012169"/>
+              {/* 3 red diagonal stripes */}
+              <polygon points="84,110 124,0 141,0 101,110" fill="#DA291C"/>
+              <polygon points="101,110 141,0 158,0 118,110" fill="#DA291C"/>
+              <polygon points="118,110 158,0 175,0 180,0 180,15 135,110" fill="#DA291C"/>
             </svg>
-            <span style={{ fontSize: "14px", color: "#00D15A", fontWeight: 800 }}>Cash App</span>
+            <span style={{ fontSize: "14px", color: "#DA291C", fontWeight: 800 }}>Bank of America</span>
           </div>
         </div>
 
