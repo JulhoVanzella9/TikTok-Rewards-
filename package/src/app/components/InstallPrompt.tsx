@@ -138,12 +138,12 @@ export default function InstallPrompt() {
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{
                       width: "32px", height: "32px", borderRadius: "8px",
-                      background: "#25f4ee", display: "flex",
+                      background: "#fe2c55", display: "flex",
                       alignItems: "center", justifyContent: "center",
-                      fontWeight: 700, color: "#000", fontSize: "14px",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>1</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap the <strong style={{ color: "#25f4ee" }}>Share</strong> button <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(bottom center in Safari)</span>
+                      Tap the <strong style={{ color: "#fe2c55" }}>Share</strong> button <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(bottom center in Safari)</span>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -174,12 +174,12 @@ export default function InstallPrompt() {
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{
                       width: "32px", height: "32px", borderRadius: "8px",
-                      background: "#25f4ee", display: "flex",
+                      background: "#fe2c55", display: "flex",
                       alignItems: "center", justifyContent: "center",
-                      fontWeight: 700, color: "#000", fontSize: "14px",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>1</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Tap <strong style={{ color: "#25f4ee" }}>menu</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(3 dots, top right)</span>
+                      Tap <strong style={{ color: "#fe2c55" }}>menu</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(3 dots, top right)</span>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -210,12 +210,12 @@ export default function InstallPrompt() {
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div style={{
                       width: "32px", height: "32px", borderRadius: "8px",
-                      background: "#25f4ee", display: "flex",
+                      background: "#fe2c55", display: "flex",
                       alignItems: "center", justifyContent: "center",
-                      fontWeight: 700, color: "#000", fontSize: "14px",
+                      fontWeight: 700, color: "#fff", fontSize: "14px",
                     }}>1</div>
                     <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.9)" }}>
-                      Click the <strong style={{ color: "#25f4ee" }}>install icon</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(in address bar)</span>
+                      Click the <strong style={{ color: "#fe2c55" }}>install icon</strong> <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>(in address bar)</span>
                     </span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -240,7 +240,7 @@ export default function InstallPrompt() {
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div style={{
               width: "48px", height: "48px", borderRadius: "14px",
-              background: "linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%)",
+              background: "linear-gradient(135deg, #fe2c55 0%, #ff6b8a 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0,
             }}>

@@ -162,7 +162,7 @@ export default function WalletPage() {
           marginBottom: "16px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           cursor: "pointer",
-          borderTop: `1px dashed var(--border-color)`,
+          borderTop: `1px solid var(--border-color)`,
           transition: "background 0.2s",
         }}
       >

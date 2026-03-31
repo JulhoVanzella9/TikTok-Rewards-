@@ -172,7 +172,7 @@ export default function HomePage() {
           {/* Install App Button - Right below video */}
           <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button
-              className="btn-3d btn-3d-cyan btn-3d-animated btn-3d-icon-grow"
+              className="btn-3d btn-3d-primary btn-3d-animated btn-3d-icon-grow"
               onClick={() => {
                 const event = new CustomEvent("triggerInstallPrompt");
                 window.dispatchEvent(event);

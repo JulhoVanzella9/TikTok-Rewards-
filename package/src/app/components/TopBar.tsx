@@ -153,7 +153,7 @@ export default function TopBar() {
 
   // Bottom section menu items (actions)
   const bottomMenuItems = [
-    { label: t("installApp") || "Install App", href: "#install", isInstall: true, badge: "App", badgeColor: "#25f4ee", icon: (
+    { label: t("installApp") || "Install App", href: "#install", isInstall: true, badge: "App", badgeColor: "#fe2c55", icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
@@ -307,7 +307,7 @@ export default function TopBar() {
                 ? "rgba(0,0,0,0.6)"
                 : "rgba(255,255,255,0.9)",
               borderRadius: "clamp(10px, 2.5vw, 14px)",
-              border: `2px dashed #25f4ee`,
+              border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.10)"}`,
               cursor: "pointer",
               position: "relative",
               flexShrink: 0,
@@ -319,7 +319,7 @@ export default function TopBar() {
               animate={{ scale: 1, color: "#25f4ee" }}
               transition={{ duration: 0.5 }}
               style={{
-                fontSize: "clamp(14px, 3.5vw, 18px)",
+                fontSize: "clamp(16px, 4vw, 22px)",
                 fontWeight: 800,
                 color: "#25f4ee",
                 whiteSpace: "nowrap",
@@ -522,6 +522,12 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                         border: "1px solid rgba(0,212,126,0.25)",
                       };
                     }
+                    if (actionItem.isInstall) {
+                      return {
+                        background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
+                        border: "1px solid rgba(254,44,85,0.25)",
+                      };
+                    }
                     if (actionItem.isRefund) {
                       return {
                         background: "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.06) 100%)",
@@ -537,6 +543,7 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                   const getIconColor = () => {
                     if (actionItem.isLogout) return "#ef4444";
                     if (actionItem.isReferral) return "#00d47e";
+                    if (actionItem.isInstall) return "#fe2c55";
                     if (actionItem.isRefund) return "#fe2c55";
                     return "#25f4ee";
                   };
