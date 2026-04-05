@@ -154,43 +154,40 @@ Support Phone: ${SUPPORT_PHONE}
     // Send email using Resend API
     if (process.env.RESEND_API_KEY) {
       try {
+        // Validate email format for reply_to
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmail = emailRegex.test(email);
+        
+        // Build email payload - only include reply_to if email is valid
+        const emailPayload: Record<string, unknown> = {
+          from: 'TikCash Support <onboarding@resend.dev>',
+          to: SUPPORT_EMAIL,
+          subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
+          text: emailContent,
+          html: htmlContent,
+        };
+        
+        if (isValidEmail) {
+          emailPayload.reply_to = email;
+        }
+        
         const response = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            from: 'TikCash Support <noreply@tikcash.com>',
-            to: SUPPORT_EMAIL,
-            subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
-            text: emailContent,
-            html: htmlContent,
-            reply_to: email,
-          }),
+          body: JSON.stringify(emailPayload),
         });
         
         if (!response.ok) {
           const errorText = await response.text();
-          console.error('[v0] Email send failed:', errorText);
-        } else {
-          console.log('[v0] Refund email sent successfully to:', SUPPORT_EMAIL);
+          console.error('Email send failed:', errorText);
         }
       } catch (emailError) {
-        console.error('[v0] Email service error:', emailError);
+        console.error('Email service error:', emailError);
       }
-    } else {
-      console.warn('[v0] RESEND_API_KEY not configured - email not sent');
     }
-    
-    // Log the request for tracking
-    console.log('[v0] ======================');
-    console.log('[v0] REFUND REQUEST SUBMITTED');
-    console.log('[v0] Request ID:', newRequest.id);
-    console.log('[v0] User Email:', email);
-    console.log('[v0] Purchase Code:', purchaseCode);
-    console.log('[v0] Status: pending');
-    console.log('[v0] ======================');
     
     return NextResponse.json({ 
       success: true, 
