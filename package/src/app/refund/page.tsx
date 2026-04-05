@@ -53,13 +53,13 @@ export default function RefundPage() {
       const data = await response.json();
       
       if (response.status === 409 && data.error === 'duplicate_request') {
-        setDuplicateError(data.message || 'Reembolso ja em processamento para este codigo');
+        setDuplicateError(data.message || 'Refund already in progress for this purchase code');
         setIsSubmitting(false);
         return;
       }
       
       if (!response.ok) {
-        setDuplicateError(data.error || 'Erro ao enviar solicitacao');
+        setDuplicateError(data.error || 'Failed to submit refund request');
         setIsSubmitting(false);
         return;
       }
@@ -72,7 +72,7 @@ export default function RefundPage() {
       }, 2000);
     } catch (error) {
       console.error('Refund request error:', error);
-      setDuplicateError('Erro de conexao. Tente novamente.');
+      setDuplicateError('Connection error. Please try again.');
       setIsSubmitting(false);
     }
   };

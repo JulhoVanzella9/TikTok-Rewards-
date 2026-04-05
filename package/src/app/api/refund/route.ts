@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     if (existingRequest) {
       return NextResponse.json({ 
         error: 'duplicate_request',
-        message: 'Reembolso ja em processamento',
+        message: 'Refund already in progress for this purchase code',
         existingRequest: {
           status: existingRequest.status,
           createdAt: existingRequest.created_at

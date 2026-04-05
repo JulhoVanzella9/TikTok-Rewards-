@@ -64,7 +64,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       }
       
       if (!response.ok) {
-        setDuplicateError(data.error || 'Erro ao enviar solicitacao');
+        setDuplicateError(data.error || 'Failed to submit refund request');
         setIsSubmitting(false);
         return;
       }
@@ -77,7 +77,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       }, 2000);
     } catch (error) {
       console.error('Refund request error:', error);
-      setDuplicateError('Erro de conexao. Tente novamente.');
+      setDuplicateError('Connection error. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -297,11 +297,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                             <line x1="12" y1="16" x2="12.01" y2="16"/>
                           </svg>
                           <span style={{ fontSize: "13px", fontWeight: 600, color: "#FE2C55" }}>
-                            Reembolso em processamento
+                            Refund in progress
                           </span>
                         </div>
                         <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", margin: 0 }}>
-                          Voce ja possui uma solicitacao de reembolso ativa. Aguarde o processamento antes de enviar uma nova.
+                          You already have an active refund request. Please wait for it to be processed before submitting a new one.
                         </p>
                       </div>
                     )}
