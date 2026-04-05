@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from "@/lib/supabase/server";
 
-// Configuration - Replace with actual email and phone when ready
-const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
-const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
+// Configuration
+const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
+const SUPPORT_PHONE = "+55 46 9919-2885";
 
 // GET - Check existing refund requests for current user
 export async function GET() {
@@ -81,10 +81,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
-    // Send email using a simple fetch to an email service
-    // For now, we'll use a webhook or log it
-    // You can integrate with Resend, SendGrid, or any email service later
-    
+    // Send email using Resend API
     const emailContent = `
 New Refund Request
 
@@ -94,21 +91,67 @@ Purchase/Transfer Code: ${purchaseCode}
 Reason:
 ${reason}
 
+Request ID: ${newRequest.id}
+Submitted: ${new Date().toISOString()}
+
 ---
 TikCash Support System
 Support Email: ${SUPPORT_EMAIL}
 Support Phone: ${SUPPORT_PHONE}
     `.trim();
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #FE2C55; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
+        .field { margin-bottom: 15px; }
+        .label { font-weight: bold; color: #555; }
+        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Refund Request</h1>
+        </div>
+        <div class="content">
+            <div class="field">
+                <span class="label">From:</span><br/>
+                ${email}
+            </div>
+            <div class="field">
+                <span class="label">Purchase/Transfer Code:</span><br/>
+                ${purchaseCode}
+            </div>
+            <div class="field">
+                <span class="label">Reason:</span><br/>
+                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${reason}</pre>
+            </div>
+            <div class="field">
+                <span class="label">Request ID:</span><br/>
+                ${newRequest.id}
+            </div>
+            <div class="field">
+                <span class="label">Submitted:</span><br/>
+                ${new Date().toISOString()}
+            </div>
+            <div class="footer">
+                <p><strong>TikCash Support System</strong></p>
+                <p>Support Email: ${SUPPORT_EMAIL}</p>
+                <p>Support Phone: ${SUPPORT_PHONE}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+    `.trim();
     
-    // Log the request (in production, send actual email)
-    console.log('=== REFUND REQUEST ===');
-    console.log('To:', SUPPORT_EMAIL);
-    console.log('From:', email);
-    console.log('Purchase Code:', purchaseCode);
-    console.log('Reason:', reason);
-    console.log('======================');
-    
-    // Try to send via email service if configured
+    // Send email using Resend API
     if (process.env.RESEND_API_KEY) {
       try {
         const response = await fetch('https://api.resend.com/emails', {
@@ -118,21 +161,36 @@ Support Phone: ${SUPPORT_PHONE}
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'TikCash <noreply@tikcash.com>',
-            to: [SUPPORT_EMAIL],
+            from: 'TikCash Support <noreply@tikcash.com>',
+            to: SUPPORT_EMAIL,
             subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
             text: emailContent,
+            html: htmlContent,
             reply_to: email,
           }),
         });
         
         if (!response.ok) {
-          console.error('Email send failed:', await response.text());
+          const errorText = await response.text();
+          console.error('[v0] Email send failed:', errorText);
+        } else {
+          console.log('[v0] Refund email sent successfully to:', SUPPORT_EMAIL);
         }
       } catch (emailError) {
-        console.error('Email service error:', emailError);
+        console.error('[v0] Email service error:', emailError);
       }
+    } else {
+      console.warn('[v0] RESEND_API_KEY not configured - email not sent');
     }
+    
+    // Log the request for tracking
+    console.log('[v0] ======================');
+    console.log('[v0] REFUND REQUEST SUBMITTED');
+    console.log('[v0] Request ID:', newRequest.id);
+    console.log('[v0] User Email:', email);
+    console.log('[v0] Purchase Code:', purchaseCode);
+    console.log('[v0] Status: pending');
+    console.log('[v0] ======================');
     
     return NextResponse.json({ 
       success: true, 
