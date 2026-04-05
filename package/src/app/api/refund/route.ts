@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 // Configuration - Replace with actual email and phone when ready
 const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
