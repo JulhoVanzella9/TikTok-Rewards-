@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
 const SUPPORT_PHONE = "+55 46 9919-2885";
+// Resend free plan only allows sending to the verified account owner email
+const RESEND_ALLOWED_TO = "grupowhofy@gmail.com";
 
 // GET - Check existing refund requests for current user
 export async function GET() {
@@ -158,15 +160,19 @@ Support Phone: ${SUPPORT_PHONE}
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const isValidEmail = emailRegex.test(email);
         
-        // Build email payload - only include reply_to if email is valid
+        // Build email payload
+        // Resend free plan only allows sending to the verified account owner.
+        // reply_to is set to the support email so replies go to accesssupport.ai@gmail.com
         const emailPayload: Record<string, unknown> = {
           from: 'TikCash Support <onboarding@resend.dev>',
-          to: SUPPORT_EMAIL,
+          to: RESEND_ALLOWED_TO,
+          reply_to: SUPPORT_EMAIL,
           subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
           text: emailContent,
           html: htmlContent,
         };
         
+        // Also set reply_to to user's email if valid, so you can reply directly to them
         if (isValidEmail) {
           emailPayload.reply_to = email;
         }
