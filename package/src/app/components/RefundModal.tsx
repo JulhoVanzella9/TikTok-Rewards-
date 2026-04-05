@@ -1,11 +1,18 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
 
 interface RefundModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface ExistingRequest {
+  id: string;
+  purchase_code: string;
+  status: string;
+  created_at: string;
 }
 
 export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
@@ -16,29 +23,63 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [existingRequests, setExistingRequests] = useState<ExistingRequest[]>([]);
+  const [duplicateError, setDuplicateError] = useState<string | null>(null);
+
+  // Fetch existing refund requests when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetch('/api/refund')
+        .then(r => r.json())
+        .then(data => {
+          if (data.requests) {
+            setExistingRequests(data.requests);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !purchaseCode || !reason) return;
     
     setIsSubmitting(true);
+    setDuplicateError(null);
     
     try {
-      await fetch('/api/refund', {
+      const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, purchaseCode, reason }),
       });
+      
+      const data = await response.json();
+      
+      if (response.status === 409 && data.error === 'duplicate_request') {
+        // Duplicate request detected
+        setDuplicateError(data.message || 'Reembolso ja em processamento para este codigo');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (!response.ok) {
+        setDuplicateError(data.error || 'Erro ao enviar solicitacao');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      setIsSubmitting(false);
+      setSubmitted(true);
+      
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
     } catch (error) {
       console.error('Refund request error:', error);
+      setDuplicateError('Erro de conexao. Tente novamente.');
+      setIsSubmitting(false);
     }
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    
-    setTimeout(() => {
-      handleClose();
-    }, 2000);
   };
 
   const handleClose = () => {
@@ -47,6 +88,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setPurchaseCode("");
     setReason("");
     setSubmitted(false);
+    setDuplicateError(null);
     onClose();
   };
 
@@ -238,6 +280,53 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         {t("requestRefund")}
                       </h3>
                     </div>
+
+                    {/* Show existing pending/processing requests */}
+                    {existingRequests.filter(r => r.status === 'pending' || r.status === 'processing').length > 0 && (
+                      <div style={{
+                        background: "rgba(254, 44, 85, 0.15)",
+                        border: "1px solid rgba(254, 44, 85, 0.3)",
+                        borderRadius: "12px",
+                        padding: "12px 16px",
+                        marginBottom: "16px",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                          </svg>
+                          <span style={{ fontSize: "13px", fontWeight: 600, color: "#FE2C55" }}>
+                            Reembolso em processamento
+                          </span>
+                        </div>
+                        <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", margin: 0 }}>
+                          Voce ja possui uma solicitacao de reembolso ativa. Aguarde o processamento antes de enviar uma nova.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Show duplicate error message */}
+                    {duplicateError && (
+                      <div style={{
+                        background: "rgba(254, 44, 85, 0.15)",
+                        border: "1px solid rgba(254, 44, 85, 0.3)",
+                        borderRadius: "12px",
+                        padding: "12px 16px",
+                        marginBottom: "16px",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                          </svg>
+                          <span style={{ fontSize: "13px", fontWeight: 600, color: "#FE2C55" }}>
+                            {duplicateError}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                     
                     <div style={{ marginBottom: "16px" }}>
                       <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>

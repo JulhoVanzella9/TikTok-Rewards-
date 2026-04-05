@@ -1,15 +1,84 @@
 import { NextResponse } from 'next/server';
+import { createClient } from "@/utils/supabase/server";
 
 // Configuration - Replace with actual email and phone when ready
 const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
 const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
 
+// GET - Check existing refund requests for current user
+export async function GET() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ requests: [] });
+    }
+
+    const { data: requests, error } = await supabase
+      .from('refund_requests')
+      .select('id, purchase_code, status, created_at, updated_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to fetch refund requests:', error);
+      return NextResponse.json({ error: 'Failed to fetch requests' }, { status: 500 });
+    }
+
+    return NextResponse.json({ requests: requests || [] });
+  } catch (error) {
+    console.error('Refund GET API error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
     const { email, purchaseCode, reason } = await request.json();
     
     if (!email || !purchaseCode || !reason) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
+    }
+
+    // Check for existing pending/processing refund request for this purchase code
+    const { data: existingRequest } = await supabase
+      .from('refund_requests')
+      .select('id, status, created_at')
+      .eq('purchase_code', purchaseCode)
+      .in('status', ['pending', 'processing'])
+      .maybeSingle();
+
+    if (existingRequest) {
+      return NextResponse.json({ 
+        error: 'duplicate_request',
+        message: 'Reembolso ja em processamento',
+        existingRequest: {
+          status: existingRequest.status,
+          createdAt: existingRequest.created_at
+        }
+      }, { status: 409 });
+    }
+
+    // Insert new refund request into database
+    const { data: newRequest, error: insertError } = await supabase
+      .from('refund_requests')
+      .insert({
+        user_id: user?.id || null,
+        email,
+        purchase_code: purchaseCode,
+        reason,
+        status: 'pending'
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error('Failed to insert refund request:', insertError);
+      return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
     // Send email using a simple fetch to an email service
@@ -68,6 +137,7 @@ Support Phone: ${SUPPORT_PHONE}
     return NextResponse.json({ 
       success: true, 
       message: 'Refund request submitted',
+      requestId: newRequest.id,
       supportEmail: SUPPORT_EMAIL,
       supportPhone: SUPPORT_PHONE,
     });
