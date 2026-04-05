@@ -245,24 +245,16 @@ export default function CreatePage() {
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
-    // Add XP to user profile
+    // Add XP to user profile using atomic RPC function
     // Wallet converte XP para dolares dividindo por 10000
     // Para que $17 na carteira, precisamos: 17 * 10000 = 170000 XP
     const xpToAdd = amountDollars * 10000;
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("total_xp")
-      .eq("id", userId)
-      .single();
-
-    const currentXp = profile?.total_xp || 0;
-    await supabase
-      .from("profiles")
-      .update({ 
-        total_xp: currentXp + xpToAdd,
-        updated_at: new Date().toISOString()
-      })
-      .eq("id", userId);
+    
+    // Use atomic increment to prevent race conditions
+    await supabase.rpc('increment_user_xp', {
+      user_id_param: userId,
+      xp_amount: xpToAdd
+    });
 
     // Check if this is the first video rated (index 0) - trigger referral bonus
     if (currentIndex === 0 && ratingsCount === 1) {
