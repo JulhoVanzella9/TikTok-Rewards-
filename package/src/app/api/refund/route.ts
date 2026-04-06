@@ -5,8 +5,8 @@ import { logNotification, getNotificationStatus } from "@/lib/notification-logge
 
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
-const SUPPORT_PHONE = "+55 46 9919-2885";
-const SUPPORT_WHATSAPP = "5546991922885"; // WhatsApp number without + or spaces
+const SUPPORT_PHONE = "+55 46 99919-2885";
+const SUPPORT_WHATSAPP = "5546999192885"; // WhatsApp number without + or spaces
 
 // GET - Check existing refund requests for current user
 export async function GET() {

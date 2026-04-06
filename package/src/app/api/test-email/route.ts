@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
-const SUPPORT_PHONE = "+55 46 9919-2885";
+const SUPPORT_PHONE = "+55 46 99919-2885";
 
 export async function GET() {
   try {
