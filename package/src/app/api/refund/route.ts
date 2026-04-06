@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from "@/lib/supabase/server";
+import { sendSMS } from "@/lib/sms-service";
+import { logNotification, getNotificationStatus } from "@/lib/notification-logger";
 
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
@@ -82,82 +84,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
-    // Send email using Resend API
-    const emailContent = `
-New Refund Request
-
-From: ${email}
-Purchase/Transfer Code: ${purchaseCode}
-
-Reason:
-${reason}
-
-Request ID: ${newRequest.id}
-Submitted: ${new Date().toISOString()}
-
----
-TikCash Support System
-Support Email: ${SUPPORT_EMAIL}
-Support Phone: ${SUPPORT_PHONE}
-    `.trim();
-
-    const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #FE2C55; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
-        .content { background-color: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
-        .field { margin-bottom: 15px; }
-        .label { font-weight: bold; color: #555; }
-        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>New Refund Request</h1>
-        </div>
-        <div class="content">
-            <div class="field">
-                <span class="label">From:</span><br/>
-                ${email}
-            </div>
-            <div class="field">
-                <span class="label">Purchase/Transfer Code:</span><br/>
-                ${purchaseCode}
-            </div>
-            <div class="field">
-                <span class="label">Reason:</span><br/>
-                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${reason}</pre>
-            </div>
-            <div class="field">
-                <span class="label">Request ID:</span><br/>
-                ${newRequest.id}
-            </div>
-            <div class="field">
-                <span class="label">Submitted:</span><br/>
-                ${new Date().toISOString()}
-            </div>
-            <div class="footer">
-                <p><strong>TikCash Support System</strong></p>
-                <p>Support Email: ${SUPPORT_EMAIL}</p>
-                <p>Support Phone: ${SUPPORT_PHONE}</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-    `.trim();
-    
-    // Send email using Resend API
+    // Send email using Resend API with notification logging
+    let emailSent = false;
     if (process.env.RESEND_API_KEY) {
       try {
         // Validate email format for reply_to
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const isValidEmail = emailRegex.test(email);
+        
+        // Log pending email notification
+        await logNotification({
+          refundRequestId: newRequest.id,
+          userId: user?.id,
+          type: 'email',
+          recipient: SUPPORT_EMAIL,
+          status: 'pending',
+        });
         
         // Build email payload using verified domain tikcash.money
         const emailPayload: Record<string, unknown> = {
@@ -173,7 +115,7 @@ Support Phone: ${SUPPORT_PHONE}
           emailPayload.reply_to = email;
         }
         
-        const response = await fetch('https://api.resend.com/emails', {
+        const emailResponse = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
@@ -182,12 +124,90 @@ Support Phone: ${SUPPORT_PHONE}
           body: JSON.stringify(emailPayload),
         });
         
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Email send failed:', errorText);
+        const emailData = await emailResponse.json() as Record<string, unknown>;
+        
+        if (!emailResponse.ok) {
+          console.error('[v0] Email send failed:', emailData);
+          await logNotification({
+            refundRequestId: newRequest.id,
+            userId: user?.id,
+            type: 'email',
+            recipient: SUPPORT_EMAIL,
+            status: 'failed',
+            errorMessage: emailData.message as string || 'Email service error',
+          });
+        } else {
+          emailSent = true;
+          console.log('[v0] Email sent successfully. ID:', emailData.id);
+          await logNotification({
+            refundRequestId: newRequest.id,
+            userId: user?.id,
+            type: 'email',
+            recipient: SUPPORT_EMAIL,
+            status: 'sent',
+            externalId: emailData.id as string,
+          });
         }
       } catch (emailError) {
-        console.error('Email service error:', emailError);
+        console.error('[v0] Email service error:', emailError);
+        await logNotification({
+          refundRequestId: newRequest.id,
+          userId: user?.id,
+          type: 'email',
+          recipient: SUPPORT_EMAIL,
+          status: 'failed',
+          errorMessage: emailError instanceof Error ? emailError.message : 'Unknown error',
+        });
+      }
+    }
+    
+    // Send SMS if email was sent successfully
+    if (emailSent) {
+      try {
+        const smsMessage = `TikCash Refund Request\n\nYou received a refund request for code: ${purchaseCode}\n\nFrom: ${email}\n\nRequest ID: ${newRequest.id}\n\nVisit your dashboard for details.`;
+        
+        // Log pending SMS notification
+        await logNotification({
+          refundRequestId: newRequest.id,
+          userId: user?.id,
+          type: 'sms',
+          recipient: SUPPORT_PHONE,
+          status: 'pending',
+        });
+        
+        const smsResult = await sendSMS(SUPPORT_PHONE, smsMessage);
+        
+        if (smsResult.success) {
+          console.log('[v0] SMS sent successfully. ID:', smsResult.messageId);
+          await logNotification({
+            refundRequestId: newRequest.id,
+            userId: user?.id,
+            type: 'sms',
+            recipient: SUPPORT_PHONE,
+            status: 'sent',
+            externalId: smsResult.messageId,
+          });
+        } else {
+          console.error('[v0] SMS send failed:', smsResult.error);
+          await logNotification({
+            refundRequestId: newRequest.id,
+            userId: user?.id,
+            type: 'sms',
+            recipient: SUPPORT_PHONE,
+            status: 'failed',
+            errorMessage: smsResult.error,
+          });
+        }
+      } catch (smsError) {
+        console.error('[v0] SMS service error:', smsError);
+        await logNotification({
+          refundRequestId: newRequest.id,
+          userId: user?.id,
+          type: 'sms',
+          recipient: SUPPORT_PHONE,
+          status: 'failed',
+          errorMessage: smsError instanceof Error ? smsError.message : 'Unknown error',
+        });
       }
     }
     
