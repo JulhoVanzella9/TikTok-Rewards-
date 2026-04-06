@@ -67,11 +67,7 @@ export default function TopBar() {
           .eq("id", user.id)
           .single();
         if (data) {
-          const xp = Number(data.total_xp) || 0;
-          setBalance(xp > 0 ? xp / 10000 : 289);
-        } else {
-          // No profile yet - show initial balance
-          setBalance(289);
+          setBalance((Number(data.total_xp) || 0) / 10000);
         }
       }
     };

@@ -1,4 +1,4 @@
--- Fix 1: Update trigger to give new users initial balance of $289 (2890000 XP)
+-- Fix 1: Update trigger - new users start with $0
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -11,7 +11,7 @@ BEGIN
     new.id,
     COALESCE(new.raw_user_meta_data ->> 'display_name', 'Usuario'),
     COALESCE(new.raw_user_meta_data ->> 'username', 'usuario'),
-    2890000
+    0
   )
   ON CONFLICT (id) DO NOTHING;
 
@@ -23,7 +23,6 @@ END;
 $$;
 
 -- Fix 2: Recreate increment_user_xp with correct parameter names
--- The frontend calls with p_user_id and p_xp_amount
 CREATE OR REPLACE FUNCTION increment_user_xp(p_user_id UUID, p_xp_amount INTEGER)
 RETURNS INTEGER AS $$
 DECLARE
@@ -45,6 +44,3 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 GRANT EXECUTE ON FUNCTION increment_user_xp(UUID, INTEGER) TO authenticated;
-
--- Fix 3: Give existing users with 0 XP the initial balance
-UPDATE profiles SET total_xp = 2890000 WHERE total_xp = 0 OR total_xp IS NULL;

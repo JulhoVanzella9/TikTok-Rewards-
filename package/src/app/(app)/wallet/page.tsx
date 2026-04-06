@@ -46,9 +46,7 @@ export default function WalletPage() {
       if (profile) {
         const xp = profile.total_xp || 0;
         setPoints(xp);
-        setBalance(xp > 0 ? xp / 10000 : 289);
-      } else {
-        setBalance(289);
+        setBalance(xp / 10000);
       }
       setLoading(false);
     };
