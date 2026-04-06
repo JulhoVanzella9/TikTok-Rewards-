@@ -21,7 +21,7 @@ export default function WalletPage() {
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   const [selectedAmount, setSelectedAmount] = useState<number | "all">(30);
-  const [balance, setBalance] = useState(289);
+  const [balance, setBalance] = useState(0);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showRefundModal, setShowRefundModal] = useState(false);
@@ -46,8 +46,9 @@ export default function WalletPage() {
       if (profile) {
         const xp = profile.total_xp || 0;
         setPoints(xp);
-        const val = xp / 10000;
-        setBalance(val > 0 ? val : 289);
+        setBalance(xp > 0 ? xp / 10000 : 289);
+      } else {
+        setBalance(289);
       }
       setLoading(false);
     };

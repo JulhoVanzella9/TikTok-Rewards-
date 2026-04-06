@@ -251,10 +251,26 @@ export default function CreatePage() {
     const xpToAdd = amountDollars * 10000;
     
     // Use atomic increment to prevent race conditions
-    await supabase.rpc('increment_user_xp', {
-      user_id_param: userId,
-      xp_amount: xpToAdd
+    const { error: rpcError } = await supabase.rpc('increment_user_xp', {
+      p_user_id: userId,
+      p_xp_amount: xpToAdd
     });
+
+    // Fallback: if RPC fails, update directly
+    if (rpcError) {
+      console.error("RPC increment_user_xp failed:", rpcError);
+      const { data: currentProfile } = await supabase
+        .from("profiles")
+        .select("total_xp")
+        .eq("id", userId)
+        .single();
+
+      const currentXp = currentProfile?.total_xp || 0;
+      await supabase
+        .from("profiles")
+        .update({ total_xp: currentXp + xpToAdd })
+        .eq("id", userId);
+    }
 
     // Check if this is the first video rated (index 0) - trigger referral bonus
     if (currentIndex === 0 && ratingsCount === 1) {

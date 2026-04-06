@@ -46,7 +46,7 @@ export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [balance, setBalance] = useState(289);
+  const [balance, setBalance] = useState(0);
   const [balanceAnimation, setBalanceAnimation] = useState(false);
   const [lastEarnedAmount, setLastEarnedAmount] = useState(0);
   const pathname = usePathname();
@@ -67,8 +67,11 @@ export default function TopBar() {
           .eq("id", user.id)
           .single();
         if (data) {
-          const val = (Number(data.total_xp) || 0) / 10000;
-          setBalance(val > 0 ? val : 289);
+          const xp = Number(data.total_xp) || 0;
+          setBalance(xp > 0 ? xp / 10000 : 289);
+        } else {
+          // No profile yet - show initial balance
+          setBalance(289);
         }
       }
     };
