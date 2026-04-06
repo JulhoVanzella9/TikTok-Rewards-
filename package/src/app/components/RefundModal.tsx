@@ -15,6 +15,12 @@ interface ExistingRequest {
   created_at: string;
 }
 
+interface NotificationStatus {
+  type: 'email' | 'sms';
+  status: 'pending' | 'sent' | 'failed';
+  timestamp: string;
+}
+
 export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const { t } = useI18n();
   const [step, setStep] = useState<"legal" | "form">("legal");
@@ -25,6 +31,10 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [submitted, setSubmitted] = useState(false);
   const [existingRequests, setExistingRequests] = useState<ExistingRequest[]>([]);
   const [duplicateError, setDuplicateError] = useState<string | null>(null);
+  const [lastRequestId, setLastRequestId] = useState<string | null>(null);
+  const [notificationStatus, setNotificationStatus] = useState<{ emailSent: boolean; smsSent: boolean }>(
+    { emailSent: false, smsSent: false }
+  );
 
   // Fetch existing refund requests when modal opens
   useEffect(() => {
@@ -71,10 +81,38 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       
       setIsSubmitting(false);
       setSubmitted(true);
+      setLastRequestId(data.requestId);
+      
+      // Poll for notification status
+      let attempts = 0;
+      const pollInterval = setInterval(async () => {
+        attempts++;
+        try {
+          const statusResponse = await fetch(
+            `/api/refund-status?refundRequestId=${data.requestId}`
+          );
+          const statusData = await statusResponse.json();
+          
+          if (statusData.success && statusData.summary) {
+            setNotificationStatus({
+              emailSent: statusData.summary.emailSent,
+              smsSent: statusData.summary.smsSent,
+            });
+            
+            // Stop polling if both sent successfully or after 30 attempts (30 seconds)
+            if ((statusData.summary.emailSent && statusData.summary.smsSent) || attempts >= 30) {
+              clearInterval(pollInterval);
+            }
+          }
+        } catch (error) {
+          console.error('[v0] Error polling notification status:', error);
+        }
+      }, 1000);
       
       setTimeout(() => {
+        clearInterval(pollInterval);
         handleClose();
-      }, 2000);
+      }, 5000);
     } catch (error) {
       console.error('Refund request error:', error);
       setDuplicateError('Connection error. Please try again.');
@@ -253,15 +291,57 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       </svg>
                     </div>
                     <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
-                      {t("requestSubmitted")}
+                      Request Submitted!
                     </h3>
-                    <p style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "16px" }}>
-                      {t("weWillContact")}
+                    
+                    {/* Notification Status */}
+                    <div style={{ marginBottom: "16px", fontSize: "13px" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "6px", color: "rgba(255,255,255,0.8)" }}>
+                        {notificationStatus.emailSent ? (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="3">
+                              <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Email sent</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <circle cx="12" cy="12" r="10"/>
+                              <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span>Email sending...</span>
+                          </>
+                        )}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", color: "rgba(255,255,255,0.8)" }}>
+                        {notificationStatus.smsSent ? (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25f4ee" strokeWidth="3">
+                              <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>SMS sent</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <circle cx="12" cy="12" r="10"/>
+                              <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span>SMS sending...</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", marginBottom: "16px" }}>
+                      We will contact you soon.
                     </p>
                     
-                    {/* WhatsApp Support Button */}
+                    {/* WHATSAPP_DISABLED_START - Remove this comment block to re-enable WhatsApp */}
+                    {/* WhatsApp Support Button - TEMPORARILY DISABLED
                     <a
-                      href={`https://wa.me/5546991922885?text=${encodeURIComponent(
+                      href={`https://wa.me/5546999192885?text=${encodeURIComponent(
                         `Hello TikCash Support!\n\nI just submitted a refund request.\n\nEmail: ${email}\nPurchase Code: ${purchaseCode}\n\nReason:\n${reason}`
                       )}`}
                       target="_blank"
@@ -296,6 +376,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       </svg>
                       Contact via WhatsApp
                     </a>
+                    WHATSAPP_DISABLED_END */}
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit}>
