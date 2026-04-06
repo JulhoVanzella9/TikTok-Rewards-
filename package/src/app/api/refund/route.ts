@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from "@/lib/supabase/server";
 
-// Configuration - Replace with actual email and phone when ready
-const SUPPORT_EMAIL = "email@placeholder.com"; // Replace with actual email
-const SUPPORT_PHONE = "+1 (000) 000-0000"; // Replace with actual phone
+// Configuration
+const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
+const SUPPORT_PHONE = "+55 46 9919-2885";
+const SUPPORT_WHATSAPP = "5546991922885"; // WhatsApp number without + or spaces
 
 // GET - Check existing refund requests for current user
 export async function GET() {
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
     if (existingRequest) {
       return NextResponse.json({ 
         error: 'duplicate_request',
-        message: 'Reembolso ja em processamento',
+        message: 'Refund already in progress for this purchase code',
         existingRequest: {
           status: existingRequest.status,
           createdAt: existingRequest.created_at
@@ -81,10 +82,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
-    // Send email using a simple fetch to an email service
-    // For now, we'll use a webhook or log it
-    // You can integrate with Resend, SendGrid, or any email service later
-    
+    // Send email using Resend API
     const emailContent = `
 New Refund Request
 
@@ -94,40 +92,99 @@ Purchase/Transfer Code: ${purchaseCode}
 Reason:
 ${reason}
 
+Request ID: ${newRequest.id}
+Submitted: ${new Date().toISOString()}
+
 ---
 TikCash Support System
 Support Email: ${SUPPORT_EMAIL}
 Support Phone: ${SUPPORT_PHONE}
     `.trim();
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #FE2C55; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
+        .field { margin-bottom: 15px; }
+        .label { font-weight: bold; color: #555; }
+        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Refund Request</h1>
+        </div>
+        <div class="content">
+            <div class="field">
+                <span class="label">From:</span><br/>
+                ${email}
+            </div>
+            <div class="field">
+                <span class="label">Purchase/Transfer Code:</span><br/>
+                ${purchaseCode}
+            </div>
+            <div class="field">
+                <span class="label">Reason:</span><br/>
+                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${reason}</pre>
+            </div>
+            <div class="field">
+                <span class="label">Request ID:</span><br/>
+                ${newRequest.id}
+            </div>
+            <div class="field">
+                <span class="label">Submitted:</span><br/>
+                ${new Date().toISOString()}
+            </div>
+            <div class="footer">
+                <p><strong>TikCash Support System</strong></p>
+                <p>Support Email: ${SUPPORT_EMAIL}</p>
+                <p>Support Phone: ${SUPPORT_PHONE}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+    `.trim();
     
-    // Log the request (in production, send actual email)
-    console.log('=== REFUND REQUEST ===');
-    console.log('To:', SUPPORT_EMAIL);
-    console.log('From:', email);
-    console.log('Purchase Code:', purchaseCode);
-    console.log('Reason:', reason);
-    console.log('======================');
-    
-    // Try to send via email service if configured
+    // Send email using Resend API
     if (process.env.RESEND_API_KEY) {
       try {
+        // Validate email format for reply_to
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmail = emailRegex.test(email);
+        
+        // Build email payload using verified domain tikcash.money
+        const emailPayload: Record<string, unknown> = {
+          from: 'TikCash Support <support@tikcash.money>',
+          to: SUPPORT_EMAIL,
+          subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
+          text: emailContent,
+          html: htmlContent,
+        };
+        
+        // Set reply_to to user's email if valid, so you can reply directly to them
+        if (isValidEmail) {
+          emailPayload.reply_to = email;
+        }
+        
         const response = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            from: 'TikCash <noreply@tikcash.com>',
-            to: [SUPPORT_EMAIL],
-            subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
-            text: emailContent,
-            reply_to: email,
-          }),
+          body: JSON.stringify(emailPayload),
         });
         
         if (!response.ok) {
-          console.error('Email send failed:', await response.text());
+          const errorText = await response.text();
+          console.error('Email send failed:', errorText);
         }
       } catch (emailError) {
         console.error('Email service error:', emailError);
@@ -140,6 +197,7 @@ Support Phone: ${SUPPORT_PHONE}
       requestId: newRequest.id,
       supportEmail: SUPPORT_EMAIL,
       supportPhone: SUPPORT_PHONE,
+      supportWhatsApp: SUPPORT_WHATSAPP,
     });
   } catch (error) {
     console.error('Refund API error:', error);
