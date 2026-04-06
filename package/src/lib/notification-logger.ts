@@ -20,13 +20,11 @@ export async function logNotification(params: {
       .from('notification_logs')
       .insert({
         refund_request_id: params.refundRequestId,
-        user_id: params.userId,
         notification_type: params.type,
         recipient: params.recipient,
         status: params.status,
-        external_id: params.externalId,
+        provider_message_id: params.externalId,
         error_message: params.errorMessage,
-        created_at: new Date().toISOString(),
       })
       .select()
       .single();
