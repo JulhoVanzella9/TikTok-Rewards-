@@ -221,7 +221,8 @@ export default function RefundPage() {
                   {t("weWillContact") || "We will contact you soon."}
                 </p>
                 
-                {/* WhatsApp Support Button */}
+                {/* WHATSAPP_DISABLED_START - Remove this comment block to re-enable WhatsApp */}
+                {/* WhatsApp Support Button - TEMPORARILY DISABLED
                 <a
                   href={`https://wa.me/5546999192885?text=${encodeURIComponent(
                     `Hello TikCash Support!\n\nI just submitted a refund request.\n\nEmail: ${email}\nPurchase Code: ${purchaseCode}\n\nReason:\n${reason}`
@@ -250,6 +251,7 @@ export default function RefundPage() {
                   </svg>
                   Contact via WhatsApp
                 </a>
+                WHATSAPP_DISABLED_END */}
               </div>
             ) : (
               <form onSubmit={handleSubmit}>

@@ -35,7 +35,8 @@ const faqs: FAQItem[] = [
 const contactOptions = [
   { icon: "💬", title: "Live Chat", desc: "Response within 5 minutes", available: true, color: "#25f4ee" },
   { icon: "📧", title: "Email", desc: "support@tikmoney.com", available: true, color: "#fe2c55" },
-  { icon: "📱", title: "WhatsApp", desc: "Mon-Fri, 9am to 6pm", available: true, color: "#25d366" },
+  // WHATSAPP_DISABLED - Uncomment line below to re-enable WhatsApp
+  // { icon: "📱", title: "WhatsApp", desc: "Mon-Fri, 9am to 6pm", available: true, color: "#25d366" },
 ];
 
 export default function HelpPage() {
