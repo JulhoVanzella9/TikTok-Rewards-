@@ -84,6 +84,76 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
+    // Build email content
+    const emailContent = `
+New Refund Request
+
+From: ${email}
+Purchase/Transfer Code: ${purchaseCode}
+
+Reason:
+${reason}
+
+Request ID: ${newRequest.id}
+Submitted: ${new Date().toISOString()}
+
+---
+TikCash Support System
+Support Email: ${SUPPORT_EMAIL}
+Support Phone: ${SUPPORT_PHONE}
+    `.trim();
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #FE2C55; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
+        .field { margin-bottom: 15px; }
+        .label { font-weight: bold; color: #555; }
+        .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Refund Request</h1>
+        </div>
+        <div class="content">
+            <div class="field">
+                <span class="label">From:</span><br/>
+                ${email}
+            </div>
+            <div class="field">
+                <span class="label">Purchase/Transfer Code:</span><br/>
+                ${purchaseCode}
+            </div>
+            <div class="field">
+                <span class="label">Reason:</span><br/>
+                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${reason}</pre>
+            </div>
+            <div class="field">
+                <span class="label">Request ID:</span><br/>
+                ${newRequest.id}
+            </div>
+            <div class="field">
+                <span class="label">Submitted:</span><br/>
+                ${new Date().toISOString()}
+            </div>
+            <div class="footer">
+                <p><strong>TikCash Support System</strong></p>
+                <p>Support Email: ${SUPPORT_EMAIL}</p>
+                <p>Support Phone: ${SUPPORT_PHONE}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+    `.trim();
+    
     // Send email using Resend API with notification logging
     let emailSent = false;
     if (process.env.RESEND_API_KEY) {
