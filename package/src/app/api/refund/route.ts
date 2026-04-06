@@ -4,8 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
 const SUPPORT_PHONE = "+55 46 9919-2885";
-// Resend free plan only allows sending to the verified account owner email
-const RESEND_ALLOWED_TO = "grupowhofy@gmail.com";
+const SUPPORT_WHATSAPP = "5546991922885"; // WhatsApp number without + or spaces
 
 // GET - Check existing refund requests for current user
 export async function GET() {
@@ -160,19 +159,16 @@ Support Phone: ${SUPPORT_PHONE}
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const isValidEmail = emailRegex.test(email);
         
-        // Build email payload
-        // Resend free plan only allows sending to the verified account owner.
-        // reply_to is set to the support email so replies go to accesssupport.ai@gmail.com
+        // Build email payload using verified domain tikcash.money
         const emailPayload: Record<string, unknown> = {
-          from: 'TikCash Support <onboarding@resend.dev>',
-          to: RESEND_ALLOWED_TO,
-          reply_to: SUPPORT_EMAIL,
+          from: 'TikCash Support <support@tikcash.money>',
+          to: SUPPORT_EMAIL,
           subject: `Refund Request from ${email} - Code: ${purchaseCode}`,
           text: emailContent,
           html: htmlContent,
         };
         
-        // Also set reply_to to user's email if valid, so you can reply directly to them
+        // Set reply_to to user's email if valid, so you can reply directly to them
         if (isValidEmail) {
           emailPayload.reply_to = email;
         }
@@ -201,6 +197,7 @@ Support Phone: ${SUPPORT_PHONE}
       requestId: newRequest.id,
       supportEmail: SUPPORT_EMAIL,
       supportPhone: SUPPORT_PHONE,
+      supportWhatsApp: SUPPORT_WHATSAPP,
     });
   } catch (error) {
     console.error('Refund API error:', error);

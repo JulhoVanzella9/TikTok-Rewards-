@@ -4,9 +4,6 @@ import { NextResponse } from 'next/server';
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
 const SUPPORT_PHONE = "+55 46 9919-2885";
 
-// Resend free plan only allows sending to the verified account owner
-const RESEND_ALLOWED_TO = "grupowhofy@gmail.com";
-
 export async function GET() {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -17,10 +14,10 @@ export async function GET() {
       }, { status: 400 });
     }
 
+    // Using verified domain tikcash.money
     const testEmail = {
-      from: 'TikCash Support <onboarding@resend.dev>',
-      to: RESEND_ALLOWED_TO,
-      reply_to: SUPPORT_EMAIL,
+      from: 'TikCash Support <support@tikcash.money>',
+      to: SUPPORT_EMAIL,
       subject: 'TikCash Email Test - System Check',
       text: `Email system test from TikCash\n\nIf you received this, the email system is working correctly!\n\nSupport Email: ${SUPPORT_EMAIL}\nSupport Phone: ${SUPPORT_PHONE}`,
       html: `
@@ -77,7 +74,8 @@ export async function GET() {
       success: true,
       message: 'Test email sent successfully',
       emailId: data.id,
-      sentTo: RESEND_ALLOWED_TO,
+      sentTo: SUPPORT_EMAIL,
+      from: 'support@tikcash.money',
       timestamp: new Date().toISOString()
     });
 
