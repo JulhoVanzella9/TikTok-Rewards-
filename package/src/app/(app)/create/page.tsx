@@ -227,82 +227,77 @@ export default function CreatePage() {
       videoRefs.current[currentIndex]!.muted = true;
     }
 
-    // Update Supabase
+    // Save to Supabase (fire-and-forget to not block UI, but ensure it completes)
     const supabase = createClient();
     const ratingsCount = newRatings.filter(r => r !== null).length;
-    // Salva o proximo indice (currentIndex + 1) para quando o usuario voltar
     const nextIndex = Math.min(currentIndex + 1, videoData.length - 1);
-
-    // Upsert video_ratings
-    await supabase
-      .from("video_ratings")
-      .upsert({
-        user_id: userId,
-        last_rating_date: new Date().toISOString(),
-        total_earned: newTotal,
-        ratings_count: ratingsCount,
-        current_video_index: nextIndex,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: "user_id" });
-
-    // Add XP to user profile using atomic RPC function
-    // Wallet converte XP para dolares dividindo por 10000
-    // Para que $17 na carteira, precisamos: 17 * 10000 = 170000 XP
     const xpToAdd = amountDollars * 10000;
-    
-    // Use atomic increment to prevent race conditions
-    const { error: rpcError } = await supabase.rpc('increment_user_xp', {
-      p_user_id: userId,
-      p_xp_amount: xpToAdd
-    });
 
-    // Fallback: if RPC fails, update directly
-    if (rpcError) {
-      console.error("RPC increment_user_xp failed:", rpcError);
-      const { data: currentProfile } = await supabase
+    // Save both in parallel - don't await to avoid blocking navigation
+    const savePromise = Promise.all([
+      // 1. Save video ratings progress
+      supabase
+        .from("video_ratings")
+        .upsert({
+          user_id: userId,
+          last_rating_date: new Date().toISOString(),
+          total_earned: newTotal,
+          ratings_count: ratingsCount,
+          current_video_index: nextIndex,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "user_id" }),
+
+      // 2. Save XP - read current then update
+      supabase
         .from("profiles")
         .select("total_xp")
         .eq("id", userId)
-        .single();
-
-      const currentXp = currentProfile?.total_xp || 0;
-      await supabase
-        .from("profiles")
-        .update({ total_xp: currentXp + xpToAdd })
-        .eq("id", userId);
-    }
-
-    // Check if this is the first video rated (index 0) - trigger referral bonus
-    if (currentIndex === 0 && ratingsCount === 1) {
-      // Check for pending referral and complete it
-      try {
-        await fetch("/api/referral/complete", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        });
-      } catch (err) {
-        console.log("Referral completion check:", err);
-      }
-    }
-
-// Check if all videos rated
-      const allDone = newRatings.length === videoData.length && newRatings.every((r) => r !== null);
-      if (allDone) {
-        // Request notification permission and schedule reminder for 24h
-        requestNotificationPermission().then((granted) => {
-          if (granted) {
-            scheduleRatingsAvailableNotification();
+        .single()
+        .then(({ data: currentProfile }) => {
+          const currentXp = currentProfile?.total_xp || 0;
+          return supabase
+            .from("profiles")
+            .update({ total_xp: currentXp + xpToAdd, updated_at: new Date().toISOString() })
+            .eq("id", userId);
+        })
+        .then(({ error: updateError }) => {
+          if (updateError) {
+            console.error("Direct update failed, trying RPC:", updateError);
+            return supabase.rpc('increment_user_xp', {
+              p_user_id: userId,
+              p_xp_amount: xpToAdd
+            });
           }
-        });
-        
+        }),
+    ]).catch(err => console.error("Save error:", err));
+
+    // Check referral on first video
+    if (currentIndex === 0 && ratingsCount === 1) {
+      fetch("/api/referral/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }).catch(() => {});
+    }
+
+    // Check if all videos rated
+    const allDone = newRatings.length === videoData.length && newRatings.every((r) => r !== null);
+    if (allDone) {
+      // Wait for save to complete before showing final screen
+      await savePromise;
+      requestNotificationPermission().then((granted) => {
+        if (granted) {
+          scheduleRatingsAvailableNotification();
+        }
+      });
+
+      setTimeout(() => {
+        setAllRated(true);
         setTimeout(() => {
-          setAllRated(true);
-          setTimeout(() => {
-            setLimitReached(true);
-          }, 2000);
-        }, 1000);
-      } else {
+          setLimitReached(true);
+        }, 2000);
+      }, 1000);
+    } else {
       setTimeout(() => {
         goNext();
       }, 900);
