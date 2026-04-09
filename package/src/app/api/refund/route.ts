@@ -47,44 +47,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
     }
 
-    // Check if user is logged in - refund requests require authentication
-    if (!user) {
-      return NextResponse.json({ 
-        error: 'authentication_required',
-        message: 'You must be logged in to submit a refund request'
-      }, { status: 401 });
-    }
-
     // Check for existing refund request from this user within the last 14 days
-    const fourteenDaysAgo = new Date();
-    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    // (only applies to logged-in users)
+    if (user) {
+      const fourteenDaysAgo = new Date();
+      fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 
-    const { data: existingRequest } = await supabase
-      .from('refund_requests')
-      .select('id, status, created_at')
-      .eq('user_id', user.id)
-      .gte('created_at', fourteenDaysAgo.toISOString())
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      const { data: existingRequest } = await supabase
+        .from('refund_requests')
+        .select('id, status, created_at')
+        .eq('user_id', user.id)
+        .gte('created_at', fourteenDaysAgo.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-    if (existingRequest) {
-      const requestDate = new Date(existingRequest.created_at);
-      const nextAllowedDate = new Date(requestDate);
-      nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
-      
-      const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-      
-      return NextResponse.json({ 
-        error: 'duplicate_request',
-        message: `You already have a refund request from this account. You can submit a new request in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
-        existingRequest: {
-          status: existingRequest.status,
-          createdAt: existingRequest.created_at,
-          nextAllowedDate: nextAllowedDate.toISOString(),
-          daysRemaining
-        }
-      }, { status: 409 });
+      if (existingRequest) {
+        const requestDate = new Date(existingRequest.created_at);
+        const nextAllowedDate = new Date(requestDate);
+        nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
+        
+        const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        
+        return NextResponse.json({ 
+          error: 'duplicate_request',
+          message: `You already have a refund request from this account. You can submit a new request in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
+          existingRequest: {
+            status: existingRequest.status,
+            createdAt: existingRequest.created_at,
+            nextAllowedDate: nextAllowedDate.toISOString(),
+            daysRemaining
+          }
+        }, { status: 409 });
+      }
     }
 
     // Insert new refund request into database
