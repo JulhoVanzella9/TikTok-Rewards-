@@ -53,13 +53,19 @@ export default function RefundPage() {
       const data = await response.json();
       
       if (response.status === 409 && data.error === 'duplicate_request') {
-        setDuplicateError(data.message || 'Refund already in progress for this purchase code');
+        setDuplicateError(data.message || 'You already have a refund request from this account.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (response.status === 401 && data.error === 'authentication_required') {
+        setDuplicateError(data.message || 'You must be logged in to submit a refund request.');
         setIsSubmitting(false);
         return;
       }
       
       if (!response.ok) {
-        setDuplicateError(data.error || 'Failed to submit refund request');
+        setDuplicateError(data.message || data.error || 'Failed to submit refund request');
         setIsSubmitting(false);
         return;
       }
