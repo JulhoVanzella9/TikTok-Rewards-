@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
 interface ExistingRequest {
   id: string;
@@ -23,17 +24,24 @@ export default function RefundPage() {
   const [submitted, setSubmitted] = useState(false);
   const [existingRequests, setExistingRequests] = useState<ExistingRequest[]>([]);
   const [duplicateError, setDuplicateError] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  // Fetch existing refund requests on page load
+  // Get user and fetch existing refund requests on page load
   useEffect(() => {
-    fetch('/api/refund')
-      .then(r => r.json())
-      .then(data => {
-        if (data.requests) {
-          setExistingRequests(data.requests);
-        }
-      })
-      .catch(() => {});
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUserId(user.id);
+        fetch(`/api/refund?userId=${user.id}`)
+          .then(r => r.json())
+          .then(data => {
+            if (data.requests) {
+              setExistingRequests(data.requests);
+            }
+          })
+          .catch(() => {});
+      }
+    });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +55,7 @@ export default function RefundPage() {
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, purchaseCode, reason }),
+        body: JSON.stringify({ email, purchaseCode, reason, userId }),
       });
       
       const data = await response.json();

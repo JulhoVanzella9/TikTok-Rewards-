@@ -9,19 +9,20 @@ const SUPPORT_PHONE = "+55 46 99919-2885";
 const SUPPORT_WHATSAPP = "5546999192885"; // WhatsApp number without + or spaces
 
 // GET - Check existing refund requests for current user
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
 
-    if (!user) {
+    if (!userId) {
       return NextResponse.json({ requests: [] });
     }
 
     const { data: requests, error } = await supabase
       .from('refund_requests')
       .select('id, purchase_code, status, created_at, updated_at')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -39,21 +40,35 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    const { email, purchaseCode, reason } = await request.json();
+
+    const { email, purchaseCode, reason, userId } = await request.json();
 
     if (!email || !purchaseCode || !reason) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
     }
 
-    // Must be logged in to request refund
-    if (!user) {
+    if (!userId) {
       return NextResponse.json({
         error: 'authentication_required',
         message: 'You must be logged in to submit a refund request.'
       }, { status: 401 });
     }
+
+    // Verify user exists in profiles
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .single();
+
+    if (!profile) {
+      return NextResponse.json({
+        error: 'authentication_required',
+        message: 'Invalid user account.'
+      }, { status: 401 });
+    }
+
+    const user = { id: userId };
 
     // STRICT: 1 refund per account every 14 days (by user_id AND email)
     const fourteenDaysAgo = new Date();

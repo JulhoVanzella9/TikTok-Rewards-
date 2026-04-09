@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/lib/i18n/context";
+import { createClient } from "@/lib/supabase/client";
 
 interface RefundModalProps {
   isOpen: boolean;
@@ -32,21 +33,28 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [existingRequests, setExistingRequests] = useState<ExistingRequest[]>([]);
   const [duplicateError, setDuplicateError] = useState<string | null>(null);
   const [lastRequestId, setLastRequestId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [notificationStatus, setNotificationStatus] = useState<{ emailSent: boolean; smsSent: boolean }>(
     { emailSent: false, smsSent: false }
   );
 
-  // Fetch existing refund requests when modal opens
+  // Get current user and fetch existing refund requests when modal opens
   useEffect(() => {
     if (isOpen) {
-      fetch('/api/refund')
-        .then(r => r.json())
-        .then(data => {
-          if (data.requests) {
-            setExistingRequests(data.requests);
-          }
-        })
-        .catch(() => {});
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          setUserId(user.id);
+          fetch(`/api/refund?userId=${user.id}`)
+            .then(r => r.json())
+            .then(data => {
+              if (data.requests) {
+                setExistingRequests(data.requests);
+              }
+            })
+            .catch(() => {});
+        }
+      });
     }
   }, [isOpen]);
 
@@ -61,7 +69,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, purchaseCode, reason }),
+        body: JSON.stringify({ email, purchaseCode, reason, userId }),
       });
       
       const data = await response.json();
