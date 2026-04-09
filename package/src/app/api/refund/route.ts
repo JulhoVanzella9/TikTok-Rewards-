@@ -42,52 +42,70 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     
     const { email, purchaseCode, reason } = await request.json();
-    
+
     if (!email || !purchaseCode || !reason) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
     }
 
-    // Check for existing refund request from this user within the last 14 days
-    // (only applies to logged-in users)
-    if (user) {
-      const fourteenDaysAgo = new Date();
-      fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    // Must be logged in to request refund
+    if (!user) {
+      return NextResponse.json({
+        error: 'authentication_required',
+        message: 'You must be logged in to submit a refund request.'
+      }, { status: 401 });
+    }
 
-      const { data: existingRequest } = await supabase
-        .from('refund_requests')
-        .select('id, status, created_at')
-        .eq('user_id', user.id)
-        .gte('created_at', fourteenDaysAgo.toISOString())
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+    // STRICT: 1 refund per account every 14 days (by user_id AND email)
+    const fourteenDaysAgo = new Date();
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 
-      if (existingRequest) {
-        const requestDate = new Date(existingRequest.created_at);
-        const nextAllowedDate = new Date(requestDate);
-        nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
-        
-        const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-        
-        return NextResponse.json({ 
-          error: 'duplicate_request',
-          message: `You already have a refund request from this account. You can submit a new request in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
-          existingRequest: {
-            status: existingRequest.status,
-            createdAt: existingRequest.created_at,
-            nextAllowedDate: nextAllowedDate.toISOString(),
-            daysRemaining
-          }
-        }, { status: 409 });
-      }
+    // Check by user_id
+    const { data: existingByUser } = await supabase
+      .from('refund_requests')
+      .select('id, status, created_at')
+      .eq('user_id', user.id)
+      .gte('created_at', fourteenDaysAgo.toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    // Also check by email (prevents using same email from different accounts)
+    const { data: existingByEmail } = await supabase
+      .from('refund_requests')
+      .select('id, status, created_at')
+      .eq('email', email.toLowerCase().trim())
+      .gte('created_at', fourteenDaysAgo.toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const existingRequest = existingByUser || existingByEmail;
+
+    if (existingRequest) {
+      const requestDate = new Date(existingRequest.created_at);
+      const nextAllowedDate = new Date(requestDate);
+      nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
+
+      const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
+      return NextResponse.json({
+        error: 'duplicate_request',
+        message: `You already have a refund request. You can submit a new one in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
+        existingRequest: {
+          status: existingRequest.status,
+          createdAt: existingRequest.created_at,
+          nextAllowedDate: nextAllowedDate.toISOString(),
+          daysRemaining
+        }
+      }, { status: 409 });
     }
 
     // Insert new refund request into database
     const { data: newRequest, error: insertError } = await supabase
       .from('refund_requests')
       .insert({
-        user_id: user?.id || null,
-        email,
+        user_id: user.id,
+        email: email.toLowerCase().trim(),
         purchase_code: purchaseCode,
         reason,
         status: 'pending'
