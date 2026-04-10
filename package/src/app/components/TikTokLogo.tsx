@@ -8,83 +8,72 @@ interface TikCashLogoProps {
 
 export default function TikCashLogo({ size = "md", showText = true, isDarkMode = true }: TikCashLogoProps) {
   const sizes = {
-    sm: { icon: 24, text: 14, gap: 6 },
-    md: { icon: 30, text: 18, gap: 8 },
-    lg: { icon: 36, text: 22, gap: 10 },
+    sm: { icon: 28, text: 14, gap: 8 },
+    md: { icon: 36, text: 18, gap: 10 },
+    lg: { icon: 48, text: 24, gap: 12 },
   };
 
   const s = sizes[size];
+  const noteColor = isDarkMode ? "#FFFFFF" : "#000000";
+  const dollarColor = isDarkMode ? "#000000" : "#FFFFFF";
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: `${s.gap}px` }}>
-      {/* TikCash Icon - Musical note shape with dollar coin */}
-      <div style={{ 
-        width: `${s.icon}px`, 
-        height: `${s.icon}px`, 
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "center",
-        position: "relative",
-      }}>
-        <svg width={s.icon} height={s.icon} viewBox="0 0 48 48" fill="none">
-          {/* Musical note base shape - cyan shadow */}
-          <path 
-            d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-            fill="#25F4EE"
-            transform="translate(-2, -1)"
-          />
-          {/* Musical note base shape - red shadow */}
-          <path 
-            d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-            fill="#FE2C55"
-            transform="translate(2, 1)"
-          />
-          {/* Main musical note shape */}
-          <path 
-            d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" 
-            fill={isDarkMode ? "#fff" : "#000"}
-          />
-          {/* Dollar sign inside the circle */}
-          <text 
-            x="20" 
-            y="32" 
-            textAnchor="middle" 
-            fill={isDarkMode ? "#000" : "#fff"}
-            fontSize="14"
-            fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif"
-          >
-            $
-          </text>
-          {/* Coin stack indicator at top right */}
-          <circle cx="36" cy="12" r="8" fill="#25F4EE" stroke={isDarkMode ? "#000" : "#fff"} strokeWidth="2"/>
-          <text 
-            x="36" 
-            y="16" 
-            textAnchor="middle" 
-            fill="#000"
-            fontSize="10"
-            fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif"
-          >
-            $
-          </text>
-        </svg>
-      </div>
-      
-      {/* Text */}
+      <svg width={s.icon} height={s.icon} viewBox="0 0 512 512" fill="none">
+        {/* cyan shadow */}
+        <path
+          d="M320 80V310C320 378 268 428 200 428C132 428 78 374 78 306C78 238 132 184 200 184C219 184 237 188 250 196V80H320Z"
+          fill="#25F4EE"
+          transform="translate(-16,-10)"
+        />
+        {/* red/pink shadow */}
+        <path
+          d="M320 80V310C320 378 268 428 200 428C132 428 78 374 78 306C78 238 132 184 200 184C219 184 237 188 250 196V80H320Z"
+          fill="#FE2C55"
+          transform="translate(16,10)"
+        />
+        {/* main note */}
+        <path
+          d="M320 80V310C320 378 268 428 200 428C132 428 78 374 78 306C78 238 132 184 200 184C219 184 237 188 250 196V80H320Z"
+          fill={noteColor}
+        />
+        {/* dollar sign inside circle */}
+        <text
+          x="200"
+          y="345"
+          textAnchor="middle"
+          fill={dollarColor}
+          fontSize="130"
+          fontWeight="800"
+          fontFamily="Arial Black, system-ui, sans-serif"
+        >
+          $
+        </text>
+        {/* cyan coin top right */}
+        <circle cx="392" cy="118" r="68" fill="#25F4EE" />
+        <text
+          x="392"
+          y="145"
+          textAnchor="middle"
+          fill="#000000"
+          fontSize="80"
+          fontWeight="800"
+          fontFamily="Arial Black, system-ui, sans-serif"
+        >
+          $
+        </text>
+      </svg>
+
       {showText && (
-        <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-          <span style={{
-            fontSize: `${s.text}px`,
-            fontWeight: 700,
-            color: isDarkMode ? "#fff" : "#000",
-            letterSpacing: "-0.3px",
-            fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
-          }}>
-            TikCash
-          </span>
-        </div>
+        <span style={{
+          fontSize: `${s.text}px`,
+          fontWeight: 800,
+          color: isDarkMode ? "#FFFFFF" : "#000000",
+          letterSpacing: "-0.5px",
+          fontFamily: "Arial Black, system-ui, sans-serif",
+        }}>
+          TikCash
+        </span>
       )}
     </div>
   );
