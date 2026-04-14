@@ -13,20 +13,19 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(() => {
+    // This runs during server rendering too. Never touch browser globals here.
+    if (typeof window === "undefined") return "dark";
 
-  // Initialize theme from localStorage on mount
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme && (savedTheme === "dark" || savedTheme === "light")) {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      applyTheme("dark");
-    }
-  }, []);
+    try {
+      const savedTheme = localStorage.getItem("theme") as Theme | null;
+      if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+    } catch {}
+
+    const attr = document.documentElement.getAttribute("data-theme");
+    if (attr === "dark" || attr === "light") return attr;
+    return "dark";
+  });
 
   const applyTheme = (newTheme: Theme) => {
     // Apply to document
@@ -39,19 +38,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       metaThemeColor.setAttribute("content", newTheme === "dark" ? "#000000" : "#f5f5f5");
     }
 
-    // Force style updates on body
-    if (newTheme === "light") {
-      document.body.style.backgroundColor = "#f5f5f5";
-      document.body.style.color = "#121212";
-    } else {
-      document.body.style.backgroundColor = "#000000";
-      document.body.style.color = "#ffffff";
-    }
+    // Keep body styles driven by CSS variables (global.css) to avoid first-load flashes.
+    document.body.style.removeProperty("background-color");
+    document.body.style.removeProperty("color");
   };
+
+  // Keep DOM in sync whenever theme changes
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem("theme", newTheme);
+    try {
+      localStorage.setItem("theme", newTheme);
+    } catch {}
     applyTheme(newTheme);
     
     // Dispatch event for components that need to know
@@ -62,11 +63,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
   };
-
-  // Prevent flash of wrong theme
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
