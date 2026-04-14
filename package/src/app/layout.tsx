@@ -1,11 +1,32 @@
+"use client";
 import "./global.css";
-import Providers from "./providers";
+import { I18nProvider } from "@/lib/i18n/context";
+import { ThemeProvider } from "@/lib/theme/context";
+import { useEffect } from "react";
+import { checkScheduledNotifications } from "@/lib/notifications";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    // Register service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(console.error);
+    }
+
+    // Check for scheduled notifications that need to be shown
+    checkScheduledNotifications();
+    
+    // Check periodically for scheduled notifications
+    const notificationInterval = setInterval(() => {
+      checkScheduledNotifications();
+    }, 60000); // Check every minute
+
+    return () => clearInterval(notificationInterval);
+  }, []);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -40,7 +61,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <ThemeProvider>
+          <I18nProvider>
+            {children}
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
