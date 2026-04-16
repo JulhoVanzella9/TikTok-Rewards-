@@ -43,7 +43,7 @@ export default function LoginPage() {
 
     const supabase = createClient();
 
-    // First try to sign in
+    // First try to sign in with current password
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -54,19 +54,22 @@ export default function LoginPage() {
       return;
     }
 
-    // Fallback: try legacy password for users registered before the fix
+    // Try legacy password for existing users, then migrate silently
     if (signInError) {
       const { data: legacyData } = await supabase.auth.signInWithPassword({
         email,
         password: "myacess2026",
       });
+
       if (legacyData?.session) {
+        // Migrate password silently
+        await supabase.auth.updateUser({ password });
         window.location.href = "/";
         return;
       }
     }
 
-    // If login fails, try to sign up (new user)
+    // If both fail, try to sign up (new user)
     if (signInError) {
       const { data, error } = await supabase.auth.signUp({
         email,
