@@ -18,7 +18,7 @@ interface ExistingRequest {
 
 export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const { t } = useI18n();
-  const [step, setStep] = useState<"legal" | "acknowledge" | "form">("legal");
+  const [step, setStep] = useState<"legal" | "policy" | "acknowledge" | "form">("legal");
   const [email, setEmail] = useState("");
   const [purchaseCode, setPurchaseCode] = useState("");
   const [reason, setReason] = useState("");
@@ -202,7 +202,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: "100%", maxWidth: step === "form" ? "420px" : "600px",
+              width: "100%", maxWidth: step === "form" ? "420px" : step === "acknowledge" ? "600px" : "500px",
               display: "flex", flexDirection: "column", alignItems: "center",
               margin: "0 auto",
               padding: "20px 8px 120px",
@@ -287,66 +287,6 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     Please note that initiating a chargeback (a formal request to the credit provider to reverse an unrecognized transaction) without proper justification constitutes illegal conduct under the Fair Credit Billing Act (FCBA). These actions not only harm reputable and ethical businesses but also involve the refusal to acknowledge a legitimate transaction despite having received the product or service. Engaging in such practices may result in legal consequences. It is essential to maintain honesty in all online transactions to ensure a safe and trustworthy shopping environment for all parties involved.
                   </p>
 
-                  {/* Refund & Dispute Policy */}
-                  <div style={{
-                    background: "rgba(255,255,255,0.05)",
-                    borderRadius: "10px",
-                    padding: "16px",
-                    marginBottom: "20px",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}>
-                    <h4 style={{
-                      fontSize: "13px", fontWeight: 800, color: "#fff",
-                      marginBottom: "14px", textTransform: "uppercase",
-                      letterSpacing: "0.5px", textAlign: "center",
-                    }}>
-                      Refund & Dispute Policy
-                    </h4>
-
-                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "12px", textAlign: "left" }}>
-                      Before initiating any chargeback or dispute with your bank or card provider, you agree to contact our support team first to resolve the issue.
-                    </p>
-
-                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "14px", textAlign: "left" }}>
-                      Failure to contact us prior to opening a dispute may result in your case being formally contested with detailed evidence, including proof of access, usage logs, and acceptance of our terms.
-                    </p>
-
-                    <p style={{ fontSize: "12px", color: "#FE2C55", lineHeight: 1.7, marginBottom: "10px", textAlign: "left", fontWeight: 600 }}>
-                      Unresolved or abusive chargebacks may lead to:
-                    </p>
-
-                    <div style={{ paddingLeft: "4px", marginBottom: "14px" }}>
-                      {[
-                        "Permanent account suspension and loss of all earned balance",
-                        "Complete and irreversible loss of access to all platform services",
-                        "Internal fraud prevention flagging across affiliated platforms",
-                        "Reporting the dispute with supporting documentation to financial institutions, which may affect your standing with payment providers",
-                        "Formal legal action to recover costs associated with fraudulent disputes",
-                        "Collection of all evidence (IP logs, device fingerprints, usage data, timestamps) for dispute contestation",
-                      ].map((item, i) => (
-                        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2" style={{ marginTop: "3px", flexShrink: 0 }}>
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="15" y1="9" x2="9" y2="15"/>
-                            <line x1="9" y1="9" x2="15" y2="15"/>
-                          </svg>
-                          <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div style={{
-                      background: "rgba(254,44,85,0.08)",
-                      border: "1px solid rgba(254,44,85,0.2)",
-                      borderRadius: "8px",
-                      padding: "10px",
-                    }}>
-                      <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: 0, textAlign: "left" }}>
-                        We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 5-10 business days.
-                      </p>
-                    </div>
-                  </div>
-
                   {/* Evidence Warning */}
                   <div style={{
                     display: "flex",
@@ -368,11 +308,106 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   </div>
 
                   <button
-                    onClick={() => setStep("acknowledge")}
+                    onClick={() => setStep("policy")}
                     className="btn-3d btn-3d-primary"
                     style={{ fontFamily: "inherit", width: "100%", maxWidth: "280px", display: "block", margin: "0 auto" }}
                   >
                     I Understand - Continue
+                  </button>
+                </div>
+
+                <button
+                  onClick={handleClose}
+                  className="btn-3d btn-3d-dark btn-3d-sm"
+                  style={{ marginTop: "16px", fontFamily: "inherit" }}
+                >
+                  Back to Start
+                </button>
+              </>
+            ) : step === "policy" ? (
+              <>
+                {/* TikCash Logo */}
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  gap: "8px", marginBottom: "16px", width: "100%",
+                }}>
+                  <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
+                      <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#fff"/>
+                      <text x="20" y="32" textAnchor="middle" fill="#000" fontSize="14" fontWeight="800" fontFamily="system-ui">$</text>
+                      <circle cx="36" cy="12" r="7" fill="#25f4ee" stroke="#000" strokeWidth="2"/>
+                      <text x="36" y="15.5" textAnchor="middle" fill="#000" fontSize="9" fontWeight="800" fontFamily="system-ui">$</text>
+                    </svg>
+                  </div>
+                  <span style={{ fontSize: "20px", fontWeight: 800, color: "#fff", letterSpacing: "-0.5px", fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif", lineHeight: 1 }}>
+                    TikCash
+                  </span>
+                </div>
+
+                <div style={{
+                  background: "#000", padding: "24px 16px", width: "100%", borderRadius: "12px",
+                }}>
+                  {/* Refund & Dispute Policy */}
+                  <h4 style={{
+                    fontSize: "14px", fontWeight: 800, color: "#fff",
+                    marginBottom: "16px", textTransform: "uppercase",
+                    letterSpacing: "0.5px", textAlign: "center",
+                  }}>
+                    Refund & Dispute Policy
+                  </h4>
+
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "12px", textAlign: "left" }}>
+                    Before initiating any chargeback or dispute with your bank or card provider, you agree to contact our support team first to resolve the issue.
+                  </p>
+
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, marginBottom: "14px", textAlign: "left" }}>
+                    Failure to contact us prior to opening a dispute may result in your case being formally contested with detailed evidence, including proof of access, usage logs, and acceptance of our terms.
+                  </p>
+
+                  <p style={{ fontSize: "12px", color: "#FE2C55", lineHeight: 1.7, marginBottom: "10px", textAlign: "left", fontWeight: 600 }}>
+                    Unresolved or abusive chargebacks may lead to:
+                  </p>
+
+                  <div style={{ paddingLeft: "4px", marginBottom: "14px" }}>
+                    {[
+                      "Permanent account suspension and loss of all earned balance",
+                      "Complete and irreversible loss of access to all platform services",
+                      "Internal fraud prevention flagging across affiliated platforms",
+                      "Reporting the dispute with supporting documentation to financial institutions, which may affect your standing with payment providers",
+                      "Formal legal action to recover costs associated with fraudulent disputes",
+                      "Collection of all evidence (IP logs, device fingerprints, usage data, timestamps) for dispute contestation",
+                    ].map((item, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2" style={{ marginTop: "3px", flexShrink: 0 }}>
+                          <circle cx="12" cy="12" r="10"/>
+                          <line x1="15" y1="9" x2="9" y2="15"/>
+                          <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                        <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{
+                    background: "rgba(254,44,85,0.08)",
+                    border: "1px solid rgba(254,44,85,0.2)",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    marginBottom: "20px",
+                  }}>
+                    <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: 0, textAlign: "left" }}>
+                      We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 5-10 business days.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setStep("acknowledge")}
+                    className="btn-3d btn-3d-primary"
+                    style={{ fontFamily: "inherit", width: "100%", maxWidth: "280px", display: "block", margin: "0 auto" }}
+                  >
+                    Proceed to Refund Request
                   </button>
                 </div>
 
@@ -385,11 +420,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                 </div>
 
                 <button
-                  onClick={handleClose}
+                  onClick={() => setStep("legal")}
                   className="btn-3d btn-3d-dark btn-3d-sm"
                   style={{ marginTop: "16px", fontFamily: "inherit" }}
                 >
-                  Back to Start
+                  Back
                 </button>
               </>
             ) : step === "acknowledge" ? (
@@ -407,7 +442,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                 <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                   <button
                     type="button"
-                    onClick={() => setStep("legal")}
+                    onClick={() => setStep("policy")}
                     style={{
                       background: "none", border: "none", cursor: "pointer",
                       color: "rgba(255,255,255,0.6)", padding: "4px", marginRight: "12px",
