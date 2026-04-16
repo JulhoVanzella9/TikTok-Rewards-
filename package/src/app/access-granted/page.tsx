@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 
 export default function AccessGrantedPage() {
   const a4Ref = useRef<HTMLDivElement>(null);
-  const password = "myacess2026";
+  const password = "myaccess2026";
   const supportEmail = "accesssupport.ai@gmail.com";
 
   const downloadImage = async () => {

@@ -11,7 +11,7 @@ export default function LoginPage() {
   const referralCode = searchParams.get("ref");
   const { t } = useI18n();
   const [email, setEmail] = useState("");
-  const [password] = useState("myacess2026");
+  const [password] = useState("myaccess2026");
   const [step, setStep] = useState<"email" | "password">("email");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,9 +50,20 @@ export default function LoginPage() {
     });
 
     if (signInData?.session) {
-      // Login successful
       window.location.href = "/";
       return;
+    }
+
+    // Fallback: try legacy password for users registered before the fix
+    if (signInError) {
+      const { data: legacyData } = await supabase.auth.signInWithPassword({
+        email,
+        password: "myacess2026",
+      });
+      if (legacyData?.session) {
+        window.location.href = "/";
+        return;
+      }
     }
 
     // If login fails, try to sign up (new user)
