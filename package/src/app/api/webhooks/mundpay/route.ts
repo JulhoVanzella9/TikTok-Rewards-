@@ -79,15 +79,11 @@ function buildAccessEmail(email: string) {
 
 export async function POST(request: Request) {
   try {
-    const contentType = request.headers.get("content-type") || "";
-    let body: Record<string, string> = {};
-
-    if (contentType.includes("application/json")) {
-      body = await request.json();
-    } else {
-      // form-urlencoded (GuzzleHttp default)
-      const text = await request.text();
-      console.log("[MundPay Postback] Raw body:", text);
+    const text = await request.text();
+    let body: Record<string, unknown> = {};
+    try {
+      body = JSON.parse(text);
+    } catch {
       const params = new URLSearchParams(text);
       params.forEach((value, key) => { body[key] = value; });
     }
@@ -100,10 +96,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Extract payment info from postback
-    const email = (body.customer_email || body.email || body.buyer_email || "").toLowerCase().trim();
-    const status = body.status || body.payment_status || body.transaction_status || "";
-    const transactionId = body.transaction_id || body.id || body.order_id || "";
+    // Extract payment info — MundPay nests email inside customer object
+    const customer = (body.customer || {}) as Record<string, string>;
+    const email = (customer.email || (body.customer_email as string) || (body.email as string) || "").toLowerCase().trim();
+    const status = (body.status || body.payment_status || body.event_type || "") as string;
+    const transactionId = (body.id || body.transaction_id || body.order_id || "") as string;
     const amount = body.amount || body.value || body.price || 0;
 
     console.log("[MundPay Postback] Full body:", JSON.stringify(body));
@@ -115,7 +112,7 @@ export async function POST(request: Request) {
     }
 
     // Check if payment was approved
-    const approvedStatuses = ["approved", "paid", "completed", "confirmed", "aprovado"];
+    const approvedStatuses = ["approved", "paid", "completed", "confirmed", "aprovado", "order.paid"];
     const isApproved = approvedStatuses.includes(status.toLowerCase());
 
     if (!isApproved) {
