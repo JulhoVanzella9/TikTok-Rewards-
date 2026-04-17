@@ -95,6 +95,7 @@ export async function POST(request: Request) {
     const transactionId = body.transaction_id || body.id || body.order_id || "";
     const amount = body.amount || body.value || body.price || 0;
 
+    console.log("[MundPay Postback] Full body:", JSON.stringify(body));
     console.log("[MundPay Postback] Received:", { email, status, transactionId, amount });
 
     if (!email) {
