@@ -48,7 +48,7 @@ function buildAccessEmail(email: string) {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding:8px 0 32px;">
-                    <a href="${loginUrl}" style="display:inline-block;background:linear-gradient(135deg,#fe2c55 0%,#d4234a 100%);color:#ffffff;text-decoration:none;padding:18px 52px;border-radius:50px;font-size:16px;font-weight:800;letter-spacing:0.5px;">
+                    <a href="${loginUrl}" style="display:inline-block;background:linear-gradient(135deg,#fe2c55 0%,#ff6b9d 50%,#25f4ee 100%);color:#ffffff;text-decoration:none;padding:18px 52px;border-radius:50px;font-size:16px;font-weight:800;letter-spacing:0.5px;">
                       Click here to access
                     </a>
                   </td>
