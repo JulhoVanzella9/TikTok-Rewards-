@@ -59,6 +59,12 @@ function buildAccessEmail(email: string) {
                 If the button doesn't work:<br>
                 <a href="${loginUrl}" style="color:#fe2c55;word-break:break-all;">${loginUrl}</a>
               </p>
+
+              <!-- REFUND -->
+              <p style="color:#aaaaaa;font-size:12px;text-align:center;margin:28px 0 0;line-height:1.7;border-top:1px solid #eeeeee;padding-top:24px;">
+                *If you are not satisfied with the product you purchased, you can at any time request a refund for your purchase using the link below.
+                <a href="https://tikcash.money/refund" style="color:#fe2c55;font-weight:700;"> If you need a refund, click here! »</a>
+              </p>
             </td>
           </tr>
 
