@@ -107,7 +107,7 @@ export async function POST(request: Request) {
     // buyer_email, buyer_name, buyer_firstname, buyer_lastname
     // order_id, product_id, product_name, amount, currency
     // status: 'completed', 'refunded', 'chargedback', etc.
-    const email = (body.buyer_email || body.email || body.customer_email || "").toLowerCase().trim();
+    const email = String(body.buyer_email || body.email || body.customer_email || "").toLowerCase().trim();
     const status = (body.status || body.order_status || body.payment_status || "") as string;
     const transactionId = (body.order_id || body.transaction_id || body.id || "") as string;
     const amount = body.amount || body.order_amount || body.price || 0;
