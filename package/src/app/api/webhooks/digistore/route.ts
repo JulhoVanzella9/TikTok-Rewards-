@@ -103,35 +103,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Digistore IPN fields
-    // buyer_email, buyer_name, buyer_firstname, buyer_lastname
-    // order_id, product_id, product_name, amount, currency
-    // status: 'completed', 'refunded', 'chargedback', etc.
-    const email = String(body.buyer_email || body.email || body.customer_email || "").toLowerCase().trim();
-    const status = (body.status || body.order_status || body.payment_status || "") as string;
-    const transactionId = (body.order_id || body.transaction_id || body.id || "") as string;
-    const amount = body.amount || body.order_amount || body.price || 0;
-    const productName = (body.product_name || "") as string;
+    // Digistore IPN fields (from their webhook format)
+    // email, first_name, last_name, order_id, transaction_id
+    // product_name, amount_netto, amount_brutto, event
+    const email = String(body.email || "").toLowerCase().trim();
+    const event = (body.event || "") as string;
+    const transactionId = String(body.order_id || body.transaction_id || "");
+    const amount = body.amount_netto || body.amount_brutto || body.amount || 0;
+    const productName = String(body.product_name || "");
+    
+    // Digistore event types: 'payment', 'refund', 'chargeback', etc.
+    // For approved payments, event = 'payment'
 
     console.log("[Digistore Webhook] Full body:", JSON.stringify(body));
-    console.log("[Digistore Webhook] Received:", { email, status, transactionId, amount, productName });
+    console.log("[Digistore Webhook] Received:", { email, event, transactionId, amount, productName });
 
     if (!email) {
       console.error("[Digistore Webhook] No email in payload");
       return NextResponse.json({ error: "Missing customer email" }, { status: 400 });
     }
 
-    // Digistore status: 'completed' = approved
-    const approvedStatuses = ["completed", "approved", "paid", "confirmed", "success"];
-    const isApproved = approvedStatuses.includes(status.toLowerCase());
+    // Digistore event: 'payment' = approved/successful payment
+    // Other events: 'refund', 'chargeback', 'cancellation', etc.
+    const approvedEvents = ["payment", "order.paid", "purchase"];
+    const isApproved = approvedEvents.includes(event.toLowerCase());
 
     if (!isApproved) {
-      console.log("[Digistore Webhook] Payment not approved, status:", status);
+      console.log("[Digistore Webhook] Payment not approved, event:", event);
       const supabase = createClient();
       await supabase.from("payments").insert({
         email,
         transaction_id: transactionId,
-        status: status.toLowerCase(),
+        status: event.toLowerCase(),
         amount,
         provider: "digistore",
         raw_payload: body,
