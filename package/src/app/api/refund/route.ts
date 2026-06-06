@@ -149,7 +149,6 @@ Submitted: ${new Date().toISOString()}
 ---
 TikCash Support System
 Support Email: ${SUPPORT_EMAIL}
-Support Phone: ${SUPPORT_PHONE}
     `.trim();
 
     const htmlContent = `
@@ -195,7 +194,6 @@ Support Phone: ${SUPPORT_PHONE}
             <div class="footer">
                 <p><strong>TikCash Support System</strong></p>
                 <p>Support Email: ${SUPPORT_EMAIL}</p>
-                <p>Support Phone: ${SUPPORT_PHONE}</p>
             </div>
         </div>
     </div>

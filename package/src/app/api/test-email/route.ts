@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
-const SUPPORT_PHONE = "+55 46 99919-2885";
 
 export async function GET() {
   try {
@@ -19,7 +18,7 @@ export async function GET() {
       from: 'TikCash Support <support@tikcash.money>',
       to: SUPPORT_EMAIL,
       subject: 'TikCash Email Test - System Check',
-      text: `Email system test from TikCash\n\nIf you received this, the email system is working correctly!\n\nSupport Email: ${SUPPORT_EMAIL}\nSupport Phone: ${SUPPORT_PHONE}`,
+      text: `Email system test from TikCash\n\nIf you received this, the email system is working correctly!\n\nSupport Email: ${SUPPORT_EMAIL}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -43,7 +42,6 @@ export async function GET() {
             <hr/>
             <p><strong>Support Contact:</strong></p>
             <p>Email: ${SUPPORT_EMAIL}</p>
-            <p>Phone: ${SUPPORT_PHONE}</p>
         </div>
     </div>
 </body>
