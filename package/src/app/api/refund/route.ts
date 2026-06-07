@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
 
-    const { email, purchaseCode, reason, userId } = await request.json();
+    const { email, purchaseCode, reason, amount, userId } = await request.json();
 
     if (!email || !purchaseCode || !reason) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
@@ -139,6 +139,7 @@ New Refund Request
 
 From: ${email}
 Purchase/Transfer Code: ${purchaseCode}
+Purchase Amount: ${amount ? `US$ ${amount}` : 'N/A'}
 
 Reason:
 ${reason}
@@ -178,6 +179,10 @@ Support Email: ${SUPPORT_EMAIL}
             <div class="field">
                 <span class="label">Purchase/Transfer Code:</span><br/>
                 ${purchaseCode}
+            </div>
+            <div class="field">
+                <span class="label">Purchase Amount:</span><br/>
+                ${amount ? `US$ ${amount}` : 'N/A'}
             </div>
             <div class="field">
                 <span class="label">Reason:</span><br/>
@@ -328,8 +333,99 @@ Support Email: ${SUPPORT_EMAIL}
       }
     }
     
-    return NextResponse.json({ 
-      success: true, 
+    // Send confirmation email to the customer who requested the refund
+    if (process.env.RESEND_API_KEY) {
+      try {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(email)) {
+          const requestDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric',
+          });
+          const displayAmount = amount ? `US$ ${amount}` : 'the purchase amount';
+
+          const customerText = `
+Hi,
+
+We've received your refund request. Here are your details:
+
+Email: ${email}
+Request Date: ${requestDate}
+Purchase Amount: ${amount ? `US$ ${amount}` : 'N/A'}
+
+${displayAmount} will be refunded within 14 days.
+
+Please note: your access will be removed within 14 days.
+
+TikCash Support
+          `.trim();
+
+          const customerHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #FE2C55; color: white; padding: 24px; border-radius: 8px 8px 0 0; text-align: center; }
+        .content { background-color: #f9f9f9; padding: 24px; border-radius: 0 0 8px 8px; }
+        .field { margin-bottom: 12px; }
+        .label { font-weight: bold; color: #555; }
+        .highlight { background-color: #fff; border-left: 4px solid #FE2C55; padding: 14px; border-radius: 6px; margin: 18px 0; }
+        .footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 12px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Refund Request Received</h1>
+        </div>
+        <div class="content">
+            <p>Hi, we've received your refund request. Here are your details:</p>
+            <div class="field"><span class="label">Email:</span> ${email}</div>
+            <div class="field"><span class="label">Request Date:</span> ${requestDate}</div>
+            <div class="field"><span class="label">Purchase Amount:</span> ${amount ? `US$ ${amount}` : 'N/A'}</div>
+            <div class="highlight">
+                <p style="margin:0 0 8px;"><strong>${displayAmount} will be refunded within 14 days.</strong></p>
+                <p style="margin:0;">Please note: your access will be removed within 14 days.</p>
+            </div>
+            <div class="footer">
+                <p><strong>TikCash Support</strong></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+          `.trim();
+
+          const customerResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'TikCash Support <support@tikcash.money>',
+              to: email,
+              subject: 'Refund Request Received - TikCash',
+              text: customerText,
+              html: customerHtml,
+            }),
+          });
+
+          if (!customerResponse.ok) {
+            const customerError = await customerResponse.json().catch(() => ({}));
+            console.error('[v0] Customer confirmation email failed:', customerError);
+          } else {
+            console.log('[v0] Customer confirmation email sent to:', email);
+          }
+        }
+      } catch (customerEmailError) {
+        console.error('[v0] Customer confirmation email error:', customerEmailError);
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
       message: 'Refund request submitted',
       requestId: newRequest.id,
       supportEmail: SUPPORT_EMAIL,
