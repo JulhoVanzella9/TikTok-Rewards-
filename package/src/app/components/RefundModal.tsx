@@ -16,11 +16,14 @@ interface ExistingRequest {
   created_at: string;
 }
 
-function sanitizeAmountInput(value: string): string {
-  const normalized = value.replace(",", ".").replace(/[^\d.]/g, "");
-  const [integerPart, ...decimalParts] = normalized.split(".");
-  const decimalPart = decimalParts.join("").slice(0, 2);
-  return decimalParts.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+function formatAmountInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  if (!digits) return "";
+
+  const cents = digits.padStart(3, "0");
+  const integerPart = cents.slice(0, -2).replace(/^0+(?=\d)/, "") || "0";
+  const decimalPart = cents.slice(-2);
+  return `${integerPart},${decimalPart}`;
 }
 
 export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
@@ -760,11 +763,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       </label>
                       <input
                         type="text"
-                        inputMode="decimal"
+                        inputMode="numeric"
                         value={amount}
-                        onChange={(e) => setAmount(sanitizeAmountInput(e.target.value))}
+                        onChange={(e) => setAmount(formatAmountInput(e.target.value))}
                         required
-                        placeholder="e.g. 49.90"
+                        placeholder="e.g. 10,00"
                         style={{
                           width: "100%", padding: "14px 16px",
                           background: "rgba(0,0,0,0.4)",
