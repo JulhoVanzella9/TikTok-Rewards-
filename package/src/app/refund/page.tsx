@@ -13,6 +13,13 @@ interface ExistingRequest {
   created_at: string;
 }
 
+function sanitizeAmountInput(value: string): string {
+  const normalized = value.replace(",", ".").replace(/[^\d.]/g, "");
+  const [integerPart, ...decimalParts] = normalized.split(".");
+  const decimalPart = decimalParts.join("").slice(0, 2);
+  return decimalParts.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+}
+
 export default function RefundPage() {
   const { t } = useI18n();
   const router = useRouter();
@@ -656,7 +663,7 @@ export default function RefundPage() {
                     type="text"
                     inputMode="decimal"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => setAmount(sanitizeAmountInput(e.target.value))}
                     required
                     placeholder="e.g. 49.90"
                     style={{

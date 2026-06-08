@@ -53,8 +53,13 @@ export async function POST(request: Request) {
 
     const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId } = await request.json();
 
-    if (!email || !purchaseCode || !reason) {
-      return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
+    if (!email || !purchaseCode || !amount || !reason) {
+      return NextResponse.json({ error: 'Email, purchase code, purchase amount and reason are required' }, { status: 400 });
+    }
+
+    const normalizedAmount = String(amount).trim().replace(",", ".");
+    if (!/^\d+(\.\d{1,2})?$/.test(normalizedAmount) || Number(normalizedAmount) <= 0) {
+      return NextResponse.json({ error: 'Purchase amount must be a valid number' }, { status: 400 });
     }
 
     if (!userId) {
@@ -149,7 +154,7 @@ New Refund Request
 
 From: ${email}
 Purchase/Transfer Code: ${purchaseCode}
-Purchase Amount: ${amount ? `US$ ${amount}` : 'N/A'}
+Purchase Amount: US$ ${normalizedAmount}
 
 Reason:
 ${reason}
@@ -192,7 +197,7 @@ Support Email: ${SUPPORT_EMAIL}
             </div>
             <div class="field">
                 <span class="label">Purchase Amount:</span><br/>
-                ${amount ? `US$ ${escapeHtml(amount)}` : 'N/A'}
+                US$ ${escapeHtml(normalizedAmount)}
             </div>
             <div class="field">
                 <span class="label">Reason:</span><br/>
@@ -354,7 +359,7 @@ Support Email: ${SUPPORT_EMAIL}
             year: 'numeric', month: 'long', day: 'numeric',
           });
           const firstName = (fullName && String(fullName).trim().split(/\s+/)[0]) || 'there';
-          const refundAmount = amount ? `$${amount}` : 'N/A';
+          const refundAmount = `$${normalizedAmount}`;
           const payMethod = paymentMethod || 'Credit Card';
 
           const customerText = `
