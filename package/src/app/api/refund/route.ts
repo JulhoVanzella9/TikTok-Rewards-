@@ -8,6 +8,16 @@ const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
 const SUPPORT_PHONE = "+55 46 99919-2885";
 const SUPPORT_WHATSAPP = "5546999192885"; // WhatsApp number without + or spaces
 
+// Escape user-controlled values before interpolating them into email HTML
+function escapeHtml(value: unknown): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // GET - Check existing refund requests for current user
 export async function GET(request: Request) {
   try {
@@ -41,7 +51,7 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
 
-    const { email, fullName, purchaseCode, reason, amount, userId } = await request.json();
+    const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId } = await request.json();
 
     if (!email || !purchaseCode || !reason) {
       return NextResponse.json({ error: 'Email, purchase code and reason are required' }, { status: 400 });
@@ -174,19 +184,19 @@ Support Email: ${SUPPORT_EMAIL}
         <div class="content">
             <div class="field">
                 <span class="label">From:</span><br/>
-                ${email}
+                ${escapeHtml(email)}
             </div>
             <div class="field">
                 <span class="label">Purchase/Transfer Code:</span><br/>
-                ${purchaseCode}
+                ${escapeHtml(purchaseCode)}
             </div>
             <div class="field">
                 <span class="label">Purchase Amount:</span><br/>
-                ${amount ? `US$ ${amount}` : 'N/A'}
+                ${amount ? `US$ ${escapeHtml(amount)}` : 'N/A'}
             </div>
             <div class="field">
                 <span class="label">Reason:</span><br/>
-                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${reason}</pre>
+                <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FE2C55;">${escapeHtml(reason)}</pre>
             </div>
             <div class="field">
                 <span class="label">Request ID:</span><br/>
@@ -345,6 +355,7 @@ Support Email: ${SUPPORT_EMAIL}
           });
           const firstName = (fullName && String(fullName).trim().split(/\s+/)[0]) || 'there';
           const refundAmount = amount ? `$${amount}` : 'N/A';
+          const payMethod = paymentMethod || 'Credit Card';
 
           const customerText = `
 Hi ${firstName},
@@ -355,7 +366,7 @@ Summary
 --------------------------------
 Order ID: ${newRequest.id}
 Refund Amount: ${refundAmount}
-Payment Method: Credit Card
+Payment Method: ${payMethod}
 Refund Issued On: ${requestDate}
 Status: Refund Approved
 Email on File: ${email}
@@ -411,15 +422,15 @@ The TikCash Support Team
       <p>Order #${newRequest.id} &middot; TikCash Support Team</p>
     </div>
     <div class="body">
-      <p>Hi <strong>${firstName}</strong>,</p>
+      <p>Hi <strong>${escapeHtml(firstName)}</strong>,</p>
       <p>Great news &mdash; your refund request has been <strong>approved and is now being processed</strong>. Here's a summary of your transaction:</p>
       <table>
         <tr><td>Order ID</td><td>${newRequest.id}</td></tr>
-        <tr><td>Refund Amount</td><td>${refundAmount}</td></tr>
-        <tr><td>Payment Method</td><td>Credit Card</td></tr>
+        <tr><td>Refund Amount</td><td>${escapeHtml(refundAmount)}</td></tr>
+        <tr><td>Payment Method</td><td>${escapeHtml(payMethod)}</td></tr>
         <tr><td>Refund Issued On</td><td>${requestDate}</td></tr>
         <tr><td>Status</td><td><span class="badge">&#10004; Refund Approved</span></td></tr>
-        <tr><td>Email on File</td><td>${email}</td></tr>
+        <tr><td>Email on File</td><td>${escapeHtml(email)}</td></tr>
       </table>
       <div class="info-box">
         <p><strong>Why does it take 7&ndash;14 business days to see the refund on your statement?</strong></p>

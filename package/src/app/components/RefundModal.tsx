@@ -22,6 +22,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [email, setEmail] = useState("");
   const [purchaseCode, setPurchaseCode] = useState("");
   const [amount, setAmount] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [reason, setReason] = useState("");
   const [fullName, setFullName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +81,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !purchaseCode || !amount || !reason || !fullName) return;
+    if (!email || !purchaseCode || !amount || !paymentMethod || !reason || !fullName) return;
 
     setIsSubmitting(true);
     setDuplicateError(null);
@@ -89,7 +90,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullName, purchaseCode, reason, amount, userId }),
+        body: JSON.stringify({ email, fullName, purchaseCode, reason, amount, paymentMethod, userId }),
       });
 
       const data = await response.json();
@@ -159,6 +160,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setEmail("");
     setPurchaseCode("");
     setAmount("");
+    setPaymentMethod("");
     setReason("");
     setFullName("");
     setSubmitted(false);
@@ -769,6 +771,33 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
 
                     <div style={{ marginBottom: "16px" }}>
                       <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
+                        Payment Method
+                      </label>
+                      <select
+                        value={paymentMethod}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        required
+                        style={{
+                          width: "100%", padding: "14px 16px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "2px solid rgba(255,255,255,0.12)",
+                          borderRadius: "12px",
+                          color: paymentMethod ? "#fff" : "rgba(255,255,255,0.4)", fontSize: "14px",
+                          outline: "none", fontFamily: "inherit",
+                          appearance: "none", WebkitAppearance: "none", MozAppearance: "none",
+                        }}
+                      >
+                        <option value="" disabled style={{ color: "#000" }}>Select payment method...</option>
+                        <option value="Credit Card" style={{ color: "#000" }}>Credit Card</option>
+                        <option value="Debit Card" style={{ color: "#000" }}>Debit Card</option>
+                        <option value="PayPal" style={{ color: "#000" }}>PayPal</option>
+                        <option value="Bank Transfer" style={{ color: "#000" }}>Bank Transfer</option>
+                        <option value="Other" style={{ color: "#000" }}>Other</option>
+                      </select>
+                    </div>
+
+                    <div style={{ marginBottom: "16px" }}>
+                      <label style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", display: "block" }}>
                         {t("refundReason")}
                       </label>
                       <textarea
@@ -816,11 +845,11 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       </button>
                       <button
                         type="submit"
-                        disabled={isSubmitting || !email || !purchaseCode || !amount || !reason || !fullName}
+                        disabled={isSubmitting || !email || !purchaseCode || !amount || !paymentMethod || !reason || !fullName}
                         className="btn-3d btn-3d-primary"
                         style={{
                           flex: 1, fontFamily: "inherit",
-                          opacity: isSubmitting || !email || !purchaseCode || !amount || !reason || !fullName ? 0.6 : 1,
+                          opacity: isSubmitting || !email || !purchaseCode || !amount || !paymentMethod || !reason || !fullName ? 0.6 : 1,
                           cursor: isSubmitting ? "not-allowed" : "pointer",
                         }}
                       >
