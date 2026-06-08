@@ -391,9 +391,9 @@ The TikCash Support Team
   <style>
     body { margin: 0; padding: 0; background: #f0f0f0; font-family: Arial, sans-serif; }
     .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.09); }
-    .header { background: #FF0000; padding: 36px 40px; text-align: center; }
+    .header { background: #FE2C55; padding: 36px 40px; text-align: center; }
     .header h1 { color: #ffffff; font-size: 22px; margin: 12px 0 0; letter-spacing: 0.3px; }
-    .header p { color: #ffd6d6; font-size: 14px; margin: 6px 0 0; }
+    .header p { color: #ffd6df; font-size: 14px; margin: 6px 0 0; }
     .body { padding: 36px 40px; color: #333333; }
     .body p { font-size: 15px; line-height: 1.75; margin: 0 0 16px; }
     table { width: 100%; border-collapse: collapse; margin: 24px 0; border-radius: 6px; overflow: hidden; border: 1px solid #E8E8E8; }
@@ -401,22 +401,22 @@ The TikCash Support Team
     table td:first-child { color: #888888; width: 42%; }
     table td:last-child { font-weight: 600; color: #222222; }
     table tr:last-child td { border-bottom: none; }
-    .badge { display: inline-block; background: #FFE8E8; color: #CC0000; font-weight: 700; font-size: 12px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge { display: inline-block; background: #FFE9EE; color: #FE2C55; font-weight: 700; font-size: 12px; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
     .info-box { background: #F8F8F8; border: 1px solid #EBEBEB; border-radius: 6px; padding: 22px 26px; margin: 28px 0; }
     .info-box p { margin: 0 0 12px; font-size: 14px; color: #555555; line-height: 1.7; }
     .info-box p:last-child { margin: 0; }
     .info-box strong { color: #222222; }
-    .highlight { background: #FFF4F4; border-left: 4px solid #FF0000; border-radius: 4px; padding: 16px 20px; margin: 24px 0; font-size: 14px; color: #444; line-height: 1.7; }
-    .highlight a { color: #CC0000; text-decoration: none; font-weight: 600; }
+    .highlight { background: #FFF1F4; border-left: 4px solid #FE2C55; border-radius: 4px; padding: 16px 20px; margin: 24px 0; font-size: 14px; color: #444; line-height: 1.7; }
+    .highlight a { color: #FE2C55; text-decoration: none; font-weight: 600; }
     .footer { background: #F9F9F9; padding: 24px 40px; text-align: center; border-top: 1px solid #EEEEEE; }
     .footer p { font-size: 12px; color: #AAAAAA; margin: 4px 0; }
-    .footer a { color: #FF0000; text-decoration: none; }
+    .footer a { color: #FE2C55; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>&#9989; Your Refund Has Been Successfully Processed</h1>
+      <h1>Your Refund Has Been Successfully Processed</h1>
       <p>Order #${newRequest.id} &middot; TikCash Support Team</p>
     </div>
     <div class="body">
@@ -434,7 +434,7 @@ The TikCash Support Team
         <p><strong>Why does it take 7&ndash;14 business days to see the refund on your statement?</strong></p>
         <p>The moment your refund was approved, TikCash immediately submitted the reversal to the payment networks. However, once we release the funds, the timeline is no longer in our hands.</p>
         <p><strong>Visa</strong> and <strong>Mastercard</strong> each operate through their own internal settlement and reconciliation cycles. After receiving our request, they route the credit back through your card-issuing bank, which then applies it to your account according to its own processing schedule. This multi-step process between TikCash, the card network, and your bank is what creates the 7&ndash;14 business day window &mdash; and it is entirely standard across the industry.</p>
-        <p>If you do not see the credit reflected on your statement after <strong>14 business days</strong>, please reach out to our support team at <a href="mailto:${SUPPORT_EMAIL}" style="color:#CC0000;font-weight:600;">${SUPPORT_EMAIL}</a> with your Order ID and refund date. We will investigate immediately and make sure your refund is resolved.</p>
+        <p>If you do not see the credit reflected on your statement after <strong>14 business days</strong>, please reach out to our support team at <a href="mailto:${SUPPORT_EMAIL}" style="color:#FE2C55;font-weight:600;">${SUPPORT_EMAIL}</a> with your Order ID and refund date. We will investigate immediately and make sure your refund is resolved.</p>
       </div>
       <div class="highlight">
         Still have questions? Our support team is available 7 days a week. Reach us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> and we'll get back to you within 24 hours.
