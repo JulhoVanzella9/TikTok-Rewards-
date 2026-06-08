@@ -400,7 +400,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     marginBottom: "20px",
                   }}>
                     <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: 0, textAlign: "left" }}>
-                      We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 5-10 business days.
+                      We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 5-14 business days.
                     </p>
                   </div>
 
@@ -784,7 +784,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                       </svg>
                       <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", lineHeight: 1.6, margin: 0 }}>
-                        By submitting this request, you confirm that you have read and agreed to the Refund & Dispute Policy. Your request will be reviewed by our compliance team. Processing time: 5-10 business days.
+                        By submitting this request, you confirm that you have read and agreed to the Refund & Dispute Policy. Your request will be reviewed by our compliance team. Processing time: 5-14 business days.
                       </p>
                     </div>
 
