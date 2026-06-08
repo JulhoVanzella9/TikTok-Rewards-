@@ -19,10 +19,12 @@ export default function RefundPage() {
   const [step, setStep] = useState<"legal" | "acknowledge" | "form">("legal");
   const [email, setEmail] = useState("");
   const [purchaseCode, setPurchaseCode] = useState("");
+  const [amount, setAmount] = useState("");
   const [reason, setReason] = useState("");
   const [fullName, setFullName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [customerEmailSent, setCustomerEmailSent] = useState(false);
   const [existingRequests, setExistingRequests] = useState<ExistingRequest[]>([]);
   const [duplicateError, setDuplicateError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -55,7 +57,7 @@ export default function RefundPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !purchaseCode || !reason || !fullName) return;
+    if (!email || !purchaseCode || !amount || !reason || !fullName) return;
 
     setIsSubmitting(true);
     setDuplicateError(null);
@@ -64,7 +66,7 @@ export default function RefundPage() {
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, purchaseCode, reason, userId }),
+        body: JSON.stringify({ email, purchaseCode, reason, amount, userId }),
       });
 
       const data = await response.json();
@@ -89,10 +91,10 @@ export default function RefundPage() {
 
       setIsSubmitting(false);
       setSubmitted(true);
-
-      setTimeout(() => {
-        router.push('/');
-      }, 3000);
+      setCustomerEmailSent(!!data.customerEmailSent);
+      if (data.customerEmailError) {
+        console.warn('[refund] Customer confirmation email not sent:', data.customerEmailError);
+      }
     } catch (error) {
       console.error('Refund request error:', error);
       setDuplicateError('Connection error. Please try again.');
@@ -477,10 +479,24 @@ export default function RefundPage() {
                   padding: "14px",
                   border: "1px solid rgba(255,255,255,0.08)",
                 }}>
+                  <p style={{ fontSize: "13px", color: "#fff", fontWeight: 700, lineHeight: 1.6, margin: "0 0 10px" }}>
+                    Your access will be removed within 14 days.
+                  </p>
                   <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.6, margin: 0 }}>
-                    Processing time: 5-14 business days. You will receive an email notification with the outcome. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
+                    {customerEmailSent
+                      ? "A confirmation email with your refund details has been sent to your email."
+                      : "Your refund details have been registered."} Your purchase amount will be refunded within 14 days. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
                   </p>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => router.push('/')}
+                  className="btn-3d btn-3d-primary"
+                  style={{ fontFamily: "inherit", width: "100%", marginTop: "20px" }}
+                >
+                  I Understand
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
@@ -630,6 +646,29 @@ export default function RefundPage() {
                   />
                 </div>
 
+                {/* Purchase Amount */}
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ fontSize: "12px", fontWeight: 600, color: "rgba(255,255,255,0.6)", marginBottom: "8px", display: "block" }}>
+                    Purchase Amount (US$)
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                    placeholder="e.g. 49.90"
+                    style={{
+                      width: "100%", padding: "14px 16px",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "2px solid rgba(255,255,255,0.12)",
+                      borderRadius: "12px",
+                      color: "#fff", fontSize: "14px",
+                      outline: "none", fontFamily: "inherit",
+                    }}
+                  />
+                </div>
+
                 {/* Reason */}
                 <div style={{ marginBottom: "16px" }}>
                   <label style={{ fontSize: "12px", fontWeight: 600, color: "rgba(255,255,255,0.6)", marginBottom: "8px", display: "block" }}>
@@ -682,11 +721,11 @@ export default function RefundPage() {
                   </Link>
                   <button
                     type="submit"
-                    disabled={isSubmitting || !email || !purchaseCode || !reason || !fullName}
+                    disabled={isSubmitting || !email || !purchaseCode || !amount || !reason || !fullName}
                     className="btn-3d btn-3d-primary"
                     style={{
                       flex: 1, fontFamily: "inherit",
-                      opacity: isSubmitting || !email || !purchaseCode || !reason || !fullName ? 0.6 : 1,
+                      opacity: isSubmitting || !email || !purchaseCode || !amount || !reason || !fullName ? 0.6 : 1,
                       cursor: isSubmitting ? "not-allowed" : "pointer",
                     }}
                   >
