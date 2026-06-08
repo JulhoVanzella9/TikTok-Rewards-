@@ -33,6 +33,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [notificationStatus, setNotificationStatus] = useState<{ emailSent: boolean; smsSent: boolean }>(
     { emailSent: false, smsSent: false }
   );
+  const [customerEmailSent, setCustomerEmailSent] = useState(false);
 
   // Acknowledgment checkboxes
   const [ack1, setAck1] = useState(false);
@@ -114,6 +115,10 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
       setIsSubmitting(false);
       setSubmitted(true);
       setLastRequestId(data.requestId);
+      setCustomerEmailSent(!!data.customerEmailSent);
+      if (data.customerEmailError) {
+        console.warn('[refund] Customer confirmation email not sent:', data.customerEmailError);
+      }
 
       let attempts = 0;
       const pollInterval = setInterval(async () => {
@@ -141,8 +146,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
 
       setTimeout(() => {
         clearInterval(pollInterval);
-        handleClose();
-      }, 5000);
+      }, 30000);
     } catch (error) {
       console.error('Refund request error:', error);
       setDuplicateError('Connection error. Please try again.');
@@ -158,6 +162,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setReason("");
     setFullName("");
     setSubmitted(false);
+    setCustomerEmailSent(false);
     setDuplicateError(null);
     setAck1(false);
     setAck2(false);
@@ -588,9 +593,20 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                         Your access will be removed within 14 days.
                       </p>
                       <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.6, margin: 0 }}>
-                        A confirmation email with your refund details has been sent to your email. Your purchase amount will be refunded within 14 days. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
+                        {customerEmailSent
+                          ? "A confirmation email with your refund details has been sent to your email."
+                          : "Your refund details have been registered."} Your purchase amount will be refunded within 14 days. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
                       </p>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={handleClose}
+                      className="btn-3d btn-3d-primary"
+                      style={{ fontFamily: "inherit", width: "100%", marginTop: "20px" }}
+                    >
+                      I Understand
+                    </button>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit}>

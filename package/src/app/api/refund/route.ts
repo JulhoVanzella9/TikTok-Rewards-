@@ -334,6 +334,8 @@ Support Email: ${SUPPORT_EMAIL}
     }
     
     // Send confirmation email to the customer who requested the refund
+    let customerEmailSent = false;
+    let customerEmailError: string | null = null;
     if (process.env.RESEND_API_KEY) {
       try {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -412,16 +414,23 @@ TikCash Support
             }),
           });
 
+          const customerData = await customerResponse.json().catch(() => ({})) as Record<string, unknown>;
           if (!customerResponse.ok) {
-            const customerError = await customerResponse.json().catch(() => ({}));
-            console.error('[v0] Customer confirmation email failed:', customerError);
+            customerEmailError = (customerData.message as string) || 'Email service error';
+            console.error('[v0] Customer confirmation email failed:', customerData);
           } else {
-            console.log('[v0] Customer confirmation email sent to:', email);
+            customerEmailSent = true;
+            console.log('[v0] Customer confirmation email sent to:', email, 'ID:', customerData.id);
           }
+        } else {
+          customerEmailError = 'Invalid recipient email format';
         }
-      } catch (customerEmailError) {
-        console.error('[v0] Customer confirmation email error:', customerEmailError);
+      } catch (err) {
+        customerEmailError = err instanceof Error ? err.message : 'Unknown error';
+        console.error('[v0] Customer confirmation email error:', err);
       }
+    } else {
+      customerEmailError = 'RESEND_API_KEY not configured';
     }
 
     return NextResponse.json({
@@ -431,6 +440,8 @@ TikCash Support
       supportEmail: SUPPORT_EMAIL,
       supportPhone: SUPPORT_PHONE,
       supportWhatsApp: SUPPORT_WHATSAPP,
+      customerEmailSent,
+      customerEmailError,
     });
   } catch (error) {
     console.error('Refund API error:', error);
