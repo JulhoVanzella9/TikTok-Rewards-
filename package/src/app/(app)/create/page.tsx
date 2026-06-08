@@ -207,8 +207,8 @@ export default function CreatePage() {
     if (animating) return;
     if (!userId) return;
 
-    // amount em dolares (~6-12 por video, total ~120-240 em 20 videos)
-    const amountDollars = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
+    // amount em dolares (~2.50-3.00 por video, media ~55/dia em 20 videos)
+    const amountDollars = (Math.floor(Math.random() * (300 - 250 + 1)) + 250) / 100;
     const newTotal = totalEarned + amountDollars;
     setTotalEarned(newTotal);
 

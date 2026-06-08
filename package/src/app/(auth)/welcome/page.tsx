@@ -241,7 +241,7 @@ export default function WelcomePage() {
                 color: "#25f4ee",
                 textShadow: "0 0 30px rgba(37,244,238,0.5)",
               }}>
-                $50 - $500
+                $50 - $60
               </div>
             </div>
             <div style={{
