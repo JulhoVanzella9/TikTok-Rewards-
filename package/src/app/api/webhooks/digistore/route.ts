@@ -125,7 +125,7 @@ export async function POST(request: Request) {
 
     // Digistore event: 'payment' = approved/successful payment
     // Other events: 'refund', 'chargeback', 'cancellation', etc.
-    const approvedEvents = ["payment", "order.paid", "purchase"];
+    const approvedEvents = ["payment", "order.paid", "purchase", "on_payment"];
     const isApproved = approvedEvents.includes(event.toLowerCase());
 
     if (!isApproved) {
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
         provider: "digistore",
         raw_payload: body,
       });
-      return NextResponse.json({ received: true, activated: false });
+      return new NextResponse("OK");
     }
 
     // Payment approved - activate user
@@ -191,7 +191,7 @@ export async function POST(request: Request) {
       console.error("[Digistore Webhook] Failed to send email:", emailErr);
     }
 
-    return NextResponse.json({ received: true, activated: !!profile });
+    return new NextResponse("OK");
   } catch (error) {
     console.error("[Digistore Webhook] Error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
