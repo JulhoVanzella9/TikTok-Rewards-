@@ -28,13 +28,13 @@ const faqs: FAQItem[] = [
   },
   {
     question: "How do I request a refund?",
-    answer: "To request a refund, contact us at support@tikmoney.com within 7 days of purchase.",
+    answer: "To request a refund, use the refund form in the app within 14 days of purchase. You can also contact support at accesssupport.ai@gmail.com.",
   },
 ];
 
 const contactOptions = [
   { icon: "💬", title: "Live Chat", desc: "Response within 5 minutes", available: true, color: "#25f4ee" },
-  { icon: "📧", title: "Email", desc: "support@tikmoney.com", available: true, color: "#fe2c55" },
+  { icon: "📧", title: "Email", desc: "accesssupport.ai@gmail.com", available: true, color: "#fe2c55" },
   // WHATSAPP_DISABLED - Uncomment line below to re-enable WhatsApp
   // { icon: "📱", title: "WhatsApp", desc: "Mon-Fri, 9am to 6pm", available: true, color: "#25d366" },
 ];

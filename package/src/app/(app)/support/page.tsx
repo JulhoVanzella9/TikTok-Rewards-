@@ -1,9 +1,10 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
+import { createClient } from "@/lib/supabase/client";
 import RefundModal from "@/app/components/RefundModal";
 import SupportChat from "./components/SupportChat";
 
@@ -44,6 +45,22 @@ export default function SupportPage() {
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [hasRefundRequest, setHasRefundRequest] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+
+      fetch(`/api/refund?userId=${user.id}`)
+        .then(r => r.json())
+        .then(data => {
+          const requests = Array.isArray(data.requests) ? data.requests : [];
+          setHasRefundRequest(requests.length > 0);
+        })
+        .catch(() => {});
+    });
+  }, []);
 
   return (
     <div style={{ 
@@ -176,6 +193,52 @@ export default function SupportPage() {
           </span>
         </motion.button>
       </motion.div>
+
+      {hasRefundRequest && (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          transition={{ delay: 0.12 }}
+          style={{ marginBottom: "clamp(18px, 4vw, 26px)" }}
+        >
+          <Link href="/refund/status" style={{ textDecoration: "none" }}>
+            <motion.div
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "12px",
+                padding: "14px 16px",
+                background: "linear-gradient(145deg, rgba(254,44,85,0.14), rgba(254,44,85,0.06))",
+                border: "1px solid rgba(254,44,85,0.24)",
+                borderRadius: "14px",
+                boxShadow: "0 8px 22px rgba(254,44,85,0.12)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: "13px", fontWeight: 800, color: "var(--text-primary)" }}>
+                    Check your refund status
+                  </div>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                    Or send a message to support if you need help.
+                  </div>
+                </div>
+              </div>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FE2C55" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </motion.div>
+          </Link>
+        </motion.div>
+      )}
 
       {/* FAQ Section */}
       <motion.div

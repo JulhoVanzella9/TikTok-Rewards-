@@ -365,22 +365,22 @@ Support Email: ${SUPPORT_EMAIL}
           const customerText = `
 Hi ${firstName},
 
-Great news - your refund request has been approved and fully processed on our end.
+Your refund request has been received and is now under review by the TikCash support team.
 
 Summary
 --------------------------------
-Order ID: ${newRequest.id}
+Request ID: ${newRequest.id}
 Refund Amount: ${refundAmount}
 Payment Method: ${payMethod}
-Refund Issued On: ${requestDate}
-Status: Refund Approved
+Request Submitted On: ${requestDate}
+Status: Under Review
 Email on File: ${email}
 --------------------------------
 
-Why does it take 7-14 business days to see the refund on your statement?
-The moment your refund was approved, TikCash immediately submitted the reversal to the payment networks. Visa and Mastercard each operate through their own internal settlement and reconciliation cycles. After receiving our request, they route the credit back through your card-issuing bank, which then applies it to your account according to its own processing schedule. This multi-step process between TikCash, the card network, and your bank is what creates the 7-14 business day window and is entirely standard across the industry.
+What happens next?
+Our support team will review your request within 14 days. If your request is approved, the refund will be submitted to the payment processor using the original payment method.
 
-If you do not see the credit on your statement after 14 business days, contact us at ${SUPPORT_EMAIL} with your Order ID and we will investigate immediately.
+Please do not initiate a chargeback while this review is active. If you need help, contact us at ${SUPPORT_EMAIL} with your Request ID.
 
 Warm regards,
 The TikCash Support Team
@@ -392,7 +392,7 @@ The TikCash Support Team
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Refund Has Been Processed - TikCash</title>
+  <title>Your Refund Request Was Received - TikCash</title>
   <style>
     body { margin: 0; padding: 0; background: #f0f0f0; font-family: Arial, sans-serif; }
     .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.09); }
@@ -421,25 +421,24 @@ The TikCash Support Team
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>Your Refund Has Been Successfully Processed</h1>
-      <p>Order #${newRequest.id} &middot; TikCash Support Team</p>
+      <h1>Your Refund Request Was Received</h1>
+      <p>Request #${newRequest.id} &middot; TikCash Support Team</p>
     </div>
     <div class="body">
       <p>Hi <strong>${escapeHtml(firstName)}</strong>,</p>
-      <p>Great news &mdash; your refund request has been <strong>approved and fully processed</strong> on our end. Here's a summary of your transaction:</p>
+      <p>Your refund request has been <strong>received and is under review</strong>. Here's a summary of your request:</p>
       <table>
-        <tr><td>Order ID</td><td>${newRequest.id}</td></tr>
+        <tr><td>Request ID</td><td>${newRequest.id}</td></tr>
         <tr><td>Refund Amount</td><td>${escapeHtml(refundAmount)}</td></tr>
         <tr><td>Payment Method</td><td>${escapeHtml(payMethod)}</td></tr>
-        <tr><td>Refund Issued On</td><td>${requestDate}</td></tr>
-        <tr><td>Status</td><td><span class="badge">&#10004; Refund Approved</span></td></tr>
+        <tr><td>Request Submitted On</td><td>${requestDate}</td></tr>
+        <tr><td>Status</td><td><span class="badge">Under Review</span></td></tr>
         <tr><td>Email on File</td><td>${escapeHtml(email)}</td></tr>
       </table>
       <div class="info-box">
-        <p><strong>Why does it take 7&ndash;14 business days to see the refund on your statement?</strong></p>
-        <p>The moment your refund was approved, TikCash immediately submitted the reversal to the payment networks. However, once we release the funds, the timeline is no longer in our hands.</p>
-        <p><strong>Visa</strong> and <strong>Mastercard</strong> each operate through their own internal settlement and reconciliation cycles. After receiving our request, they route the credit back through your card-issuing bank, which then applies it to your account according to its own processing schedule. This multi-step process between TikCash, the card network, and your bank is what creates the 7&ndash;14 business day window &mdash; and it is entirely standard across the industry.</p>
-        <p>If you do not see the credit reflected on your statement after <strong>14 business days</strong>, please reach out to our support team at <a href="mailto:${SUPPORT_EMAIL}" style="color:#FF0050;font-weight:600;">${SUPPORT_EMAIL}</a> with your Order ID and refund date. We will investigate immediately and make sure your refund is resolved.</p>
+        <p><strong>What happens next?</strong></p>
+        <p>Our support team will review your request within <strong>14 days</strong>. If your request is approved, the refund will be submitted to the payment processor using the original payment method.</p>
+        <p>Please do not initiate a chargeback while this review is active. If you need help, reach us at <a href="mailto:${SUPPORT_EMAIL}" style="color:#FF0050;font-weight:600;">${SUPPORT_EMAIL}</a> with your Request ID.</p>
       </div>
       <div class="highlight">
         Still have questions? Our support team is available 7 days a week. Reach us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> and we'll get back to you within 24 hours.
@@ -466,7 +465,7 @@ The TikCash Support Team
             body: JSON.stringify({
               from: 'TikCash Support <support@tikcash.money>',
               to: email,
-              subject: 'Your Refund Has Been Successfully Processed - TikCash',
+              subject: 'Your Refund Request Was Received - TikCash',
               text: customerText,
               html: customerHtml,
             }),

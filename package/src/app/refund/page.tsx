@@ -299,7 +299,7 @@ export default function RefundPage() {
                     lineHeight: 1.7, margin: 0,
                     textAlign: "left",
                   }}>
-                    We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 5-14 business days.
+                    We are committed to resolving any issue quickly and fairly. Please contact our support team before taking external action. All refund requests are reviewed individually and processed within 14 days.
                   </p>
                 </div>
               </div>
@@ -602,16 +602,24 @@ export default function RefundPage() {
                   </p>
                   <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.6, margin: 0 }}>
                     {customerEmailSent
-                      ? "A confirmation email with your refund details has been sent to your email."
-                      : "Your refund details have been registered."} Your purchase amount will be refunded within 14 days. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
+                      ? "A confirmation email with your refund request details has been sent to your email."
+                      : "Your refund request details have been registered."} Your request will be reviewed within 14 days. Please do not initiate a chargeback during this period, as it may result in your request being denied and your account being flagged.
                   </p>
                 </div>
+
+                <Link
+                  href="/refund/status"
+                  className="btn-3d btn-3d-dark"
+                  style={{ display: "block", fontFamily: "inherit", width: "100%", marginTop: "14px", textDecoration: "none" }}
+                >
+                  Check Refund Status
+                </Link>
 
                 <button
                   type="button"
                   onClick={() => router.push('/')}
                   className="btn-3d btn-3d-primary"
-                  style={{ fontFamily: "inherit", width: "100%", marginTop: "20px" }}
+                  style={{ fontFamily: "inherit", width: "100%", marginTop: "12px" }}
                 >
                   I Understand
                 </button>
@@ -853,7 +861,7 @@ export default function RefundPage() {
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                   </svg>
                   <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", lineHeight: 1.6, margin: 0 }}>
-                    By submitting this request, you confirm that you have read and agreed to the Refund & Dispute Policy. Your request will be reviewed by our compliance team. Processing time: 5-14 business days.
+                    By submitting this request, you confirm that you have read and agreed to the Refund & Dispute Policy. Your request will be reviewed by our compliance team. Processing time: 14 days.
                   </p>
                 </div>
 

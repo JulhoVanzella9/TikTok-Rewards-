@@ -149,7 +149,7 @@ export const courses: Course[] = [
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
 <p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
 <p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSedMydNiJp1Ss5ZhhHtuzTxphQFTwgpKEsdqhIn5Ugka5uFtQ/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">CLICK HERE</a></p>
-<p style="color: rgba(255,255,255,0.7);">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>`,
+<p style="color: rgba(255,255,255,0.7);">You just need to fill it out. Your refund request will be reviewed and, if approved, processed within 14 days.</p>`,
               },
               {
                 id: "m1-1-les-5",
@@ -380,7 +380,7 @@ export const courses: Course[] = [
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
 <p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
 <p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfPghwgDAdFY6WgIRA1mrx8pYOrYAIsE9LlmnfszYhaT4VuvA/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">CLICK HERE</a></p>
-<p style="color: rgba(255,255,255,0.7);">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>`,
+<p style="color: rgba(255,255,255,0.7);">You just need to fill it out. Your refund request will be reviewed and, if approved, processed within 14 days.</p>`,
               },
               {
                 id: "m2-8-les-2",
@@ -655,7 +655,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
 <p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
-<p style="margin-bottom: 16px;">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>
+<p style="margin-bottom: 16px;">You just need to fill it out. Your refund request will be reviewed and, if approved, processed within 14 days.</p>
 <p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfPghwgDAdFY6WgIRA1mrx8pYOrYAIsE9LlmnfszYhaT4VuvA/viewform" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">REQUEST REFUND</a></p>`,
               },
             ],
@@ -706,7 +706,7 @@ export const courses: Course[] = [
                 contentType: "text",
                 textContent: `<p style="margin-bottom: 16px; font-weight: 600; font-size: 18px;">Request Your Refund</p>
 <p style="margin-bottom: 16px;">If you want to apply for the 15-day guarantee, you just need to fill out this small form by clicking on the following link:</p>
-<p style="margin-bottom: 16px;">You just need to fill it out and the refund will be successfully processed, the money will be credited to your account on the next billing date of your credit card.</p>
+<p style="margin-bottom: 16px;">You just need to fill it out. Your refund request will be reviewed and, if approved, processed within 14 days.</p>
 <p style="margin-bottom: 24px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfPghwgDAdFY6WgIRA1mrx8pYOrYAIsE9LlmnfszYhaT4VuvA/viewform" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: linear-gradient(135deg, #fe2c55 0%, #ff4070 100%); color: #fff; font-weight: 700; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-size: 16px;">REQUEST REFUND</a></p>`,
               },
             ],

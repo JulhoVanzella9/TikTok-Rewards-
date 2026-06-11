@@ -49,6 +49,7 @@ export default function TopBar() {
   const [balance, setBalance] = useState(0);
   const [balanceAnimation, setBalanceAnimation] = useState(false);
   const [lastEarnedAmount, setLastEarnedAmount] = useState(0);
+  const [hasRefundRequest, setHasRefundRequest] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage, t } = useI18n();
@@ -69,6 +70,14 @@ export default function TopBar() {
         if (data) {
           setBalance((Number(data.total_xp) || 0) / 10000);
         }
+
+        fetch(`/api/refund?userId=${user.id}`)
+          .then(r => r.json())
+          .then(data => {
+            const requests = Array.isArray(data.requests) ? data.requests : [];
+            setHasRefundRequest(requests.length > 0);
+          })
+          .catch(() => {});
       }
     };
     fetchBalance();
@@ -167,7 +176,7 @@ export default function TopBar() {
   <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
   </svg>
   )},
-  { label: t("requestRefundBtn") || "Request Refund", href: "/refund", isRefund: true, badge: "30 days", badgeColor: "#fe2c55", icon: (
+  { label: t("requestRefundBtn") || "Request Refund", href: "/refund", isRefund: true, badge: "14 days", badgeColor: "#fe2c55", icon: (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
   </svg>
@@ -293,7 +302,36 @@ export default function TopBar() {
         </div>
 
         {/* Right - Balance Display */}
-        <Link href="/wallet" style={{ textDecoration: "none" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+        {hasRefundRequest && (
+          <Link href="/refund/status" style={{ textDecoration: "none", flexShrink: 1, minWidth: 0 }}>
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "8px 10px",
+                background: "rgba(254,44,85,0.12)",
+                borderRadius: "10px",
+                border: "1px solid rgba(254,44,85,0.28)",
+                color: "#FE2C55",
+                fontSize: "11px",
+                fontWeight: 800,
+                whiteSpace: "nowrap",
+                boxShadow: "0 8px 20px rgba(254,44,85,0.12)",
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+              <span>Refund status</span>
+            </motion.div>
+          </Link>
+        )}
+        <Link href="/wallet" style={{ textDecoration: "none", flexShrink: 0 }}>
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -352,6 +390,7 @@ export default function TopBar() {
             </AnimatePresence>
           </motion.div>
         </Link>
+        </div>
       </motion.header>
 
       {/* Menu Overlay */}

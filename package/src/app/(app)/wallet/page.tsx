@@ -376,10 +376,10 @@ export default function WalletPage() {
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#25f4ee", marginBottom: "6px" }}>
-              {t("refundTitle") || "30-Day Refund Policy"}
+              {t("refundTitle") || "14-Day Refund Policy"}
             </h3>
             <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: "16px" }}>
-              {t("refundDesc") || "Not satisfied with your purchase? We offer a full refund within 30 days."}
+              {t("refundDesc") || "Not satisfied with your purchase? We review refund requests within 14 days."}
             </p>
           </div>
         </div>

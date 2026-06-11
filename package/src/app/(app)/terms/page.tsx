@@ -25,7 +25,7 @@ const sections = [
   },
   {
     title: "6. Pagamentos e Reembolsos",
-    content: "Solicitacoes de reembolso devem ser feitas em ate 7 dias apos a compra, atraves do email accesssupport.ai@gmail.com. Apos esse prazo, nao serao aceitas solicitacoes de reembolso.",
+    content: "Solicitacoes de reembolso devem ser feitas em ate 14 dias apos a compra, pelo formulario de reembolso no app ou atraves do email accesssupport.ai@gmail.com. Apos esse prazo, nao serao aceitas solicitacoes de reembolso.",
   },
   {
     title: "7. Modificacoes",
