@@ -200,13 +200,10 @@ export default function RefundStatusPage() {
               Need help with this refund? Send a message to support at <a href={`mailto:${SUPPORT_EMAIL}`} style={{ color: "#25F4EE", fontWeight: 800 }}>{SUPPORT_EMAIL}</a>.
             </div>
 
-            <div style={{ display: "flex", gap: "12px" }}>
-              <Link href="/support" className="btn-3d btn-3d-dark" style={{ flex: 1, textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>
+            <div style={{ display: "flex" }}>
+              <Link href="/support" className="btn-3d btn-3d-dark" style={{ width: "100%", textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>
                 Support
               </Link>
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="btn-3d btn-3d-primary" style={{ flex: 1, textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>
-                Message Support
-              </a>
             </div>
           </>
         )}
