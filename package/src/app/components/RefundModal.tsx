@@ -511,7 +511,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                       letterSpacing: 0,
                       textAlign: "center",
                     }}>
-                      CONTACT SUPPORT BEFORE ANY CHARGEBACK
+                      CONTACT SUPPORT FIRST BEFORE ANY CHARGEBACK
                     </strong>
                   </div>
                   <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.86)", lineHeight: 1.6, marginBottom: "8px", textAlign: "center" }}>

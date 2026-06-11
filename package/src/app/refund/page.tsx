@@ -420,7 +420,7 @@ export default function RefundPage() {
                   letterSpacing: 0,
                   textAlign: "center",
                 }}>
-                  CONTACT SUPPORT BEFORE ANY CHARGEBACK
+                  CONTACT SUPPORT FIRST BEFORE ANY CHARGEBACK
                 </strong>
               </div>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.88)", lineHeight: 1.65, marginBottom: "10px", textAlign: "center" }}>
