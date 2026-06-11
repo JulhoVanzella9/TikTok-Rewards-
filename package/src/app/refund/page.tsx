@@ -389,6 +389,48 @@ export default function RefundPage() {
               Before proceeding with your refund request, you must acknowledge and agree to all of the following statements. This is a mandatory step required by our compliance department.
             </p>
 
+            <div
+              role="alert"
+              style={{
+                padding: "18px 16px",
+                marginBottom: "20px",
+                borderRadius: "14px",
+                border: "1px solid rgba(254,44,85,0.55)",
+                background: "linear-gradient(180deg, rgba(254,44,85,0.16), rgba(254,44,85,0.06))",
+                boxShadow: "0 0 28px rgba(254,44,85,0.18)",
+              }}
+            >
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                marginBottom: "12px",
+                color: "#FE2C55",
+              }}>
+                {[0, 1].map((icon) => (
+                  <svg key={icon} width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+                    <path d="M12 9v4" />
+                    <path d="M12 17h.01" />
+                  </svg>
+                ))}
+                <strong style={{
+                  fontSize: "18px",
+                  letterSpacing: 0,
+                  textAlign: "center",
+                }}>
+                  CONTACT SUPPORT BEFORE ANY CHARGEBACK
+                </strong>
+              </div>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.88)", lineHeight: 1.65, marginBottom: "10px", textAlign: "center" }}>
+                Before initiating a chargeback with your bank or payment platform, contact our support team first so we can review and resolve your case.
+              </p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.72)", lineHeight: 1.65, margin: 0, textAlign: "center" }}>
+                Starting an external dispute without contacting support first may result in <strong style={{ color: "#fff" }}>Permanent account suspension and loss of all earned balance</strong>. It may also lead to negative marks on your credit judgment against you, background check records, fraud prevention flagging, and formal dispute action using all available evidence.
+              </p>
+            </div>
+
             {[
               { checked: ack1, setter: setAck1, text: "I confirm that I have contacted or attempted to contact the support team before initiating this refund request." },
               { checked: ack2, setter: setAck2, text: "I understand that filing a chargeback or dispute without first attempting resolution through the platform's support channels may be treated as a fraudulent claim and will be formally contested with all available evidence." },
