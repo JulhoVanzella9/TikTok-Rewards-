@@ -608,9 +608,24 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                   <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.9)", lineHeight: 1.65, marginBottom: "10px", textAlign: "center", fontWeight: 700 }}>
                     Before initiating a chargeback with your bank or payment platform, contact our support team first so we can review your case and resolve the issue directly.
                   </p>
-                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.72)", lineHeight: 1.65, margin: 0, textAlign: "center" }}>
-                    Starting an external dispute without contacting support first may result in <strong style={{ color: "#fff" }}>permanent account suspension and loss of all earned balance</strong>. It may also lead to negative marks on your credit judgment against you, background check records, fraud prevention flagging, and formal dispute action using all available evidence.
+                  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.86)", lineHeight: 1.65, marginBottom: "12px", textAlign: "center" }}>
+                    Starting an external dispute without contacting support first may result in <strong style={{ color: "#fff" }}>permanent account suspension and loss of all earned balance</strong>.
                   </p>
+                  <div style={{
+                    padding: "13px 10px",
+                    borderRadius: "10px",
+                    border: "1px solid rgba(254,44,85,0.8)",
+                    background: "rgba(254,44,85,0.18)",
+                    color: "#fff",
+                    textAlign: "center",
+                  }}>
+                    <div style={{ fontSize: "11px", fontWeight: 900, color: "#FE2C55", marginBottom: "6px" }}>
+                      IMPORTANT EXTERNAL DISPUTE CONSEQUENCES
+                    </div>
+                    <strong style={{ display: "block", fontSize: "12px", lineHeight: 1.6 }}>
+                      It may also lead to negative marks on your credit judgment against you, background check records, fraud prevention flagging, and formal dispute action using all available evidence.
+                    </strong>
+                  </div>
                 </div>
 
                 <div style={{ display: "flex", gap: "12px", marginTop: "18px" }}>

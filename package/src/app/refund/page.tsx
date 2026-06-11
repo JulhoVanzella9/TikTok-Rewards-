@@ -520,9 +520,24 @@ export default function RefundPage() {
               <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.92)", lineHeight: 1.7, marginBottom: "12px", textAlign: "center", fontWeight: 700 }}>
                 Before initiating a chargeback with your bank or payment platform, contact our support team first so we can review your case and resolve the issue directly.
               </p>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.78)", lineHeight: 1.75, margin: 0, textAlign: "center" }}>
-                Starting an external dispute without contacting support first may result in <strong style={{ color: "#fff" }}>permanent account suspension and loss of all earned balance</strong>. It may also lead to negative marks on your credit judgment against you, background check records, fraud prevention flagging, and formal dispute action using all available evidence.
+              <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.88)", lineHeight: 1.7, marginBottom: "14px", textAlign: "center" }}>
+                Starting an external dispute without contacting support first may result in <strong style={{ color: "#fff", fontSize: "16px" }}>permanent account suspension and loss of all earned balance</strong>.
               </p>
+              <div style={{
+                padding: "16px 14px",
+                borderRadius: "12px",
+                border: "1px solid rgba(254,44,85,0.8)",
+                background: "rgba(254,44,85,0.18)",
+                color: "#fff",
+                textAlign: "center",
+              }}>
+                <div style={{ fontSize: "13px", fontWeight: 900, color: "#FE2C55", marginBottom: "8px" }}>
+                  IMPORTANT EXTERNAL DISPUTE CONSEQUENCES
+                </div>
+                <strong style={{ display: "block", fontSize: "15px", lineHeight: 1.65 }}>
+                  It may also lead to negative marks on your credit judgment against you, background check records, fraud prevention flagging, and formal dispute action using all available evidence.
+                </strong>
+              </div>
             </div>
 
             <div style={{ display: "flex", gap: "12px", marginTop: "22px" }}>
