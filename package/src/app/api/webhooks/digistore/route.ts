@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     // Digistore IPN fields (from their webhook format)
     // email, first_name, last_name, order_id, transaction_id
     // product_name, amount_netto, amount_brutto, event
-    const email = String(body.email || "").toLowerCase().trim();
+    const email = String(body.email || body.buyer_email || body.customer_email || "").toLowerCase().trim();
     const event = (body.event || "") as string;
     const transactionId = String(body.order_id || body.transaction_id || "");
     const amount = body.amount_netto || body.amount_brutto || body.amount || 0;
@@ -119,8 +119,9 @@ export async function POST(request: Request) {
     console.log("[Digistore Webhook] Received:", { email, event, transactionId, amount, productName });
 
     if (!email) {
-      console.error("[Digistore Webhook] No email in payload");
-      return NextResponse.json({ error: "Missing customer email" }, { status: 400 });
+      // Digistore's IPN connection test does not always include customer data.
+      console.log("[Digistore Webhook] Verification or payload without customer email acknowledged");
+      return new NextResponse("OK");
     }
 
     // Digistore event: 'payment' = approved/successful payment
