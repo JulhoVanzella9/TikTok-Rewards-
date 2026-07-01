@@ -174,19 +174,31 @@ export async function POST(request: Request) {
       console.log("[Digistore Webhook] No profile found for email, payment stored for future activation:", email);
     }
 
-    // Send access email to customer
+    // Send access email to customer: immediately, then again at +10 and +20 minutes.
+    // The delayed copies are scheduled server-side by Resend (scheduledAt), so no
+    // cron/timer is needed and they still go out after this function returns.
     try {
       const r = new Resend(process.env.RESEND_API_KEY);
-      const { data: emailData, error: emailError } = await r.emails.send({
-        from: "TikCash <noreply@tikcash.money>",
-        to: email,
-        subject: "Your access is ready! — TikCash",
-        html: buildAccessEmail(email),
-      });
-      if (emailError) {
-        console.error("[Digistore Webhook] Resend error:", JSON.stringify(emailError));
-      } else {
-        console.log("[Digistore Webhook] Access email sent to:", email, "id:", emailData?.id);
+      const html = buildAccessEmail(email);
+      const delaysMinutes = [0, 10, 20];
+      for (const minutes of delaysMinutes) {
+        const payload: {
+          from: string; to: string; subject: string; html: string; scheduledAt?: string;
+        } = {
+          from: "TikCash <noreply@tikcash.money>",
+          to: email,
+          subject: "Your access is ready! — TikCash",
+          html,
+        };
+        if (minutes > 0) {
+          payload.scheduledAt = new Date(Date.now() + minutes * 60 * 1000).toISOString();
+        }
+        const { data: emailData, error: emailError } = await r.emails.send(payload);
+        if (emailError) {
+          console.error(`[Digistore Webhook] Resend error (+${minutes}min):`, JSON.stringify(emailError));
+        } else {
+          console.log(`[Digistore Webhook] Access email queued (+${minutes}min) to:`, email, "id:", emailData?.id);
+        }
       }
     } catch (emailErr) {
       console.error("[Digistore Webhook] Failed to send email:", emailErr);
