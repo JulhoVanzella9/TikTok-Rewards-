@@ -51,7 +51,11 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
 
-    const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId } = await request.json();
+    const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId, surveyReasons } = await request.json();
+
+    const surveyList: string[] = Array.isArray(surveyReasons)
+      ? surveyReasons.map((r: unknown) => String(r)).filter((r) => r.trim() !== '')
+      : [];
 
     if (!email || !purchaseCode || !amount || !reason) {
       return NextResponse.json({ error: 'Email, purchase code, purchase amount and reason are required' }, { status: 400 });
@@ -130,6 +134,11 @@ export async function POST(request: Request) {
       }, { status: 409 });
     }
 
+    // Persist survey answers together with the reason so the record is complete
+    const reasonForDb = surveyList.length
+      ? `${reason}\n\n[Survey answers] ${surveyList.join('; ')}`
+      : reason;
+
     // Insert new refund request into database
     const { data: newRequest, error: insertError } = await supabase
       .from('refund_requests')
@@ -137,7 +146,7 @@ export async function POST(request: Request) {
         user_id: user.id,
         email: email.toLowerCase().trim(),
         purchase_code: purchaseCode,
-        reason,
+        reason: reasonForDb,
         status: 'pending'
       })
       .select()
@@ -148,6 +157,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to submit refund request' }, { status: 500 });
     }
     
+    // Survey answers (selected reasons) shown as their own section below the reason
+    const surveyText = surveyList.length
+      ? surveyList.map((r) => `- ${r}`).join('\n')
+      : 'None selected';
+    const surveyHtml = surveyList.length
+      ? `<ul style="margin:0;padding-left:20px;">${surveyList.map((r) => `<li style="margin-bottom:6px;">${escapeHtml(r)}</li>`).join('')}</ul>`
+      : '<span style="color:#999;">None selected</span>';
+
     // Build email content
     const emailContent = `
 New Refund Request
@@ -158,6 +175,9 @@ Purchase Amount: US$ ${normalizedAmount}
 
 Reason:
 ${reason}
+
+Survey - Reason(s) for refund:
+${surveyText}
 
 Request ID: ${newRequest.id}
 Submitted: ${new Date().toISOString()}
@@ -202,6 +222,10 @@ Support Email: ${SUPPORT_EMAIL}
             <div class="field">
                 <span class="label">Reason:</span><br/>
                 <pre style="background: white; padding: 10px; border-radius: 5px; border-left: 3px solid #FF0050;">${escapeHtml(reason)}</pre>
+            </div>
+            <div class="field">
+                <span class="label">Survey &ndash; Reason(s) for refund:</span><br/>
+                <div style="background: white; padding: 12px 14px; border-radius: 5px; border-left: 3px solid #FF0050;">${surveyHtml}</div>
             </div>
             <div class="field">
                 <span class="label">Request ID:</span><br/>

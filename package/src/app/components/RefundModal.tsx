@@ -114,14 +114,10 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setDuplicateError(null);
 
     try {
-      const combinedReason = surveyReasons.length > 0
-        ? `Selected issues: ${surveyReasons.join("; ")}\n\n${reason}`
-        : reason;
-
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullName, purchaseCode, reason: combinedReason, amount, paymentMethod, userId }),
+        body: JSON.stringify({ email, fullName, purchaseCode, reason, amount, paymentMethod, userId, surveyReasons }),
       });
 
       const data = await response.json();
