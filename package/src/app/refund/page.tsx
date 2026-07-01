@@ -23,10 +23,18 @@ function formatAmountInput(value: string): string {
   return `${integerPart},${decimalPart}`;
 }
 
+const SURVEY_OPTIONS = [
+  "I couldn't withdraw / the withdrawal is taking too long",
+  "Video limit",
+  "Minimum withdrawal amount",
+  "I couldn't access the courses",
+  "I couldn't install the app on the home screen",
+];
+
 export default function RefundPage() {
   const { t } = useI18n();
   const router = useRouter();
-  const [step, setStep] = useState<"legal" | "acknowledge" | "chargebackWarning" | "form">("legal");
+  const [step, setStep] = useState<"legal" | "acknowledge" | "chargebackWarning" | "survey" | "form">("legal");
   const [email, setEmail] = useState("");
   const [purchaseCode, setPurchaseCode] = useState("");
   const [amount, setAmount] = useState("");
@@ -47,7 +55,16 @@ export default function RefundPage() {
   const [ack4, setAck4] = useState(false);
   const [ack5, setAck5] = useState(false);
 
+  // Refund reason survey (multi-select)
+  const [surveyReasons, setSurveyReasons] = useState<string[]>([]);
+
   const allAcknowledged = ack1 && ack2 && ack3 && ack4 && ack5;
+
+  const toggleSurveyReason = (reason: string) => {
+    setSurveyReasons((prev) =>
+      prev.includes(reason) ? prev.filter((r) => r !== reason) : [...prev, reason]
+    );
+  };
 
   useEffect(() => {
     const supabase = createClient();
@@ -74,10 +91,14 @@ export default function RefundPage() {
     setDuplicateError(null);
 
     try {
+      const combinedReason = surveyReasons.length > 0
+        ? `Selected issues: ${surveyReasons.join("; ")}\n\n${reason}`
+        : reason;
+
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullName, purchaseCode, reason, amount, paymentMethod, userId }),
+        body: JSON.stringify({ email, fullName, purchaseCode, reason: combinedReason, amount, paymentMethod, userId }),
       });
 
       const data = await response.json();
@@ -551,11 +572,105 @@ export default function RefundPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setStep("form")}
+                onClick={() => setStep("survey")}
                 className="btn-3d btn-3d-primary"
                 style={{ flex: 1, fontFamily: "inherit" }}
               >
                 Continue to Form
+              </button>
+            </div>
+          </motion.div>
+        ) : step === "survey" ? (
+          /* Refund Reason Survey Step */
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              background: "rgba(0,0,0,0.6)",
+              padding: "24px 20px",
+              width: "100%",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
+              <button
+                type="button"
+                onClick={() => setStep("chargebackWarning")}
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  color: "rgba(255,255,255,0.6)", padding: "4px", marginRight: "12px",
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
+              <h3 style={{ fontSize: "18px", fontWeight: 800, color: "#fff" }}>
+                Why are you requesting a refund?
+              </h3>
+            </div>
+
+            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", marginBottom: "20px", lineHeight: 1.6 }}>
+              Please select all the reasons that apply. You can choose more than one. This helps us understand and improve your experience.
+            </p>
+
+            {SURVEY_OPTIONS.map((option) => {
+              const checked = surveyReasons.includes(option);
+              return (
+                <label
+                  key={option}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    padding: "14px",
+                    marginBottom: "10px",
+                    background: checked ? "rgba(254,44,85,0.08)" : "rgba(255,255,255,0.03)",
+                    borderRadius: "10px",
+                    border: checked ? "1px solid rgba(254,44,85,0.25)" : "1px solid rgba(255,255,255,0.08)",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleSurveyReason(option)}
+                    style={{
+                      width: "18px", height: "18px",
+                      accentColor: "#FE2C55",
+                      flexShrink: 0, cursor: "pointer",
+                    }}
+                  />
+                  <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", lineHeight: 1.5 }}>
+                    {option}
+                  </span>
+                </label>
+              );
+            })}
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
+              <button
+                type="button"
+                onClick={() => setStep("chargebackWarning")}
+                className="btn-3d btn-3d-dark"
+                style={{ flex: 1, fontFamily: "inherit" }}
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={() => surveyReasons.length > 0 && setStep("form")}
+                disabled={surveyReasons.length === 0}
+                className="btn-3d btn-3d-primary"
+                style={{
+                  flex: 1, fontFamily: "inherit",
+                  opacity: surveyReasons.length > 0 ? 1 : 0.4,
+                  cursor: surveyReasons.length > 0 ? "pointer" : "not-allowed",
+                }}
+              >
+                Continue
               </button>
             </div>
           </motion.div>
@@ -629,7 +744,7 @@ export default function RefundPage() {
                 <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                   <button
                     type="button"
-                    onClick={() => setStep("acknowledge")}
+                    onClick={() => setStep("survey")}
                     style={{
                       background: "none", border: "none", cursor: "pointer",
                       color: "rgba(255,255,255,0.6)", padding: "4px", marginRight: "12px",

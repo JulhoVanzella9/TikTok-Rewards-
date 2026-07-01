@@ -26,9 +26,17 @@ function formatAmountInput(value: string): string {
   return `${integerPart},${decimalPart}`;
 }
 
+const SURVEY_OPTIONS = [
+  "I couldn't withdraw / the withdrawal is taking too long",
+  "Video limit",
+  "Minimum withdrawal amount",
+  "I couldn't access the courses",
+  "I couldn't install the app on the home screen",
+];
+
 export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const { t } = useI18n();
-  const [step, setStep] = useState<"legal" | "policy" | "acknowledge" | "chargebackWarning" | "form">("legal");
+  const [step, setStep] = useState<"legal" | "policy" | "acknowledge" | "chargebackWarning" | "survey" | "form">("legal");
   const [email, setEmail] = useState("");
   const [purchaseCode, setPurchaseCode] = useState("");
   const [amount, setAmount] = useState("");
@@ -53,7 +61,16 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
   const [ack4, setAck4] = useState(false);
   const [ack5, setAck5] = useState(false);
 
+  // Refund reason survey (multi-select)
+  const [surveyReasons, setSurveyReasons] = useState<string[]>([]);
+
   const allAcknowledged = ack1 && ack2 && ack3 && ack4 && ack5;
+
+  const toggleSurveyReason = (reason: string) => {
+    setSurveyReasons((prev) =>
+      prev.includes(reason) ? prev.filter((r) => r !== reason) : [...prev, reason]
+    );
+  };
 
   // Hide header/footer and lock body scroll when modal is open
   useEffect(() => {
@@ -97,10 +114,14 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setDuplicateError(null);
 
     try {
+      const combinedReason = surveyReasons.length > 0
+        ? `Selected issues: ${surveyReasons.join("; ")}\n\n${reason}`
+        : reason;
+
       const response = await fetch('/api/refund', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, fullName, purchaseCode, reason, amount, paymentMethod, userId }),
+        body: JSON.stringify({ email, fullName, purchaseCode, reason: combinedReason, amount, paymentMethod, userId }),
       });
 
       const data = await response.json();
@@ -181,6 +202,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
     setAck3(false);
     setAck4(false);
     setAck5(false);
+    setSurveyReasons([]);
     onClose();
   };
 
@@ -221,7 +243,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: "100%", maxWidth: step === "form" ? "420px" : step === "acknowledge" || step === "chargebackWarning" ? "600px" : "500px",
+              width: "100%", maxWidth: step === "form" ? "420px" : step === "acknowledge" || step === "chargebackWarning" || step === "survey" ? "600px" : "500px",
               display: "flex", flexDirection: "column", alignItems: "center",
               margin: "0 auto",
               padding: "20px 8px 120px",
@@ -637,11 +659,102 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     Back
                   </button>
                   <button
-                    onClick={() => setStep("form")}
+                    onClick={() => setStep("survey")}
                     className="btn-3d btn-3d-primary"
                     style={{ flex: 1, fontFamily: "inherit" }}
                   >
                     Continue to Form
+                  </button>
+                </div>
+              </motion.div>
+            ) : step === "survey" ? (
+              /* Refund Reason Survey Step */
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  background: "#000",
+                  padding: "24px 16px",
+                  width: "100%",
+                  borderRadius: "12px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setStep("chargebackWarning")}
+                    style={{
+                      background: "none", border: "none", cursor: "pointer",
+                      color: "rgba(255,255,255,0.6)", padding: "4px", marginRight: "12px",
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#fff" }}>
+                    Why are you requesting a refund?
+                  </h3>
+                </div>
+
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", marginBottom: "18px", lineHeight: 1.6 }}>
+                  Please select all the reasons that apply. You can choose more than one. This helps us understand and improve your experience.
+                </p>
+
+                {SURVEY_OPTIONS.map((option) => {
+                  const checked = surveyReasons.includes(option);
+                  return (
+                    <label
+                      key={option}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "14px",
+                        marginBottom: "8px",
+                        background: checked ? "rgba(254,44,85,0.08)" : "rgba(255,255,255,0.03)",
+                        borderRadius: "10px",
+                        border: checked ? "1px solid rgba(254,44,85,0.25)" : "1px solid rgba(255,255,255,0.08)",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleSurveyReason(option)}
+                        style={{
+                          width: "18px", height: "18px",
+                          accentColor: "#FE2C55",
+                          flexShrink: 0, cursor: "pointer",
+                        }}
+                      />
+                      <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", lineHeight: 1.5 }}>
+                        {option}
+                      </span>
+                    </label>
+                  );
+                })}
+
+                <div style={{ display: "flex", gap: "12px", marginTop: "18px" }}>
+                  <button
+                    onClick={() => setStep("chargebackWarning")}
+                    className="btn-3d btn-3d-dark"
+                    style={{ flex: 1, fontFamily: "inherit" }}
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={() => surveyReasons.length > 0 && setStep("form")}
+                    disabled={surveyReasons.length === 0}
+                    className="btn-3d btn-3d-primary"
+                    style={{
+                      flex: 1, fontFamily: "inherit",
+                      opacity: surveyReasons.length > 0 ? 1 : 0.4,
+                      cursor: surveyReasons.length > 0 ? "pointer" : "not-allowed",
+                    }}
+                  >
+                    Continue
                   </button>
                 </div>
               </motion.div>
@@ -739,7 +852,7 @@ export default function RefundModal({ isOpen, onClose }: RefundModalProps) {
                     <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                       <button
                         type="button"
-                        onClick={() => setStep("acknowledge")}
+                        onClick={() => setStep("survey")}
                         style={{
                           background: "none", border: "none", cursor: "pointer",
                           color: "rgba(255,255,255,0.6)", padding: "4px", marginRight: "12px",

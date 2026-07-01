@@ -27,9 +27,23 @@ export default function WalletPage() {
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showWithdrawPopup, setShowWithdrawPopup] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState("PayPal");
+  const [analysisEmail, setAnalysisEmail] = useState("");
+  const [analysisSubmitted, setAnalysisSubmitted] = useState(false);
 
   // Calcula o valor real do saque (se "all", usa o saldo total)
   const actualWithdrawAmount = selectedAmount === "all" ? balance : selectedAmount;
+
+  const closeWithdrawPopup = () => {
+    setShowWithdrawPopup(false);
+    setAnalysisSubmitted(false);
+    setAnalysisEmail("");
+  };
+
+  const handleAnalysisSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!analysisEmail) return;
+    setAnalysisSubmitted(true);
+  };
 
   useEffect(() => {
     const loadBalance = async () => {
@@ -425,7 +439,7 @@ export default function WalletPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setShowWithdrawPopup(false)}
+            onClick={closeWithdrawPopup}
             style={{
               position: "fixed",
               inset: 0,
@@ -453,109 +467,201 @@ export default function WalletPage() {
                 boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
               }}
             >
-              {/* Icon */}
-              <div style={{
-                width: "72px",
-                height: "72px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.1))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 20px",
-                border: "2px solid rgba(255,215,0,0.3)",
-              }}>
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 6v6l4 2"/>
-                </svg>
-              </div>
+              {balance >= 5000 ? (
+                /* Account Under Analysis */
+                analysisSubmitted ? (
+                  <>
+                    <div style={{
+                      width: "72px", height: "72px", borderRadius: "50%",
+                      background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      margin: "0 auto 20px",
+                    }}>
+                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
+                      Email Confirmed
+                    </h3>
+                    <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: "20px" }}>
+                      Thank you! Our support team will contact you at{" "}
+                      <strong style={{ color: "#fe2c55" }}>{analysisEmail}</strong>{" "}
+                      within 14 to 20 days regarding your withdrawal.
+                    </p>
+                    <button
+                      onClick={closeWithdrawPopup}
+                      className="btn-3d btn-3d-primary btn-3d-full"
+                      style={{ fontFamily: "inherit" }}
+                    >
+                      Done
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* Icon */}
+                    <div style={{
+                      width: "72px", height: "72px", borderRadius: "50%",
+                      background: "linear-gradient(135deg, rgba(254,44,85,0.2), rgba(254,44,85,0.1))",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      margin: "0 auto 20px",
+                      border: "2px solid rgba(254,44,85,0.3)",
+                    }}>
+                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                      </svg>
+                    </div>
 
-              {/* Title */}
-              <h3 style={{
-                fontSize: "22px",
-                fontWeight: 800,
-                color: "#fff",
-                marginBottom: "12px",
-              }}>
-                Withdrawal Not Available
-              </h3>
+                    <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#fff", marginBottom: "12px" }}>
+                      Account Under Review
+                    </h3>
 
-              {/* Message */}
-              <p style={{
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.7)",
-                lineHeight: 1.6,
-                marginBottom: "8px",
-              }}>
-                Withdrawals are only available after reaching a minimum balance of:
-              </p>
+                    <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, marginBottom: "20px" }}>
+                      Your account is under analysis by our team. It may take <strong style={{ color: "#fe2c55" }}>14 to 20 days</strong> for you to receive your withdrawal. Please wait for our support team to contact you by email. Enter your email below:
+                    </p>
 
-              {/* Amount */}
-              <div style={{
-                fontSize: "32px",
-                fontWeight: 900,
-                color: "#ffd700",
-                marginBottom: "16px",
-              }}>
-                $5,000.00
-              </div>
+                    <form onSubmit={handleAnalysisSubmit}>
+                      <input
+                        type="email"
+                        value={analysisEmail}
+                        onChange={(e) => setAnalysisEmail(e.target.value)}
+                        required
+                        placeholder="email@example.com"
+                        style={{
+                          width: "100%", padding: "14px 16px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "2px solid rgba(254,44,85,0.4)",
+                          borderRadius: "12px",
+                          color: "#fff", fontSize: "14px",
+                          outline: "none", fontFamily: "inherit",
+                          textAlign: "center",
+                          marginBottom: "16px",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        disabled={!analysisEmail}
+                        className="btn-3d btn-3d-primary btn-3d-full"
+                        style={{
+                          fontFamily: "inherit",
+                          opacity: analysisEmail ? 1 : 0.6,
+                          cursor: analysisEmail ? "pointer" : "not-allowed",
+                        }}
+                      >
+                        Confirm Email
+                      </button>
+                    </form>
+                  </>
+                )
+              ) : (
+                <>
+                  {/* Icon */}
+                  <div style={{
+                    width: "72px",
+                    height: "72px",
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.1))",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 20px",
+                    border: "2px solid rgba(255,215,0,0.3)",
+                  }}>
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 6v6l4 2"/>
+                    </svg>
+                  </div>
 
-              {/* Current Balance */}
-              <div style={{
-                background: "rgba(255,255,255,0.05)",
-                borderRadius: "12px",
-                padding: "12px 16px",
-                marginBottom: "24px",
-              }}>
-                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
-                  Your current balance:
-                </span>
-                <span style={{
-                  fontSize: "18px",
-                  fontWeight: 700,
-                  color: "#fff",
-                  marginLeft: "8px",
-                }}>
-                  ${balance.toFixed(2)}
-                </span>
-              </div>
+                  {/* Title */}
+                  <h3 style={{
+                    fontSize: "22px",
+                    fontWeight: 800,
+                    color: "#fff",
+                    marginBottom: "12px",
+                  }}>
+                    Withdrawal Not Available
+                  </h3>
 
-              {/* Progress Bar */}
-              <div style={{
-                background: "rgba(255,255,255,0.1)",
-                borderRadius: "8px",
-                height: "8px",
-                marginBottom: "8px",
-                overflow: "hidden",
-              }}>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min((balance / 5000) * 100, 100)}%` }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  style={{
-                    height: "100%",
-                    background: "linear-gradient(90deg, #fe2c55, #ff6b8a)",
+                  {/* Message */}
+                  <p style={{
+                    fontSize: "14px",
+                    color: "rgba(255,255,255,0.7)",
+                    lineHeight: 1.6,
+                    marginBottom: "8px",
+                  }}>
+                    Withdrawals are only available after reaching a minimum balance of:
+                  </p>
+
+                  {/* Amount */}
+                  <div style={{
+                    fontSize: "32px",
+                    fontWeight: 900,
+                    color: "#ffd700",
+                    marginBottom: "16px",
+                  }}>
+                    $5,000.00
+                  </div>
+
+                  {/* Current Balance */}
+                  <div style={{
+                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "12px",
+                    padding: "12px 16px",
+                    marginBottom: "24px",
+                  }}>
+                    <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)" }}>
+                      Your current balance:
+                    </span>
+                    <span style={{
+                      fontSize: "18px",
+                      fontWeight: 700,
+                      color: "#fff",
+                      marginLeft: "8px",
+                    }}>
+                      ${balance.toFixed(2)}
+                    </span>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div style={{
+                    background: "rgba(255,255,255,0.1)",
                     borderRadius: "8px",
-                  }}
-                />
-              </div>
-              <p style={{
-                fontSize: "12px",
-                color: "rgba(255,255,255,0.5)",
-                marginBottom: "24px",
-              }}>
-                {((balance / 5000) * 100).toFixed(1)}% of goal reached
-              </p>
+                    height: "8px",
+                    marginBottom: "8px",
+                    overflow: "hidden",
+                  }}>
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min((balance / 5000) * 100, 100)}%` }}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      style={{
+                        height: "100%",
+                        background: "linear-gradient(90deg, #fe2c55, #ff6b8a)",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </div>
+                  <p style={{
+                    fontSize: "12px",
+                    color: "rgba(255,255,255,0.5)",
+                    marginBottom: "24px",
+                  }}>
+                    {((balance / 5000) * 100).toFixed(1)}% of goal reached
+                  </p>
 
-              {/* Close Button */}
-              <button
-                onClick={() => setShowWithdrawPopup(false)}
-                className="btn-3d btn-3d-primary btn-3d-full"
-                style={{ fontFamily: "inherit" }}
-              >
-                I Understand
-              </button>
+                  {/* Close Button */}
+                  <button
+                    onClick={closeWithdrawPopup}
+                    className="btn-3d btn-3d-primary btn-3d-full"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    I Understand
+                  </button>
+                </>
+              )}
             </motion.div>
           </motion.div>
         )}
