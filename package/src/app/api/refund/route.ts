@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from "@/lib/supabase/server";
 import { sendSMS } from "@/lib/sms-service";
 import { logNotification, getNotificationStatus } from "@/lib/notification-logger";
+import { ADMIN_SECRET } from "@/lib/admin-secret";
 
 // Configuration
 const SUPPORT_EMAIL = "accesssupport.ai@gmail.com";
@@ -51,7 +52,11 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
 
-    const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId, surveyReasons } = await request.json();
+    const { email, fullName, purchaseCode, reason, amount, paymentMethod, userId, surveyReasons, adminKey } = await request.json();
+
+    // Test/admin bypass: when the secret panel key is provided, skip the
+    // 14-day duplicate limit so test refund emails can be re-sent freely.
+    const isAdminBypass = adminKey === ADMIN_SECRET;
 
     const surveyList: string[] = Array.isArray(surveyReasons)
       ? surveyReasons.map((r: unknown) => String(r)).filter((r) => r.trim() !== '')
@@ -90,48 +95,50 @@ export async function POST(request: Request) {
     const user = { id: userId };
 
     // STRICT: 1 refund per account every 14 days (by user_id AND email)
-    const fourteenDaysAgo = new Date();
-    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    if (!isAdminBypass) {
+      const fourteenDaysAgo = new Date();
+      fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 
-    // Check by user_id
-    const { data: existingByUser } = await supabase
-      .from('refund_requests')
-      .select('id, status, created_at')
-      .eq('user_id', user.id)
-      .gte('created_at', fourteenDaysAgo.toISOString())
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      // Check by user_id
+      const { data: existingByUser } = await supabase
+        .from('refund_requests')
+        .select('id, status, created_at')
+        .eq('user_id', user.id)
+        .gte('created_at', fourteenDaysAgo.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-    // Also check by email (prevents using same email from different accounts)
-    const { data: existingByEmail } = await supabase
-      .from('refund_requests')
-      .select('id, status, created_at')
-      .eq('email', email.toLowerCase().trim())
-      .gte('created_at', fourteenDaysAgo.toISOString())
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      // Also check by email (prevents using same email from different accounts)
+      const { data: existingByEmail } = await supabase
+        .from('refund_requests')
+        .select('id, status, created_at')
+        .eq('email', email.toLowerCase().trim())
+        .gte('created_at', fourteenDaysAgo.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-    const existingRequest = existingByUser || existingByEmail;
+      const existingRequest = existingByUser || existingByEmail;
 
-    if (existingRequest) {
-      const requestDate = new Date(existingRequest.created_at);
-      const nextAllowedDate = new Date(requestDate);
-      nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
+      if (existingRequest) {
+        const requestDate = new Date(existingRequest.created_at);
+        const nextAllowedDate = new Date(requestDate);
+        nextAllowedDate.setDate(nextAllowedDate.getDate() + 14);
 
-      const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+        const daysRemaining = Math.ceil((nextAllowedDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-      return NextResponse.json({
-        error: 'duplicate_request',
-        message: `You already have a refund request. You can submit a new one in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
-        existingRequest: {
-          status: existingRequest.status,
-          createdAt: existingRequest.created_at,
-          nextAllowedDate: nextAllowedDate.toISOString(),
-          daysRemaining
-        }
-      }, { status: 409 });
+        return NextResponse.json({
+          error: 'duplicate_request',
+          message: `You already have a refund request. You can submit a new one in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}.`,
+          existingRequest: {
+            status: existingRequest.status,
+            createdAt: existingRequest.created_at,
+            nextAllowedDate: nextAllowedDate.toISOString(),
+            daysRemaining
+          }
+        }, { status: 409 });
+      }
     }
 
     // Persist survey answers together with the reason so the record is complete
