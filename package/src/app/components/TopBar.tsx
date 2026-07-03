@@ -247,7 +247,7 @@ export default function TopBar() {
         }}
       >
         {/* Left Section - Menu + Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "3px", flexShrink: 0 }}>
           {/* Hamburger Menu - compact */}
           <motion.button
             whileHover={{ scale: 1.08 }}
@@ -275,10 +275,10 @@ export default function TopBar() {
             <motion.div 
               whileHover={{ scale: 1.05 }} 
               whileTap={{ scale: 0.95 }}
-              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+              style={{ display: "flex", alignItems: "center", gap: "1px" }}
             >
-              <div style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+              <div style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#25F4EE" transform="translate(-2, -1)"/>
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill="#FE2C55" transform="translate(2, 1)"/>
                   <path d="M30 8V28C30 33.5 25.5 38 20 38C14.5 38 10 33.5 10 28C10 22.5 14.5 18 20 18C21.5 18 23 18.3 24 18.8V8H30Z" fill={isDarkMode ? "#fff" : "#000"}/>
@@ -288,10 +288,10 @@ export default function TopBar() {
                 </svg>
               </div>
               <span style={{
-                fontSize: "clamp(18px, 5vw, 24px)",
+                fontSize: "clamp(16px, 4.2vw, 21px)",
                 fontWeight: 800,
                 color: isDarkMode ? "#fff" : "#000",
-                letterSpacing: "-0.5px",
+                letterSpacing: "-1px",
                 fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
                 whiteSpace: "nowrap",
               }}>
