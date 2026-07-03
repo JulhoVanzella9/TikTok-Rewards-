@@ -9,9 +9,9 @@ export const UPSELL_KEYS: UpsellKey[] = ["up1", "up2", "up3"];
  * these gets that bonus unlocked automatically. Leave empty until then.
  */
 export const UPSELL_PRODUCT_IDS: Record<UpsellKey, string[]> = {
-  up1: [], // UP1 — US$200/day + Multiplatform Expansion
-  up2: [], // UP2 — AI assistant (3x)
-  up3: [], // UP3 — Refined algorithm
+  up1: ["707319", "696904"], // UP1 — US$200/day + Multiplatform Expansion (conta 1, conta 2)
+  up2: ["707324", "696905"], // UP2 — AI assistant (3x) (conta 1, conta 2)
+  up3: ["707332", "696906"], // UP3 — Refined algorithm (conta 1, conta 2)
 };
 
 /**
