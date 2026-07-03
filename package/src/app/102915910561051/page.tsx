@@ -278,7 +278,7 @@ export default function AdminPanel() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", minWidth: "760px" }}>
                 <thead>
                   <tr style={{ background: "rgba(255,255,255,0.05)" }}>
-                    {["Date", "Email", "Reason", "Survey answers", "Status"].map((h) => (
+                    {["Date", "Email", "Reason", "Survey answers"].map((h) => (
                       <th key={h} style={{
                         textAlign: "left", padding: "12px 14px", fontWeight: 700,
                         color: "rgba(255,255,255,0.6)", borderBottom: "1px solid rgba(255,255,255,0.1)",
@@ -290,7 +290,7 @@ export default function AdminPanel() {
                 <tbody>
                   {requests.length === 0 && !loading ? (
                     <tr>
-                      <td colSpan={5} style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>
+                      <td colSpan={4} style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>
                         No refund requests yet.
                       </td>
                     </tr>
@@ -312,13 +312,6 @@ export default function AdminPanel() {
                           ) : (
                             <span style={{ color: "rgba(255,255,255,0.3)" }}>—</span>
                           )}
-                        </td>
-                        <td style={{ padding: "12px 14px" }}>
-                          <span style={{
-                            fontSize: "11px", fontWeight: 700, textTransform: "uppercase",
-                            padding: "3px 8px", borderRadius: "6px",
-                            background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)",
-                          }}>{r.status}</span>
                         </td>
                       </tr>
                     ))
