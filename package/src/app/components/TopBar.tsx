@@ -46,6 +46,7 @@ const languages = [
 export default function TopBar() {
   const entitlements = useEntitlements();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [bonusExpanded, setBonusExpanded] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [balance, setBalance] = useState(0);
@@ -527,35 +528,75 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                 }} 
               />
 
-              {/* Bonus (gold) items — only for buyers, above Install App */}
+              {/* Bonus (gold) — single button that expands to the owned bonuses */}
               {entitlements.hasAny && (
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "8px" }}>
-                  {[
-                    { show: entitlements.hasAny, href: "/bonus", label: "Expansions", emoji: "✨" },
-                    { show: entitlements.up2, href: "/bonus/ai", label: "Activate AI (3×)", emoji: "🤖" },
-                    { show: entitlements.up3, href: "/bonus/algorithm", label: "Refined Algorithm", emoji: "📈" },
-                  ].filter((b) => b.show).map((b) => (
-                    <Link key={b.href} href={b.href} onClick={() => setMenuOpen(false)} style={{ textDecoration: "none" }}>
+                <div style={{ marginBottom: "8px" }}>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setBonusExpanded((v) => !v)}
+                    style={{
+                      width: "100%", display: "flex", alignItems: "center", gap: "12px",
+                      padding: "14px 16px", borderRadius: "12px", cursor: "pointer", fontFamily: "inherit",
+                      background: "linear-gradient(135deg, rgba(255,215,0,0.22) 0%, rgba(255,170,0,0.07) 100%)",
+                      border: "1px solid rgba(255,215,0,0.45)",
+                    }}
+                  >
+                    <span style={{ fontSize: "18px" }}>✨</span>
+                    <span style={{ fontSize: "15px", fontWeight: 800, color: "#ffd700", flex: 1, textAlign: "left" }}>Bonus</span>
+                    <span style={{
+                      fontSize: "10px", fontWeight: 800, color: "#ffd700",
+                      background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)",
+                      padding: "2px 8px", borderRadius: "20px",
+                    }}>
+                      {[entitlements.up1, entitlements.up2, entitlements.up3].filter(Boolean).length}
+                    </span>
+                    <motion.svg
+                      animate={{ rotate: bonusExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}
+                      width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.5"
+                    >
+                      <polyline points="6 9 12 15 18 9"/>
+                    </motion.svg>
+                  </motion.button>
+
+                  <AnimatePresence initial={false}>
+                    {bonusExpanded && (
                       <motion.div
-                        whileHover={{ scale: 1.02, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                          width: "100%", display: "flex", alignItems: "center", gap: "12px",
-                          padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
-                          background: "linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(255,215,0,0.06) 100%)",
-                          border: "1px solid rgba(255,215,0,0.4)",
-                        }}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        style={{ overflow: "hidden" }}
                       >
-                        <span style={{ fontSize: "18px" }}>{b.emoji}</span>
-                        <span style={{ fontSize: "14px", fontWeight: 800, color: "#ffd700", flex: 1 }}>{b.label}</span>
-                        <span style={{
-                          fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
-                          color: "#ffd700", background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)",
-                          padding: "3px 7px", borderRadius: "6px",
-                        }}>Bonus</span>
+                        <div style={{
+                          display: "flex", flexDirection: "column", gap: "6px",
+                          padding: "8px 0 2px 12px", marginLeft: "8px", marginTop: "4px",
+                          borderLeft: "1px solid rgba(255,215,0,0.25)",
+                        }}>
+                          {[
+                            { show: true, href: "/bonus", label: "All Expansions", emoji: "✨" },
+                            { show: entitlements.up2, href: "/bonus/ai", label: "Activate AI (3×)", emoji: "🤖" },
+                            { show: entitlements.up3, href: "/bonus/algorithm", label: "Refined Algorithm", emoji: "📈" },
+                          ].filter((b) => b.show).map((b) => (
+                            <Link key={b.href} href={b.href} onClick={() => { setMenuOpen(false); setBonusExpanded(false); }} style={{ textDecoration: "none" }}>
+                              <motion.div
+                                whileHover={{ x: 3 }} whileTap={{ scale: 0.98 }}
+                                style={{
+                                  display: "flex", alignItems: "center", gap: "10px",
+                                  padding: "11px 14px", borderRadius: "10px", cursor: "pointer",
+                                  background: "rgba(255,215,0,0.06)", border: "1px solid rgba(255,215,0,0.25)",
+                                }}
+                              >
+                                <span style={{ fontSize: "15px" }}>{b.emoji}</span>
+                                <span style={{ fontSize: "13px", fontWeight: 700, color: "#ffd700", flex: 1 }}>{b.label}</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                              </motion.div>
+                            </Link>
+                          ))}
+                        </div>
                       </motion.div>
-                    </Link>
-                  ))}
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
