@@ -96,6 +96,15 @@ export default function CreatePage() {
       .finally(() => setLoadingVideos(false));
   }, [supabaseDataLoaded, savedProgress, mode]);
 
+  // Users WITHOUT the Multiplatform Expansion (UP1) skip the choice screen
+  // and go straight to the regular reviews.
+  useEffect(() => {
+    if (mode === null && !entitlements.loading && !entitlements.up1) {
+      setLoadingVideos(true);
+      setMode("regular");
+    }
+  }, [mode, entitlements.loading, entitlements.up1]);
+
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const cashSoundRef = useRef<HTMLAudioElement | null>(null);
 
@@ -340,7 +349,7 @@ export default function CreatePage() {
   }, [loading, currentIndex, videoData.length, isMuted]);
 
   // Loading screen
-  if (loading || videoData.length === 0) {
+  if (loading) {
     return (
       <div style={{
         display: "flex", flexDirection: "column", alignItems: "center",
@@ -521,7 +530,21 @@ export default function CreatePage() {
     );
   }
 
-  // UP1 — choose which reviews to do before loading any video
+  // Non-UP1 users skip the choice screen (auto-selected regular above). Show a
+  // brief spinner while entitlements resolve or the mode is being set.
+  if (mode === null && (entitlements.loading || !entitlements.up1)) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "20px" }}>
+        <div style={{
+          width: "40px", height: "40px", border: "3px solid rgba(255,255,255,0.1)",
+          borderTopColor: "#fe2c55", borderRadius: "50%", animation: "spin 1s linear infinite",
+        }}/>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  // UP1 owners choose between Regular reviews and Multiplatform Expansion
   if (mode === null) {
     return (
       <div style={{
@@ -558,7 +581,7 @@ export default function CreatePage() {
           {/* Regular */}
           <motion.button
             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-            onClick={() => setMode("regular")}
+            onClick={() => { setLoadingVideos(true); setMode("regular"); }}
             style={{
               flex: 1, minWidth: "150px", cursor: "pointer", fontFamily: "inherit",
               display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
@@ -584,7 +607,7 @@ export default function CreatePage() {
           <motion.button
             whileHover={entitlements.up1 ? { scale: 1.02 } : undefined}
             whileTap={entitlements.up1 ? { scale: 0.97 } : undefined}
-            onClick={() => { if (entitlements.up1) setMode("multiplatform"); }}
+            onClick={() => { if (entitlements.up1) { setLoadingVideos(true); setMode("multiplatform"); } }}
             style={{
               flex: 1, minWidth: "150px", fontFamily: "inherit",
               cursor: entitlements.up1 ? "pointer" : "not-allowed",
