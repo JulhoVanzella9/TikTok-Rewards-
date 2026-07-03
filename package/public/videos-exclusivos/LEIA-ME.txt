@@ -1,0 +1,22 @@
+PASTA DE VIDEOS EXCLUSIVOS — Multiplatform Expansion (UP1)
+==========================================================
+
+Estes videos aparecem SOMENTE na aba "Multiplatform Expansion",
+para os usuarios que compraram a UP1.
+
+COMO ADICIONAR VIDEOS:
+1. Coloque os arquivos .mp4 aqui dentro desta pasta (videos-exclusivos).
+2. Atualize o index.json com a lista dos nomes dos arquivos.
+   Voce pode fazer isso automaticamente rodando, na raiz do projeto:
+
+       node scripts/gerar-index-exclusivos.mjs
+
+   Ou editar o index.json na mao, no formato:
+
+       [
+         "meu_video_1.mp4",
+         "meu_video_2.mp4"
+       ]
+
+Observacao: use nomes de arquivo sem espacos e sem acentos
+(ex.: youtube_ad_01.mp4).
