@@ -30,7 +30,7 @@ export default function ActivateAlgorithmPage() {
 
   return (
     <div style={{
-      minHeight: "100vh", minHeight: "100dvh",
+      minHeight: "100dvh",
       background: "radial-gradient(circle at 50% 0%, #1a1508 0%, #0a0a0a 60%)",
       color: "#fff", padding: "24px 18px 60px",
       fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif",
