@@ -3,7 +3,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { useTheme } from "@/lib/theme/context";
+import { useEntitlements } from "@/lib/hooks/useEntitlements";
 import { scheduleRatingsAvailableNotification, requestNotificationPermission } from "@/lib/notifications";
+
+type ReviewMode = "regular" | "multiplatform";
 
 function seededRng(seed: number) {
   let s = seed;
@@ -30,12 +33,12 @@ function dailyPick(arr: string[], count: number): string[] {
   }
   return a.slice(0, count);
 }
-function fileToVideoData(file: string) {
+function fileToVideoData(file: string, base = "/videos") {
   const creator = "@" + file.split("_")[0];
   const views = fakeNum(file + "v", 10_000, 9_800_000);
   const likes = fakeNum(file + "l", 500, Math.floor(views * 0.15));
   return {
-    videoSrc: `/videos/${file}`,
+    videoSrc: `${base}/${file}`,
     title: "TikTok viral video",
     duration: "0:15",
     views: fmt(views),
@@ -47,6 +50,9 @@ function fileToVideoData(file: string) {
 export default function CreatePage() {
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
+  const entitlements = useEntitlements();
+  const [mode, setMode] = useState<ReviewMode | null>(null);
+  const [loadingVideos, setLoadingVideos] = useState(false);
   const [videoData, setVideoData] = useState<ReturnType<typeof fileToVideoData>[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [ratings, setRatings] = useState<(string | null)[]>([]);
@@ -64,23 +70,31 @@ export default function CreatePage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [supabaseDataLoaded, setSupabaseDataLoaded] = useState(false);
 
-  // Load videos ONLY after Supabase data is loaded
+  // Load videos ONLY after Supabase data is loaded AND a review mode is chosen.
+  // Regular reviews come from /videos; the Multiplatform Expansion (UP1) uses
+  // the exclusive pool in /videos-exclusivos.
   useEffect(() => {
-    if (!supabaseDataLoaded) return;
-    
-    fetch("/videos/index.json")
+    if (!supabaseDataLoaded || !mode) return;
+
+    setLoadingVideos(true);
+    const indexPath = mode === "multiplatform" ? "/videos-exclusivos/index.json" : "/videos/index.json";
+    const base = mode === "multiplatform" ? "/videos-exclusivos" : "/videos";
+
+    fetch(indexPath)
       .then(r => r.json())
       .then((all: string[]) => {
-        const picked = dailyPick(all, 20).map(fileToVideoData);
+        const picked = dailyPick(all, 20).map((f) => fileToVideoData(f, base));
         setVideoData(picked);
-        const saved = savedProgress || 0;
+        const saved = mode === "regular" ? (savedProgress || 0) : 0;
         const init = new Array(picked.length).fill(null) as (string | null)[];
         for (let i = 0; i < saved; i++) init[i] = "done";
         setRatings(init);
         // Set currentIndex to the saved position (next video to watch)
-        if (saved > 0) setCurrentIndex(Math.min(saved, picked.length - 1));
-      });
-  }, [supabaseDataLoaded, savedProgress]);
+        setCurrentIndex(saved > 0 ? Math.min(saved, picked.length - 1) : 0);
+      })
+      .catch(() => setVideoData([]))
+      .finally(() => setLoadingVideos(false));
+  }, [supabaseDataLoaded, savedProgress, mode]);
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const cashSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -507,13 +521,156 @@ export default function CreatePage() {
     );
   }
 
+  // UP1 — choose which reviews to do before loading any video
+  if (mode === null) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center",
+        width: "100%", maxWidth: "460px", margin: "0 auto",
+        padding: "clamp(16px, 5vw, 28px) clamp(16px, 5vw, 24px) 40px",
+      }}>
+        {entitlements.hasAny && (
+          <a href="/bonus" style={{ textDecoration: "none", width: "100%" }}>
+            <motion.div
+              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              style={{
+                width: "100%", display: "flex", alignItems: "center", gap: "10px",
+                padding: "14px 16px", borderRadius: "14px", marginBottom: "20px",
+                background: "linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(255,215,0,0.06) 100%)",
+                border: "1px solid rgba(255,215,0,0.4)", boxSizing: "border-box",
+              }}
+            >
+              <span style={{ fontSize: "20px" }}>✨</span>
+              <span style={{ fontSize: "14px", fontWeight: 800, color: "#ffd700", flex: 1 }}>Your Expansions / Bonuses</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </motion.div>
+          </a>
+        )}
+
+        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "4px", textAlign: "center" }}>
+          Choose your reviews
+        </h1>
+        <p style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "22px", textAlign: "center" }}>
+          Pick how you want to earn today.
+        </p>
+
+        <div style={{ display: "flex", gap: "12px", width: "100%", flexWrap: "wrap" }}>
+          {/* Regular */}
+          <motion.button
+            whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+            onClick={() => setMode("regular")}
+            style={{
+              flex: 1, minWidth: "150px", cursor: "pointer", fontFamily: "inherit",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+              padding: "24px 16px", borderRadius: "18px",
+              background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+              border: "2px solid #fe2c55", color: "var(--text-primary)",
+            }}
+          >
+            <div style={{
+              width: "52px", height: "52px", borderRadius: "50%",
+              background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <span style={{ fontSize: "15px", fontWeight: 800 }}>Regular Reviews</span>
+            <span style={{ fontSize: "11.5px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.5 }}>
+              The standard TikTok review feed.
+            </span>
+          </motion.button>
+
+          {/* Multiplatform */}
+          <motion.button
+            whileHover={entitlements.up1 ? { scale: 1.02 } : undefined}
+            whileTap={entitlements.up1 ? { scale: 0.97 } : undefined}
+            onClick={() => { if (entitlements.up1) setMode("multiplatform"); }}
+            style={{
+              flex: 1, minWidth: "150px", fontFamily: "inherit",
+              cursor: entitlements.up1 ? "pointer" : "not-allowed",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+              padding: "24px 16px", borderRadius: "18px", position: "relative",
+              background: entitlements.up1
+                ? "linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.04))"
+                : isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+              border: `2px solid ${entitlements.up1 ? "#ffd700" : "rgba(255,255,255,0.12)"}`,
+              color: "var(--text-primary)", opacity: entitlements.up1 ? 1 : 0.65,
+            }}
+          >
+            {!entitlements.up1 && (
+              <span style={{ position: "absolute", top: "10px", right: "10px", fontSize: "16px" }}>🔒</span>
+            )}
+            <div style={{
+              width: "52px", height: "52px", borderRadius: "50%",
+              background: entitlements.up1 ? "linear-gradient(135deg, #ffd700, #f0a500)" : "rgba(255,255,255,0.08)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={entitlements.up1 ? "#000" : "#888"} strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+              </svg>
+            </div>
+            <span style={{ fontSize: "15px", fontWeight: 800, color: entitlements.up1 ? "#ffd700" : "var(--text-primary)" }}>
+              Multiplatform
+            </span>
+            <span style={{ fontSize: "11.5px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.5 }}>
+              {entitlements.up1 ? "Exclusive YouTube, Instagram & Facebook videos." : "Requires the Multiplatform Expansion (UP1)."}
+            </span>
+          </motion.button>
+        </div>
+      </div>
+    );
+  }
+
+  // Videos loading for the chosen mode
+  if (loadingVideos) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "80vh", padding: "20px" }}>
+        <div style={{
+          width: "40px", height: "40px", border: "3px solid rgba(255,255,255,0.1)",
+          borderTopColor: "#fe2c55", borderRadius: "50%", animation: "spin 1s linear infinite",
+        }}/>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  // Multiplatform chosen but no exclusive videos uploaded yet
+  if (videoData.length === 0) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        minHeight: "80vh", padding: "24px", textAlign: "center",
+      }}>
+        <div style={{ fontSize: "44px", marginBottom: "14px" }}>🎬</div>
+        <h2 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "10px" }}>
+          {mode === "multiplatform" ? "Exclusive videos coming soon" : "No videos available"}
+        </h2>
+        <p style={{ fontSize: "14px", color: "var(--text-secondary)", maxWidth: "320px", lineHeight: 1.6, marginBottom: "22px" }}>
+          {mode === "multiplatform"
+            ? "The Multiplatform Expansion videos are being added. Check back shortly!"
+            : "Please try again in a moment."}
+        </p>
+        <button
+          onClick={() => setMode(null)}
+          style={{
+            padding: "13px 26px", borderRadius: "12px", border: "none", cursor: "pointer",
+            fontFamily: "inherit", fontWeight: 800, fontSize: "14px",
+            background: "linear-gradient(135deg, #fe2c55, #ff6b8a)", color: "#fff",
+          }}
+        >
+          Back to choices
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ 
-      display: "flex", 
-      flexDirection: "column", 
-      width: "100%", 
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
       maxWidth: "100vw",
-      padding: "clamp(8px, 2vw, 16px) clamp(12px, 3vw, 20px)", 
+      padding: "clamp(8px, 2vw, 16px) clamp(12px, 3vw, 20px)",
       paddingTop: "clamp(8px, 2vw, 16px)",
       paddingBottom: "calc(clamp(20px, 5vw, 32px) + env(safe-area-inset-bottom, 0px))",
       height: "100%",

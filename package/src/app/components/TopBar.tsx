@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
 import { useTheme } from "@/lib/theme/context";
 import { createClient } from "@/lib/supabase/client";
+import { useEntitlements } from "@/lib/hooks/useEntitlements";
 import RefundModal from "./RefundModal";
 
 const FlagUS = () => (
@@ -43,6 +44,7 @@ const languages = [
 ];
 
 export default function TopBar() {
+  const entitlements = useEntitlements();
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagePopupOpen, setLanguagePopupOpen] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
@@ -524,6 +526,38 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                   margin: "16px 0" 
                 }} 
               />
+
+              {/* Bonus (gold) items — only for buyers, above Install App */}
+              {entitlements.hasAny && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "8px" }}>
+                  {[
+                    { show: entitlements.hasAny, href: "/bonus", label: "Expansions", emoji: "✨" },
+                    { show: entitlements.up2, href: "/bonus/ai", label: "Activate AI (3×)", emoji: "🤖" },
+                    { show: entitlements.up3, href: "/bonus/algorithm", label: "Refined Algorithm", emoji: "📈" },
+                  ].filter((b) => b.show).map((b) => (
+                    <Link key={b.href} href={b.href} onClick={() => setMenuOpen(false)} style={{ textDecoration: "none" }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02, x: 4 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                          width: "100%", display: "flex", alignItems: "center", gap: "12px",
+                          padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
+                          background: "linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(255,215,0,0.06) 100%)",
+                          border: "1px solid rgba(255,215,0,0.4)",
+                        }}
+                      >
+                        <span style={{ fontSize: "18px" }}>{b.emoji}</span>
+                        <span style={{ fontSize: "14px", fontWeight: 800, color: "#ffd700", flex: 1 }}>{b.label}</span>
+                        <span style={{
+                          fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
+                          color: "#ffd700", background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)",
+                          padding: "3px 7px", borderRadius: "6px",
+                        }}>Bonus</span>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              )}
 
               {/* Bottom Menu Items - Actions */}
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
