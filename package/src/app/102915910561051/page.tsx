@@ -51,6 +51,11 @@ export default function AdminPanel() {
   const [sending, setSending] = useState(false);
   const [sendMsg, setSendMsg] = useState<string | null>(null);
 
+  // Bonus unlock (per-account)
+  const [bonusStatus, setBonusStatus] = useState<{ up1: boolean; up2: boolean; up3: boolean } | null>(null);
+  const [bonusBusy, setBonusBusy] = useState(false);
+  const [bonusMsg, setBonusMsg] = useState<string | null>(null);
+
   const loadRequests = useCallback(async () => {
     setLoading(true);
     setLoadError(null);
@@ -68,9 +73,54 @@ export default function AdminPanel() {
     setLoading(false);
   }, []);
 
+  const loadBonusStatus = useCallback(async () => {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.email) { setBonusStatus(null); return; }
+    try {
+      const res = await fetch(`/api/entitlements?email=${encodeURIComponent(user.email)}`);
+      const data = await res.json();
+      setBonusStatus({ up1: !!data.up1, up2: !!data.up2, up3: !!data.up3 });
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   useEffect(() => {
     loadRequests();
-  }, [loadRequests]);
+    loadBonusStatus();
+  }, [loadRequests, loadBonusStatus]);
+
+  const changeBonus = async (action: "grant" | "revoke") => {
+    setBonusBusy(true);
+    setBonusMsg(null);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) {
+        setBonusMsg("You must be logged in to the app first.");
+        setBonusBusy(false);
+        return;
+      }
+      const res = await fetch("/api/admin/unlock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: ADMIN_SECRET, email: user.email, action }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setBonusMsg("Error: " + (data.error || "failed"));
+      } else {
+        setBonusMsg(action === "grant"
+          ? `Bonuses unlocked for your account only (${user.email}).`
+          : `Bonuses removed from your account (${user.email}).`);
+        loadBonusStatus();
+      }
+    } catch {
+      setBonusMsg("Connection error");
+    }
+    setBonusBusy(false);
+  };
 
   const grant5k = async () => {
     setSettingBalance(true);
@@ -279,6 +329,62 @@ export default function AdminPanel() {
           </>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {/* Unlock bonuses (per-account) */}
+            <div style={{
+              background: "rgba(255,255,255,0.03)", border: `1px solid ${ACCENT}33`,
+              borderRadius: "14px", padding: "20px",
+            }}>
+              <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Unlock bonuses for me</h3>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", margin: "0 0 14px", lineHeight: 1.6 }}>
+                Unlocks UP1, UP2 and UP3 for <strong style={{ color: ACCENT }}>your logged-in account only</strong> —
+                it does not unlock for other users. You can remove it anytime.
+              </p>
+
+              {bonusStatus && (
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "14px" }}>
+                  {([["UP1", bonusStatus.up1], ["UP2", bonusStatus.up2], ["UP3", bonusStatus.up3]] as const).map(([label, on]) => (
+                    <span key={label} style={{
+                      fontSize: "12px", fontWeight: 700, padding: "5px 10px", borderRadius: "8px",
+                      background: on ? "rgba(254,44,85,0.14)" : "rgba(255,255,255,0.05)",
+                      border: on ? `1px solid ${ACCENT}55` : "1px solid rgba(255,255,255,0.1)",
+                      color: on ? ACCENT : "rgba(255,255,255,0.45)",
+                    }}>
+                      {label} {on ? "✓" : "✗"}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                <button
+                  onClick={() => changeBonus("grant")}
+                  disabled={bonusBusy}
+                  style={{
+                    padding: "12px 20px", borderRadius: "10px", cursor: "pointer",
+                    fontFamily: "inherit", fontSize: "14px", fontWeight: 700, border: "none",
+                    background: ACCENT, color: "#fff", opacity: bonusBusy ? 0.6 : 1,
+                  }}
+                >
+                  {bonusBusy ? "..." : "Unlock all bonuses for me"}
+                </button>
+                <button
+                  onClick={() => changeBonus("revoke")}
+                  disabled={bonusBusy}
+                  style={{
+                    padding: "12px 20px", borderRadius: "10px", cursor: "pointer",
+                    fontFamily: "inherit", fontSize: "14px", fontWeight: 700,
+                    border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)",
+                    color: "rgba(255,255,255,0.8)", opacity: bonusBusy ? 0.6 : 1,
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+              {bonusMsg && (
+                <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", marginTop: "12px" }}>{bonusMsg}</p>
+              )}
+            </div>
+
             {/* Grant $5,000 */}
             <div style={{
               background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
