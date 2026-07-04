@@ -23,6 +23,12 @@ export function useEntitlements(): EntitlementsState {
     let active = true;
     (async () => {
       try {
+        // Test-only preview override: deactivate bonuses in THIS browser
+        // without removing them from the account (set by the test panel).
+        if (typeof window !== "undefined" && localStorage.getItem("bonuses_deactivated") === "1") {
+          if (active) setState({ up1: false, up2: false, up3: false, hasAny: false, loading: false });
+          return;
+        }
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user?.email) {

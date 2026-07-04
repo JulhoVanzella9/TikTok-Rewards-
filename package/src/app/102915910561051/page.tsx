@@ -55,6 +55,8 @@ export default function AdminPanel() {
   const [bonusStatus, setBonusStatus] = useState<{ up1: boolean; up2: boolean; up3: boolean } | null>(null);
   const [bonusBusy, setBonusBusy] = useState(false);
   const [bonusMsg, setBonusMsg] = useState<string | null>(null);
+  // Preview toggle (localStorage) — hides bonuses in the app without removing them
+  const [deactivated, setDeactivated] = useState(false);
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
@@ -89,7 +91,18 @@ export default function AdminPanel() {
   useEffect(() => {
     loadRequests();
     loadBonusStatus();
+    setDeactivated(typeof window !== "undefined" && localStorage.getItem("bonuses_deactivated") === "1");
   }, [loadRequests, loadBonusStatus]);
+
+  const toggleDeactivate = () => {
+    const next = !deactivated;
+    if (next) localStorage.setItem("bonuses_deactivated", "1");
+    else localStorage.removeItem("bonuses_deactivated");
+    setDeactivated(next);
+    setBonusMsg(next
+      ? "Bonuses deactivated for preview (still unlocked on your account)."
+      : "Bonuses reactivated.");
+  };
 
   const changeBonus = async (action: "grant" | "revoke") => {
     setBonusBusy(true);
@@ -373,6 +386,25 @@ export default function AdminPanel() {
                   Remove
                 </button>
               </div>
+
+              <button
+                onClick={toggleDeactivate}
+                style={{
+                  width: "100%", marginTop: "10px",
+                  padding: "12px 20px", borderRadius: "10px", cursor: "pointer",
+                  fontFamily: "inherit", fontSize: "14px", fontWeight: 700,
+                  border: `1px solid ${deactivated ? ACCENT : "rgba(255,255,255,0.15)"}`,
+                  background: deactivated ? `${ACCENT}1f` : "rgba(255,255,255,0.05)",
+                  color: deactivated ? ACCENT : "rgba(255,255,255,0.8)",
+                }}
+              >
+                {deactivated ? "Reactivate bonuses (preview)" : "Deactivate bonuses (keep unlocked)"}
+              </button>
+              <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.4)", marginTop: "8px", lineHeight: 1.5 }}>
+                Hides the bonuses in the app for this browser only — it does NOT remove them from your account.
+                {deactivated ? " Currently: DEACTIVATED." : " Currently: active."}
+              </p>
+
               {bonusMsg && (
                 <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", marginTop: "12px" }}>{bonusMsg}</p>
               )}

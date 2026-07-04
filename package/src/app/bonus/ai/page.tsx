@@ -80,6 +80,17 @@ export default function ActivateAiPage() {
               </p>
             </div>
 
+            <div style={{
+              display: "flex", gap: "10px", alignItems: "flex-start",
+              background: "rgba(255,215,0,0.06)", border: `1px solid ${GOLD}44`,
+              borderRadius: "12px", padding: "14px 16px", marginBottom: "18px",
+            }}>
+              <span style={{ fontSize: "18px", flexShrink: 0 }}>⚠️</span>
+              <p style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, margin: 0 }}>
+                The <strong style={{ color: GOLD }}>3×</strong> boost is applied to your earnings <strong>after your withdrawal is processed</strong>. You still need to reach the <strong>$5,000</strong> minimum balance to request a withdrawal.
+              </p>
+            </div>
+
             {activated ? (
               <motion.div
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
