@@ -577,67 +577,90 @@ export default function CreatePage() {
           Pick how you want to earn today.
         </p>
 
-        <div style={{ display: "flex", gap: "12px", width: "100%", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%" }}>
           {/* Regular */}
           <motion.button
-            whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
             onClick={() => { setLoadingVideos(true); setMode("regular"); }}
             style={{
-              flex: 1, minWidth: "150px", cursor: "pointer", fontFamily: "inherit",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
-              padding: "24px 16px", borderRadius: "18px",
-              background: isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+              width: "100%", cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+              position: "relative", overflow: "hidden",
+              padding: "20px", borderRadius: "20px",
+              background: isDarkMode
+                ? "linear-gradient(135deg, rgba(254,44,85,0.12) 0%, rgba(254,44,85,0.03) 100%)"
+                : "rgba(254,44,85,0.06)",
               border: "2px solid #fe2c55", color: "var(--text-primary)",
+              boxShadow: "0 10px 30px rgba(254,44,85,0.15)",
             }}
           >
-            <div style={{
-              width: "52px", height: "52px", borderRadius: "50%",
-              background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "130px", height: "130px", borderRadius: "50%", background: "radial-gradient(circle, rgba(254,44,85,0.35), transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div style={{
+                width: "60px", height: "60px", borderRadius: "16px", flexShrink: 0,
+                background: "linear-gradient(135deg, #fe2c55, #ff6b8a)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 6px 18px rgba(254,44,85,0.4)",
+              }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "18px", fontWeight: 800 }}>Regular Reviews</span>
+                  <span style={{ fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: "#fe2c55", background: "rgba(254,44,85,0.15)", border: "1px solid rgba(254,44,85,0.4)", padding: "2px 7px", borderRadius: "6px" }}>Always on</span>
+                </div>
+                <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, margin: 0 }}>
+                  Rate the standard TikTok feed and get paid for every video you review.
+                </p>
+              </div>
             </div>
-            <span style={{ fontSize: "15px", fontWeight: 800 }}>Regular Reviews</span>
-            <span style={{ fontSize: "11.5px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.5 }}>
-              The standard TikTok review feed.
-            </span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid rgba(254,44,85,0.2)", fontSize: "14px", fontWeight: 800, color: "#fe2c55" }}>
+              Start reviewing
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe2c55" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
           </motion.button>
 
           {/* Multiplatform */}
           <motion.button
-            whileHover={entitlements.up1 ? { scale: 1.02 } : undefined}
-            whileTap={entitlements.up1 ? { scale: 0.97 } : undefined}
+            whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
             onClick={() => { if (entitlements.up1) { setLoadingVideos(true); setMode("multiplatform"); } }}
             style={{
-              flex: 1, minWidth: "150px", fontFamily: "inherit",
-              cursor: entitlements.up1 ? "pointer" : "not-allowed",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
-              padding: "24px 16px", borderRadius: "18px", position: "relative",
-              background: entitlements.up1
-                ? "linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.04))"
-                : isDarkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
-              border: `2px solid ${entitlements.up1 ? "#ffd700" : "rgba(255,255,255,0.12)"}`,
-              color: "var(--text-primary)", opacity: entitlements.up1 ? 1 : 0.65,
+              width: "100%", cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+              position: "relative", overflow: "hidden",
+              padding: "20px", borderRadius: "20px",
+              background: "linear-gradient(135deg, rgba(255,215,0,0.14) 0%, rgba(255,170,0,0.04) 100%)",
+              border: "2px solid #ffd700", color: "var(--text-primary)",
+              boxShadow: "0 10px 30px rgba(255,215,0,0.15)",
             }}
           >
-            {!entitlements.up1 && (
-              <span style={{ position: "absolute", top: "10px", right: "10px", fontSize: "16px" }}>🔒</span>
-            )}
-            <div style={{
-              width: "52px", height: "52px", borderRadius: "50%",
-              background: entitlements.up1 ? "linear-gradient(135deg, #ffd700, #f0a500)" : "rgba(255,255,255,0.08)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={entitlements.up1 ? "#000" : "#888"} strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
-              </svg>
+            <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "130px", height: "130px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,215,0,0.35), transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div style={{
+                width: "60px", height: "60px", borderRadius: "16px", flexShrink: 0,
+                background: "linear-gradient(135deg, #ffd700, #f0a500)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 6px 18px rgba(255,215,0,0.4)",
+              }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "18px", fontWeight: 800, color: "#ffd700" }}>Multiplatform</span>
+                  <span style={{ fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: "#000", background: "#ffd700", padding: "2px 7px", borderRadius: "6px" }}>+US$200/day</span>
+                </div>
+                <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, margin: "0 0 10px" }}>
+                  Exclusive premium videos from the biggest platforms — higher payouts per review.
+                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <svg width="24" height="17" viewBox="0 0 28 20"><rect width="28" height="20" rx="5" fill="#FF0000"/><polygon points="11,6 20,10 11,14" fill="#fff"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24"><defs><linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#f9ce34"/><stop offset="0.5" stopColor="#ee2a7b"/><stop offset="1" stopColor="#6228d7"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#fff" strokeWidth="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="#fff"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#1877F2"/><path d="M15 8h-1.5c-.5 0-.8.3-.8.8V10H15l-.3 2h-1.6v6h-2.2v-6H9v-2h1.9V8.3C10.9 6.9 11.8 6 13.2 6H15v2z" fill="#fff"/></svg>
+                </div>
+              </div>
             </div>
-            <span style={{ fontSize: "15px", fontWeight: 800, color: entitlements.up1 ? "#ffd700" : "var(--text-primary)" }}>
-              Multiplatform
-            </span>
-            <span style={{ fontSize: "11.5px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.5 }}>
-              {entitlements.up1 ? "Exclusive YouTube, Instagram & Facebook videos." : "Requires the Multiplatform Expansion (UP1)."}
-            </span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid rgba(255,215,0,0.25)", fontSize: "14px", fontWeight: 800, color: "#ffd700" }}>
+              Start reviewing
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
           </motion.button>
         </div>
       </div>
