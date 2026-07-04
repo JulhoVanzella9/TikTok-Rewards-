@@ -1,28 +1,20 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEntitlements } from "@/lib/hooks/useEntitlements";
 
 const GOLD = "#ffd700";
 const ACCENT = "#fe2c55";
-const STORAGE_KEY = "up2_ai_activated";
 
 export default function ActivateAiPage() {
   const { up2, loading } = useEntitlements();
   const [activated, setActivated] = useState(false);
   const [activating, setActivating] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY) === "1") {
-      setActivated(true);
-    }
-  }, []);
-
   const activate = () => {
     setActivating(true);
     setTimeout(() => {
-      localStorage.setItem(STORAGE_KEY, "1");
       setActivated(true);
       setActivating(false);
     }, 1400);
