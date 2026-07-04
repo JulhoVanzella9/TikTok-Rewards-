@@ -55,8 +55,8 @@ export default function AdminPanel() {
   const [bonusStatus, setBonusStatus] = useState<{ up1: boolean; up2: boolean; up3: boolean } | null>(null);
   const [bonusBusy, setBonusBusy] = useState(false);
   const [bonusMsg, setBonusMsg] = useState<string | null>(null);
-  // Preview toggle (localStorage) — hides bonuses in the app without removing them
-  const [deactivated, setDeactivated] = useState(false);
+  // Preview toggles (localStorage) — enable/disable each bonus in the app without removing them
+  const [deact, setDeact] = useState<{ up1: boolean; up2: boolean; up3: boolean }>({ up1: false, up2: false, up3: false });
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
@@ -91,17 +91,24 @@ export default function AdminPanel() {
   useEffect(() => {
     loadRequests();
     loadBonusStatus();
-    setDeactivated(typeof window !== "undefined" && localStorage.getItem("bonuses_deactivated") === "1");
+    if (typeof window !== "undefined") {
+      setDeact({
+        up1: localStorage.getItem("bonus_up1_deactivated") === "1",
+        up2: localStorage.getItem("bonus_up2_deactivated") === "1",
+        up3: localStorage.getItem("bonus_up3_deactivated") === "1",
+      });
+    }
   }, [loadRequests, loadBonusStatus]);
 
-  const toggleDeactivate = () => {
-    const next = !deactivated;
-    if (next) localStorage.setItem("bonuses_deactivated", "1");
-    else localStorage.removeItem("bonuses_deactivated");
-    setDeactivated(next);
+  const toggleDeact = (key: "up1" | "up2" | "up3") => {
+    const storageKey = `bonus_${key}_deactivated`;
+    const next = !deact[key];
+    if (next) localStorage.setItem(storageKey, "1");
+    else localStorage.removeItem(storageKey);
+    setDeact((d) => ({ ...d, [key]: next }));
     setBonusMsg(next
-      ? "Bonuses deactivated for preview (still unlocked on your account)."
-      : "Bonuses reactivated.");
+      ? `${key.toUpperCase()} deactivated for preview (still unlocked).`
+      : `${key.toUpperCase()} reactivated.`);
   };
 
   const changeBonus = async (action: "grant" | "revoke") => {
@@ -125,9 +132,11 @@ export default function AdminPanel() {
         setBonusMsg("Error: " + (data.error || "failed"));
       } else {
         if (action === "grant") {
-          // Make sure the preview toggle isn't hiding what we just unlocked
-          localStorage.removeItem("bonuses_deactivated");
-          setDeactivated(false);
+          // Make sure the preview toggles aren't hiding what we just unlocked
+          localStorage.removeItem("bonus_up1_deactivated");
+          localStorage.removeItem("bonus_up2_deactivated");
+          localStorage.removeItem("bonus_up3_deactivated");
+          setDeact({ up1: false, up2: false, up3: false });
         }
         setBonusMsg(action === "grant"
           ? `Bonuses unlocked for your account only (${user.email}).`
@@ -392,23 +401,52 @@ export default function AdminPanel() {
                 </button>
               </div>
 
-              <button
-                onClick={toggleDeactivate}
-                style={{
-                  width: "100%", marginTop: "10px",
-                  padding: "12px 20px", borderRadius: "10px", cursor: "pointer",
-                  fontFamily: "inherit", fontSize: "14px", fontWeight: 700,
-                  border: `1px solid ${deactivated ? ACCENT : "rgba(255,255,255,0.15)"}`,
-                  background: deactivated ? `${ACCENT}1f` : "rgba(255,255,255,0.05)",
-                  color: deactivated ? ACCENT : "rgba(255,255,255,0.8)",
-                }}
-              >
-                {deactivated ? "Reactivate bonuses (preview)" : "Deactivate bonuses (keep unlocked)"}
-              </button>
-              <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.4)", marginTop: "8px", lineHeight: 1.5 }}>
-                Hides the bonuses in the app for this browser only — it does NOT remove them from your account.
-                {deactivated ? " Currently: DEACTIVATED." : " Currently: active."}
-              </p>
+              <div style={{ marginTop: "14px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                <p style={{ fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.7)", margin: "0 0 4px" }}>
+                  Preview — turn each bonus on/off in the app
+                </p>
+                <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.4)", margin: "0 0 12px", lineHeight: 1.5 }}>
+                  Only hides/shows a bonus in the app for this browser. It does NOT remove it from your account.
+                </p>
+                {([
+                  { key: "up1", label: "Multiplatform (UP1)" },
+                  { key: "up2", label: "AI Assistant (UP2)" },
+                  { key: "up3", label: "Refined Algorithm (UP3)" },
+                ] as const).map((item) => {
+                  const on = !deact[item.key];
+                  return (
+                    <div key={item.key} style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "10px 12px", marginBottom: "8px", borderRadius: "10px",
+                      background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+                    }}>
+                      <span style={{ fontSize: "13px", fontWeight: 600, color: on ? "#fff" : "rgba(255,255,255,0.5)" }}>
+                        {item.label}
+                      </span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <span style={{ fontSize: "11px", fontWeight: 800, color: on ? ACCENT : "rgba(255,255,255,0.4)", width: "26px", textAlign: "right" }}>
+                          {on ? "ON" : "OFF"}
+                        </span>
+                        <button
+                          onClick={() => toggleDeact(item.key)}
+                          aria-label={`toggle ${item.key}`}
+                          style={{
+                            width: "44px", height: "24px", borderRadius: "12px", border: "none", cursor: "pointer",
+                            background: on ? ACCENT : "rgba(255,255,255,0.18)", position: "relative", padding: 0,
+                            transition: "background 0.2s", flexShrink: 0,
+                          }}
+                        >
+                          <span style={{
+                            position: "absolute", top: "3px", left: on ? "23px" : "3px",
+                            width: "18px", height: "18px", borderRadius: "50%", background: "#fff",
+                            transition: "left 0.2s",
+                          }} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
               {bonusMsg && (
                 <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", marginTop: "12px" }}>{bonusMsg}</p>

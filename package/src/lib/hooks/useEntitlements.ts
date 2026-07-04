@@ -23,12 +23,6 @@ export function useEntitlements(): EntitlementsState {
     let active = true;
     (async () => {
       try {
-        // Test-only preview override: deactivate bonuses in THIS browser
-        // without removing them from the account (set by the test panel).
-        if (typeof window !== "undefined" && localStorage.getItem("bonuses_deactivated") === "1") {
-          if (active) setState({ up1: false, up2: false, up3: false, hasAny: false, loading: false });
-          return;
-        }
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user?.email) {
@@ -38,7 +32,12 @@ export function useEntitlements(): EntitlementsState {
         const res = await fetch(`/api/entitlements?email=${encodeURIComponent(user.email)}`);
         const data = await res.json();
         if (!active) return;
-        const up1 = !!data.up1, up2 = !!data.up2, up3 = !!data.up3;
+        // Per-bonus preview override: a bonus can be deactivated in THIS browser
+        // (via the test panel) without being removed from the account.
+        const off = (k: string) => typeof window !== "undefined" && localStorage.getItem(k) === "1";
+        const up1 = !!data.up1 && !off("bonus_up1_deactivated");
+        const up2 = !!data.up2 && !off("bonus_up2_deactivated");
+        const up3 = !!data.up3 && !off("bonus_up3_deactivated");
         setState({ up1, up2, up3, hasAny: up1 || up2 || up3, loading: false });
       } catch {
         if (active) setState((s) => ({ ...s, loading: false }));
