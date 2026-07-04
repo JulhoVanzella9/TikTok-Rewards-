@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEntitlements } from "@/lib/hooks/useEntitlements";
+import { createClient } from "@/lib/supabase/client";
 
 const GOLD = "#ffd700";
 const ACCENT = "#fe2c55";
@@ -11,13 +12,34 @@ export default function ActivateAiPage() {
   const { up2, loading } = useEntitlements();
   const [activated, setActivated] = useState(false);
   const [activating, setActivating] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
 
-  const activate = () => {
+  // Per-account activation state (persisted in the DB, once per account)
+  useEffect(() => {
+    (async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) return;
+      setEmail(user.email);
+      try {
+        const res = await fetch(`/api/bonus-activation?email=${encodeURIComponent(user.email)}`);
+        const data = await res.json();
+        if (data.ai) setActivated(true);
+      } catch { /* ignore */ }
+    })();
+  }, []);
+
+  const activate = async () => {
     setActivating(true);
-    setTimeout(() => {
-      setActivated(true);
-      setActivating(false);
-    }, 1400);
+    const save = email
+      ? fetch("/api/bonus-activation", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, bonus: "ai" }),
+        }).catch(() => {})
+      : Promise.resolve();
+    await Promise.all([save, new Promise((r) => setTimeout(r, 1300))]);
+    setActivated(true);
+    setActivating(false);
   };
 
   return (

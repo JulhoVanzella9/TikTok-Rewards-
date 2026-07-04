@@ -116,12 +116,13 @@ export default function BonusHubPage() {
                       <p style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.6)", lineHeight: 1.55, margin: 0 }}>{b.desc}</p>
                     </div>
 
-                    <span style={{
-                      flexShrink: 0, fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
-                      padding: "4px 8px", borderRadius: "6px",
-                      color: b.owned ? "#000" : "rgba(255,255,255,0.5)",
-                      background: b.owned ? GOLD : "rgba(255,255,255,0.08)",
-                    }}>{b.owned ? "Active" : "🔒 Locked"}</span>
+                    {!b.owned && (
+                      <span style={{
+                        flexShrink: 0, fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
+                        padding: "4px 8px", borderRadius: "6px",
+                        color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.08)",
+                      }}>🔒 Locked</span>
+                    )}
                   </div>
 
                   {b.owned ? (
