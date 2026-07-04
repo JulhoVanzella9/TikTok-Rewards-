@@ -124,6 +124,11 @@ export default function AdminPanel() {
       if (!res.ok) {
         setBonusMsg("Error: " + (data.error || "failed"));
       } else {
+        if (action === "grant") {
+          // Make sure the preview toggle isn't hiding what we just unlocked
+          localStorage.removeItem("bonuses_deactivated");
+          setDeactivated(false);
+        }
         setBonusMsg(action === "grant"
           ? `Bonuses unlocked for your account only (${user.email}).`
           : `Bonuses removed from your account (${user.email}).`);
