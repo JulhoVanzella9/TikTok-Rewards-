@@ -645,14 +645,13 @@ export default function CreatePage() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
                   <span style={{ fontSize: "18px", fontWeight: 800, color: "#ffd700" }}>Multiplatform</span>
-                  <span style={{ fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px", color: "#000", background: "#ffd700", padding: "2px 7px", borderRadius: "6px" }}>+US$200/day</span>
                 </div>
                 <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5, margin: "0 0 10px" }}>
                   Exclusive premium videos from the biggest platforms — higher payouts per review.
                 </p>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <svg width="24" height="17" viewBox="0 0 28 20"><rect width="28" height="20" rx="5" fill="#FF0000"/><polygon points="11,6 20,10 11,14" fill="#fff"/></svg>
-                  <svg width="18" height="18" viewBox="0 0 24 24"><defs><linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#f9ce34"/><stop offset="0.5" stopColor="#ee2a7b"/><stop offset="1" stopColor="#6228d7"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#fff" strokeWidth="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="#fff"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="igGrad" cx="0.3" cy="1" r="1.2"><stop offset="0" stopColor="#fdf497"/><stop offset="0.05" stopColor="#fdf497"/><stop offset="0.45" stopColor="#fd5949"/><stop offset="0.6" stopColor="#d6249f"/><stop offset="0.9" stopColor="#285AEB"/></radialGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGrad)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" strokeWidth="1.8"/><circle cx="12" cy="12" r="3.4" fill="none" stroke="#fff" strokeWidth="1.8"/><circle cx="16.5" cy="7.5" r="1.1" fill="#fff"/></svg>
                   <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#1877F2"/><path d="M15 8h-1.5c-.5 0-.8.3-.8.8V10H15l-.3 2h-1.6v6h-2.2v-6H9v-2h1.9V8.3C10.9 6.9 11.8 6 13.2 6H15v2z" fill="#fff"/></svg>
                 </div>
               </div>
