@@ -77,13 +77,16 @@ export default function CreatePage() {
     if (!supabaseDataLoaded || !mode) return;
 
     setLoadingVideos(true);
-    const indexPath = mode === "multiplatform" ? "/videos-exclusivos/index.json" : "/videos/index.json";
-    const base = mode === "multiplatform" ? "/videos-exclusivos" : "/videos";
-
-    fetch(indexPath)
-      .then(r => r.json())
-      .then((all: string[]) => {
-        const picked = dailyPick(all, 20).map((f) => fileToVideoData(f, base));
+    (async () => {
+      try {
+        let base = mode === "multiplatform" ? "/videos-exclusivos" : "/videos";
+        let all: string[] = await fetch(`${base}/index.json`).then((r) => r.json()).catch(() => []);
+        // Multiplatform reuses the regular pool until exclusive videos are uploaded
+        if (mode === "multiplatform" && (!Array.isArray(all) || all.length === 0)) {
+          base = "/videos";
+          all = await fetch("/videos/index.json").then((r) => r.json()).catch(() => []);
+        }
+        const picked = dailyPick(Array.isArray(all) ? all : [], 20).map((f) => fileToVideoData(f, base));
         setVideoData(picked);
         const saved = mode === "regular" ? (savedProgress || 0) : 0;
         const init = new Array(picked.length).fill(null) as (string | null)[];
@@ -91,9 +94,12 @@ export default function CreatePage() {
         setRatings(init);
         // Set currentIndex to the saved position (next video to watch)
         setCurrentIndex(saved > 0 ? Math.min(saved, picked.length - 1) : 0);
-      })
-      .catch(() => setVideoData([]))
-      .finally(() => setLoadingVideos(false));
+      } catch {
+        setVideoData([]);
+      } finally {
+        setLoadingVideos(false);
+      }
+    })();
   }, [supabaseDataLoaded, savedProgress, mode]);
 
   // Users WITHOUT the Multiplatform Expansion (UP1) skip the choice screen

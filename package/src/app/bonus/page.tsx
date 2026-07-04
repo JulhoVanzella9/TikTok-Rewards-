@@ -14,7 +14,7 @@ export default function BonusHubPage() {
     {
       key: "up1", owned: up1, href: "/create", cta: "Open in reviews", emoji: "🌐",
       title: "Multiplatform Expansion", tag: "UP1",
-      perk: "+US$200 / day",
+      perk: "Exclusive premium videos",
       desc: "Exclusive videos from YouTube, Instagram & Facebook. Earn across multiple platforms, not just TikTok.",
     },
     {
