@@ -137,7 +137,17 @@ export default function CreatePage() {
 
       if (ratingData) {
         const lastDate = new Date(ratingData.last_rating_date);
-        const now = new Date();
+        // Use the SERVER's clock instead of the device's — a wrong/drifted
+        // local clock must not be able to keep a user falsely stuck past
+        // their real 24h reset window.
+        let now = new Date();
+        try {
+          const timeRes = await fetch("/api/server-time");
+          const timeData = await timeRes.json();
+          if (timeData?.now) now = new Date(timeData.now);
+        } catch {
+          // Fall back to the device clock if the server-time check fails
+        }
         const hoursDiff = (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60);
 
         if (hoursDiff < 24 && ratingData.ratings_count >= 20) {
