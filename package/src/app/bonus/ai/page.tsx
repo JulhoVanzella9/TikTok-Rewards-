@@ -8,6 +8,29 @@ import { createClient } from "@/lib/supabase/client";
 const GOLD = "#ffd700";
 const ACCENT = "#fe2c55";
 
+function LockIcon({ size = 40, color = "#fff" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6">
+      <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+    </svg>
+  );
+}
+function WarningIcon({ size = 18, color = GOLD }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+  );
+}
+function BoltIcon({ size = 40, color = GOLD }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>
+    </svg>
+  );
+}
+
 export default function ActivateAiPage() {
   const { up2, loading } = useEntitlements();
   const [activated, setActivated] = useState(false);
@@ -60,7 +83,7 @@ export default function ActivateAiPage() {
           <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", marginTop: "60px" }}>Loading...</p>
         ) : !up2 ? (
           <div style={{ textAlign: "center", marginTop: "40px" }}>
-            <div style={{ fontSize: "40px", marginBottom: "12px" }}>🔒</div>
+            <div style={{ marginBottom: "12px", display: "flex", justifyContent: "center" }}><LockIcon color="rgba(255,255,255,0.6)" /></div>
             <h1 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "10px" }}>AI Assistant locked</h1>
             <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
               This bonus is not active on your account. It unlocks automatically after you purchase the AI Assistant (UP2).
@@ -99,7 +122,7 @@ export default function ActivateAiPage() {
               background: "rgba(255,215,0,0.06)", border: `1px solid ${GOLD}44`,
               borderRadius: "12px", padding: "14px 16px", marginBottom: "18px",
             }}>
-              <span style={{ fontSize: "18px", flexShrink: 0 }}>⚠️</span>
+              <span style={{ flexShrink: 0, display: "flex" }}><WarningIcon /></span>
               <p style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.75)", lineHeight: 1.6, margin: 0 }}>
                 The <strong style={{ color: GOLD }}>3×</strong> boost is applied to your earnings <strong>after your withdrawal is processed</strong>. You still need to reach the <strong>$5,000</strong> minimum balance to request a withdrawal.
               </p>
@@ -113,7 +136,7 @@ export default function ActivateAiPage() {
                   borderRadius: "16px", padding: "26px 20px", textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: "44px", marginBottom: "10px" }}>⚡</div>
+                <div style={{ marginBottom: "10px", display: "flex", justifyContent: "center" }}><BoltIcon /></div>
                 <h2 style={{ fontSize: "20px", fontWeight: 800, color: GOLD, marginBottom: "10px" }}>Your AI is activated!</h2>
                 <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
                   Get ready to boost your earnings big time — every review now counts <strong>triple</strong>. Head to the review tab and keep rating.

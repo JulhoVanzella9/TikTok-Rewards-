@@ -9,6 +9,29 @@ import { createClient } from "@/lib/supabase/client";
 import { useEntitlements } from "@/lib/hooks/useEntitlements";
 import RefundModal from "./RefundModal";
 
+function SparkleIcon({ size = 16, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <path d="M12 3c.3 3.6 1.1 5.7 2.3 6.9C15.5 11.1 17.6 11.9 21 12c-3.6.3-5.7 1.1-6.9 2.3C12.9 15.5 12.1 17.6 12 21c-.3-3.6-1.1-5.7-2.3-6.9C8.5 12.9 6.4 12.1 3 12c3.6-.3 5.7-1.1 6.9-2.3C11.1 8.5 11.9 6.4 12 3z"/>
+    </svg>
+  );
+}
+function RobotIcon({ size = 15, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1H3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+      <circle cx="8.5" cy="14.5" r="1.5" fill={color}/><circle cx="15.5" cy="14.5" r="1.5" fill={color}/>
+    </svg>
+  );
+}
+function ChartIcon({ size = 15, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-7"/>
+    </svg>
+  );
+}
+
 const FlagUS = () => (
   <svg width="24" height="18" viewBox="0 0 24 18" style={{ borderRadius: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
     <rect width="24" height="18" fill="#B22234"/>
@@ -542,7 +565,7 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                       border: "1px solid rgba(255,215,0,0.45)",
                     }}
                   >
-                    <span style={{ fontSize: "18px" }}>✨</span>
+                    <span style={{ display: "flex", color: "#ffd700" }}><SparkleIcon size={18} color="#ffd700" /></span>
                     <span style={{ fontSize: "15px", fontWeight: 800, color: "#ffd700", flex: 1, textAlign: "left" }}>Bonus</span>
                     <span style={{
                       fontSize: "10px", fontWeight: 800, color: "#ffd700",
@@ -574,9 +597,9 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                           borderLeft: "1px solid rgba(255,215,0,0.25)",
                         }}>
                           {[
-                            { show: true, href: "/bonus", label: "All Expansions", emoji: "✨" },
-                            { show: entitlements.up2, href: "/bonus/ai", label: "Activate AI (3×)", emoji: "🤖" },
-                            { show: entitlements.up3, href: "/bonus/algorithm", label: "Refined Algorithm", emoji: "📈" },
+                            { show: true, href: "/bonus", label: "All Expansions", Icon: SparkleIcon },
+                            { show: entitlements.up2, href: "/bonus/ai", label: "Activate AI (3×)", Icon: RobotIcon },
+                            { show: entitlements.up3, href: "/bonus/algorithm", label: "Refined Algorithm", Icon: ChartIcon },
                           ].filter((b) => b.show).map((b) => (
                             <Link key={b.href} href={b.href} onClick={() => { setMenuOpen(false); setBonusExpanded(false); }} style={{ textDecoration: "none" }}>
                               <motion.div
@@ -587,7 +610,7 @@ position: "fixed", top: 0, left: 0, bottom: 0,
                                   background: "rgba(255,215,0,0.06)", border: "1px solid rgba(255,215,0,0.25)",
                                 }}
                               >
-                                <span style={{ fontSize: "15px" }}>{b.emoji}</span>
+                                <span style={{ display: "flex", color: "#ffd700" }}><b.Icon color="#ffd700" /></span>
                                 <span style={{ fontSize: "13px", fontWeight: 700, color: "#ffd700", flex: 1 }}>{b.label}</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
                               </motion.div>

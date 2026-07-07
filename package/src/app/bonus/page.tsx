@@ -6,25 +6,62 @@ import { useEntitlements } from "@/lib/hooks/useEntitlements";
 const GOLD = "#ffd700";
 const ACCENT = "#fe2c55";
 
+function SparkleIcon({ size = 34, color = "#000" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <path d="M12 3c.3 3.6 1.1 5.7 2.3 6.9C15.5 11.1 17.6 11.9 21 12c-3.6.3-5.7 1.1-6.9 2.3C12.9 15.5 12.1 17.6 12 21c-.3-3.6-1.1-5.7-2.3-6.9C8.5 12.9 6.4 12.1 3 12c3.6-.3 5.7-1.1 6.9-2.3C11.1 8.5 11.9 6.4 12 3z"/>
+    </svg>
+  );
+}
+function GlobeIcon({ size = 26, color = "#000" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+    </svg>
+  );
+}
+function RobotIcon({ size = 26, color = "#000" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1H3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+      <circle cx="8.5" cy="14.5" r="1.5" fill={color}/><circle cx="15.5" cy="14.5" r="1.5" fill={color}/>
+    </svg>
+  );
+}
+function ChartIcon({ size = 26, color = "#000" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-7"/>
+    </svg>
+  );
+}
+function LockIcon({ size = 11, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5">
+      <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+    </svg>
+  );
+}
+
 export default function BonusHubPage() {
   const { up1, up2, up3, hasAny, loading } = useEntitlements();
   const count = [up1, up2, up3].filter(Boolean).length;
 
   const bonuses = [
     {
-      key: "up1", owned: up1, href: "/create", cta: "Open in reviews", emoji: "🌐",
+      key: "up1", owned: up1, href: "/create", cta: "Open in reviews", Icon: GlobeIcon,
       title: "Multiplatform Expansion", tag: "UP1",
       perk: "Exclusive premium videos",
       desc: "Exclusive videos from YouTube, Instagram & Facebook. Earn across multiple platforms, not just TikTok.",
     },
     {
-      key: "up2", owned: up2, href: "/bonus/ai", cta: "Activate AI", emoji: "🤖",
+      key: "up2", owned: up2, href: "/bonus/ai", cta: "Activate AI", Icon: RobotIcon,
       title: "AI Assistant", tag: "UP2",
       perk: "3× earnings",
       desc: "Your AI learns how you rate and replicates it — every review counts as three. Triple productivity.",
     },
     {
-      key: "up3", owned: up3, href: "/bonus/algorithm", cta: "Activate", emoji: "📈",
+      key: "up3", owned: up3, href: "/bonus/algorithm", cta: "Activate", Icon: ChartIcon,
       title: "Refined Algorithm", tag: "UP3",
       perk: "Higher payouts",
       desc: "A premium feed that prioritizes bigger, higher-paying brands. More money for every video you review.",
@@ -55,10 +92,10 @@ export default function BonusHubPage() {
             style={{
               width: "72px", height: "72px", borderRadius: "22px", margin: "0 auto 14px",
               background: `linear-gradient(135deg, ${GOLD}, #f0a500)`,
-              display: "flex", alignItems: "center", justifyContent: "center", fontSize: "34px",
+              display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: `0 12px 40px ${GOLD}44`,
             }}
-          >✨</motion.div>
+          ><SparkleIcon /></motion.div>
           <h1 style={{ fontSize: "26px", fontWeight: 900, margin: "0 0 6px", letterSpacing: "-0.5px" }}>Your Expansions</h1>
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.55)", margin: "0 0 14px" }}>
             Premium upgrades unlocked on your account.
@@ -102,10 +139,11 @@ export default function BonusHubPage() {
                   <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
                     <div style={{
                       width: "52px", height: "52px", borderRadius: "14px", flexShrink: 0,
-                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: "26px",
+                      display: "flex", alignItems: "center", justifyContent: "center",
                       background: b.owned ? `linear-gradient(135deg, ${GOLD}, #f0a500)` : "rgba(255,255,255,0.06)",
-                      filter: b.owned ? "none" : "grayscale(1)",
-                    }}>{b.emoji}</div>
+                    }}>
+                      <b.Icon color={b.owned ? "#000" : "rgba(255,255,255,0.35)"} />
+                    </div>
 
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
@@ -118,10 +156,11 @@ export default function BonusHubPage() {
 
                     {!b.owned && (
                       <span style={{
-                        flexShrink: 0, fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
+                        flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "4px",
+                        fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
                         padding: "4px 8px", borderRadius: "6px",
                         color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.08)",
-                      }}>🔒 Locked</span>
+                      }}><LockIcon /> Locked</span>
                     )}
                   </div>
 

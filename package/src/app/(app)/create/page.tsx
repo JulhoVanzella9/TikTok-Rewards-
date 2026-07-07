@@ -8,6 +8,22 @@ import { scheduleRatingsAvailableNotification, requestNotificationPermission } f
 
 type ReviewMode = "regular" | "multiplatform";
 
+function SparkleIcon({ size = 20, color = "#ffd700" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <path d="M12 3c.3 3.6 1.1 5.7 2.3 6.9C15.5 11.1 17.6 11.9 21 12c-3.6.3-5.7 1.1-6.9 2.3C12.9 15.5 12.1 17.6 12 21c-.3-3.6-1.1-5.7-2.3-6.9C8.5 12.9 6.4 12.1 3 12c3.6-.3 5.7-1.1 6.9-2.3C11.1 8.5 11.9 6.4 12 3z"/>
+    </svg>
+  );
+}
+function FilmIcon({ size = 44, color = "var(--text-muted)" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6">
+      <path d="M2 8.5 4.5 4h3L5 8.5M9 8.5 11.5 4h3L12 8.5M16 8.5 18.5 4H21l-2.5 4.5"/>
+      <rect x="2" y="8.5" width="20" height="12" rx="1.5"/>
+    </svg>
+  );
+}
+
 function seededRng(seed: number) {
   let s = seed;
   return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
@@ -579,7 +595,7 @@ export default function CreatePage() {
                 border: "1px solid rgba(255,215,0,0.4)", boxSizing: "border-box",
               }}
             >
-              <span style={{ fontSize: "20px" }}>✨</span>
+              <span style={{ display: "flex" }}><SparkleIcon /></span>
               <span style={{ fontSize: "14px", fontWeight: 800, color: "#ffd700", flex: 1 }}>Your Expansions / Bonuses</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
             </motion.div>
@@ -702,7 +718,7 @@ export default function CreatePage() {
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         minHeight: "80vh", padding: "24px", textAlign: "center",
       }}>
-        <div style={{ fontSize: "44px", marginBottom: "14px" }}>🎬</div>
+        <div style={{ marginBottom: "14px", display: "flex", justifyContent: "center" }}><FilmIcon /></div>
         <h2 style={{ fontSize: "20px", fontWeight: 800, color: "var(--text-primary)", marginBottom: "10px" }}>
           {mode === "multiplatform" ? "Exclusive videos coming soon" : "No videos available"}
         </h2>

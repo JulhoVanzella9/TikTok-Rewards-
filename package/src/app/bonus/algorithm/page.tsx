@@ -8,6 +8,21 @@ import { createClient } from "@/lib/supabase/client";
 const GOLD = "#ffd700";
 const ACCENT = "#fe2c55";
 
+function LockIcon({ size = 40, color = "#fff" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6">
+      <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+    </svg>
+  );
+}
+function ChartIcon({ size = 44, color = GOLD }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-7"/>
+    </svg>
+  );
+}
+
 export default function ActivateAlgorithmPage() {
   const { up3, loading } = useEntitlements();
   const [activated, setActivated] = useState(false);
@@ -60,7 +75,7 @@ export default function ActivateAlgorithmPage() {
           <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", marginTop: "60px" }}>Loading...</p>
         ) : !up3 ? (
           <div style={{ textAlign: "center", marginTop: "40px" }}>
-            <div style={{ fontSize: "40px", marginBottom: "12px" }}>🔒</div>
+            <div style={{ marginBottom: "12px", display: "flex", justifyContent: "center" }}><LockIcon color="rgba(255,255,255,0.6)" /></div>
             <h1 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "10px" }}>Refined Algorithm locked</h1>
             <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
               This bonus is not active on your account. It unlocks automatically after you purchase the Refined Algorithm (UP3).
@@ -101,7 +116,7 @@ export default function ActivateAlgorithmPage() {
                   borderRadius: "16px", padding: "26px 20px", textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: "44px", marginBottom: "10px" }}>📈</div>
+                <div style={{ marginBottom: "10px", display: "flex", justifyContent: "center" }}><ChartIcon /></div>
                 <h2 style={{ fontSize: "20px", fontWeight: 800, color: GOLD, marginBottom: "10px" }}>Refined algorithm activated!</h2>
                 <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
                   Get ready to earn <strong>much more per video</strong> — your feed now prioritizes premium, higher-paying brands.
