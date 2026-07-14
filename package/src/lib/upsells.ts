@@ -11,13 +11,16 @@ export const UPSELL_KEYS: UpsellKey[] = ["up1", "up2", "up3"];
 export const UPSELL_PRODUCT_IDS: Record<UpsellKey, string[]> = {
   // UP1 — Multiplatform Expansion
   // conta 1: full 707319, downsell Dw1 707339 | conta 2: 696904 | conta 3: full 694328, downsell Dw1 693174
-  up1: ["707319", "696904", "707339", "694328", "693174"],
+  // conta 4: full 697477, downsell Dw1 697473
+  up1: ["707319", "696904", "707339", "694328", "693174", "697477", "697473"],
   // UP2 — AI assistant (3x)
   // conta 1: full 707324, downsell Dw2 707347 | conta 2: 696905 | conta 3: full 694327, downsell Dw2 694329
-  up2: ["707324", "696905", "707347", "694327", "694329"],
+  // conta 4: full 697476, downsell Dw2 697472
+  up2: ["707324", "696905", "707347", "694327", "694329", "697476", "697472"],
   // UP3 — Refined algorithm
   // conta 1: full 707332, downsell Dw3 707348 | conta 2: 696906 | conta 3: full 692947, downsell Dw3 693176
-  up3: ["707332", "696906", "707348", "692947", "693176"],
+  // conta 4: full 697474, downsell Dw3 697471
+  up3: ["707332", "696906", "707348", "692947", "693176", "697474", "697471"],
 };
 
 /**
