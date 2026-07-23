@@ -1,9 +1,17 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { ADMIN_SECRET } from "@/lib/admin-secret";
 
 const ACCENT = "#FE2C55";
+
+const SURVEY_OPTIONS = [
+  "I couldn't withdraw / the withdrawal is taking too long",
+  "Video limit",
+  "Minimum withdrawal amount",
+  "I couldn't access the courses",
+  "I couldn't install the app on the home screen",
+];
 
 interface RefundRow {
   id: string;
@@ -34,6 +42,7 @@ export default function RefundReasonsPage() {
   const [requests, setRequests] = useState<RefundRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
@@ -55,6 +64,19 @@ export default function RefundReasonsPage() {
   useEffect(() => {
     if (authorized) loadRequests();
   }, [authorized, loadRequests]);
+
+  // Percentage of requests that flagged each survey reason, sorted worst-first
+  const reasonStats = useMemo(() => {
+    const total = requests.length;
+    return SURVEY_OPTIONS.map((option) => {
+      const count = requests.filter((r) => r.survey.includes(option)).length;
+      return { option, count, percent: total > 0 ? (count / total) * 100 : 0 };
+    }).sort((a, b) => b.percent - a.percent);
+  }, [requests]);
+
+  const filteredRequests = activeFilter
+    ? requests.filter((r) => r.survey.includes(activeFilter))
+    : requests;
 
   if (!authorized) {
     return (
@@ -87,21 +109,97 @@ export default function RefundReasonsPage() {
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}>
           Private admin area. Keep this URL secret.
         </p>
-        <a
-          href={`/tools/${ADMIN_SECRET}`}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 700,
-            color: ACCENT, textDecoration: "none", marginBottom: "20px",
-            background: "rgba(254,44,85,0.1)", border: `1px solid ${ACCENT}44`,
-            padding: "8px 14px", borderRadius: "10px",
-          }}
-        >
-          Go to Test Tools →
-        </a>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "20px" }}>
+          <a
+            href={`/tools/${ADMIN_SECRET}`}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 700,
+              color: ACCENT, textDecoration: "none",
+              background: "rgba(254,44,85,0.1)", border: `1px solid ${ACCENT}44`,
+              padding: "8px 14px", borderRadius: "10px",
+            }}
+          >
+            Go to Test Tools →
+          </a>
+          <a
+            href={`/refunds/${ADMIN_SECRET}/stats`}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 700,
+              color: "#000", textDecoration: "none",
+              background: ACCENT, border: `1px solid ${ACCENT}`,
+              padding: "8px 14px", borderRadius: "10px",
+            }}
+          >
+            View Chart →
+          </a>
+        </div>
+
+        {/* Top Issues — percentage of requests, click to filter the table below */}
+        {requests.length > 0 && (
+          <div style={{
+            background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "14px", padding: "18px", marginBottom: "20px",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+              <h3 style={{ fontSize: "14px", fontWeight: 800, margin: 0 }}>Top Issues</h3>
+              {activeFilter && (
+                <button
+                  onClick={() => setActiveFilter(null)}
+                  style={{
+                    fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.6)",
+                    background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
+                    padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontFamily: "inherit",
+                  }}
+                >
+                  Clear filter ✕
+                </button>
+              )}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {reasonStats.map(({ option, count, percent }) => {
+                const active = activeFilter === option;
+                return (
+                  <button
+                    key={option}
+                    onClick={() => setActiveFilter(active ? null : option)}
+                    disabled={count === 0}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "10px",
+                      width: "100%", textAlign: "left", padding: "8px 10px",
+                      background: active ? "rgba(254,44,85,0.12)" : "transparent",
+                      border: active ? `1px solid ${ACCENT}55` : "1px solid transparent",
+                      borderRadius: "8px", cursor: count === 0 ? "default" : "pointer",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    <span style={{
+                      flex: "0 0 40%", fontSize: "12.5px",
+                      color: count === 0 ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.85)",
+                      overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                    }}>
+                      {option}
+                    </span>
+                    <div style={{ flex: 1, height: "10px", background: "rgba(255,255,255,0.06)", borderRadius: "5px", overflow: "hidden" }}>
+                      <div style={{
+                        width: `${percent}%`, height: "100%",
+                        background: `linear-gradient(90deg, ${ACCENT}, #ff6b8a)`,
+                        borderRadius: "5px", transition: "width 0.4s ease",
+                      }} />
+                    </div>
+                    <span style={{ flex: "0 0 70px", textAlign: "right", fontSize: "12.5px", fontWeight: 800, color: ACCENT }}>
+                      {percent.toFixed(0)}% <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>({count})</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
           <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
-            {requests.length} request{requests.length !== 1 ? "s" : ""}
+            {filteredRequests.length} request{filteredRequests.length !== 1 ? "s" : ""}
+            {activeFilter && <span style={{ color: "rgba(255,255,255,0.4)" }}> (filtered)</span>}
           </span>
           <button
             onClick={loadRequests}
@@ -140,14 +238,14 @@ export default function RefundReasonsPage() {
               </tr>
             </thead>
             <tbody>
-              {requests.length === 0 && !loading ? (
+              {filteredRequests.length === 0 && !loading ? (
                 <tr>
                   <td colSpan={4} style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>
-                    No refund requests yet.
+                    {activeFilter ? "No requests match this filter." : "No refund requests yet."}
                   </td>
                 </tr>
               ) : (
-                requests.map((r) => (
+                filteredRequests.map((r) => (
                   <tr key={r.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     <td style={{ padding: "12px 14px", whiteSpace: "nowrap", color: "rgba(255,255,255,0.75)" }}>
                       {formatDate(r.createdAt)}
