@@ -6,6 +6,8 @@ import { ADMIN_SECRET } from "@/lib/admin-secret";
 
 const ACCENT = "#FE2C55";
 
+// Valores em inglês = o que fica salvo no banco (vem do formulário do cliente).
+// NÃO traduzir estes — só o rótulo exibido (SURVEY_LABELS_PT abaixo).
 const SURVEY_OPTIONS = [
   "I couldn't withdraw / the withdrawal is taking too long",
   "Video limit",
@@ -13,6 +15,14 @@ const SURVEY_OPTIONS = [
   "I couldn't access the courses",
   "I couldn't install the app on the home screen",
 ];
+
+const SURVEY_LABELS_PT: Record<string, string> = {
+  "I couldn't withdraw / the withdrawal is taking too long": "Não consegui sacar / o saque está demorando muito",
+  "Video limit": "Limite de vídeos",
+  "Minimum withdrawal amount": "Valor mínimo de saque",
+  "I couldn't access the courses": "Não consegui acessar os cursos",
+  "I couldn't install the app on the home screen": "Não consegui instalar o app na tela inicial",
+};
 
 interface RefundRow {
   id: string;
@@ -63,7 +73,7 @@ export default function RefundStatsPage() {
         display: "flex", alignItems: "center", justifyContent: "center",
         fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif", fontSize: "14px",
       }}>
-        Not found.
+        Não encontrado.
       </div>
     );
   }
@@ -82,10 +92,10 @@ export default function RefundStatsPage() {
             fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
             color: ACCENT, background: "rgba(254,44,85,0.12)", border: `1px solid ${ACCENT}55`,
             padding: "3px 10px", borderRadius: "20px",
-          }}>Refund Reasons Chart</span>
+          }}>Gráfico de Motivos de Reembolso</span>
         </div>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}>
-          Private admin area. Keep this URL secret.
+          Área administrativa privada. Mantenha esta URL em segredo.
         </p>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "24px" }}>
           <a
@@ -97,7 +107,7 @@ export default function RefundStatsPage() {
               padding: "8px 14px", borderRadius: "10px",
             }}
           >
-            ← Back to list
+            ← Voltar para a lista
           </a>
           <button
             onClick={loadRequests}
@@ -109,38 +119,38 @@ export default function RefundStatsPage() {
               opacity: loading ? 0.6 : 1,
             }}
           >
-            {loading ? "Loading..." : "Refresh"}
+            {loading ? "Carregando..." : "Atualizar"}
           </button>
         </div>
 
-        {/* Summary */}
+        {/* Resumo */}
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "26px" }}>
           <div style={{ flex: "1 1 140px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "14px", padding: "16px" }}>
             <div style={{ fontSize: "28px", fontWeight: 900 }}>{total}</div>
-            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Total requests</div>
+            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Total de pedidos</div>
           </div>
           <div style={{ flex: "1 1 140px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "14px", padding: "16px" }}>
             <div style={{ fontSize: "28px", fontWeight: 900, color: ACCENT }}>{topPercent.toFixed(0)}%</div>
-            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Top issue rate</div>
+            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Taxa do maior problema</div>
           </div>
           <div style={{ flex: "1 1 140px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "14px", padding: "16px" }}>
             <div style={{ fontSize: "28px", fontWeight: 900 }}>{noAnswer}</div>
-            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>No survey answer</div>
+            <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)" }}>Sem resposta na pesquisa</div>
           </div>
         </div>
 
-        {/* Chart */}
+        {/* Gráfico */}
         <div style={{
           background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
           borderRadius: "16px", padding: "22px",
         }}>
           <h3 style={{ fontSize: "15px", fontWeight: 800, margin: "0 0 20px" }}>
-            % of requests that flagged each reason
+            % de pedidos que marcaram cada motivo
           </h3>
 
           {total === 0 ? (
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textAlign: "center", padding: "30px 0" }}>
-              No refund requests yet.
+              Ainda não há pedidos de reembolso.
             </p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
@@ -148,7 +158,7 @@ export default function RefundStatsPage() {
                 <div key={s.option}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "6px", gap: "10px" }}>
                     <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.85)", fontWeight: 600 }}>
-                      {s.option}
+                      {SURVEY_LABELS_PT[s.option] ?? s.option}
                     </span>
                     <span style={{ fontSize: "13px", fontWeight: 800, color: ACCENT, whiteSpace: "nowrap" }}>
                       {s.percent.toFixed(1)}% <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: 600 }}>({s.count})</span>
@@ -172,8 +182,8 @@ export default function RefundStatsPage() {
         </div>
 
         <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.35)", marginTop: "16px", lineHeight: 1.6 }}>
-          Percentages are calculated against the total number of refund requests. Since users can select more than one
-          reason, the values may add up to more than 100%.
+          As porcentagens são calculadas em relação ao total de pedidos de reembolso. Como os usuários podem selecionar
+          mais de um motivo, os valores podem somar mais de 100%.
         </p>
       </div>
     </div>

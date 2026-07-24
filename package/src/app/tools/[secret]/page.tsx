@@ -6,6 +6,8 @@ import { ADMIN_SECRET } from "@/lib/admin-secret";
 
 const ACCENT = "#FE2C55";
 
+// Valores em inglês = o que fica salvo no banco (vem do formulário do cliente).
+// NÃO traduzir estes — só o rótulo exibido (SURVEY_LABELS_PT abaixo).
 const SURVEY_OPTIONS = [
   "I couldn't withdraw / the withdrawal is taking too long",
   "Video limit",
@@ -13,6 +15,14 @@ const SURVEY_OPTIONS = [
   "I couldn't access the courses",
   "I couldn't install the app on the home screen",
 ];
+
+const SURVEY_LABELS_PT: Record<string, string> = {
+  "I couldn't withdraw / the withdrawal is taking too long": "Não consegui sacar / o saque está demorando muito",
+  "Video limit": "Limite de vídeos",
+  "Minimum withdrawal amount": "Valor mínimo de saque",
+  "I couldn't access the courses": "Não consegui acessar os cursos",
+  "I couldn't install the app on the home screen": "Não consegui instalar o app na tela inicial",
+};
 
 export default function TestToolsPage() {
   const params = useParams();
@@ -66,8 +76,8 @@ export default function TestToolsPage() {
     else localStorage.removeItem(storageKey);
     setDeact((d) => ({ ...d, [key]: next }));
     setBonusMsg(next
-      ? `${key.toUpperCase()} deactivated for preview (still unlocked).`
-      : `${key.toUpperCase()} reactivated.`);
+      ? `${key.toUpperCase()} desativado para pré-visualização (continua liberado).`
+      : `${key.toUpperCase()} reativado.`);
   };
 
   const changeBonus = async (action: "grant" | "revoke") => {
@@ -77,7 +87,7 @@ export default function TestToolsPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user?.email) {
-        setBonusMsg("You must be logged in to the app first.");
+        setBonusMsg("Você precisa estar logado no app primeiro.");
         setBonusBusy(false);
         return;
       }
@@ -88,7 +98,7 @@ export default function TestToolsPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setBonusMsg("Error: " + (data.error || "failed"));
+        setBonusMsg("Erro: " + (data.error || "falhou"));
       } else {
         if (action === "grant") {
           // Make sure the preview toggles aren't hiding what we just unlocked
@@ -98,12 +108,12 @@ export default function TestToolsPage() {
           setDeact({ up1: false, up2: false, up3: false });
         }
         setBonusMsg(action === "grant"
-          ? `Bonuses unlocked for your account only (${user.email}).`
-          : `Bonuses removed from your account (${user.email}).`);
+          ? `Bônus liberados só para a sua conta (${user.email}).`
+          : `Bônus removidos da sua conta (${user.email}).`);
         loadBonusStatus();
       }
     } catch {
-      setBonusMsg("Connection error");
+      setBonusMsg("Erro de conexão");
     }
     setBonusBusy(false);
   };
@@ -115,7 +125,7 @@ export default function TestToolsPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        setBalanceMsg("You must be logged in to the app first. Open the app, log in, then come back here.");
+        setBalanceMsg("Você precisa estar logado no app primeiro. Abra o app, faça login e volte aqui.");
         setSettingBalance(false);
         return;
       }
@@ -124,12 +134,12 @@ export default function TestToolsPage() {
         .update({ total_xp: 50000000, updated_at: new Date().toISOString() })
         .eq("id", user.id);
       if (error) {
-        setBalanceMsg("Error: " + error.message);
+        setBalanceMsg("Erro: " + error.message);
       } else {
-        setBalanceMsg("Done! Your balance is now $5,000.00. Open the wallet and tap Withdraw to test.");
+        setBalanceMsg("Pronto! Seu saldo agora é US$ 5.000,00. Abra a carteira e clique em Sacar pra testar.");
       }
     } catch (e) {
-      setBalanceMsg("Error: " + (e instanceof Error ? e.message : "unknown"));
+      setBalanceMsg("Erro: " + (e instanceof Error ? e.message : "desconhecido"));
     }
     setSettingBalance(false);
   };
@@ -148,7 +158,7 @@ export default function TestToolsPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        setSendMsg("You must be logged in to the app first.");
+        setSendMsg("Você precisa estar logado no app primeiro.");
         setSending(false);
         return;
       }
@@ -169,12 +179,12 @@ export default function TestToolsPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setSendMsg("Error: " + (data.message || data.error || "failed"));
+        setSendMsg("Erro: " + (data.message || data.error || "falhou"));
       } else {
-        setSendMsg("Refund email sent (limit bypassed). Request ID: " + data.requestId);
+        setSendMsg("E-mail de reembolso enviado (limite ignorado). ID do pedido: " + data.requestId);
       }
     } catch {
-      setSendMsg("Connection error");
+      setSendMsg("Erro de conexão");
     }
     setSending(false);
   };
@@ -195,7 +205,7 @@ export default function TestToolsPage() {
         display: "flex", alignItems: "center", justifyContent: "center",
         fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif", fontSize: "14px",
       }}>
-        Not found.
+        Não encontrado.
       </div>
     );
   }
@@ -214,10 +224,10 @@ export default function TestToolsPage() {
             fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
             color: ACCENT, background: "rgba(254,44,85,0.12)", border: `1px solid ${ACCENT}55`,
             padding: "3px 10px", borderRadius: "20px",
-          }}>Test Tools</span>
+          }}>Ferramentas de Teste</span>
         </div>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}>
-          Private admin / test area. Keep this URL secret.
+          Área administrativa / de teste privada. Mantenha esta URL em segredo.
         </p>
         <a
           href={`/refunds/${ADMIN_SECRET}`}
@@ -228,7 +238,7 @@ export default function TestToolsPage() {
             padding: "8px 14px", borderRadius: "10px",
           }}
         >
-          Go to Refund Reasons →
+          Ir para Motivos de Reembolso →
         </a>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -237,10 +247,10 @@ export default function TestToolsPage() {
             background: "rgba(255,255,255,0.03)", border: `1px solid ${ACCENT}33`,
             borderRadius: "14px", padding: "20px",
           }}>
-            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Unlock bonuses for me</h3>
+            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Liberar bônus pra mim</h3>
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", margin: "0 0 14px", lineHeight: 1.6 }}>
-              Unlocks UP1, UP2 and UP3 for <strong style={{ color: ACCENT }}>your logged-in account only</strong> —
-              it does not unlock for other users. You can remove it anytime.
+              Libera UP1, UP2 e UP3 <strong style={{ color: ACCENT }}>só para a sua conta logada</strong> —
+              não libera para outros usuários. Você pode remover a qualquer momento.
             </p>
 
             {bonusStatus && (
@@ -268,7 +278,7 @@ export default function TestToolsPage() {
                   background: ACCENT, color: "#fff", opacity: bonusBusy ? 0.6 : 1,
                 }}
               >
-                {bonusBusy ? "..." : "Unlock all bonuses for me"}
+                {bonusBusy ? "..." : "Liberar todos os bônus pra mim"}
               </button>
               <button
                 onClick={() => changeBonus("revoke")}
@@ -280,21 +290,21 @@ export default function TestToolsPage() {
                   color: "rgba(255,255,255,0.8)", opacity: bonusBusy ? 0.6 : 1,
                 }}
               >
-                Remove
+                Remover
               </button>
             </div>
 
             <div style={{ marginTop: "14px", paddingTop: "14px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.7)", margin: "0 0 4px" }}>
-                Preview — turn each bonus on/off in the app
+                Pré-visualização — ligar/desligar cada bônus no app
               </p>
               <p style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.4)", margin: "0 0 12px", lineHeight: 1.5 }}>
-                Only hides/shows a bonus in the app for this browser. It does NOT remove it from your account.
+                Só esconde/mostra um bônus no app deste navegador. NÃO remove da sua conta.
               </p>
               {([
-                { key: "up1", label: "Multiplatform (UP1)" },
-                { key: "up2", label: "AI Assistant (UP2)" },
-                { key: "up3", label: "Refined Algorithm (UP3)" },
+                { key: "up1", label: "Multiplataforma (UP1)" },
+                { key: "up2", label: "Assistente de IA (UP2)" },
+                { key: "up3", label: "Algoritmo Refinado (UP3)" },
               ] as const).map((item) => {
                 const on = !deact[item.key];
                 return (
@@ -312,7 +322,7 @@ export default function TestToolsPage() {
                       </span>
                       <button
                         onClick={() => toggleDeact(item.key)}
-                        aria-label={`toggle ${item.key}`}
+                        aria-label={`ativar/desativar ${item.key}`}
                         style={{
                           width: "44px", height: "24px", borderRadius: "12px", border: "none", cursor: "pointer",
                           background: on ? ACCENT : "rgba(255,255,255,0.18)", position: "relative", padding: 0,
@@ -341,10 +351,10 @@ export default function TestToolsPage() {
             background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "14px", padding: "20px",
           }}>
-            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Reach $5,000 instantly</h3>
+            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Chegar a US$ 5.000 na hora</h3>
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.6 }}>
-              Sets your logged-in account balance to <strong style={{ color: ACCENT }}>$5,000.00</strong> so you can test
-              the withdrawal &ldquo;Account Under Review&rdquo; screen.
+              Define o saldo da sua conta logada em <strong style={{ color: ACCENT }}>US$ 5.000,00</strong> pra você testar
+              a tela de saque &ldquo;Conta em Análise&rdquo;.
             </p>
             <button
               onClick={grant5k}
@@ -355,13 +365,13 @@ export default function TestToolsPage() {
                 background: ACCENT, color: "#fff", opacity: settingBalance ? 0.6 : 1,
               }}
             >
-              {settingBalance ? "Setting..." : "Set my balance to $5,000"}
+              {settingBalance ? "Definindo..." : "Definir meu saldo em US$ 5.000"}
             </button>
             {balanceMsg && (
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)", marginTop: "12px" }}>{balanceMsg}</p>
             )}
             <a href="/wallet" style={{ display: "inline-block", marginTop: "12px", color: ACCENT, fontSize: "13px", fontWeight: 700 }}>
-              Open wallet →
+              Abrir carteira →
             </a>
           </div>
 
@@ -370,24 +380,24 @@ export default function TestToolsPage() {
             background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "14px", padding: "20px",
           }}>
-            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Send test refund email</h3>
+            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 8px" }}>Enviar e-mail de reembolso de teste</h3>
             <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.6 }}>
-              Sends the support refund email (with the survey section) ignoring the 14-day limit.
-              It also shows up in the Refund Reasons page.
+              Envia o pedido de reembolso (com a seção da pesquisa) ignorando o limite de 14 dias.
+              Também aparece na página de Motivos de Reembolso.
             </p>
             <form onSubmit={sendTestEmail} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <input
                 type="email"
                 value={testEmail}
                 onChange={(e) => setTestEmail(e.target.value)}
-                placeholder="Requester email (blank = your account email)"
+                placeholder="E-mail do solicitante (vazio = e-mail da sua conta)"
                 style={inputStyle}
               />
               <input
                 type="text"
                 value={testReason}
                 onChange={(e) => setTestReason(e.target.value)}
-                placeholder="Reason text"
+                placeholder="Texto do motivo"
                 style={inputStyle}
               />
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
@@ -402,7 +412,7 @@ export default function TestToolsPage() {
                     }}>
                       <input type="checkbox" checked={checked} onChange={() => toggleTestSurvey(option)}
                         style={{ accentColor: ACCENT, cursor: "pointer" }} />
-                      {option}
+                      {SURVEY_LABELS_PT[option] ?? option}
                     </label>
                   );
                 })}
@@ -416,7 +426,7 @@ export default function TestToolsPage() {
                   background: ACCENT, color: "#fff", opacity: sending ? 0.6 : 1, alignSelf: "flex-start",
                 }}
               >
-                {sending ? "Sending..." : "Send test email"}
+                {sending ? "Enviando..." : "Enviar e-mail de teste"}
               </button>
             </form>
             {sendMsg && (

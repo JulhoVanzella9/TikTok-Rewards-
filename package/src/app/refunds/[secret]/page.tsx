@@ -5,6 +5,8 @@ import { ADMIN_SECRET } from "@/lib/admin-secret";
 
 const ACCENT = "#FE2C55";
 
+// Valores em inglês = o que fica salvo no banco (vem do formulário do cliente).
+// NÃO traduzir estes — só o rótulo exibido (SURVEY_LABELS_PT abaixo).
 const SURVEY_OPTIONS = [
   "I couldn't withdraw / the withdrawal is taking too long",
   "Video limit",
@@ -12,6 +14,14 @@ const SURVEY_OPTIONS = [
   "I couldn't access the courses",
   "I couldn't install the app on the home screen",
 ];
+
+const SURVEY_LABELS_PT: Record<string, string> = {
+  "I couldn't withdraw / the withdrawal is taking too long": "Não consegui sacar / o saque está demorando muito",
+  "Video limit": "Limite de vídeos",
+  "Minimum withdrawal amount": "Valor mínimo de saque",
+  "I couldn't access the courses": "Não consegui acessar os cursos",
+  "I couldn't install the app on the home screen": "Não consegui instalar o app na tela inicial",
+};
 
 interface RefundRow {
   id: string;
@@ -51,12 +61,12 @@ export default function RefundReasonsPage() {
       const res = await fetch(`/api/admin/refunds?key=${encodeURIComponent(ADMIN_SECRET)}`);
       const data = await res.json();
       if (!res.ok) {
-        setLoadError(data.error || "Failed to load");
+        setLoadError(data.error || "Falha ao carregar");
       } else {
         setRequests(data.requests || []);
       }
     } catch {
-      setLoadError("Connection error");
+      setLoadError("Erro de conexão");
     }
     setLoading(false);
   }, []);
@@ -65,7 +75,7 @@ export default function RefundReasonsPage() {
     if (authorized) loadRequests();
   }, [authorized, loadRequests]);
 
-  // Percentage of requests that flagged each survey reason, sorted worst-first
+  // Porcentagem dos pedidos que marcaram cada motivo, do maior pro menor
   const reasonStats = useMemo(() => {
     const total = requests.length;
     return SURVEY_OPTIONS.map((option) => {
@@ -85,7 +95,7 @@ export default function RefundReasonsPage() {
         display: "flex", alignItems: "center", justifyContent: "center",
         fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif", fontSize: "14px",
       }}>
-        Not found.
+        Não encontrado.
       </div>
     );
   }
@@ -104,10 +114,10 @@ export default function RefundReasonsPage() {
             fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px",
             color: ACCENT, background: "rgba(254,44,85,0.12)", border: `1px solid ${ACCENT}55`,
             padding: "3px 10px", borderRadius: "20px",
-          }}>Refund Reasons</span>
+          }}>Motivos de Reembolso</span>
         </div>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}>
-          Private admin area. Keep this URL secret.
+          Área administrativa privada. Mantenha esta URL em segredo.
         </p>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "20px" }}>
           <a
@@ -119,7 +129,7 @@ export default function RefundReasonsPage() {
               padding: "8px 14px", borderRadius: "10px",
             }}
           >
-            Go to Test Tools →
+            Ir para Ferramentas de Teste →
           </a>
           <a
             href={`/refunds/${ADMIN_SECRET}/stats`}
@@ -130,18 +140,18 @@ export default function RefundReasonsPage() {
               padding: "8px 14px", borderRadius: "10px",
             }}
           >
-            View Chart →
+            Ver Gráfico →
           </a>
         </div>
 
-        {/* Top Issues — percentage of requests, click to filter the table below */}
+        {/* Principais Problemas — porcentagem dos pedidos, clique pra filtrar a tabela abaixo */}
         {requests.length > 0 && (
           <div style={{
             background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "14px", padding: "18px", marginBottom: "20px",
           }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: 800, margin: 0 }}>Top Issues</h3>
+              <h3 style={{ fontSize: "14px", fontWeight: 800, margin: 0 }}>Principais Problemas</h3>
               {activeFilter && (
                 <button
                   onClick={() => setActiveFilter(null)}
@@ -151,7 +161,7 @@ export default function RefundReasonsPage() {
                     padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontFamily: "inherit",
                   }}
                 >
-                  Clear filter ✕
+                  Limpar filtro ✕
                 </button>
               )}
             </div>
@@ -177,7 +187,7 @@ export default function RefundReasonsPage() {
                       color: count === 0 ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.85)",
                       overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                     }}>
-                      {option}
+                      {SURVEY_LABELS_PT[option] ?? option}
                     </span>
                     <div style={{ flex: 1, height: "10px", background: "rgba(255,255,255,0.06)", borderRadius: "5px", overflow: "hidden" }}>
                       <div style={{
@@ -198,8 +208,8 @@ export default function RefundReasonsPage() {
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
           <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>
-            {filteredRequests.length} request{filteredRequests.length !== 1 ? "s" : ""}
-            {activeFilter && <span style={{ color: "rgba(255,255,255,0.4)" }}> (filtered)</span>}
+            {filteredRequests.length} pedido{filteredRequests.length !== 1 ? "s" : ""}
+            {activeFilter && <span style={{ color: "rgba(255,255,255,0.4)" }}> (filtrado)</span>}
           </span>
           <button
             onClick={loadRequests}
@@ -211,7 +221,7 @@ export default function RefundReasonsPage() {
               opacity: loading ? 0.6 : 1,
             }}
           >
-            {loading ? "Loading..." : "Refresh"}
+            {loading ? "Carregando..." : "Atualizar"}
           </button>
         </div>
 
@@ -228,7 +238,7 @@ export default function RefundReasonsPage() {
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", minWidth: "760px" }}>
             <thead>
               <tr style={{ background: "rgba(255,255,255,0.05)" }}>
-                {["Date", "Email", "Reason", "Survey answers"].map((h) => (
+                {["Data", "Email", "Motivo", "Respostas da pesquisa"].map((h) => (
                   <th key={h} style={{
                     textAlign: "left", padding: "12px 14px", fontWeight: 700,
                     color: "rgba(255,255,255,0.6)", borderBottom: "1px solid rgba(255,255,255,0.1)",
@@ -241,7 +251,7 @@ export default function RefundReasonsPage() {
               {filteredRequests.length === 0 && !loading ? (
                 <tr>
                   <td colSpan={4} style={{ padding: "24px", textAlign: "center", color: "rgba(255,255,255,0.4)" }}>
-                    {activeFilter ? "No requests match this filter." : "No refund requests yet."}
+                    {activeFilter ? "Nenhum pedido corresponde a este filtro." : "Ainda não há pedidos de reembolso."}
                   </td>
                 </tr>
               ) : (
@@ -256,7 +266,7 @@ export default function RefundReasonsPage() {
                       {r.survey.length > 0 ? (
                         <ul style={{ margin: 0, paddingLeft: "18px" }}>
                           {r.survey.map((s, i) => (
-                            <li key={i} style={{ marginBottom: "3px", color: ACCENT }}>{s}</li>
+                            <li key={i} style={{ marginBottom: "3px", color: ACCENT }}>{SURVEY_LABELS_PT[s] ?? s}</li>
                           ))}
                         </ul>
                       ) : (
